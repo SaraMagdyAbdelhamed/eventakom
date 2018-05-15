@@ -182,7 +182,7 @@
                   </li>
                   <li class="side__list"> <a class="side__item side__item--sub">@lang('keywords.Users')</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('users.mobile')  }}">@lang('keywords.MobileAppUsers')</a></li>
+                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('users_mobile')  }}">@lang('keywords.MobileAppUsers')</a></li>
                       <li class="side__sublist"><a class="side__subitem" href="users_backend_users.html">@lang('keywords.BackendUsers')</a></li>
                     </ul>
                   </li>
