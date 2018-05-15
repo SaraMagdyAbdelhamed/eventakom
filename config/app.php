@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'GMT',
 
     /*
     |--------------------------------------------------------------------------
@@ -79,6 +79,7 @@ return [
     */
 
     'locale' => 'en',
+    'available_locale' => ['en', 'ar'],
 
     /*
     |--------------------------------------------------------------------------
@@ -181,6 +182,7 @@ return [
         Way\Generators\GeneratorsServiceProvider::class,
         Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
 
+        // App\Helper\Helper::class,
 
     ],
 
@@ -230,6 +232,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Helper' => App\Helpers\Helper::class,
+
+        'MainController' => Modules\Main\Http\Controllers\MainController::class,
 
     ],
 
