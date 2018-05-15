@@ -24,6 +24,7 @@
         //Users
         'Users' => 'Users',
         'MobileAppUsers' => 'Mobile Application Users',
+        'BackendUsers' => 'Backend Users',
 
     ];
 

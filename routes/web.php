@@ -58,6 +58,9 @@ Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = 
 
     // contact us
     Route::get('/contact', '\Modules\Main\Http\Controllers\MainController@contact')->name('main.contact');
+    
+    //users.mobile
+        Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users.mobile');
 
 });
 
