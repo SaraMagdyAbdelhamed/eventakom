@@ -19,6 +19,7 @@ class UsersController extends Controller
      */
     public function index()
     {
+        
         return view('usersmodule::mobile_users');
     }
 

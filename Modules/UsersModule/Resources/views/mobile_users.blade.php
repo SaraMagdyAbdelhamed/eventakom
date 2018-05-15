@@ -8,8 +8,8 @@
                       <div class="col-xs-12">
                         <div class="text-xs-center">         
                           <div class="text-wraper">
-                            <h4 class="cover-inside-title">Users </h4><i class="fa fa-chevron-circle-right"></i>
-                            <h4 class="cover-inside-title sub-lvl-2">Mobile application users </h4>
+                            <h4 class="cover-inside-title">@lang('keywords.Users') </h4><i class="fa fa-chevron-circle-right"></i>
+                            <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.MobileAppUsers') </h4>
                           </div>
                         </div>
                       </div>

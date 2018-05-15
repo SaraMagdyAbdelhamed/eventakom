@@ -250,5 +250,178 @@
         });
       });
     </script>
+
+    <script type="text/javascript">
+      //--Data table trigger --1
+      $(document).ready(function(){
+        if ( $('html').attr('lang') == 'ar' ) {
+          var datatable_one = $("#dataTableTriggerId_001").DataTable({
+          'columnDefs': [{
+            'targets': 0,
+            'searchable':false,
+            'orderable':false,
+            'className': 'this-include-check',
+            'render': function (data, type, full, meta){
+              return '<input class="input-in-table" type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+            }
+          }],
+          'order': [1, 'asc'],
+            dom: '   <"row"    <" filterbar" flr + <"sortingr__btns_cont"  >> <"filter__btns_cont"  >    >  <"row"   <"data-table-trigger-cont"  t>    >  <"row"<"tableActions__btns_cont"> <"viewing-pagination"pi>  > ' ,
+            "language": {
+              "search": "dd",
+              "sLengthMenu": "عرض _MENU_  ",
+              search: " البحث _INPUT_",
+              searchPlaceholder: "ابحث فى الجدول"          ,
+              "emptyTable":     "لا توجد بيانات متاحه فى الجدول",
+              "info":           "عرض _START_ إلى _END_ من أصل _TOTAL_ مُدخل",
+              "infoEmpty":      " عرض  0 to 0 of 0 مُدخل",
+              "infoFiltered":   "(filtered from _MAX_ total entries)",
+              "loadingRecords": "جارى التحميل...",
+              "processing":     "جارى المعالجة...",
+              "zeroRecords":    "لا توجد نتائج مطابخة",
+              "paginate": {
+                "first":      "الاول",
+                "last":       "الاخير",
+                "next":       "التالى",
+                "previous":   "السابق"
+              },
+              "aria": {
+                "sortAscending":  ": رتب تصاعدياً",
+                "sortDescending": ": رتب تنازلياً"
+              }
+            }
+          });
+          
+          //-trigger check one by one 
+          $(document).on('click','#dataTableTriggerId_001 tbody tr input.input-in-table',function(){
+            var RowParent = $(this).parents('tr') ;
+            
+            if ( $(this).parents('tr').hasClass('selected') ) {
+              $(this).parents('tr').removeClass('selected');
+            }
+            else {
+              $(this).parents('tr').addClass('selected');
+            }  
+          });
+      
+          //-trigger check All
+          $('#dataTableTriggerId_001 #select-all').on('click',function(){
+            if($(this).attr('data-click-state') == 0) {
+              $(this).attr('data-click-state',1)
+              var rows = datatable_one.rows().nodes();
+              $('input.input-in-table' , rows).prop('checked',this.checked).parents('tr').addClass('selected');
+              
+            } else {
+              var rows = datatable_one.rows().nodes();
+              $('input.input-in-table' , rows).prop('checked',false).parents('tr').removeClass('selected');
+              $(this).attr('data-click-state', 0);
+            }
+          });
+      
+          //-Delete buttons
+          $('#delete-test').on('click', function() {
+            var selectedRows = datatable_one.rows( $('#dataTableTriggerId_001 tr.selected') ).data().to$();
+            datatable_one.rows( '.selected' ).remove().draw(false);
+          });
+          
+          
+        } else {
+      
+          var datatable_one = $("#dataTableTriggerId_001").DataTable({
+            'columnDefs': [{
+            'targets': 0,
+            'searchable':false,
+            'orderable':false,
+            'className': 'this-include-check',
+            'render': function (data, type, full, meta){
+              return '<input class="input-in-table" type="checkbox" name="id[]" >';
+            }
+          }],
+          'order': [1, 'asc'],
+            dom: '   <"row"    <" filterbar" f + <"quick_filter_cont"  > + lr + <"sortingr__btns_cont"  >> <"filter__btns_cont"  >    >  <"row"   <"data-table-trigger-cont"  t>    >  <"row"<"tableActions__btns_cont"> <"viewing-pagination"pi>  > ' ,
+            "language": {
+              "search": "dd",
+              "sLengthMenu": "Entries _MENU_  ",
+              search: " Search _INPUT_",
+              searchPlaceholder: "Search table ...."
+            }
+          });
+      
+          //-trigger check one by one 
+          $(document).on('click','#dataTableTriggerId_001 tbody tr input.input-in-table',function(){
+            var RowParent = $(this).parents('tr') ;
+            
+            if ( $(this).parents('tr').hasClass('selected') ) {
+              $(this).parents('tr').removeClass('selected');
+            }
+            else {
+              $(this).parents('tr').addClass('selected');
+            }  
+          });
+      
+          //-trigger check All
+          $('#dataTableTriggerId_001 #select-all').on('click',function(){
+            if($(this).attr('data-click-state') == 0) {
+              $(this).attr('data-click-state',1)
+              var rows = datatable_one.rows().nodes();
+              $('input.input-in-table' , rows).prop('checked',this.checked).parents('tr').addClass('selected');
+              
+            } else {
+              var rows = datatable_one.rows().nodes();
+              $('input.input-in-table' , rows).prop('checked',false).parents('tr').removeClass('selected');
+              $(this).attr('data-click-state', 0);
+            }
+          });
+      
+          //-Delete buttons
+          $('#delete-test').on('click', function() {
+            var selectedRows = datatable_one.rows( $('#dataTableTriggerId_001 tr.selected') ).data().to$();
+            datatable_one.rows( '.selected' ).remove().draw(false);
+          });
+      
+        }
+      });
+      
+      
+      $(document).ready(function(){
+        $(".full-table").each(function() {
+          $(this).find(".filter__btns").appendTo($(this).find(".filter__btns_cont"));
+          $(this).find(".sortingr__btns").appendTo($(this).find(".sortingr__btns_cont"));
+          $(this).find(".bottomActions__btns").appendTo($(this).find(".tableActions__btns_cont"));
+          $(this).find(".quick_filter").appendTo($(this).find(".quick_filter_cont"));
+          $(this).find(".view_options").appendTo($(this).find(".view_options_cont"));
+        });
+      });
+      
+      //-============================================================
+      //-===============================comp__#009__select
+      //-============================================================
+    </script>
+    <script type="text/javascript">
+      $(function () {
+        $(".select2").select2();
+      });
+      
+      
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        "use strict";
+        $('.btn-warning-confirm').click(function(){
+          swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this imaginary file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnConfirm: false
+          },
+          function(){
+            swal("Deleted!", "Your imaginary file has been deleted!", "success");
+          });
+        });
+      });
+    </script>
   </body>
 </html>
