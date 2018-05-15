@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Session; 
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,9 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+            // \App::setLocale(\Request::segment(1));
+            // return redirect(\Request::segment(1).'/main');
+            return redirect( Session::get('locale').'/about' );
         }
 
         return $next($request);
