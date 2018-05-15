@@ -27,7 +27,11 @@ class MainController extends Controller
      * @return Response
      */
     public function index()
-    {
+    {  
+    }
+
+    public function change_language($lang) {
+        \App::isLocale('ar') ? str_replace('ar', 'en', Request::url()) : str_replace('en', 'ar', Request::url());
     }
 
     public function about() {

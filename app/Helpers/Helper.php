@@ -25,7 +25,8 @@ class Helper {
     }
 
     // convert lang_id [1, 2] to ['en', 'ar']
-    public static function getUserLocale($lang_id = 1) {
+    public static function getUserLocale() {
+        $lang_id = Auth::user()->lang_id;
         $locale = ($lang_id == 1) ? 'en' : 'ar';
         Session::put('locale', $locale);
         return $locale;

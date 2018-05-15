@@ -46,7 +46,7 @@ class LoginController extends Controller
 
             // add last login timestamp
             $user = Users::find(Auth::user()->id);
-            $userLocale = Helper::getUserLocale($user->lang_id);
+            $userLocale = Helper::getUserLocale();
             $user->last_login = Carbon::now()->toDateTimeString();
             $user->timezone = $request->timezone;
             $user->save();

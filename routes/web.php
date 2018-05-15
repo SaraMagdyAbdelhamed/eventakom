@@ -37,7 +37,9 @@ Route::get('/login', function($lang = null) {
 Route::post('/login' , 'Auth\LoginController@login')->name('login'); // override authentication urls to manually use languages
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');   // for testing purposes
 
+
 Route::group(['middleware' => 'auth'], function() {
+    Route::get('/change/language/{locale}', '\Modules\Main\Http\Controllers\MainController@change_language')->name('change.lang');
     Route::post('/main/about/edit', '\Modules\Main\Http\Controllers\MainController@about_edit')->name('about.edit');
     Route::post('/main/terms/edit', '\Modules\Main\Http\Controllers\MainController@about_edit')->name('terms.edit');
     Route::post('/main/privacy/edit', '\Modules\Main\Http\Controllers\MainController@about_edit')->name('privacy.edit');
@@ -45,6 +47,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 });
 
+// ONLY VIEWS WITH MENDATORY LANGUAGE PREFIX
 Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = null) {
 
     // about us
