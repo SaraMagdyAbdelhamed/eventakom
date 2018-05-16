@@ -25,6 +25,11 @@
         'EditContact'   => 'Edit Contact Us',
         
 
+        //Users
+        'Users' => 'Users',
+        'MobileAppUsers' => 'Mobile Application Users',
+        'BackendUsers' => 'Backend Users',
+
     ];
 
 ?>

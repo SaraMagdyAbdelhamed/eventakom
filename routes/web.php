@@ -32,7 +32,7 @@ Route::get('/login', function($lang = null) {
 
     return view('auth.login');
 });
-
+Route::get('/test_connection', 'HomeController@test_connection')->name('test_connection');   // for testing purposes
 // custom login/logout
 Route::post('/login' , 'Auth\LoginController@login')->name('login'); // override authentication urls to manually use languages
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');   // for testing purposes
@@ -63,6 +63,9 @@ Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = 
 
     // contact us
     Route::get('/contact', '\Modules\Main\Http\Controllers\MainController@contact')->name('main.contact');
+    
+    //users.mobile
+        Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users.mobile');
 
 });
 
