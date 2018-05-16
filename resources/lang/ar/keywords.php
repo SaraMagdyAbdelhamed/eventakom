@@ -9,6 +9,7 @@
         'login_password'    => 'كلمة السر',
         'logout'            => 'الخروج',
         'language'          => 'العربية',
+        'email'             => 'البريد الالكتروني',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
@@ -20,6 +21,10 @@
 
         // about us page
         'EditAbout' => 'تعديل قسم عن الشركة',
+        'EditTerms' => 'تعديل الشروط والاحكام',
+        'EditPrivacy'   => 'تعديل الخصوصية وسياسة الشركة',
+        'EditContact'   => 'تعديل تواصل معنا',
+
 
     ];
 

@@ -21,7 +21,8 @@ class Helper {
     // example: /en/about   
     // @param   $routeName      url 2nd segment []
     public static function route($routeName) {
-        return url( Session::get('locale').'/'.$routeName );
+        $prefix = \App::isLocale('en') ? 'en' : 'ar';
+        return url( $prefix.'/'.$routeName );
     }
 
     // convert lang_id [1, 2] to ['en', 'ar']

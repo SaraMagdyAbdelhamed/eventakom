@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    
-<!-- =============== Custom Content ===========-==========-->
 <div class="row">
     <div class="col-xs-12">
         <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( '{{ asset('img/covers/dummy2.jpg') }}' )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
@@ -51,7 +49,7 @@
             <h3>@lang('keywords.EditAbout')</h3>
         </div>
         <div class="col-xs-12">
-            <form action="{{ route('about.edit') }}" method="POST">
+            <form action="{{ route('about.edit', ['id' => 1]) }}" method="POST">
                 {{ csrf_field() }}
                 
                 <div class="tabs--wrapper">

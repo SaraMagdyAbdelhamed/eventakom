@@ -69,7 +69,7 @@
                 </ul>
                 <div class="collapse navbar-collapse nav pull-right  " id="navbarSupportedContent">
                   <ul class="navbar-nav">
-                  <li class="nav-item"><a class="nav-link English  " href="{{ route('change.lang', Helper::getUserLocale()) }}" title="{{ App::isLocale('ar') ? 'English' : 'Arabic' }}">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</a></li>
+                  <li class="nav-item"><a class="nav-link English  " href="{{ App::isLocale('ar') ? str_replace('ar', 'en', Request::url()) : str_replace('en', 'ar', Request::url()) }}" title="{{ App::isLocale('ar') ? 'English' : 'Arabic' }}">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</a></li>
                   </ul>
                   <ul class="actionsbar desktop-view hidden-xs">
                     <li class="dropdowny"><a class="nav-link dropdowny-toggle  " href="#"><i class="fa fa-bell"></i></a>
@@ -215,9 +215,25 @@
             </nav>
             <!-- Page content-->
             <div class="container-fluid">
-              
-                {{-- yield data --}}
-                @yield('content')
+
+              {{-- Start alert messages --}}
+              <div class="col-lg-12">
+                @if (Session::has('success'))
+                  <div class="alert alert-success text-center">{{ Session::get('success') }}</div>
+                @endif
+
+                @if (Session::has('warning'))
+                  <div class="alert alert-warning text-center">{{ Session::get('warning') }}</div>
+                @endif
+
+                @if (Session::has('error'))
+                  <div class="alert alert-danger text-center">{{ Session::get('error') }}</div>
+                @endif
+              </div>
+              {{-- End alert --}}
+
+              {{-- yield data --}}
+              @yield('content')
                 
             </div>
           </div>
@@ -249,6 +265,13 @@
           schema: "html5",
         });
       });
+
+      // hide alert message after 4 seconds => 4000 ms
+      window.setTimeout(function() {
+              $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                  $(this).remove(); 
+              });
+          }, 4000);
     </script>
   </body>
 </html>

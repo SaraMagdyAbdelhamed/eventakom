@@ -39,16 +39,18 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('logout');   // for t
 
 
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('/change/language/{locale}', '\Modules\Main\Http\Controllers\MainController@change_language')->name('change.lang');
-    Route::post('/main/about/edit', '\Modules\Main\Http\Controllers\MainController@about_edit')->name('about.edit');
-    Route::post('/main/terms/edit', '\Modules\Main\Http\Controllers\MainController@about_edit')->name('terms.edit');
-    Route::post('/main/privacy/edit', '\Modules\Main\Http\Controllers\MainController@about_edit')->name('privacy.edit');
-    Route::post('/main/contact/edit', '\Modules\Main\Http\Controllers\MainController@about_edit')->name('contact.edit');
+    Route::post('/main/about/edit/{id}', '\Modules\Main\Http\Controllers\MainController@update_fixed')->name('about.edit');
+    Route::post('/main/terms/edit/{id}', '\Modules\Main\Http\Controllers\MainController@update_fixed')->name('terms.edit');
+    Route::post('/main/privacy/edit/{id}', '\Modules\Main\Http\Controllers\MainController@update_fixed')->name('privacy.edit');
+    Route::post('/main/contact/edit', '\Modules\Main\Http\Controllers\MainController@update_contact')->name('contact.edit');
 
 });
 
 // ONLY VIEWS WITH MENDATORY LANGUAGE PREFIX
 Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = null) {
+
+    App::setLocale(Request::segment(1));
+    Session::put('locale', Request::segment(1));
 
     // about us
     Route::get('/about', '\Modules\Main\Http\Controllers\MainController@about');    

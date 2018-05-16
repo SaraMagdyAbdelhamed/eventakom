@@ -9,6 +9,7 @@
         'login_password'    => 'password',
         'logout'            => 'Logout',
         'language'          => 'English',
+        'email'             => 'Email',
 
         // fixed pages
         'registered'=> 'Registered',
@@ -18,8 +19,11 @@
         'privacy'   => 'Privacy & Policy',
         'contactUs' => 'Contact Us',
 
-        // about us page
         'EditAbout' => 'Edit About Us',
+        'EditTerms' => 'Edit Terms and Conditions',
+        'EditPrivacy'   => 'Edit Privacy and Policy',
+        'EditContact'   => 'Edit Contact Us',
+        
 
     ];
 
