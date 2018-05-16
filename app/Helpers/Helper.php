@@ -87,4 +87,23 @@ class Helper {
         $localization->value = $new_value;
         $localization->save();
     }
+
+    /**
+     *  Add new localization into `entity_localization` table
+     *  @param  $entity_id  
+     *  @param  $field
+     *  @param  $item_id
+     *  @param  $value
+     *  @param  $lang_id
+     *  All parameters are the same in `entity_localization` with same order
+     */
+    public static function add_localization($entity_id, $field, $item_id, $value, $lang_id) {
+        $localization = new EntityLocalization;
+        $localization->entity_id = $entity_id;
+        $localization->field = $field;
+        $localization->value = $value;
+        $localization->item_id = $item_id;
+        $localization->lang_id = $lang_id;
+        $localization->save();
+    }
 }

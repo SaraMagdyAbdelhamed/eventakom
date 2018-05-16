@@ -22,24 +22,27 @@ class Users extends Authenticatable
         return $this->id;
     }
 
-        public function gender()
+    public function gender()
     {
         return $this->belongsTo('App\Genders','gender_id');
     }
 
-        public function country()
+    public function country()
     {
         return $this->belongsTo('App\Countries','country_id');
     }
     
-        public function city()
+    public function city()
     {
         return $this->belongsTo('App\Cities','city_id');
     }
 
-        public function rules()
+    public function rules()
     {
         return $this->belongsToMany('App\Rules','user_rules','user_id','rule_id');
     }
 
+    public function eventCategories() {
+        return $this->hasMany('App\EventCategory', 'created_at');
+    }
 }

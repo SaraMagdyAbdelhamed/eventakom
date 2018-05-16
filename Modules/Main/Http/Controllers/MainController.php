@@ -17,19 +17,11 @@ use App\Fixed;
 use App\Entity;
 use App\EntityLocalization;
 use App\SystemSetting;
-
+use App\EventCategory;
 
 class MainController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
-    public function index()
-    {  
-    }
 
     // view about us
     public function about() {
@@ -64,7 +56,7 @@ class MainController extends Controller
      *  Updates fixed pages [about us, terms & conditions, privacy and policy and contact us]
      *  @param  $id        idicates the following fields to be updated     `fixed_pages`.id for English version && `entity_localizations`.item_id for Arabic version.
      *  @param  Request $request    incoming data from POST request.
-     *  
+     *  @return redirect back to its edit page
      *  Usage:
      *  in edit form do the following:  <form action="{{ route('submit_form_route', ['page_number' => 1]) }}"...        for editing about us page for example.  
      *  
@@ -105,6 +97,11 @@ class MainController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Updates contact email
+     * @param   Request $request        incoming request data
+     * @return redirect to contact page
+     */
     public function update_contact( Request $request ) {
 
         // Validate incoming requests
@@ -129,56 +126,124 @@ class MainController extends Controller
         Session::flash('success', 'Email updated successfully تم تحديث البريد الالكتروني بنجاح');
         return redirect()->back();
     }
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-        return view('main::create');
+
+    public function event_category() {
+        return view('main::event_category')
+                ->with('events', EventCategory::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
+    public function event_store( Request $request ) {
+
+        // validate data
+        $this->validate($request, [
+            'arabicContent'  => 'required',
+            'englishContent' => 'required'
+        ],[
+            'arabicContent.required'    => 'تعديل المحتوي العربي فارغ ، برجاء تعديله والمحاولة مرة اخري',
+            'englishContent.required'   => 'English content is empty, please edit it and try again!'
+        ]);
+
+        // english version
+        try {
+            $event = new EventCategory;
+            $event->name = $request->englishContent;
+            $event->created_by = Auth::id();
+            $event->save();
+        } catch(\Exception $ex) {
+            dd($ex);
+            Session::flash('warning', 'Error occured during adding event!');
+            return redirect()->back();
+        }
+
+        // arabic version
+        try {
+            Helper::add_localization(15, 'interests', $event->id, $request->arabicContent, 2);
+        } catch(\Exception $ex) {
+            Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Event Added successfully تم إضافة الحدث بنجاح');
+        return redirect()->back();
     }
 
-    /**
-     * Show the specified resource.
-     * @return Response
-     */
-    public function show()
-    {
-        return view('main::show');
+    public function event_update( Request $request ) {
+
+        // validate data
+        $this->validate($request, [
+            'id' => 'required',
+            'arabicContent'  => 'required',
+            'englishContent' => 'required'
+        ],[
+            'arabicContent.required'    => 'تعديل المحتوي العربي فارغ ، برجاء تعديله والمحاولة مرة اخري',
+            'englishContent.required'   => 'English content is empty, please edit it and try again!'
+        ]);
+
+        // english version
+        try {
+            $event = EventCategory::find($request->id);
+            $event->name = $request->englishContent;
+            $event->created_by = Auth::id();
+            $event->save();
+        } catch(\Exception $ex) {
+            dd($ex);
+            Session::flash('warning', 'Error occured during adding event!');
+            return redirect()->back();
+        }
+
+        // arabic version
+        try {
+            Helper::edit_entity_localization('interests', 'interests', $request->id, 2, $request->arabicContent);
+        } catch(\Exception $ex) {
+            Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Event Added successfully تم إضافة الحدث بنجاح');
+        return redirect()->back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @return Response
-     */
-    public function edit()
-    {
-        return view('main::edit');
+    public function event_delete( Request $request ) {
+        $id = $request->id;
+
+        dd([$request->id, $request->arabicContent, $request->englishContent]);
+        // delete from localization - Arabic version
+        try {
+            EntityLocalization::where('entity_id', 15)->where('item_id', $id)->delete();
+        } catch(\Exception $ex) {
+            return response()->json(['error', 'error deleting arabic']);
+        }
+
+        // delete from interests    - English version
+        try {
+            EventCategory::where('id', $id)->delete();
+        } catch(\Exception $ex) {
+            return response()->json(['error', 'error deleting english']);
+        }
+
+        // return success response
+        return response()->json(['success', 'success']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
-    public function update(Request $request)
-    {
+    public function event_deleteSelected( Request $request ) {
+        $ids = $request->ids;
+
+        // delete from localization - Arabic version
+        try {
+            EntityLocalization::whereIn('item_id', $ids)->delete();
+        } catch(\Exception $ex) {
+            return response()->json(['error', 'error deleting arabic']);
+        }
+
+        // delete from interests    - English version
+        try {
+            EventCategory::whereIn('id', $ids)->where('entity_id', 15)->delete();
+        } catch(\Exception $ex) {
+            return response()->json(['error', 'error deleting english']);
+        }
+
+        // return success response
+        return response()->json(['success', 'success']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @return Response
-     */
-    public function destroy()
-    {
-    }
 }

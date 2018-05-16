@@ -10,6 +10,7 @@
         'logout'            => 'الخروج',
         'language'          => 'العربية',
         'email'             => 'البريد الالكتروني',
+        'not'               => 'لا يوجد',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
@@ -18,12 +19,15 @@
         'terms'     => 'الشروط والاحكام',
         'privacy'   => 'الخصوصية وسياسة الشركة',
         'contactUs' => ' تواصل معنا',
+        'eventCategories'   => 'انواع الاحداث',
+        'addcat'    => 'إضافة حدث جديد',
 
-        // about us page
+        // Edit fixed pages
         'EditAbout' => 'تعديل قسم عن الشركة',
         'EditTerms' => 'تعديل الشروط والاحكام',
         'EditPrivacy'   => 'تعديل الخصوصية وسياسة الشركة',
         'EditContact'   => 'تعديل تواصل معنا',
+        'EditEvent'     => 'تعديل حدث',
 
 
         //Users

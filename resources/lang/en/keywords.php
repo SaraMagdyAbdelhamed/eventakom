@@ -10,6 +10,7 @@
         'logout'            => 'Logout',
         'language'          => 'English',
         'email'             => 'Email',
+        'not'               => 'MISSING DATA',
 
         // fixed pages
         'registered'=> 'Registered',
@@ -18,11 +19,14 @@
         'terms'     => 'Terms & Conditions',
         'privacy'   => 'Privacy & Policy',
         'contactUs' => 'Contact Us',
+        'eventCategories'   => 'Event Categories',
+        'addcat'    => 'Add new event',
 
         'EditAbout' => 'Edit About Us',
         'EditTerms' => 'Edit Terms and Conditions',
         'EditPrivacy'   => 'Edit Privacy and Policy',
         'EditContact'   => 'Edit Contact Us',
+        'EditEvent'     => 'Edit an Event',
         
 
         //Users

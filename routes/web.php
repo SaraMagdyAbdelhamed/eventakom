@@ -44,6 +44,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/main/privacy/edit/{id}', '\Modules\Main\Http\Controllers\MainController@update_fixed')->name('privacy.edit');
     Route::post('/main/contact/edit', '\Modules\Main\Http\Controllers\MainController@update_contact')->name('contact.edit');
 
+    // Event Category
+    Route::post('/event/add', '\Modules\Main\Http\Controllers\MainController@event_store')->name('event.add');
+    Route::post('/event/edit', '\Modules\Main\Http\Controllers\MainController@event_update')->name('event.edit');
+    Route::post('/event/delete/single', '\Modules\Main\Http\Controllers\MainController@event_delete')->name('event.delete');
+    Route::post('/event/delete/selected', '\Modules\Main\Http\Controllers\MainController@event_deleteSelected')->name('event.deleteSelected');
+
 });
 
 // ONLY VIEWS WITH MENDATORY LANGUAGE PREFIX
@@ -56,16 +62,20 @@ Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = 
     Route::get('/about', '\Modules\Main\Http\Controllers\MainController@about');    
 
     // terms & conditions
-    Route::get('/terms', '\Modules\Main\Http\Controllers\MainController@terms')->name('main.terms');
+    Route::get('/terms', '\Modules\Main\Http\Controllers\MainController@terms');
 
     // privacy & policy
-    Route::get('/privacy', '\Modules\Main\Http\Controllers\MainController@privacy')->name('main.privacy');
+    Route::get('/privacy', '\Modules\Main\Http\Controllers\MainController@privacy');
 
     // contact us
-    Route::get('/contact', '\Modules\Main\Http\Controllers\MainController@contact')->name('main.contact');
+    Route::get('/contact', '\Modules\Main\Http\Controllers\MainController@contact');
     
+    // event categories
+    Route::get('/event/categories', '\Modules\Main\Http\Controllers\MainController@event_category');
+
     //users.mobile
-        Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users.mobile');
+    Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users.mobile');
+
 
 });
 
