@@ -1,5 +1,11 @@
 <?php
 
+/**
+ *  Author:  Ahmed Yacoub
+ *  Email:   ahmed.yacoub@outlook.com
+ *  Date: May 1, 2018
+ */
+
 namespace Modules\Main\Http\Controllers;
 
 use Helper;
@@ -18,6 +24,9 @@ use App\Entity;
 use App\EntityLocalization;
 use App\SystemSetting;
 use App\EventCategory;
+use App\FamousCategory;
+
+
 
 class MainController extends Controller
 {
@@ -26,24 +35,26 @@ class MainController extends Controller
     // view about us
     public function about() {
         return view('main::about_us')
-                ->with('about_us_english', Fixed::find(1)->body)
+                ->with('about_us_english', Fixed::where('name', 'LIKE', 'About Us')->first()->body)
                 ->with('about_us_arabic', Helper::localization('fixed_pages', 'body', '1', '2'));
     }
 
     // view terms n conditions
     public function terms() {
         return view('main::terms')
-                ->with('about_us_english', Fixed::find(2)->body)
+                ->with('about_us_english', Fixed::where('name', 'LIKE', 'Terms and Conditions')->first()->body)
                 ->with('about_us_arabic', Helper::localization('fixed_pages', 'body', '2', '2'));
     }
 
 
+    // view privacy page
     public function privacy() {
         return view('main::privacy')
-                ->with('about_us_english', Fixed::find(3)->body)
+                ->with('about_us_english', Fixed::where('name', 'LIKE', 'Privacy and Policy')->first()->body)
                 ->with('about_us_arabic', Helper::localization('fixed_pages', 'body', '3', '2'));
     }
 
+    // view contact us page
     public function contact() {
         $query = SystemSetting::where('name', 'contact_us')->first();
         $email = $query ? $query->value : '';
@@ -83,7 +94,8 @@ class MainController extends Controller
 
         // update english
         try {
-            $fixed = Fixed::find($id);
+            $name = $id == 1 ? 'About Us' : ($id == 2 ? 'Terms and Conditions' : ($id == 3 ? 'Privacy and Policy' : 0));    // 1 => about us, 2 => terms, 3 => privacy
+            $fixed = Fixed::where('name', 'LIKE', $name)->first();
             $fixed->body = $request->englishContent;
             $fixed->updated_by = Auth::id();
             $fixed->save();
@@ -118,20 +130,23 @@ class MainController extends Controller
             $email->value = $request->email;
             $email->save();
         } catch(\Exception $ex) {
-            dd($ex);
-            Session::flash('warning', 'Email was not inserted, please try again later البريد الالكتروني لم يحفظ برجاء المحاولة مجددا');
-            return redirect()->back();
+            $newEmail = new SystemSetting;
+            $newEmail->name = 'contact_us';
+            $newEmail->value = $request->email;
+            $newEmail->save();
         }
 
         Session::flash('success', 'Email updated successfully تم تحديث البريد الالكتروني بنجاح');
         return redirect()->back();
     }
 
+    // view event categories page
     public function event_category() {
         return view('main::event_category')
                 ->with('events', EventCategory::all());
     }
 
+    // Add new event category
     public function event_store( Request $request ) {
 
         // validate data
@@ -150,7 +165,6 @@ class MainController extends Controller
             $event->created_by = Auth::id();
             $event->save();
         } catch(\Exception $ex) {
-            dd($ex);
             Session::flash('warning', 'Error occured during adding event!');
             return redirect()->back();
         }
@@ -167,6 +181,7 @@ class MainController extends Controller
         return redirect()->back();
     }
 
+    // Update an event category
     public function event_update( Request $request ) {
 
         // validate data
@@ -186,7 +201,6 @@ class MainController extends Controller
             $event->created_by = Auth::id();
             $event->save();
         } catch(\Exception $ex) {
-            dd($ex);
             Session::flash('warning', 'Error occured during adding event!');
             return redirect()->back();
         }
@@ -203,10 +217,10 @@ class MainController extends Controller
         return redirect()->back();
     }
 
+    // Delete a single event category
     public function event_delete( Request $request ) {
         $id = $request->id;
 
-        dd([$request->id, $request->arabicContent, $request->englishContent]);
         // delete from localization - Arabic version
         try {
             EntityLocalization::where('entity_id', 15)->where('item_id', $id)->delete();
@@ -225,19 +239,21 @@ class MainController extends Controller
         return response()->json(['success', 'success']);
     }
 
+
+    // Delete multiple records
     public function event_deleteSelected( Request $request ) {
         $ids = $request->ids;
 
         // delete from localization - Arabic version
         try {
-            EntityLocalization::whereIn('item_id', $ids)->delete();
+            EntityLocalization::whereIn('item_id', $ids)->where('entity_id', 15)->delete();
         } catch(\Exception $ex) {
             return response()->json(['error', 'error deleting arabic']);
         }
 
         // delete from interests    - English version
         try {
-            EventCategory::whereIn('id', $ids)->where('entity_id', 15)->delete();
+            EventCategory::whereIn('id', $ids)->delete();
         } catch(\Exception $ex) {
             return response()->json(['error', 'error deleting english']);
         }
@@ -246,4 +262,126 @@ class MainController extends Controller
         return response()->json(['success', 'success']);
     }
 
+
+    // view famous attractions
+    public function famous() {
+        return view('main::famous')
+                ->with('attractions', FamousCategory::all());
+    }
+
+    // Add new event category
+    public function famous_store( Request $request ) {
+
+        // validate data
+        $this->validate($request, [
+            'arabicContent'  => 'required',
+            'englishContent' => 'required'
+        ],[
+            'arabicContent.required'    => 'تعديل المحتوي العربي فارغ ، برجاء تعديله والمحاولة مرة اخري',
+            'englishContent.required'   => 'English content is empty, please edit it and try again!'
+        ]);
+
+        // english version
+        try {
+            $event = new FamousCategory;
+            $event->name = $request->englishContent;
+            $event->created_by = Auth::id();
+            $event->save();
+        } catch(\Exception $ex) {
+            Session::flash('warning', 'Error occured during adding event!');
+            return redirect()->back();
+        }
+
+        // arabic version
+        try {
+            Helper::add_localization(12, 'famous_attractions', $event->id, $request->arabicContent, 2);
+        } catch(\Exception $ex) {
+            Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Event Added successfully تم إضافة الحدث بنجاح');
+        return redirect()->back();
+    }
+
+    // Update an event category
+    public function famous_update( Request $request ) {
+
+        // validate data
+        $this->validate($request, [
+            'id' => 'required',
+            'arabicContent'  => 'required',
+            'englishContent' => 'required'
+        ],[
+            'arabicContent.required'    => 'تعديل المحتوي العربي فارغ ، برجاء تعديله والمحاولة مرة اخري',
+            'englishContent.required'   => 'English content is empty, please edit it and try again!'
+        ]);
+
+        // english version
+        try {
+            $event = FamousCategory::find($request->id);
+            $event->name = $request->englishContent;
+            $event->updated_by = Auth::id();
+            $event->save();
+        } catch(\Exception $ex) {
+            Session::flash('warning', 'Error occured during adding event!');
+            return redirect()->back();
+        }
+
+        // arabic version
+        try {
+            Helper::edit_entity_localization('famous_attractions', 'famous_attractions', $request->id, 2, $request->arabicContent);
+        } catch(\Exception $ex) {
+            Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Event Added successfully تم إضافة الحدث بنجاح');
+        return redirect()->back();
+    }
+
+    // Delete a single event category
+    public function famous_delete( Request $request ) {
+        $id = $request->id;
+
+        // delete from localization - Arabic version
+        try {
+            EntityLocalization::where('entity_id', 12)->where('item_id', $id)->delete();
+        } catch(\Exception $ex) {
+            return response()->json(['error', 'error deleting arabic']);
+        }
+
+        // delete from interests    - English version
+        try {
+            FamousCategory::where('id', $id)->delete();
+        } catch(\Exception $ex) {
+            return response()->json(['error', 'error deleting english']);
+        }
+
+        // return success response
+        return response()->json(['success', 'success']);
+    }
+
+
+    // Delete multiple records
+    public function famous_deleteSelected( Request $request ) {
+        $ids = $request->ids;
+
+        // delete from localization - Arabic version
+        try {
+            EntityLocalization::whereIn('item_id', $ids)->where('entity_id', 12)->delete();
+        } catch(\Exception $ex) {
+            return response()->json(['error', 'error deleting arabic']);
+        }
+
+        // delete from interests    - English version
+        try {
+            FamousCategory::whereIn('id', $ids)->delete();
+        } catch(\Exception $ex) {
+            return response()->json(['error', 'error deleting english']);
+        }
+
+        // return success response
+        return response()->json(['success', 'success']);
+    }
 }

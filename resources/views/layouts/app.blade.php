@@ -172,7 +172,7 @@
                       </li>
                       <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('event/categories')  }}">@lang('keywords.eventCategories')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_famous_attractions_categories.html">Famous attractions categories</a>
+                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('famous/attraction') }}">@lang('keywords.famous')</a>
                       </li>
                       <li class="side__sublist"><a class="side__subitem" href="main_data_sponsors.html">Sponsors</a>
                       </li>

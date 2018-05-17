@@ -61,7 +61,7 @@ class Helper {
      *  expected result     'عن الشركة'
     */
     public static function localization($table_name, $field_name, $item_id, $lang_id) {
-        $localization = Entity::where('table_name', $table_name)->with(['localizations' => function($q) use ($table_name, $field_name, $item_id, $lang_id){ 
+        $localization = Entity::where('table_name', $table_name)->with(['localizations' => function($q) use ($field_name, $item_id, $lang_id){ 
             $q->where('field', $field_name)->where('item_id', $item_id)->where('lang_id', $lang_id); }
         ])->first()->localizations[0]->value;
 

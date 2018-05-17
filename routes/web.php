@@ -50,6 +50,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/event/delete/single', '\Modules\Main\Http\Controllers\MainController@event_delete')->name('event.delete');
     Route::post('/event/delete/selected', '\Modules\Main\Http\Controllers\MainController@event_deleteSelected')->name('event.deleteSelected');
 
+    // Famous Attractions
+    Route::post('/famous/add', '\Modules\Main\Http\Controllers\MainController@famous_store')->name('famous.add');
+    Route::post('/famous/edit', '\Modules\Main\Http\Controllers\MainController@famous_update')->name('famous.edit');
+    Route::post('/famous/delete/single', '\Modules\Main\Http\Controllers\MainController@famous_delete')->name('famous.delete');
+    Route::post('/famous/delete/selected', '\Modules\Main\Http\Controllers\MainController@famous_deleteSelected')->name('famous.deleteSelected');
+
 });
 
 // ONLY VIEWS WITH MENDATORY LANGUAGE PREFIX
@@ -72,6 +78,9 @@ Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = 
     
     // event categories
     Route::get('/event/categories', '\Modules\Main\Http\Controllers\MainController@event_category');
+
+    // famous attraction
+    Route::get('/famous/attraction', '\Modules\Main\Http\Controllers\MainController@famous');
 
     //users.mobile
     Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users.mobile');

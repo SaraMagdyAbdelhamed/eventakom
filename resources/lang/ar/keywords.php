@@ -11,6 +11,7 @@
         'language'          => 'العربية',
         'email'             => 'البريد الالكتروني',
         'not'               => 'لا يوجد',
+        'addNew'            => 'اضافة',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
@@ -21,6 +22,7 @@
         'contactUs' => ' تواصل معنا',
         'eventCategories'   => 'انواع الاحداث',
         'addcat'    => 'إضافة حدث جديد',
+        'famous'    => 'تصنيفات الاحداث الشهيرة',
 
         // Edit fixed pages
         'EditAbout' => 'تعديل قسم عن الشركة',

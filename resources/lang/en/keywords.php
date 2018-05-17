@@ -11,6 +11,7 @@
         'language'          => 'English',
         'email'             => 'Email',
         'not'               => 'MISSING DATA',
+        'addNew'            => 'Add new',
 
         // fixed pages
         'registered'=> 'Registered',
@@ -20,7 +21,8 @@
         'privacy'   => 'Privacy & Policy',
         'contactUs' => 'Contact Us',
         'eventCategories'   => 'Event Categories',
-        'addcat'    => 'Add new event',
+        'addcat'    => 'Add new category',
+        'famous'    => 'Famous attractions categories',
 
         'EditAbout' => 'Edit About Us',
         'EditTerms' => 'Edit Terms and Conditions',

@@ -13,7 +13,7 @@
               </div>
             </div>
           </div>
-          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="#popupModal_1">Add New Category</a>
+          <div class="cover--actions"><a id="addNewCat" class="bradius--no border-btn master-btn" type="button" href="#popupModal_1">@lang('keywords.addcat')</a>
           </div>
         </div>
       </div>
@@ -272,54 +272,54 @@
 
   {{-- edit modal --}}
   <div class="remodal" data-remodal-id="popupModal_2" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" id="modal2">
-        <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-        <div>
-          <div class="row">
-            <div class="col-lg-12">
-              <h3>@lang('keywords.addcat')</h3>
-            </div>
-    
-            <form action="{{ route('event.edit') }}" method="POST">
-                {{ csrf_field() }}
-    
-                <input type="hidden" name="id" id="hiddenID">
-
-                <div class="col-xs-12">
-                    <div class="tabs--wrapper">
-                    <div class="clearfix"></div>
-                    <ul class="tabs">
-                        <li id="arabic">العربية</li>
-                        <li id="english">English</li>
-                    </ul>
-                    <ul class="tab__content">
-                        <li class="tab__content_item active" id="arabic-content">
-                        <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                            <div class="master_field">
-                            <label class="master_label" for="cat_id_ar">اضف الحدث باللغة العربية</label>
-                            <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="arabicEdit" >
-                            </div>
-                        </div>
-                        </li>
-                        <li class="tab__content_item" id="english-content">
-                        <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                            <div class="master_field">
-                            <label class="master_label" for="cat_id_en">Add event name in English</label>
-                            <input name="englishContent" class="master_input" type="text" placeholder="new categories in English" id="englishEdit" >
-                            </div>
-                        </div>
-                        </li>
-                    </ul>
-                    </div>
-                    <div class="col-xs-12">
-                    <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                    <button type="submit" class="remodal-confirm">save</button>
-                    <button class="remodal-confirm" data-remodal-action="confirm" disabled>save disabled</button>
-                    </div>
-                </div>
-            </form>
-          </div>
+    <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
+    <div>
+      <div class="row">
+        <div class="col-lg-12">
+          <h3>@lang('keywords.addcat')</h3>
         </div>
+
+        <form action="{{ route('event.edit') }}" method="POST">
+            {{ csrf_field() }}
+
+            <input type="hidden" name="id" id="hiddenID">
+
+            <div class="col-xs-12">
+                <div class="tabs--wrapper">
+                <div class="clearfix"></div>
+                <ul class="tabs">
+                    <li id="arabic">العربية</li>
+                    <li id="english">English</li>
+                </ul>
+                <ul class="tab__content">
+                    <li class="tab__content_item active" id="arabic-content">
+                    <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                        <div class="master_field">
+                        <label class="master_label" for="cat_id_ar">اضف الحدث باللغة العربية</label>
+                        <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="arabicEdit" >
+                        </div>
+                    </div>
+                    </li>
+                    <li class="tab__content_item" id="english-content">
+                    <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                        <div class="master_field">
+                        <label class="master_label" for="cat_id_en">Add event name in English</label>
+                        <input name="englishContent" class="master_input" type="text" placeholder="new categories in English" id="englishEdit" >
+                        </div>
+                    </div>
+                    </li>
+                </ul>
+                </div>
+                <div class="col-xs-12">
+                <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
+                <button type="submit" class="remodal-confirm">save</button>
+                <button class="remodal-confirm" data-remodal-action="confirm" disabled>save disabled</button>
+                </div>
+            </div>
+        </form>
       </div>
+    </div>
+  </div>
 
 <script>
     $(document).ready(function() {
@@ -439,6 +439,56 @@
             $('#arabicEdit').val(arabic);
             $('#englishEdit').val(english);
             
+        });
+
+        $('#addNewCat').click(function(){
+            // $('modal1').append("\
+            // <div class="remodal" data-remodal-id="popupModal_1" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" id="modal1">\
+            //     <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>\
+            //     <div>\
+            //       <div class="row">\
+            //         <div class="col-lg-12">\
+            //           <h3>@lang('keywords.addcat')</h3>\
+            //         </div>\
+            //         <form action="{{ route('event.add') }}" method="POST">\
+            //             {{ csrf_field() }}\
+            //             <div class="col-xs-12">\
+            //                 <div class="tabs--wrapper">\
+            //                 <div class="clearfix"></div>\
+            //                 <ul class="tabs">\
+            //                     <li id="arabic">العربية</li>\
+            //                     <li id="english">English</li>\
+            //                 </ul>\
+            //                 <ul class="tab__content">\
+            //                     <li class="tab__content_item active" id="arabic-content">\
+            //                     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">\
+            //                         <div class="master_field">\
+            //                         <label class="master_label" for="cat_id_ar">اضف الحدث باللغة العربية</label>\
+            //                         <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="cat_id_ar" >\
+            //                         </div>\
+            //                     </div>\
+            //                     </li>\
+            //                     <li class="tab__content_item" id="english-content">\
+            //                     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">\
+            //                         <div class="master_field">\
+            //                         <label class="master_label" for="cat_id_en">Add event name in English</label>\
+            //                         <input name="englishContent" class="master_input" type="text" placeholder="new categories in English" id="cat_id_en" >\
+            //                         </div>\
+            //                     </div>\
+            //                     </li>\
+            //                 </ul>\
+            //                 </div>\
+            //                 <div class="col-xs-12">\
+            //                 <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>\
+            //                 <button type="submit" class="remodal-confirm">save</button>\
+            //                 <button class="remodal-confirm" data-remodal-action="confirm" disabled>save disabled</button>\
+            //                 </div>\
+            //             </div>\
+            //         </form>\
+            //       </div>\
+            //     </div>\
+            //   </div>\
+            // ");
         });
 
 
