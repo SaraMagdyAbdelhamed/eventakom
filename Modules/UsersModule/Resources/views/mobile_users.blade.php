@@ -115,9 +115,9 @@
                               <td><span class="cellcontent">{{$mobile->email}}</span></td>
                               <td><span class="cellcontent">{{$mobile->tele_code}}</span></td>
                               <td><span class="cellcontent">{{$mobile->mobile}}</span></td>
-                              <td><span class="cellcontent">{{-- {{\Helper::('geo_countries','name','1','2')}} --}}</span></td>
-                              <td><span class="cellcontent">Jeddah</span></td>
-                              <td><span class="cellcontent">Male</span></td>
+                              <td><span class="cellcontent">{{\App::isLocale('en') ? \Helper::localization('geo_countries','name',$mobile->country_id,'1') : \Helper::localization('geo_countries','name',$mobile->country_id,'2')}}</span></td>
+                              <td><span class="cellcontent">{{\App::isLocale('en') ? \Helper::localization('geo_cities','name',$mobile->city_id,'1') : \Helper::localization('geo_cities','name',$mobile->city_id,'2')}}</span></td>
+                              <td><span class="cellcontent">{{\App::isLocale('en') ? \Helper::localization('genders','name',$mobile->gender_id,'1') : \Helper::localization('genders','name',$mobile->gender_id,'2')}}</span></td>
                               <td><span class="cellcontent">{{$mobile->birthdate}}</span></td>
                               <td><span class="cellcontent">{{$mobile->created_at}}</span></td>
                               <td><span class="cellcontent">
