@@ -185,7 +185,7 @@
                   <li class="side__list"> <a class="side__item side__item--sub">@lang('keywords.Users')</a>
                     <ul class="side__submenu">
                       <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('users_mobile')  }}">@lang('keywords.MobileAppUsers')</a></li>
-                      <li class="side__sublist"><a class="side__subitem" href="users_backend_users.html">@lang('keywords.BackendUsers')</a></li>
+                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('users_backend')  }}">@lang('keywords.BackendUsers')</a></li>
                     </ul>
                   </li>
                   <li class="side__list"> <a class="side__item side__item--sub">Events</a>
@@ -432,6 +432,25 @@
       
     </script>
 
-
+    @yield('js')
+{{--     <script type="text/javascript">
+      $(document).ready(function(){
+        // "use strict";
+        $('.btn-warning-confirm').click(function(){
+          swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this imaginary file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnConfirm: false
+          },
+          function(){
+            swal("Deleted!", "Your imaginary file has been deleted!", "success");
+          });
+        });
+      });
+    </script> --}}
   </body>
 </html>
