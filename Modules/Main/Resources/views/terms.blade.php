@@ -13,7 +13,7 @@
               </div>
             </div>
           </div>
-          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="#popupModal_1">edit</a>
+          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="#popupModal_1">@lang('keywords.EditTerms')</a>
           </div>
         </div>
       </div>
@@ -22,22 +22,18 @@
       <div class="tabs--wrapper">
         <div class="clearfix"></div>
         <ul class="tabs">
-          <li id="arabic">Arabic</li>
+          <li id="arabic">العربية</li>
           <li id="english">English</li>
         </ul>
         <ul class="tab__content">
           <li class="tab__content_item active" id="arabic-content">
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-              <p class="text-center">sorry.. ther's no any content added, please click add and update your content</p>
+              <p class="text-center">{!! $about_us_arabic !!}</p>
             </div>
           </li>
           <li class="tab__content_item" id="english-content">
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-              <p class="text-center">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently |with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently |with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently |with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-              </p>
+              <p class="text-center">{!! $about_us_english !!}</p>
             </div>
           </li>
         </ul>
@@ -50,36 +46,43 @@
     <div>
       <div class="row">
         <div class="col-lg-12">
-          <h3>Edit TERMS AND CONDITIONS</h3>
+          <h3>@lang('keywords.EditTerms')</h3>
         </div>
         <div class="col-xs-12">
-          <form>
+          <form action="{{ route('terms.edit', ['id' => 2]) }}" method="POST">
+            {{ csrf_field() }}
+            
             <div class="tabs--wrapper">
-              <div class="clearfix"></div>
-              <ul class="tabs">
-                <li id="arabic-popup">Arabic</li>
-                <li id="english-popup">English</li>
-              </ul>
-              <ul class="tab__content">
-                <li class="tab__content_item active" id="arabic-popup-content">
-                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                    <p class="text-left">Add Arabic Content</p>
-                    <textarea class="tinyMce form-control" id="tinyMce-1" name="tinyMce" cols="100" rows="10"></textarea>
-                  </div>
+                <div class="clearfix"></div>
+                <ul class="tabs">
+                <li id="arabic_inpopups">العربية</li>
+                <li id="english_inpopups">English</li>
+                </ul>
+                <ul class="tab__content">
+
+                <li class="tab__content_item active" id="arabic_inpopups-content">
+                    <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                    <p class="text-left">اضف المحتوي باللغة العربية</p>
+                    <textarea class="tinyMce form-control" id="tinyMce-1" name="arabicContent" cols="100" rows="10">{!! $about_us_arabic ? $about_us_arabic : '' !!}</textarea>
+                    </div>
                 </li>
-                <li class="tab__content_item" id="english-popup-content">
-                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                <li class="tab__content_item" id="english_inpopups-content">
+                    <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                     <p class="text-left">Add English Content</p>
-                    <textarea class="tinyMce form-control" id="tinyMce-2" name="tinyMce" cols="100" rows="10"></textarea>
-                  </div>
+                    <textarea class="tinyMce form-control" id="tinyMce-2" name="englishContent" cols="100" rows="10">{!! $about_us_english ? $about_us_english : '' !!}</textarea>
+                    </div>
                 </li>
-              </ul>
-              <div class="clearfix"></div>
-              <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-              <button class="remodal-confirm" data-remodal-action="confirm">save</button>
-              <button class="remodal-confirm" data-remodal-action="confirm" disabled>disabled</button>
+
+                </ul>
+                <div class="clearfix"></div>
             </div>
-          </form>
+            
+            <div class="col-xs-12">
+            <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
+            <button type="submit" class="remodal-confirm">save</button>
+            <button class="remodal-confirm" data-remodal-action="confirm" disabled>disabled</button>
+            </div>
+        </form>
         </div>
       </div>
     </div>

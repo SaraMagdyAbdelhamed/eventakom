@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    
-<!-- =============== Custom Content ===========-==========-->
 <div class="row">
     <div class="col-xs-12">
         <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( '{{ asset('img/covers/dummy2.jpg') }}' )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
@@ -51,7 +49,7 @@
             <h3>@lang('keywords.EditAbout')</h3>
         </div>
         <div class="col-xs-12">
-            <form action="{{ route('about.edit') }}" method="POST">
+            <form action="{{ route('about.edit', ['id' => 1]) }}" method="POST">
                 {{ csrf_field() }}
                 
                 <div class="tabs--wrapper">
@@ -65,13 +63,13 @@
                     <li class="tab__content_item active" id="arabic_inpopups-content">
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                         <p class="text-left">اضف المحتوي باللغة العربية</p>
-                        <textarea class="tinyMce form-control" id="tinyMce-1" name="arabicContent" cols="100" rows="10">{!! $about_us_arabic ? $about_us_arabic : '' !!}</textarea>
+                        <textarea required class="tinyMce form-control" id="tinyMce-1" name="arabicContent" cols="100" rows="10">{!! $about_us_arabic ? $about_us_arabic : '' !!}</textarea>
                         </div>
                     </li>
                     <li class="tab__content_item" id="english_inpopups-content">
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                         <p class="text-left">Add English Content</p>
-                        <textarea class="tinyMce form-control" id="tinyMce-2" name="englishContent" cols="100" rows="10">{!! $about_us_english ? $about_us_english : '' !!}</textarea>
+                        <textarea required class="tinyMce form-control" id="tinyMce-2" name="englishContent" cols="100" rows="10">{!! $about_us_english ? $about_us_english : '' !!}</textarea>
                         </div>
                     </li>
 

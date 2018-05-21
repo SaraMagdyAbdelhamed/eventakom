@@ -13,7 +13,7 @@
               </div>
             </div>
           </div>
-          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="#popupModal_1">edit</a>
+          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="#popupModal_1">@lang('keywords.EditContact')</a>
           </div>
         </div>
       </div>
@@ -22,15 +22,15 @@
       <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="main-title-conts">
           <div class="caption">
-            <h3 class="inherit">contact us email</h3>
+            <h3 class="inherit">@lang('keywords.EditContact')</h3>
           </div>
         </div>
         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
           <div class="full-table">
             <table class="verticaltable table-master">
               <tr>
-                <th><span class="cellcontent">email</span></th>
-                <td><span class="cellcontent">info@eventakom.com</span></td>
+                <th><span class="cellcontent">@lang('keywords.email')</span></th>
+                <td><span class="cellcontent">{{ $email }}</span></td>
               </tr>
             </table>
             <div class="remodal log-custom" data-remodal-id="log_linkX" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
@@ -200,22 +200,27 @@
     <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
     <div>
       <div class="row">
+
+        <form action="{{ route('contact.edit') }}" method="POST">
+          {{ csrf_field() }}
+          
         <div class="col-lg-12">
-          <h3>Edit CONTACT US Email</h3>
+          <h3>@lang('keywords.EditContact')</h3>
         </div>
         <div class="col-xs-12">
-          <form>
+          
             <div class="master_field">
-              <label class="master_label" for="client_email">contact email</label>
-              <input class="master_input" type="email" placeholder="ex:info@eventakom.com" id="client_email"><span class="valid-label"></span>
+              <label class="master_label" for="client_email">@lang('keywords.email')</label>
+              <input name="email" value="{{ $email }}" class="master_input" type="email" placeholder="ex:info@eventakom.com" id="client_email"><span class="valid-label"></span>
             </div>
-          </form>
         </div>
         <div class="col-xs-12">
           <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-          <button class="remodal-confirm" data-remodal-action="confirm">save</button>
+          <button type="submit" class="remodal-confirm">save</button>
           <button class="remodal-confirm" data-remodal-action="confirm" disabled>save disabled</button>
         </div>
+        </form>
+
       </div>
     </div>
   </div>

@@ -21,11 +21,13 @@ class Helper {
     // example: /en/about   
     // @param   $routeName      url 2nd segment []
     public static function route($routeName) {
-        return url( Session::get('locale').'/'.$routeName );
+        $prefix = \App::isLocale('en') ? 'en' : 'ar';
+        return url( $prefix.'/'.$routeName );
     }
 
     // convert lang_id [1, 2] to ['en', 'ar']
-    public static function getUserLocale($lang_id = 1) {
+    public static function getUserLocale() {
+        $lang_id = Auth::user()->lang_id;
         $locale = ($lang_id == 1) ? 'en' : 'ar';
         Session::put('locale', $locale);
         return $locale;
@@ -59,11 +61,12 @@ class Helper {
      *  expected result     'عن الشركة'
     */
     public static function localization($table_name, $field_name, $item_id, $lang_id) {
-        $localization = Entity::where('table_name', $table_name)->with(['localizations' => function($q) use ($table_name, $field_name, $item_id, $lang_id){ 
+        $localization = Entity::where('table_name', $table_name)->with(['localizations' => function($q) use ($field_name, $item_id, $lang_id){ 
             $q->where('field', $field_name)->where('item_id', $item_id)->where('lang_id', $lang_id); }
-        ])->first()->localizations[0]->value;
+        ])->first();
 
-        return $localization;
+        $result = $localization ? $localization->localizations[0]->value : "Error";
+        return $result;
     }
 
     /**
@@ -83,6 +86,25 @@ class Helper {
         ])->first()->localizations[0];
 
         $localization->value = $new_value;
+        $localization->save();
+    }
+
+    /**
+     *  Add new localization into `entity_localization` table
+     *  @param  $entity_id  
+     *  @param  $field
+     *  @param  $item_id
+     *  @param  $value
+     *  @param  $lang_id
+     *  All parameters are the same in `entity_localization` with same order
+     */
+    public static function add_localization($entity_id, $field, $item_id, $value, $lang_id) {
+        $localization = new EntityLocalization;
+        $localization->entity_id = $entity_id;
+        $localization->field = $field;
+        $localization->value = $value;
+        $localization->item_id = $item_id;
+        $localization->lang_id = $lang_id;
         $localization->save();
     }
 }

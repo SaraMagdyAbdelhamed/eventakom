@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="{{ asset( App::isLocale('ar') ? 'css/style__0__rtl.min.css' : 'css/style__0__ltr.min.css') }}">
     <!-- =============== APP SCRIPT ===============-->
     <script src="{{ asset('js/modernizr.js') }}"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
   </head>
   <body>
     <div class="toggled" id="wrapper">
@@ -69,7 +71,7 @@
                 </ul>
                 <div class="collapse navbar-collapse nav pull-right  " id="navbarSupportedContent">
                   <ul class="navbar-nav">
-                  <li class="nav-item"><a class="nav-link English  " href="{{ App::isLocale('ar') ? str_replace('ar', 'en', Request::url()) : str_replace('en', 'ar', Request::url()) }}" title="{{ App::isLocale('ar') ? 'English' : 'Arabic' }}">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</a></li>
+                  <li class="nav-item"><a class="nav-link English  " href="{{ App::isLocale('ar') ? preg_replace('/ar/', 'en', Request::url(), 1) : preg_replace('/en/', 'ar', Request::url(), 1) }}" title="{{ App::isLocale('ar') ? 'English' : 'Arabic' }}">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</a></li>
                   </ul>
                   <ul class="actionsbar desktop-view hidden-xs">
                     <li class="dropdowny"><a class="nav-link dropdowny-toggle  " href="#"><i class="fa fa-bell"></i></a>
@@ -168,15 +170,15 @@
                       </li>
                       <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('contact')  }}">@lang('keywords.contactUs')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_events_categories.html">Events categories</a>
+                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('event/categories')  }}">@lang('keywords.eventCategories')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_famous_attractions_categories.html">Famous attractions categories</a>
+                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('famous/attraction') }}">@lang('keywords.famous')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_sponsors.html">Sponsors</a>
+                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('sponsors') }}">@lang('keywords.sponsors')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_trending_searches_control.html">Trending searches control</a>
+                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('trends') }}">@lang('keywords.trends')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_notification_distance.html">Notification distance</a>
+                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('notifications') }}">@lang('keywords.notifications')</a>
                       </li>
                     </ul>
                   </li>
@@ -215,9 +217,25 @@
             </nav>
             <!-- Page content-->
             <div class="container-fluid">
-              
-                {{-- yield data --}}
-                @yield('content')
+
+              {{-- Start alert messages --}}
+              <div class="col-lg-12">
+                @if (Session::has('success'))
+                  <div class="alert alert-success text-center">{{ Session::get('success') }}</div>
+                @endif
+
+                @if (Session::has('warning'))
+                  <div class="alert alert-warning text-center">{{ Session::get('warning') }}</div>
+                @endif
+
+                @if (Session::has('error'))
+                  <div class="alert alert-danger text-center">{{ Session::get('error') }}</div>
+                @endif
+              </div>
+              {{-- End alert --}}
+
+              {{-- yield data --}}
+              @yield('content')
                 
             </div>
           </div>
@@ -236,7 +254,9 @@
       </div>
     </div>
     <!-- =============== APP MAIN SCRIPTS ===============-->
+    
     <script type="text/javascript" src="{{ asset('js/scripts.min.js') }}"></script>
+    
     <!-- =============== PAGE VENDOR SCRIPTS ===============-->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/tinymce/4.3.4/tinymce.min.js"></script>
     <script type="text/javascript">
@@ -249,6 +269,13 @@
           schema: "html5",
         });
       });
+
+      // hide alert message after 4 seconds => 4000 ms
+      window.setTimeout(function() {
+              $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                  $(this).remove(); 
+              });
+          }, 4000);
     </script>
 
     <script type="text/javascript">
