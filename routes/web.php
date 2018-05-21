@@ -43,6 +43,15 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/main/privacy/edit', '\Modules\Main\Http\Controllers\MainController@about_edit')->name('privacy.edit');
     Route::post('/main/contact/edit', '\Modules\Main\Http\Controllers\MainController@about_edit')->name('contact.edit');
 
+    Route::post('/mobile_destroy/{id}', '\Modules\UsersModule\Http\Controllers\UsersController@destroy')->name('mobile_destroy');
+    Route::post('/mobile_destroy_all', '\Modules\UsersModule\Http\Controllers\UsersController@destroy_all')->name('mobile_destroy_all');
+
+    Route::post('/mobile_status/{id}', '\Modules\UsersModule\Http\Controllers\UsersController@mobile_status')->name('mobile_status');
+
+    Route::post('/mobile_filter', '\Modules\UsersModule\Http\Controllers\UsersController@mobile_filter')->name('mobile_filter');
+
+    Route::post('/backend_store', '\Modules\UsersModule\Http\Controllers\UsersController@backend_store')->name('backend_store');
+
 });
 
 Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = null) {
@@ -60,7 +69,7 @@ Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = 
     Route::get('/contact', '\Modules\Main\Http\Controllers\MainController@contact')->name('main.contact');
     
     //users.mobile
-        Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users.mobile');
-
+        Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users_mobile');
+        Route::get('/users_backend', '\Modules\UsersModule\Http\Controllers\UsersController@index_backend')->name('users_backend');
 });
 
