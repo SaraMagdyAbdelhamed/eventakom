@@ -22,7 +22,7 @@
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                     <div class="full-table">
                       <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>filters</a></div>
-                      <div class="bottomActions__btns"><a class="btn-warning-confirm-all master-btn" href="#">Delete selected</a>
+                      <div class="bottomActions__btns"><a class="{{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">Delete selected</a>
                       </div>
                       <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
                 <form role="form" action="{{route('mobile_filter')}}" method="post" accept-charset="utf-8">
@@ -126,7 +126,7 @@
                                 @else
                                 <i class = "fa icon-in-table-false fa-times"></i></span></td>
                                 @endif
-                              <td><span class="cellcontent"><a href= "#popupModal_{{$mobile->id}}" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                              <td><span class="cellcontent"><a href= "#popupModal_{{$mobile->id}}" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                             </tr>
 
             <div class="remodal" data-remodal-id="popupModal_{{$mobile->id}}" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
@@ -351,6 +351,31 @@
           });
         });
 
+      $('.btn-warning-confirm-ar').click(function(){
+          var mobile_id = $(this).closest('tr').attr('data-mobile-id');
+          var _token = '{{csrf_token()}}';
+          swal({
+            title: "هل أنت متأكد ؟",
+            text: "لن تكون قادرًا على استرداد هذا الملف !",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'نعم , احذف هذا',
+            closeOnConfirm: false
+          },
+          function(){
+           $.ajax({
+             type:'POST',
+             url:'{{url('mobile_destroy')}}'+'/'+mobile_id,
+             data:{_token:_token},
+             success:function(data){
+              $('tr[data-mobile-id='+mobile_id+']').fadeOut();
+            }
+          });
+            swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
+          });
+        });
+
         $('.btn-warning-confirm-all').click(function(){
           var selectedIds = $("input:checkbox:checked").map(function(){
             return $(this).closest('tr').attr('data-mobile-id');
@@ -377,6 +402,35 @@
             }
           });
            swal("Deleted!", "Your imaginary file has been deleted!", "success");
+         });
+        });
+
+      $('.btn-warning-confirm-all-ar').click(function(){
+          var selectedIds = $("input:checkbox:checked").map(function(){
+            return $(this).closest('tr').attr('data-mobile-id');
+          }).get();
+          var _token = '{{csrf_token()}}';
+          swal({
+            title: "هل أنت متأكد ?",
+            text: "لن تكون قادرًا على استرداد هذا الملف !",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'نعم , احذف هذا!',
+            closeOnConfirm: false
+          },
+          function(){
+           $.ajax({
+             type:'POST',
+             url:'{{url('mobile_destroy_all')}}',
+             data:{ids:selectedIds,_token:_token},
+             success:function(data){
+              $.each( selectedIds, function( key, value ) {
+                $('tr[data-mobile-id='+value+']').fadeOut();
+              });
+            }
+          });
+           swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
          });
         });
 
