@@ -38,13 +38,13 @@
                 @if ( isset($trends) && !empty($trends) )
                     @foreach ($trends as $trend)
                     <tr data-id="{{ $trend->id }}">
-                      <td><span class="cellcontent"></span></td>
+                      <td><span class="cellcontent" data-id="{{ $trend->id }}"></span></td>
                       <td><span class="cellcontent">{{ $trend->id }}</span></td>
-                      <td><span class="cellcontent">{{ $trend->name ? $trend->name : '' }}</span></td>
+                      <td><span class="cellcontent">{{ $trend->name ? (App::isLocale('en') ? $trend->name : Helper::localization('trending_keywords', 'trends', $trend->id, 2) ) : __('keywords.not') }}</span></td>
                       <td>
                         <span class="cellcontent">
-                          <a href="#popupModal_2" data-id="{{ $trend->id }}" data-name="{{ $trend->name ? $trend->name : '' }}" class= "action-btn bgcolor--fadegreen color--white rowEdit"><i class = "fa  fa-pencil"></i></a>
-                          <a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white deleteRecord"><i class = "fa  fa-trash-o"></i></a>
+                          <a href="#popupModal_2" data-id="{{ $trend->id }}" data-english="{{ $trend->name ? $trend->name : '' }}" data-arabic="{{ Helper::localization('trending_keywords', 'trends', $trend->id, 2) }}" class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
+                          <a data-id="{{ $trend->id }}" href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white deleteRecord"><i class = "fa  fa-trash-o"></i></a>
                         </span>
                       </td>
                     </tr>
@@ -216,7 +216,9 @@
       </div>
     </div><br>
   </div>
-  <div class="remodal" data-remodal-id="popupModal_1" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+
+{{-- Add modal --}}
+  <div class="remodal" data-remodal-id="popupModal_1" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" id="modal1">
     <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
     <div>
       <div class="row">
@@ -224,7 +226,9 @@
           <h3>@lang('keywords.addNew') @lang('keywords.trends')</h3>
         </div>
         <div class="col-xs-12">
-          <form>
+          <form action="{{ route('trends.add') }}" method="POST">
+            {{ csrf_field() }}
+
             <div class="tabs--wrapper">
               <div class="clearfix"></div>
               <ul class="tabs">
@@ -260,4 +264,228 @@
       </div>
     </div>
   </div>
+
+{{-- Edit modal --}}
+<div class="remodal" data-remodal-id="popupModal_2" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal2Desc" id="modal2">
+    <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
+    <div>
+      <div class="row">
+        <div class="col-lg-12">
+          <h3>@lang('keywords.edit') @lang('keywords.trends')</h3>
+        </div>
+        <div class="col-xs-12">
+          <form action="{{ route('trends.edit') }}" method="POST">
+            {{ csrf_field() }}
+
+            <input type="hidden" name="hiddenID" id="hiddenID">
+            
+            <div class="tabs--wrapper">
+              <div class="clearfix"></div>
+              <ul class="tabs">
+                <li id="arabic">العربية</li>
+                <li id="english">English</li>
+              </ul>
+              <ul class="tab__content">
+                <li class="tab__content_item active" id="arabic-content">
+                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                    <div class="master_field">
+                      <label class="master_label" for="trending_search">اضافة كلمة بحث باللغة العربية</label>
+                      <input name="arabic" class="master_input" type="text" placeholder="new Trending searches words in Arabic" Required id="arabicEdit">
+                    </div>
+                  </div>
+                </li>
+                <li class="tab__content_item" id="english-content">
+                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                    <div class="master_field">
+                      <label class="master_label" for="trending_search">Add new keyword in English</label>
+                      <input name="english" class="master_input" type="text" placeholder="new Trending searches words in English" Required id="englishEdit">
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-xs-12">
+              <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
+              <button class="remodal-confirm" type="submit">save</button>
+              <button class="remodal-confirm" data-remodal-action="confirm" disabled>save disabled</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+      $(document).ready(function() {
+  
+          // delete multi
+          $('#deleteSelected').click(function(){
+              var allVals = [];                   // selected IDs
+              var token = '{{ csrf_token() }}';
+  
+              // push cities IDs selected by user
+              $('input.input-in-table:checked').each(function() {
+                  allVals.push( $(this).data("id") );
+              });
+  
+              // check if user selected nothing
+              if(allVals.length <= 0) {
+              confirm('إختر عميل علي الاقل لتستطيع حذفه');
+              } else {
+              var ids = allVals;    // join array of IDs into a single variable to explode in controller
+  
+              swal({
+              title: "هل أنت متأكد؟",
+              text: "لن تستطيع إسترجاع هذه المعلومة لاحقا",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: '#281160',
+              confirmButtonText: 'Yes, delete it!',
+              closeOnConfirm: false
+              },
+              function(isConfirm){
+                  if (isConfirm){
+                      
+                  $.ajax(
+                  {
+                      url: "{{ route('trends.deleteSelected') }}",
+                      type: 'POST',
+                      dataType: "JSON",
+                      data: {
+                          "ids": ids,
+                          "_method": 'POST',
+                          "_token": token,
+                      },
+                      success: function ()
+                      {
+                          swal("تم الحذف!", "تم الحذف بنجاح", "success");
+  
+                          // fade out selected checkboxes after deletion
+                          $.each(allVals, function( index, value ) {
+                              $('tr[data-id='+value+']').fadeOut();
+                          });
+                      },
+                      error: function(response) {
+                          console.log(response);
+                      }
+                  });
+                  } else {
+                  swal("تم الإلغاء", "المعلومات مازالت موجودة :)", "error");
+                  }
+              });
+              }
+          });
+  
+          // delete a row
+          $('.deleteRecord').click(function(){
+              
+              var id = $(this).data("id");
+              var token = '{{ csrf_token() }}';
+  
+              swal({
+              title: "هل أنت متأكد؟",
+              text: "لن تستطيع إسترجاع هذه المعلومة لاحقا",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: '#281160',
+              confirmButtonText: 'Yes, delete it!',
+              closeOnConfirm: false
+              },
+              function(isConfirm){
+                  if (isConfirm){
+                          
+                  $.ajax(
+                  {
+                      url: "{{ route('trends.delete') }}",
+                      type: 'POST',
+                      dataType: "JSON",
+                      data: {
+                          "id": id,
+                          "_method": 'POST',
+                          "_token": token,
+                      },
+                      success: function ()
+                      {
+                          swal("تم الحذف!", "تم الحذف بنجاح", "success");
+                          $('tr[data-id='+id+']').fadeOut();
+                      },
+                          error: function(response) {
+                          console.log(response);
+                      }
+                  });
+                      
+                  } else {
+                      swal("تم الإلغاء", "المعلومات مازالت موجودة :)", "error");
+                  }
+              });
+          });
+  
+  
+          $('.editRow').click(function(){
+  
+              $('#modal1').remove();
+  
+              var id      = $(this).data("id");
+              var english = $(this).data("english");
+              var arabic  = $(this).data("arabic");
+  
+              $('#hiddenID').val(id);
+              $('#arabicEdit').val(arabic);
+              $('#englishEdit').val(english);
+              
+          });
+  
+          $('#addNewCat').click(function(){
+              // $('modal1').append("\
+              // <div class="remodal" data-remodal-id="popupModal_1" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" id="modal1">\
+              //     <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>\
+              //     <div>\
+              //       <div class="row">\
+              //         <div class="col-lg-12">\
+              //           <h3>@lang('keywords.addcat')</h3>\
+              //         </div>\
+              //         <form action="{{ route('event.add') }}" method="POST">\
+              //             {{ csrf_field() }}\
+              //             <div class="col-xs-12">\
+              //                 <div class="tabs--wrapper">\
+              //                 <div class="clearfix"></div>\
+              //                 <ul class="tabs">\
+              //                     <li id="arabic">العربية</li>\
+              //                     <li id="english">English</li>\
+              //                 </ul>\
+              //                 <ul class="tab__content">\
+              //                     <li class="tab__content_item active" id="arabic-content">\
+              //                     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">\
+              //                         <div class="master_field">\
+              //                         <label class="master_label" for="cat_id_ar">اضف الحدث باللغة العربية</label>\
+              //                         <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="cat_id_ar" >\
+              //                         </div>\
+              //                     </div>\
+              //                     </li>\
+              //                     <li class="tab__content_item" id="english-content">\
+              //                     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">\
+              //                         <div class="master_field">\
+              //                         <label class="master_label" for="cat_id_en">Add event name in English</label>\
+              //                         <input name="englishContent" class="master_input" type="text" placeholder="new categories in English" id="cat_id_en" >\
+              //                         </div>\
+              //                     </div>\
+              //                     </li>\
+              //                 </ul>\
+              //                 </div>\
+              //                 <div class="col-xs-12">\
+              //                 <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>\
+              //                 <button type="submit" class="remodal-confirm">save</button>\
+              //                 <button class="remodal-confirm" data-remodal-action="confirm" disabled>save disabled</button>\
+              //                 </div>\
+              //             </div>\
+              //         </form>\
+              //       </div>\
+              //     </div>\
+              //   </div>\
+              // ");
+          });
+  
+  
+      });
+  </script>
 @endsection

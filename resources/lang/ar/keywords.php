@@ -13,6 +13,8 @@
         'not'               => 'لا يوجد',
         'addNew'            => 'اضافة',
         'noImage'           => 'لا يوجد صورة',
+        'edit'              => 'تعديل',
+        'distance'          => 'المسافة',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',

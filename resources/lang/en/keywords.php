@@ -13,6 +13,8 @@
         'not'               => 'MISSING DATA',
         'addNew'            => 'Add new',
         'noImage'           => 'No image provided',
+        'edit'              => 'Edit',
+        'distance'          => 'Distance',
 
         // fixed pages
         'registered'=> 'Registered',

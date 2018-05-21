@@ -2,14 +2,18 @@
 
 @section('content')
 <div class="row">
+
+    <form action="{{ route('notifications.add') }}" method="POST">
+      {{ csrf_field() }}
+
     <div class="col-xs-12">
       <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( '../img/covers/dummy2.jpg ' )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
         <div class="row">
           <div class="col-xs-12">
             <div class="text-xs-center">         
               <div class="text-wraper">
-                <h4 class="cover-inside-title">Main Data </h4><i class="fa fa-chevron-circle-right"></i>
-                <h4 class="cover-inside-title sub-lvl-2">Notification distance </h4>
+                <h4 class="cover-inside-title">@lang('keywords.mainData') </h4><i class="fa fa-chevron-circle-right"></i>
+                <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.notifications') </h4>
               </div>
             </div>
           </div>
@@ -22,21 +26,23 @@
     <div class="col-lg-12">
       <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="row">
-          <div class="col-lg-6">
-            <div class="master_field">
-              <label class="master_label" for="new_cat">new categories</label>
-              <input class="master_input" type="text" placeholder="new categories" Required id="new_cat">
+
+            <div class="col-lg-6">
+              <div class="master_field">
+                <label class="master_label" for="new_cat">@lang('keywords.addNew')</label>
+                <input name="notification" class="master_input" type="text" placeholder="@lang('keywords.notifications')" Required id="new_cat">
+              </div>
             </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="master_field">
-              <label class="master_label mandatory" for="distance">distance </label>
-              <select class="master_input" id="distance">
-                <option>Km </option>
-                <option>Meter</option>
-              </select>
+            <div class="col-lg-6">
+              <div class="master_field">
+                <label class="master_label mandatory" for="distance">@lang('keywords.distance') </label>
+                <select name="measurement" class="master_input" id="distance">
+                  <option value="Km">Km </option>
+                  <option value="Meter">Meter</option>
+                </select>
+              </div>
             </div>
-          </div>
+
         </div>
       </div>
     </div>
@@ -49,5 +55,7 @@
         <div class="clearfix"></div>
       </div>
     </div>
+  </form>
+
   </div>    
 @endsection

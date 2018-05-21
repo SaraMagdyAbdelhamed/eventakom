@@ -79,8 +79,12 @@ Route::group(['middleware' => 'auth'], function() {
 // ONLY VIEWS WITH MENDATORY LANGUAGE PREFIX
 Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = null) {
 
-    App::setLocale(Request::segment(1));
-    Session::put('locale', Request::segment(1));
+    if( in_array(Request::segment(1), ['en', 'ar']) ) {
+        App::setLocale(Request::segment(1));
+        Session::put('locale', Request::segment(1));
+    } else {
+        App::setLocale('en');
+    }
 
     // about us
     Route::get('/about', '\Modules\Main\Http\Controllers\MainController@about');    

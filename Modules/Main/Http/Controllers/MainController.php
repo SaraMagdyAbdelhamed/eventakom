@@ -26,6 +26,7 @@ use App\SystemSetting;
 use App\EventCategory;
 use App\FamousCategory;
 use App\Sponsor;
+use App\Trend;
 
 
 class MainController extends Controller
@@ -295,9 +296,9 @@ class MainController extends Controller
 
         // arabic version
         try {
-            $event->delete();
             Helper::add_localization(12, 'famous_attractions', $event->id, $request->arabicContent, 2);
         } catch(\Exception $ex) {
+            $event->delete();
             Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
             return redirect()->back();
         }
@@ -502,8 +503,8 @@ class MainController extends Controller
             Session::flash('warning', 'لا يمكن الاضافة باللغة العربية');
             return redirect()->back();
         }
+        Session::flash('success', 'Success - تمت التعديل بنجاح');
 
-        Session::flash('success', 'Success - تمت الاضافة بنجاح');
         return redirect()->back();
     }
 
@@ -533,23 +534,115 @@ class MainController extends Controller
     /** TRENDS */
     // view trends
     public function trends() {
-        return view('main::trends');
+        return view('main::trends')
+                    ->with('trends', Trend::all());
     }
 
     public function trends_store(Request $request) {
 
+        // validation
+        $this->validate($request, [
+            'arabic'    => 'required',
+            'english'   => 'required'
+        ]);
+
+        // insert english
+        try {
+            $trend = new Trend;
+            $trend->name = $request->english;
+            $trend->created_by = Auth::id();
+            $trend->save();
+        } catch (\Exception $ex) {
+            dd($ex);
+            Session::flash('warning', 'can not add');
+            return redirect()->back();
+        }
+
+        // insert arabic
+        try {
+            Helper::add_localization(16, 'trends', $trend->id, $request->arabic, 2);
+        } catch(\Exception $ex) {
+            dd($ex);
+            Session::flash('warning', 'لا يمكن الاضافة');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Success - تم الاضافة بنجاح');
+        return redirect()->back();
     }
 
-    public function trends_edit(Request $request) {
-        
+    public function trends_update(Request $request) {
+        $this->validate($request, [
+            'hiddenID' => 'required',
+            'arabic'   =>  'required',
+            'english'  =>  'required',
+        ]);
+
+        // english
+        try {
+            $trend = Trend::find($request->hiddenID);
+            $trend->name = $request->english;
+            $trend->updated_by = Auth::id();
+            $trend->save();
+        } catch (\Exception $ex) {
+            dd($ex);
+            Session::flash('warning', 'Can not edit in English');
+            return redirect()->back();
+        }
+
+        // arabic
+        try {
+            Helper::edit_entity_localization('trending_keywords', 'trends', $trend->id, 2, $request->arabic);
+        } catch (\Exception $ex) {
+            dd($ex);
+            Session::flash('warning', 'لا يمكن التعديل باللغة العربية');
+            return redirect()->back();
+        }
+        Session::flash('success', 'Success - تمت التعديل بنجاح');
+
+        return redirect()->back();
     }
 
     public function trends_delete(Request $request) {
-        
+        $id = $request->id;
+
+        // delete from localization - Arabic version
+        try {
+            EntityLocalization::where('entity_id', 16)->where('item_id', $id)->delete();
+        } catch(\Exception $ex) {
+            return response()->json(['error', 'error deleting arabic']);
+        }
+
+        // delete from interests    - English version
+        try {
+            Trend::where('id', $id)->delete();
+        } catch(\Exception $ex) {
+            return response()->json(['error', 'error deleting english']);
+        }
+
+        // return success response
+        return response()->json(['success', 'success']);
     }
 
     public function trends_deleteSelected(Request $request) {
-        
+        $ids = $request->ids;
+
+        // delete from localization - Arabic version
+        try {
+            EntityLocalization::whereIn('item_id', $ids)->where('entity_id', 16)->delete();
+        } catch(\Exception $ex) {
+            return response()->json(['error', 'error deleting arabic']);
+        }
+
+        // delete from interests    - English version
+        try {
+            Trend::whereIn('id', $ids)->delete();
+        } catch(\Exception $ex) {
+            return response()->json(['error', 'error deleting english']);
+        }
+
+        // return success response
+        return response()->json(['success', 'success']);
     }
 
 
@@ -561,9 +654,27 @@ class MainController extends Controller
 
     public function notifications_store(Request $request) {
 
+        $this->validate($request, [
+            'notification' => 'required',
+            'measurement'  => 'required'
+        ]);
+
+        try {
+            $notification = new SystemSetting;
+            $notification->name = 'notification_distance';
+            $notification->value = $request->notification .' '. $request->measurement;
+            $notification->save();
+        } catch(\Exception $ex) {
+            dd($ex);
+            Session::flash('warning', 'can not add new notification');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Success - تم الاضافة بنجاح');
+        return redirect()->back();
     }
 
-    public function notifications_edit(Request $request) {
+    public function notifications_update(Request $request) {
         
     }
 
