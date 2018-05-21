@@ -2,6 +2,7 @@
 
 namespace Modules\UsersModule\Http\Controllers;
 
+use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -11,6 +12,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\File;
 
 use App\Countries;
 use App\Cities;
@@ -114,6 +117,7 @@ class UsersController extends Controller
             ->withInput();
     }
 
+
         $user = new Users;
         $user->username= $request->name;
         $user->email = $request->email;
@@ -121,6 +125,12 @@ class UsersController extends Controller
         $user->is_active = $request->status;
         $user->save();
         $user->rules()->attach([$request->rule,1]);
+    if($request->hasFile('image')){
+        $destinationPath='backend_users';
+        $fileNameToStore=$destinationPath.'/'.$request->name.time().rand(111,999).'.'.Input::file('image')->getClientOriginalExtension();
+            // dd($fileNameToStore);
+        Input::file('image')->move($destinationPath,$fileNameToStore);
+    }
 
         return redirect()->back();
 }
