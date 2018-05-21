@@ -56,6 +56,24 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/famous/delete/single', '\Modules\Main\Http\Controllers\MainController@famous_delete')->name('famous.delete');
     Route::post('/famous/delete/selected', '\Modules\Main\Http\Controllers\MainController@famous_deleteSelected')->name('famous.deleteSelected');
 
+    // Sponsor
+    Route::post('/sponsor/add', '\Modules\Main\Http\Controllers\MainController@sponsor_store')->name('sponsor.add');
+    Route::post('/sponsor/edit', '\Modules\Main\Http\Controllers\MainController@sponsor_update')->name('sponsor.edit');
+    Route::post('/sponsor/delete/single', '\Modules\Main\Http\Controllers\MainController@sponsor_delete')->name('sponsor.delete');
+    Route::post('/sponsor/delete/selected', '\Modules\Main\Http\Controllers\MainController@sponsor_deleteSelected')->name('sponsor.deleteSelected');
+
+    // Trends
+    Route::post('/trends/add', '\Modules\Main\Http\Controllers\MainController@trends_store')->name('trends.add');
+    Route::post('/trends/edit', '\Modules\Main\Http\Controllers\MainController@trends_update')->name('trends.edit');
+    Route::post('/trends/delete/single', '\Modules\Main\Http\Controllers\MainController@trends_delete')->name('trends.delete');
+    Route::post('/trends/delete/selected', '\Modules\Main\Http\Controllers\MainController@trends_deleteSelected')->name('trends.deleteSelected');
+
+    // Notifications
+    Route::post('/notifications/add', '\Modules\Main\Http\Controllers\MainController@notifications_store')->name('notifications.add');
+    Route::post('/notifications/edit', '\Modules\Main\Http\Controllers\MainController@notifications_update')->name('notifications.edit');
+    Route::post('/notifications/delete/single', '\Modules\Main\Http\Controllers\MainController@notifications_delete')->name('notifications.delete');
+    Route::post('/notifications/delete/selected', '\Modules\Main\Http\Controllers\MainController@notifications_deleteSelected')->name('notifications.deleteSelected');
+
 });
 
 // ONLY VIEWS WITH MENDATORY LANGUAGE PREFIX
@@ -81,6 +99,15 @@ Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = 
 
     // famous attraction
     Route::get('/famous/attraction', '\Modules\Main\Http\Controllers\MainController@famous');
+
+    // sponsors
+    Route::get('/sponsors', '\Modules\Main\Http\Controllers\MainController@sponsors');
+
+    // Trending searches
+    Route::get('/trends', '\Modules\Main\Http\Controllers\MainController@trends');
+
+    // Notifications
+    Route::get('/notifications', '\Modules\Main\Http\Controllers\MainController@notifications');
 
     //users.mobile
     Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users.mobile');

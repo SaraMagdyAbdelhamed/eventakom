@@ -12,6 +12,7 @@
         'email'             => 'Email',
         'not'               => 'MISSING DATA',
         'addNew'            => 'Add new',
+        'noImage'           => 'No image provided',
 
         // fixed pages
         'registered'=> 'Registered',
@@ -23,6 +24,10 @@
         'eventCategories'   => 'Event Categories',
         'addcat'    => 'Add new category',
         'famous'    => 'Famous attractions categories',
+        'sponsors'  => 'sponsors',
+        'trends'    => 'Trending searches control',
+        'notifications' => 'Notification distance',
+
 
         'EditAbout' => 'Edit About Us',
         'EditTerms' => 'Edit Terms and Conditions',

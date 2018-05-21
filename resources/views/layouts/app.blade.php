@@ -174,11 +174,11 @@
                       </li>
                       <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('famous/attraction') }}">@lang('keywords.famous')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_sponsors.html">Sponsors</a>
+                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('sponsors') }}">@lang('keywords.sponsors')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_trending_searches_control.html">Trending searches control</a>
+                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('trends') }}">@lang('keywords.trends')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_notification_distance.html">Notification distance</a>
+                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('notifications') }}">@lang('keywords.notifications')</a>
                       </li>
                     </ul>
                   </li>

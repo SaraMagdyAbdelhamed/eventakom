@@ -9,23 +9,23 @@
 namespace Modules\Main\Http\Controllers;
 
 use Helper;
-use Session;
-
+use Session; 
+       
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
+use Illuminate\Routing\Controller;    
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
-use App\Fixed;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests; 
+ 
+use App\Fixed;  
 use App\Entity;
 use App\EntityLocalization;
 use App\SystemSetting;
 use App\EventCategory;
 use App\FamousCategory;
-
+use App\Sponsor;
 
 
 class MainController extends Controller
@@ -173,6 +173,7 @@ class MainController extends Controller
         try {
             Helper::add_localization(15, 'interests', $event->id, $request->arabicContent, 2);
         } catch(\Exception $ex) {
+            $event->delete();
             Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
             return redirect()->back();
         }
@@ -294,6 +295,7 @@ class MainController extends Controller
 
         // arabic version
         try {
+            $event->delete();
             Helper::add_localization(12, 'famous_attractions', $event->id, $request->arabicContent, 2);
         } catch(\Exception $ex) {
             Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
@@ -362,7 +364,6 @@ class MainController extends Controller
         return response()->json(['success', 'success']);
     }
 
-
     // Delete multiple records
     public function famous_deleteSelected( Request $request ) {
         $ids = $request->ids;
@@ -383,5 +384,194 @@ class MainController extends Controller
 
         // return success response
         return response()->json(['success', 'success']);
+    }
+
+
+    /** SPONSORS */
+    // view sponsors
+    public function sponsors() {
+        return view('main::sponsors')
+                    ->with('sponsors', Sponsor::all());
+    }
+
+    public function sponsor_store(Request $request) {
+
+        $this->validate($request, [
+            'arabic'  =>  'required',
+            'english'  =>  'required',
+            'logoAr'  =>  'required',
+            'logoEn'  =>  'required'
+        ]);
+
+        // Logo
+        if($request->logoAr && $request->logoEn) {
+
+            $imgAr = $request->logoAr;
+            $imgEn = $request->logoEn;
+
+            $now = time();
+
+            $newAr = $now.'_'.$imgAr->getClientOriginalName(); // current time + original image name
+            $newEn = $now.'_'.$imgEn->getClientOriginalName(); // current time + original image name
+
+            $imgAr->move('logo/ar', $newAr);               // move to public/logo/ar
+            $imgEn->move('logo/en', $newEn);               // move to public/logo/en
+
+            $imgPathAr = 'logo/ar/'.$newAr;       // new path: public/useres_images/new.jgp 
+            $imgPathEn = 'logo/en/'.$newEn;
+        }
+
+        // english
+        try {
+            $sponsor = new Sponsor;
+            $sponsor->name = $request->english;
+            $sponsor->logo_ar   = $imgPathAr;
+            $sponsor->logo_en   = $imgPathEn;
+            $sponsor->created_by = Auth::id();
+            $sponsor->save();
+        } catch (\Exception $ex) {
+            dd($ex);
+            Session::flash('warning', 'Can not add in English');
+            return redirect()->back();
+        }
+
+        // arabic
+        try {
+            Helper::add_localization(11, 'sponsors', $sponsor->id, $request->arabic, 2);
+        } catch (\Exception $ex) {
+            $sponsor->delete();
+            dd($ex);
+            Session::flash('warning', 'لا يمكن الاضافة باللغة العربية');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Success - تمت الاضافة بنجاح');
+        return redirect()->back();
+    }
+
+    public function sponsor_update(Request $request) {
+        $this->validate($request, [
+            'hiddenID' => 'required',
+            'arabic'   =>  'required',
+            'english'  =>  'required',
+        ]);
+
+        // Logo
+        if($request->logoAr && $request->logoEn) {
+
+            $imgAr = $request->logoAr;
+            $imgEn = $request->logoEn;
+
+            $now = time();
+
+            $newAr = $now.'_'.$imgAr->getClientOriginalName(); // current time + original image name
+            $newEn = $now.'_'.$imgEn->getClientOriginalName(); // current time + original image name
+
+            $imgAr->move('logo/ar', $newAr);               // move to public/logo/ar
+            $imgEn->move('logo/en', $newEn);               // move to public/logo/en
+
+            $imgPathAr = 'logo/ar/'.$newAr;       // new path: public/useres_images/new.jgp 
+            $imgPathEn = 'logo/en/'.$newEn;
+        }
+
+        // english
+        try {
+            $sponsor = Sponsor::find($request->hiddenID);
+            $sponsor->name = $request->english;
+            
+            if($request->logoAr) {
+                $sponsor->logo_ar   = $imgPathAr;
+            }
+            if($request->logEn) {
+                $sponsor->logo_en   = $imgPathEn;
+            }
+            $sponsor->updated_by = Auth::id();
+            $sponsor->save();
+        } catch (\Exception $ex) {
+            dd($ex);
+            Session::flash('warning', 'Can not edit in English');
+            return redirect()->back();
+        }
+
+        // arabic
+        try {
+            Helper::edit_entity_localization('sponsors', 'sponsors', $sponsor->id, 2, $request->arabic);
+        } catch (\Exception $ex) {
+            $sponsor->delete();
+            dd($ex);
+            Session::flash('warning', 'لا يمكن الاضافة باللغة العربية');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Success - تمت الاضافة بنجاح');
+        return redirect()->back();
+    }
+
+    public function sponsor_delete(Request $request) {
+        try {
+            Sponsor::find($request->id)->delete();
+        } catch(\Exception $ex) {
+            Session::flash('warning', 'can not delete this record.');
+            return response()->json(['error', 'can not delete this record.']);
+        }
+
+        return response()->json(['success', 'record deleted successfully!']);
+    }
+
+    public function sponsor_deleteSelected(Request $request) {
+        try {
+            Sponsor::whereIn('id', $request->id)->delete();
+        } catch(\Exception $ex) {
+            Session::flash('warning', 'can not delete those records.');
+            return response()->json(['error', 'can not delete those records.']);
+        }
+
+        return response()->json(['success', 'records deleted successfully!']);
+    }
+
+
+    /** TRENDS */
+    // view trends
+    public function trends() {
+        return view('main::trends');
+    }
+
+    public function trends_store(Request $request) {
+
+    }
+
+    public function trends_edit(Request $request) {
+        
+    }
+
+    public function trends_delete(Request $request) {
+        
+    }
+
+    public function trends_deleteSelected(Request $request) {
+        
+    }
+
+
+    /** NOTIFICATIONS */
+    // view notifications
+    public function notifications() {
+        return view('main::notifications');
+    }
+
+    public function notifications_store(Request $request) {
+
+    }
+
+    public function notifications_edit(Request $request) {
+        
+    }
+
+    public function notifications_delete(Request $request) {
+        
+    }
+
+    public function notifications_deleteSelected(Request $request) {
+        
     }
 }

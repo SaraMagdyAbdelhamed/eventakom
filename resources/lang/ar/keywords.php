@@ -12,6 +12,7 @@
         'email'             => 'البريد الالكتروني',
         'not'               => 'لا يوجد',
         'addNew'            => 'اضافة',
+        'noImage'           => 'لا يوجد صورة',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
@@ -23,6 +24,9 @@
         'eventCategories'   => 'انواع الاحداث',
         'addcat'    => 'إضافة حدث جديد',
         'famous'    => 'تصنيفات الاحداث الشهيرة',
+        'sponsors'  => 'الرعاه',
+        'trends'    => 'التحكم في البحث المتداول',
+        'notifications' => 'التنبيهات',
 
         // Edit fixed pages
         'EditAbout' => 'تعديل قسم عن الشركة',
