@@ -108,7 +108,7 @@ class UsersController extends Controller
             'rule'=>'required',
             'email'=>'required|email|max:40',
             'phone'=>'required|digits_between:1,14',
-            'image'=>'image|mimes:jpg,jpeg,png|max:5120',
+            'image'=>'required|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         if ($validator->fails()) {
@@ -118,19 +118,20 @@ class UsersController extends Controller
     }
 
 
-        $user = new Users;
-        $user->username= $request->name;
-        $user->email = $request->email;
-        $user->mobile = $request->phone;
-        $user->is_active = $request->status;
-        $user->save();
-        $user->rules()->attach([$request->rule,1]);
     if($request->hasFile('image')){
         $destinationPath='backend_users';
         $fileNameToStore=$destinationPath.'/'.$request->name.time().rand(111,999).'.'.Input::file('image')->getClientOriginalExtension();
             // dd($fileNameToStore);
         Input::file('image')->move($destinationPath,$fileNameToStore);
     }
+        $user = new Users;
+        $user->username= $request->name;
+        $user->email = $request->email;
+        $user->mobile = $request->phone;
+        $user->is_active = $request->status;
+        $user->photo = $fileNameToStore;
+        $user->save();
+        $user->rules()->attach([$request->rule,1]);
 
         return redirect()->back();
 }
@@ -148,9 +149,38 @@ class UsersController extends Controller
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function edit()
+    public function backend_edit($id,Request $request)
     {
-        return view('usersmodule::edit');
+        $validator = Validator::make($request->all(), [
+            'name'=>'required',
+            'rule'=>'required',
+            'email'=>'required|email|max:40',
+            'phone'=>'required|digits_between:1,14',
+            'image'=>'image|mimes:jpg,jpeg,png|max:5120',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
+        }
+        $user = Users::find($id);
+        if($request->hasFile('image')){
+        $destinationPath='backend_users';
+            $fileNameToStore = $destinationPath.'/'.$request->username.time().rand(111,999).'.'.Input::file('image')->getClientOriginalExtension();
+            File::delete($user->photo); 
+            Input::file('image')->move($destinationPath,$fileNameToStore);
+            $user->photo = $fileNameToStore;   
+        }
+        $user->username= $request->name;
+        $user->email = $request->email;
+        $user->mobile = $request->phone;
+        $user->is_active = $request->status;
+        $user->save();
+        $user->rules()->detach();
+        $user->rules()->attach([$request->rule,1]);
+
+        return redirect()->back();
     }
 
     /**
