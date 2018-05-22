@@ -71,7 +71,9 @@
                 </ul>
                 <div class="collapse navbar-collapse nav pull-right  " id="navbarSupportedContent">
                   <ul class="navbar-nav">
-                  <li class="nav-item"><a class="nav-link English  " href="{{ App::isLocale('ar') ? preg_replace('/ar/', 'en', Request::url(), 1) : preg_replace('/en/', 'ar', Request::url(), 1) }}" title="{{ App::isLocale('ar') ? 'English' : 'Arabic' }}">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</a></li>
+
+                  {{-- the link in the follwing li tag changes depends on the current locale if it is arabic it will replace ar with en and vice-versa , in preg_replace, paramater #3 (int) indicates the position of url segment yet to be changed --}}
+                  <li class="nav-item"><a class="nav-link English  " href="{{ App::isLocale('ar') ? preg_replace("/ar\b/", 'en', Request::url()) : preg_replace("/en\b/", 'ar', Request::url()) }}" title="{{ App::isLocale('ar') ? 'English' : 'Arabic' }}">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</a></li>
                   </ul>
                   <ul class="actionsbar desktop-view hidden-xs">
                     <li class="dropdowny"><a class="nav-link dropdowny-toggle  " href="#"><i class="fa fa-bell"></i></a>

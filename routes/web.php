@@ -90,9 +90,9 @@ Route::group(['middleware' => 'auth'], function() {
 // ONLY VIEWS WITH MENDATORY LANGUAGE PREFIX
 Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = null) {
 
-    if( in_array(Request::segment(1), ['en', 'ar']) ) {
-        App::setLocale(Request::segment(1));
-        Session::put('locale', Request::segment(1));
+    if( in_array(Request::segment(3), ['en', 'ar']) ) {
+        App::setLocale(Request::segment(3));
+        Session::put('locale', Request::segment(3));
     } else {
         App::setLocale('en');
     }
