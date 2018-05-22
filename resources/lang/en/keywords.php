@@ -15,6 +15,7 @@
         'noImage'           => 'No image provided',
         'edit'              => 'Edit',
         'distance'          => 'Distance',
+        'unit'              => 'Unit',
 
         // fixed pages
         'registered'=> 'Registered',

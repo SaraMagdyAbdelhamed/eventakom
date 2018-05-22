@@ -339,10 +339,12 @@
             confirm('إختر عميل علي الاقل لتستطيع حذفه');
             } else {
             var ids = allVals;    // join array of IDs into a single variable to explode in controller
+            var title = "{{ \App::isLocale('en') ? 'Are you sure?' : 'هل أنت متأكد؟' }}";
+            var text  = "{{ \App::isLocale('en') ? 'You wont be able to fetch this information later!' : 'لن تستطيع إسترجاع هذه المعلومة لاحقا' }}";
 
             swal({
-            title: "هل أنت متأكد؟",
-            text: "لن تستطيع إسترجاع هذه المعلومة لاحقا",
+            title: title,
+            text: text,
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#281160',
@@ -387,10 +389,12 @@
             
             var id = $(this).data("id");
             var token = '{{ csrf_token() }}';
+            var title = "{{ \App::isLocale('en') ? 'Are you sure?' : 'هل أنت متأكد؟' }}";
+            var text  = "{{ \App::isLocale('en') ? 'You wont be able to fetch this information later!' : 'لن تستطيع إسترجاع هذه المعلومة لاحقا' }}";
 
             swal({
-            title: "هل أنت متأكد؟",
-            text: "لن تستطيع إسترجاع هذه المعلومة لاحقا",
+            title: title,
+            text: text,
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#281160',

@@ -29,16 +29,17 @@
 
             <div class="col-lg-6">
               <div class="master_field">
-                <label class="master_label" for="new_cat">@lang('keywords.addNew')</label>
-                <input name="notification" class="master_input" type="text" placeholder="@lang('keywords.notifications')" Required id="new_cat">
+                <label class="master_label" for="new_cat">@lang('keywords.distance')</label>
+                <input name="notification" class="master_input" type="text" placeholder="@lang('keywords.notifications')" Required id="new_cat" value="{{ isset($distance) ? $distance : '' }}">
               </div>
             </div>
             <div class="col-lg-6">
               <div class="master_field">
-                <label class="master_label mandatory" for="distance">@lang('keywords.distance') </label>
+                <label class="master_label mandatory" for="distance">@lang('keywords.unit') </label>
                 <select name="measurement" class="master_input" id="distance">
-                  <option value="Km">Km </option>
-                  <option value="Meter">Meter</option>
+                  <option value="1" {{ isset($unit) ? ($unit == 1 ? 'selected' : '') : '' }}>Km </option>
+                  <option value="2" {{ isset($unit) ? ($unit == 2 ? 'selected' : '') : '' }}>Meter</option>
+                  <option value="3" {{ isset($unit) ? ($unit == 3 ? 'selected' : '') : '' }}>Mile</option>
                 </select>
               </div>
             </div>

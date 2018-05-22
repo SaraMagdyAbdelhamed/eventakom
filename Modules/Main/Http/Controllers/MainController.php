@@ -649,7 +649,10 @@ class MainController extends Controller
     /** NOTIFICATIONS */
     // view notifications
     public function notifications() {
-        return view('main::notifications');
+        $chunks = explode(',', SystemSetting::where('name', 'notification_distance')->first()->value);
+        return view('main::notifications')
+                    ->with('distance', $chunks[0])
+                    ->with('unit', $chunks[1]);
     }
 
     public function notifications_store(Request $request) {
@@ -662,7 +665,7 @@ class MainController extends Controller
         try {
             $notification = new SystemSetting;
             $notification->name = 'notification_distance';
-            $notification->value = $request->notification .' '. $request->measurement;
+            $notification->value = $request->notification .','. $request->measurement;
             $notification->save();
         } catch(\Exception $ex) {
             dd($ex);

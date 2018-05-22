@@ -15,6 +15,7 @@
         'noImage'           => 'لا يوجد صورة',
         'edit'              => 'تعديل',
         'distance'          => 'المسافة',
+        'unit'              => 'الوحدة',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',

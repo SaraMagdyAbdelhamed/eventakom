@@ -190,7 +190,7 @@
                   </li>
                   <li class="side__list"> <a class="side__item side__item--sub">Events</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" href="events_backend.html">Added from backend</a></li>
+                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('events/backend') }}">Added from backend</a></li>
                       <li class="side__sublist"><a class="side__subitem" href="events_mobile_app.html">Added from mobile application</a></li>
                       <li class="side__sublist"><a class="side__subitem" href="events_big.html">Big events</a></li>
                     </ul>
@@ -246,8 +246,13 @@
             <!-- =====================================================-->
             <div class="clear-fix"></div>
             <div class="footer--1 text-center     bradius--noborder bshadow--3">
+              @if (\App::isLocale('en'))
               <p>
-                 جميع الحقوق محفوظة  ©<span class="cp     bradius--noborder bshadow--0">ايفنتكوم</span>2018</p>
+                all rights reserved to ©<span class="cp bradius--noborder bshadow--0">Eventakom</span>2018</p>
+              @else
+              <p>
+                  جميع الحقوق محفوظة  ©<span class="cp     bradius--noborder bshadow--0">ايفنتكوم</span>2018</p>
+              @endif
             </div>
           </footer>
         </div>

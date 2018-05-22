@@ -125,7 +125,13 @@ Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = 
     Route::get('/notifications', '\Modules\Main\Http\Controllers\MainController@notifications');
 
     //users.mobile
-        Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users_mobile');
-        Route::get('/users_backend', '\Modules\UsersModule\Http\Controllers\UsersController@index_backend')->name('users_backend');
+    Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users_mobile');
+    Route::get('/users_backend', '\Modules\UsersModule\Http\Controllers\UsersController@index_backend')->name('users_backend');
+
+
+    // Events: Back-end
+    Route::get('/events/backend', '\Modules\Events\Http\Controllers\EventsController@index');
+
+    
 });
 
