@@ -76,20 +76,7 @@
                     <form action="{{ route('changeLang') }}" method="POST">
                       {{ csrf_field() }}
                       <input type="hidden" name="url" value="{{ Request::url() }}">
-                      <input type="hidden" name="segment" value="{{ env('SEGMENT') }}">
-                      <p>{{ Request::segment(0) }}</p>
-                      <p>{{ Request::segment(1) }}</p>
-                      <p>{{ Request::segment(2) }}</p>
-                      <p>{{ Request::segment(3) }}</p>
-                      <p>{{ Request::segment(4) }}</p>
-                      
-                      <p>{{ Request::segment(5) }}</p>
-                      
-                      <p>{{ Request::segment(6) }}</p>
-                      
-                      <p>{{ Request::segment(7) }}</p>
-                      
-                      <p>{{ Request::segment(8) }}</p>
+                      <input type="hidden" name="segment" value="{{ Request::segment( env('SEGMENT') ) }}">
                         <button type="submit" class="nav-link English">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</button>
                     </form>
                     
