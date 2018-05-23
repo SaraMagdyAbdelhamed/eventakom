@@ -61,12 +61,8 @@ class Users extends Authenticatable
     }
 
     public function IsBackEndUser(){
-        foreach ($this->rules as $rule) {
-            if($rule->id == 1){
-                return true;
-            }
-        }
-
-        return false;
+        
+        dd($this->rules);
+        return ($this->rules[1]->id == 1);
     }
 }
