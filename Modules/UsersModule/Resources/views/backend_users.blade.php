@@ -368,8 +368,7 @@
                           </div>
                         </div>
                       </div>
-                      <button id="delete-test">Delete Tests</button>
-                    </div>
+e                    </div>
                   </div>
                 </div><br>
               </div>

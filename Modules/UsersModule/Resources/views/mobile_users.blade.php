@@ -110,15 +110,15 @@
                             <tr data-mobile-id={{$mobile->id}}>
                               <td><span class="cellcontent"></span></td>
                               <td><span class="cellcontent">{{$mobile->id}}</span></td>
-                              <td><span class="cellcontent">{{$mobile->username}}</span></td>
+                              <td><span class="cellcontent">{{$mobile->username ? : __('keywords.not') }}</span></td>
                               <td><span class="cellcontent"><img src = "{{asset(''.$mobile->photo)}}" , class = " img-in-table"></span></td>
-                              <td><span class="cellcontent">{{$mobile->email}}</span></td>
-                              <td><span class="cellcontent">{{$mobile->tele_code}}</span></td>
-                              <td><span class="cellcontent">{{$mobile->mobile}}</span></td>
-                              <td><span class="cellcontent">{{\App::isLocale('en') ? \Helper::localization('geo_countries','name',$mobile->country_id,'1') : \Helper::localization('geo_countries','name',$mobile->country_id,'2')}}</span></td>
-                              <td><span class="cellcontent">{{\App::isLocale('en') ? \Helper::localization('geo_cities','name',$mobile->city_id,'1') : \Helper::localization('geo_cities','name',$mobile->city_id,'2')}}</span></td>
-                              <td><span class="cellcontent">{{\App::isLocale('en') ? \Helper::localization('genders','name',$mobile->gender_id,'1') : \Helper::localization('genders','name',$mobile->gender_id,'2')}}</span></td>
-                              <td><span class="cellcontent">{{$mobile->birthdate}}</span></td>
+                              <td><span class="cellcontent">{{$mobile->email ? : __('keywords.not')}}</span></td>
+                              <td><span class="cellcontent">{{$mobile->tele_code ? : __('keywords.not')}}</span></td>
+                              <td><span class="cellcontent">{{$mobile->mobile ? : __('keywords.not')}}</span></td>
+                              <td><span class="cellcontent">{{\App::isLocale('en') ? $mobile->country->name : \Helper::localization('geo_countries','name',$mobile->country_id,'2', $mobile->country->name)}}</span></td>
+                              <td><span class="cellcontent">{{\App::isLocale('en') ? $mobile->city->name : \Helper::localization('geo_cities','name',$mobile->city_id,'2', $mobile->city->name)}}</span></td>
+                              <td><span class="cellcontent">{{\App::isLocale('en') ? ($mobile->gender ? $mobile->gender->name : '') : \Helper::localization('genders','name',$mobile->gender_id,'2', ($mobile->gender ? $mobile->gender->name : '' ) ) }}</span></td>
+                              <td><span class="cellcontent">{{$mobile->birthdate ? $mobile->birthdate : __('keywords.not')}}</span></td>
                               <td><span class="cellcontent">{{$mobile->created_at}}</span></td>
                               <td><span class="cellcontent">
                                 @if($mobile->is_active==1)
@@ -140,9 +140,9 @@
                     <div class="col-xs-12 text-center">
                       <div class="master_field text-center">
                         <label class="master_label">please set the user status</label>
-                        <input class="icon" type="radio" name="is_active" id="radbtn_2{{$mobile->id}}" value="1" checked="false">
+                        <input class="icon" type="radio" name="is_active" id="radbtn_2{{$mobile->id}}" value="1" checked="{{ $mobile->is_active ? 'true' : 'false' }}">
                         <label for="radbtn_2{{$mobile->id}}">Active</label>
-                        <input class="icon" type="radio" name="is_active" id="radbtn_3{{$mobile->id}}" value="0">
+                        <input class="icon" type="radio" name="is_active" id="radbtn_3{{$mobile->id}}" value="0" checked="{{ !$mobile->is_active ? 'true' : 'false' }}">
                         <label for="radbtn_3{{$mobile->id}}">Inactive</label>
                       </div>
                     </div>
@@ -314,7 +314,6 @@
                           </div>
                         </div>
                       </div>
-                      <button id="delete-test">Delete Tests</button>
                     </div>
                   </div>
                 </div><br>
