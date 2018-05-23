@@ -10,7 +10,7 @@
         'logout'            => 'Logout',
         'language'          => 'English',
         'email'             => 'Email',
-        'not'               => 'MISSING DATA',
+        'not'               => '',
         'addNew'            => 'Add new',
         'noImage'           => 'No image provided',
         'edit'              => 'Edit',

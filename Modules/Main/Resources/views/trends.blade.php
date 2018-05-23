@@ -211,7 +211,6 @@
               </div>
             </div>
           </div>
-          <button id="delete-test">delete tests</button>
         </div>
       </div>
     </div><br>

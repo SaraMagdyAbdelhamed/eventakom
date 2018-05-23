@@ -90,7 +90,7 @@ class UsersController extends Controller
         $data['countries'] = Countries::all() ; 
         $data['cities'] = Cities::all() ; 
         $data['age_ranges'] = Age_Ranges::all();
-        return view('usersmodule::mobile_users',$data);
+        return redirect()->back()->with('mobiles', $data);
     }
     
 
