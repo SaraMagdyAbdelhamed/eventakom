@@ -87,7 +87,6 @@
                             <tr class="bgcolor--gray_mm color--gray_d">
                               <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
                               <th><span class="cellcontent">@lang('keywords.serialNo')</span></th>
-                              <th><span class="cellcontent">@lang('keywords.Name')</span></th>
                               <th><span class="cellcontent">@lang('keywords.UserName')</span></th>
                               <th><span class="cellcontent">@lang('keywords.Email')</span></th>
                               <th><span class="cellcontent">@lang('keywords.Phone')</span></th>
@@ -102,18 +101,13 @@
                             @foreach($users as $user)
                             <tr data-user-id="{{$user->id}}">
                               <td><span class="cellcontent"></span></td>
-                              <td><span class="cellcontent">{{$user->id}}</span></td>
-                              <td><span class="cellcontent">{{$user->first_name}}</span></td>
+                              <td><span class="cellcontent">{{$loop->index}}</span></td>
                               <td><span class="cellcontent">{{$user->username}}</span></td>
                               <td><span class="cellcontent">{{$user->email}}</span></td>
                               <td><span class="cellcontent">{{$user->mobile}}</span></td>
                               <td><span class="cellcontent"><img src = "{{asset(''.$user->photo)}}" , class = " img-in-table"></span></td>
                               <td><span class="cellcontent">
-                                @foreach($user->rules as $rule)
-                                @if($rule->pivot->rule_id != 1)
-                                {{\App::isLocale('en') ? \Helper::localization('rules','name',$rule->rule_id,'1') : \Helper::localization('rules','name',$rule->rule_id,'2')}}
-                                @endif
-                                @endforeach
+                                {{$user->CurrentRule()}}
                               </span></td>
                               <td><span class="cellcontent">
                                 @if($user->is_active==1)
@@ -368,7 +362,7 @@
                           </div>
                         </div>
                       </div>
-                      <button id="delete-test">Delete Tests</button>
+                      <!-- <button id="delete-test">Delete Tests</button> -->
                     </div>
                   </div>
                 </div><br>

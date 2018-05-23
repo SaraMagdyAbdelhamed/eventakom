@@ -45,4 +45,14 @@ class Users extends Authenticatable
     public function eventCategories() {
         return $this->hasMany('App\EventCategory', 'created_at');
     }
+
+    public  function CurrentRule(){
+        foreach($this->rules as $rule){
+            if($rule->pivot->rule_id != 1){
+               $result= \App::isLocale('en') ? \Helper::localization('rules','name',$rule->id,1) : \Helper::localization('rules','name',$rule->id,2);
+               $rule = ($result == 'Error')? $this->rules[0]->name : $result;
+               return $rule;
+                 }
+      }
+    }
 }

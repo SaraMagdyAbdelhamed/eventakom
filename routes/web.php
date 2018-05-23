@@ -90,9 +90,9 @@ Route::group(['middleware' => 'auth'], function() {
 // ONLY VIEWS WITH MENDATORY LANGUAGE PREFIX
 Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = null) {
 
-    if( in_array(Request::segment(3), ['en', 'ar']) ) {
-        App::setLocale(Request::segment(3));
-        Session::put('locale', Request::segment(3));
+    if( in_array(Request::segment(1), ['en', 'ar']) ) {
+        App::setLocale(Request::segment(1));
+        Session::put('locale', Request::segment(1));
     } else {
         App::setLocale('en');
     }
@@ -127,7 +127,7 @@ Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = 
     //users.mobile
     Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users_mobile');
     Route::get('/users_backend', '\Modules\UsersModule\Http\Controllers\UsersController@index_backend')->name('users_backend');
-
+    Route::get('/test','\Modules\UsersModule\Http\Controllers\UsersController@test');
 
     // Events: Back-end
     Route::get('/events/backend', '\Modules\Events\Http\Controllers\EventsController@index');
