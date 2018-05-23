@@ -3,7 +3,7 @@
 @section('content')
 <div class="row">
     <div class="col-xs-12">
-      <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( '../img/covers/dummy2.jpg ' )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
+      <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
         <div class="row">
           <div class="col-xs-12">
             <div class="text-xs-center">         
@@ -13,7 +13,7 @@
               </div>
             </div>
           </div>
-          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="#popupModal_1">edit</a>
+          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="#popupModal_1">@lang('keywords.EditPrivacy')</a>
           </div>
         </div>
       </div>
@@ -22,22 +22,18 @@
       <div class="tabs--wrapper">
         <div class="clearfix"></div>
         <ul class="tabs">
-          <li id="arabic">Arabic</li>
-          <li id="english">English</li>
+          <li id="arabic" class="{{ App::isLocale('ar') ? 'active' : '' }}">العربية</li>
+          <li id="english" class="{{ App::isLocale('en') ? 'active' : '' }}">English</li>
         </ul>
         <ul class="tab__content">
-          <li class="tab__content_item active" id="arabic-content">
+          <li class="tab__content_item {{ App::isLocale('ar') ? 'active' : '' }}" id="arabic-content">
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-              <p class="text-center">sorry.. ther's no any content added, please click add and update your content</p>
+              <p class="text-center">{!! $about_us_arabic !!}</p>
             </div>
           </li>
-          <li class="tab__content_item" id="english-content">
+          <li class="tab__content_item {{ App::isLocale('en') ? 'active' : '' }}" id="english-content">
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-              <p class="text-center">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently |with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently |with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently |with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-              </p>
+              <p class="text-center">{!! $about_us_english !!}</p>
             </div>
           </li>
         </ul>
@@ -50,38 +46,51 @@
     <div>
       <div class="row">
         <div class="col-lg-12">
-          <h3>Edit PRIVACY AND POLICY</h3>
+          <h3>@lang('keywords.EditPrivacy')</h3>
         </div>
         <div class="col-xs-12">
-          <form>
+          <form action="{{ route('about.edit', ['id' => 3]) }}" method="POST">
+            {{ csrf_field() }}
+            
             <div class="tabs--wrapper">
-              <div class="clearfix"></div>
-              <ul class="tabs">
-                <li id="arabic-popup">Arabic</li>
-                <li id="english-popup">English</li>
-              </ul>
-              <ul class="tab__content">
-                <li class="tab__content_item active" id="arabic-popup-content">
-                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                    <p class="text-left">Add Arabic Content</p>
-                    <textarea class="tinyMce form-control" id="tinyMce-1" name="tinyMce" cols="100" rows="10"></textarea>
-                  </div>
-                </li>
-                <li class="tab__content_item" id="english-popup-content">
-                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                    <p class="text-left">Add English Content</p>
-                    <textarea class="tinyMce form-control" id="tinyMce-2" name="tinyMce" cols="100" rows="10"></textarea>
-                  </div>
-                </li>
                 <div class="clearfix"></div>
-              </ul>
+                <ul class="tabs">
+                <li id="arabic_inpopups" class="{{ App::isLocale('ar') ? 'active' : '' }}">العربية</li>
+                <li id="english_inpopups" class="{{ App::isLocale('en') ? 'active' : '' }}">English</li>
+                </ul>
+                <ul class="tab__content">
+
+                <li class="tab__content_item {{ App::isLocale('ar') ? 'active' : '' }}" id="arabic_inpopups-content">
+                    <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                    <p class="text-left">اضف المحتوي باللغة العربية</p>
+                    <textarea class="tinyMce form-control" id="tinyMce-1" name="arabicContent" cols="100" rows="10">{!! $about_us_arabic ? $about_us_arabic : '' !!}</textarea>
+                    </div>
+                </li>
+                <li class="tab__content_item {{ App::isLocale('en') ? 'active' : '' }}" id="english_inpopups-content">
+                    <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                    <p class="text-left">Add English Content</p>
+                    <textarea class="tinyMce form-control" id="tinyMce-2" name="englishContent" cols="100" rows="10">{!! $about_us_english ? $about_us_english : '' !!}</textarea>
+                    </div>
+                </li>
+
+                </ul>
+                <div class="clearfix"></div>
             </div>
+            
+            <div class="col-xs-12">
             <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-            <button class="remodal-confirm" data-remodal-action="confirm">save</button>
-            <button class="remodal-confirm" data-remodal-action="confirm" disabled>save disabled</button>
+            <button type="submit" class="remodal-confirm">save</button>
+            </div>
           </form>
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+    $(document).ready(function(){
+        $('#menu_1').addClass('openedmenu');
+        $('#sub_1_3').addClass('pure-active');
+    });
+</script>
 @endsection

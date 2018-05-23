@@ -9,6 +9,17 @@
         'login_password'    => 'password',
         'logout'            => 'Logout',
         'language'          => 'English',
+        'email'             => 'Email',
+        'not'               => 'MISSING DATA',
+        'addNew'            => 'Add new',
+        'noImage'           => 'No image provided',
+        'edit'              => 'Edit',
+        'distance'          => 'Distance',
+        'unit'              => 'Unit',
+        'filter'            => 'Filter',
+        'km' => 'Km',
+        'm' => 'Meter',
+        'mi' => 'Mile',
 
         // fixed pages
         'registered'=> 'Registered',
@@ -17,13 +28,63 @@
         'terms'     => 'Terms & Conditions',
         'privacy'   => 'Privacy & Policy',
         'contactUs' => 'Contact Us',
+        'eventCategories'   => 'Event Categories',
+        'addcat'    => 'Add new category',
+        'famous'    => 'Famous attractions categories',
+        'sponsors'  => 'sponsors',
+        'trends'    => 'Trending searches control',
+        'notifications' => 'Notification distance',
 
-        // about us page
+
         'EditAbout' => 'Edit About Us',
+        'EditTerms' => 'Edit Terms and Conditions',
+        'EditPrivacy'   => 'Edit Privacy and Policy',
+        'EditContact'   => 'Edit Contact Us',
+        'EditEvent'     => 'Edit an Event',
+        
 
         //Users
         'Users' => 'Users',
         'MobileAppUsers' => 'Mobile Application Users',
+        'BackendUsers' => 'Backend Users',
+        'serialNo'=>'serial No',
+        'UserName'=>'UserName',
+        'Name'=>'Name',
+        'Image'=>'Image',
+        'Email'=>'Email',
+        'Code'=>'Code',
+        'Phone'=>'Phone',
+        'Country'=>'Country',
+        'City'=>'City',
+        'Gender'=>'Gender',
+        'Birthdate'=>'Birthdate',
+        'RegisterationDate'=>'RegisterationDate',
+        'Status'=>'Status',
+        'Actions'=>'Actions',
+        'UserType'=>'UserType',
+        'SelectGender'=>'SelectGender',
+        'Male'=>'Male',
+        'Female'=>'Female',
+        'Cancel'=>'Cancel',
+        'ApplyFilter'=>'ApplyFilter',
+        'Countries'=>'Countries',
+        'Cities'=>'Cities',
+        'Age'=>'Age',
+        'AddBackendUser'=>'AddBackendUser',
+        'UserName'=>'UserName',
+        'UserEmail'=>'UserEmail',
+        'UserPhone'=>'UserPhone',
+        'UserImage'=>'UserImage',
+        'Active'=>'Active',
+        'Inactive'=>'Inactive',
+        'Save'=>'Save',
+        'pleaseSetTheUserStatus'=>'pleaseSetTheUserStatus',
+
+
+
+        // Events
+        'events'    => 'Events',
+        'addfrombackend' => 'Added From Backend',
 
     ];
 

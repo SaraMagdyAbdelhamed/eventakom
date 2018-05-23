@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="{{ asset( App::isLocale('ar') ? 'css/style__0__rtl.min.css' : 'css/style__0__ltr.min.css') }}">
     <!-- =============== APP SCRIPT ===============-->
     <script src="{{ asset('js/modernizr.js') }}"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
   </head>
   <body>
     <div class="toggled" id="wrapper">
@@ -69,7 +71,16 @@
                 </ul>
                 <div class="collapse navbar-collapse nav pull-right  " id="navbarSupportedContent">
                   <ul class="navbar-nav">
-                  <li class="nav-item"><a class="nav-link English  " href="{{ App::isLocale('ar') ? str_replace('ar', 'en', Request::url()) : str_replace('en', 'ar', Request::url()) }}" title="{{ App::isLocale('ar') ? 'English' : 'Arabic' }}">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</a></li>
+
+                  <li class="nav-item">
+                    <form action="{{ route('changeLang') }}" method="POST">
+                      {{ csrf_field() }}
+                      <input type="hidden" name="url" value="{{ Request::url() }}">
+                      <input type="hidden" name="segment" value="{{ Request::segment(\Config::get('app.segment')) }}">
+                        <button type="submit" class="nav-link English">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</button>
+                    </form>
+                    
+                  </li>
                   </ul>
                   <ul class="actionsbar desktop-view hidden-xs">
                     <li class="dropdowny"><a class="nav-link dropdowny-toggle  " href="#"><i class="fa fa-bell"></i></a>
@@ -158,66 +169,86 @@
               </div>
               <div class="side">
                 <ul class="side-menu">
-                  <li class="side__list openedmenu"><a class="side__item side__item--sub">@lang('keywords.mainData')</a>
+                  <li class="side__list" id="menu_1"><a class="side__item side__item--sub">@lang('keywords.mainData')</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem pure-active" href="{{ \Helper::route('about') }}">@lang('keywords.aboutUs')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_1" href="{{ \Helper::route('about') }}">@lang('keywords.aboutUs')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('terms')  }}">@lang('keywords.terms')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_2" href="{{ \Helper::route('terms')  }}">@lang('keywords.terms')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('privacy')  }}">@lang('keywords.privacy')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_3" href="{{ \Helper::route('privacy')  }}">@lang('keywords.privacy')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('contact')  }}">@lang('keywords.contactUs')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_4" href="{{ \Helper::route('contact')  }}">@lang('keywords.contactUs')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_events_categories.html">Events categories</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_5" href="{{ \Helper::route('event/categories')  }}">@lang('keywords.eventCategories')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_famous_attractions_categories.html">Famous attractions categories</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_6" href="{{ \Helper::route('famous/attraction') }}">@lang('keywords.famous')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_sponsors.html">Sponsors</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_7" href="{{ \Helper::route('sponsors') }}">@lang('keywords.sponsors')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_trending_searches_control.html">Trending searches control</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_8" href="{{ \Helper::route('trends') }}">@lang('keywords.trends')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="main_data_notification_distance.html">Notification distance</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_9" href="{{ \Helper::route('notifications') }}">@lang('keywords.notifications')</a>
                       </li>
                     </ul>
                   </li>
-                  <li class="side__list"> <a class="side__item side__item--sub">@lang('keywords.Users')</a>
+                  <li class="side__list" id="menu_2"> <a class="side__item side__item--sub">@lang('keywords.Users')</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" href="users_mobile_application_users.html">@lang('keywords.MobileAppUsers')</a></li>
-                      <li class="side__sublist"><a class="side__subitem" href="users_backend_users.html">Backend Users</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_2_1" href="{{ \Helper::route('users_mobile')  }}">@lang('keywords.MobileAppUsers')</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_2_2" href="{{ \Helper::route('users_backend')  }}">@lang('keywords.BackendUsers')</a></li>
                     </ul>
                   </li>
-                  <li class="side__list"> <a class="side__item side__item--sub">Events</a>
+                  <li class="side__list" id="menu_3"> <a class="side__item side__item--sub">@lang('keywords.events')</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" href="events_backend.html">Added from backend</a></li>
-                      <li class="side__sublist"><a class="side__subitem" href="events_mobile_app.html">Added from mobile application</a></li>
-                      <li class="side__sublist"><a class="side__subitem" href="events_big.html">Big events</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_3_1" href="{{ \Helper::route('events/backend') }}">@lang('keywords.addfrombackend')</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_3_2" href="events_mobile_app.html">Added from mobile application</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="events_big.html">Big events</a></li>
                     </ul>
                   </li>
-                  <li class="side__list"> <a class="side__item side__item--sub">barcode</a>
+                  <li class="side__list" id="menu_4"> <a class="side__item side__item--sub">barcode</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" href="barcode_scaning.html">barcode scaning</a></li>
-                      <li class="side__sublist"><a class="side__subitem" href="barcode_success.html">barcode success</a></li>
-                      <li class="side__sublist"><a class="side__subitem" href="barcode_failed.html">barcode failed</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_4_1"  href="barcode_scaning.html">barcode scaning</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_4_2"  href="barcode_success.html">barcode success</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_4_3"  href="barcode_failed.html">barcode failed</a></li>
                     </ul>
                   </li>
-                  <li class="side__list"> <a class="side__item" href="famous_attractions.html">Famous attractions</a>
+                  <li class="side__list" id="menu_5"> <a class="side__item" href="famous_attractions.html">Famous attractions</a>
                   </li>
-                  <li class="side__list"> <a class="side__item" href="offers_and_deals.html">Offers and deals</a>
+                  <li class="side__list" id="menu_6"> <a class="side__item" href="offers_and_deals.html">Offers and deals</a>
                   </li>
-                  <li class="side__list"> <a class="side__item" href="shop_and_dine.html">Shop and dine</a>
+                  <li class="side__list" id="menu_7"> <a class="side__item" href="shop_and_dine.html">Shop and dine</a>
                   </li>
-                  <li class="side__list"> <a class="side__item" href="notifications.html">Notifications</a>
+                  <li class="side__list" id="menu_8"> <a class="side__item" href="notifications.html">Notifications</a>
                   </li>
-                  <li class="side__list"> <a class="side__item" href="google_analytics.html">Google analytics</a>
+                  <li class="side__list" id="menu_9"> <a class="side__item" href="google_analytics.html">Google analytics</a>
                   </li>
                 </ul>
               </div>
             </nav>
             <!-- Page content-->
             <div class="container-fluid">
-              
-                {{-- yield data --}}
-                @yield('content')
+
+              {{-- Start alert messages --}}
+              <div class="col-lg-12">
+                @if (Session::has('success'))
+                  <div class="alert alert-success text-center">{{ Session::get('success') }}</div>
+                @endif
+
+                @if (Session::has('warning'))
+                  <div class="alert alert-warning text-center">{{ Session::get('warning') }}</div>
+                @endif
+
+                @if (Session::has('error'))
+                  <div class="alert alert-danger text-center">{{ Session::get('error') }}</div>
+                @endif
+
+                @foreach ($errors->all() as $error)
+                    <div class="alert alert-danger text-center">{{ $error }}</div>
+                @endforeach
+              </div>
+              {{-- End alert --}}
+
+              {{-- yield data --}}
+              @yield('content')
                 
             </div>
           </div>
@@ -228,27 +259,217 @@
             <!-- =====================================================-->
             <div class="clear-fix"></div>
             <div class="footer--1 text-center     bradius--noborder bshadow--3">
+              @if (\App::isLocale('en'))
               <p>
-                 جميع الحقوق محفوظة  ©<span class="cp     bradius--noborder bshadow--0">ايفنتكوم</span>2018</p>
+                all rights reserved to ©<span class="cp bradius--noborder bshadow--0">Eventakom</span>2018</p>
+              @else
+              <p>
+                  جميع الحقوق محفوظة  ©<span class="cp     bradius--noborder bshadow--0">ايفنتكوم</span>2018</p>
+              @endif
             </div>
           </footer>
         </div>
       </div>
     </div>
     <!-- =============== APP MAIN SCRIPTS ===============-->
+    
     <script type="text/javascript" src="{{ asset('js/scripts.min.js') }}"></script>
+    
     <!-- =============== PAGE VENDOR SCRIPTS ===============-->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/tinymce/4.3.4/tinymce.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function () {
         tinyMCE.init({
-          selector: ".tinyMce",
+          selector: "textarea.tinyMce",
           plugins: [ "image" , "code visualblocks"],
           valid_elements : '*[*]',
           toolbar: "image | undo | redo | styleselect | bold | italic | fontsizeselect | alignleft | aligncenter | alignright | alignjustify | preview ",
           schema: "html5",
         });
+        
       });
+
+      // hide alert message after 4 seconds => 4000 ms
+      window.setTimeout(function() {
+              $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                  $(this).remove(); 
+              });
+          }, 4000);
     </script>
+
+    <script type="text/javascript">
+      //--Data table trigger --1
+      $(document).ready(function(){
+        if ( $('html').attr('lang') == 'ar' ) {
+          var datatable_one = $("#dataTableTriggerId_001").DataTable({
+          'columnDefs': [{
+            'targets': 0,
+            'searchable':false,
+            'orderable':false,
+            'className': 'this-include-check',
+            'render': function (data, type, full, meta){
+              return '<input class="input-in-table" type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+            }
+          }],
+          'order': [1, 'asc'],
+            dom: '   <"row"    <" filterbar" flr + <"sortingr__btns_cont"  >> <"filter__btns_cont"  >    >  <"row"   <"data-table-trigger-cont"  t>    >  <"row"<"tableActions__btns_cont"> <"viewing-pagination"pi>  > ' ,
+            "language": {
+              "search": "dd",
+              "sLengthMenu": "عرض _MENU_  ",
+              search: " البحث _INPUT_",
+              searchPlaceholder: "ابحث فى الجدول"          ,
+              "emptyTable":     "لا توجد بيانات متاحه فى الجدول",
+              "info":           "عرض _START_ إلى _END_ من أصل _TOTAL_ مُدخل",
+              "infoEmpty":      " عرض  0 to 0 of 0 مُدخل",
+              "infoFiltered":   "(filtered from _MAX_ total entries)",
+              "loadingRecords": "جارى التحميل...",
+              "processing":     "جارى المعالجة...",
+              "zeroRecords":    "لا توجد نتائج مطابخة",
+              "paginate": {
+                "first":      "الاول",
+                "last":       "الاخير",
+                "next":       "التالى",
+                "previous":   "السابق"
+              },
+              "aria": {
+                "sortAscending":  ": رتب تصاعدياً",
+                "sortDescending": ": رتب تنازلياً"
+              }
+            }
+          });
+          
+          //-trigger check one by one 
+          $(document).on('click','#dataTableTriggerId_001 tbody tr input.input-in-table',function(){
+            var RowParent = $(this).parents('tr') ;
+            
+            if ( $(this).parents('tr').hasClass('selected') ) {
+              $(this).parents('tr').removeClass('selected');
+            }
+            else {
+              $(this).parents('tr').addClass('selected');
+            }  
+          });
+      
+          //-trigger check All
+          $('#dataTableTriggerId_001 #select-all').on('click',function(){
+            if($(this).attr('data-click-state') == 0) {
+              $(this).attr('data-click-state',1)
+              var rows = datatable_one.rows().nodes();
+              $('input.input-in-table' , rows).prop('checked',this.checked).parents('tr').addClass('selected');
+              
+            } else {
+              var rows = datatable_one.rows().nodes();
+              $('input.input-in-table' , rows).prop('checked',false).parents('tr').removeClass('selected');
+              $(this).attr('data-click-state', 0);
+            }
+          });
+      
+          //-Delete buttons
+          $('#delete-test').on('click', function() {
+            var selectedRows = datatable_one.rows( $('#dataTableTriggerId_001 tr.selected') ).data().to$();
+            datatable_one.rows( '.selected' ).remove().draw(false);
+          });
+          
+          
+        } else {
+      
+          var datatable_one = $("#dataTableTriggerId_001").DataTable({
+            'columnDefs': [{
+            'targets': 0,
+            'searchable':false,
+            'orderable':false,
+            'className': 'this-include-check',
+            'render': function (data, type, full, meta){
+              return '<input class="input-in-table" type="checkbox" name="id[]" >';
+            }
+          }],
+          'order': [1, 'asc'],
+            dom: '   <"row"    <" filterbar" f + <"quick_filter_cont"  > + lr + <"sortingr__btns_cont"  >> <"filter__btns_cont"  >    >  <"row"   <"data-table-trigger-cont"  t>    >  <"row"<"tableActions__btns_cont"> <"viewing-pagination"pi>  > ' ,
+            "language": {
+              "search": "dd",
+              "sLengthMenu": "Entries _MENU_  ",
+              search: " Search _INPUT_",
+              searchPlaceholder: "Search table ...."
+            }
+          });
+      
+          //-trigger check one by one 
+          $(document).on('click','#dataTableTriggerId_001 tbody tr input.input-in-table',function(){
+            var RowParent = $(this).parents('tr') ;
+            
+            if ( $(this).parents('tr').hasClass('selected') ) {
+              $(this).parents('tr').removeClass('selected');
+            }
+            else {
+              $(this).parents('tr').addClass('selected');
+            }  
+          });
+      
+          //-trigger check All
+          $('#dataTableTriggerId_001 #select-all').on('click',function(){
+            if($(this).attr('data-click-state') == 0) {
+              $(this).attr('data-click-state',1)
+              var rows = datatable_one.rows().nodes();
+              $('input.input-in-table' , rows).prop('checked',this.checked).parents('tr').addClass('selected');
+              
+            } else {
+              var rows = datatable_one.rows().nodes();
+              $('input.input-in-table' , rows).prop('checked',false).parents('tr').removeClass('selected');
+              $(this).attr('data-click-state', 0);
+            }
+          });
+      
+          //-Delete buttons
+          $('#delete-test').on('click', function() {
+            var selectedRows = datatable_one.rows( $('#dataTableTriggerId_001 tr.selected') ).data().to$();
+            datatable_one.rows( '.selected' ).remove().draw(false);
+          });
+      
+        }
+      });
+      
+      
+      $(document).ready(function(){
+        $(".full-table").each(function() {
+          $(this).find(".filter__btns").appendTo($(this).find(".filter__btns_cont"));
+          $(this).find(".sortingr__btns").appendTo($(this).find(".sortingr__btns_cont"));
+          $(this).find(".bottomActions__btns").appendTo($(this).find(".tableActions__btns_cont"));
+          $(this).find(".quick_filter").appendTo($(this).find(".quick_filter_cont"));
+          $(this).find(".view_options").appendTo($(this).find(".view_options_cont"));
+        });
+      });
+      
+      //-============================================================
+      //-===============================comp__#009__select
+      //-============================================================
+    </script>
+    <script type="text/javascript">
+      $(function () {
+        $(".select2").select2();
+      });
+      
+      
+    </script>
+
+    @yield('js')
+{{--     <script type="text/javascript">
+      $(document).ready(function(){
+        // "use strict";
+        $('.btn-warning-confirm').click(function(){
+          swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this imaginary file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnConfirm: false
+          },
+          function(){
+            swal("Deleted!", "Your imaginary file has been deleted!", "success");
+          });
+        });
+      });
+    </script> --}}
   </body>
 </html>
