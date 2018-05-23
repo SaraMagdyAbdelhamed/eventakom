@@ -43,7 +43,11 @@ class Users extends Authenticatable
     }
 
     public function eventCategories() {
-        return $this->hasMany('App\EventCategory', 'created_at');
+        return $this->hasMany('App\EventCategory', 'created_by');
+    }
+
+    public function eventBackend() {
+        return $this->hasMany('App\EventBackend', 'created_by');
     }
 
     public  function CurrentRule(){
@@ -54,5 +58,15 @@ class Users extends Authenticatable
                return $rule;
                  }
       }
+    }
+
+    public function IsBackEndUser(){
+        foreach ($this->rules as $rule) {
+            if($rule->id == 1){
+                return true;
+            }
+        }
+
+        return false;
     }
 }

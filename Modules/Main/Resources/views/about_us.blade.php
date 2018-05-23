@@ -22,16 +22,16 @@
         <div class="tabs--wrapper">
         <div class="clearfix"></div>
         <ul class="tabs">
-            <li id="arabic">العربية</li>
-            <li id="english">English</li>
+            <li id="arabic" class="{{ App::isLocale('ar') ? 'active' : '' }}">العربية</li>
+            <li id="english" class="{{ App::isLocale('en') ? 'active' : '' }}">English</li>
         </ul>
         <ul class="tab__content">
-            <li class="tab__content_item active" id="arabic-content">
+            <li class="tab__content_item {{ App::isLocale('ar') ? 'active' : '' }}" id="arabic-content">
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                 <p class="text-center">{!! $about_us_arabic !!}</p>
             </div>
             </li>
-            <li class="tab__content_item" id="english-content">
+            <li class="tab__content_item {{ App::isLocale('en') ? 'active' : '' }}" id="english-content">
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                 <p class="text-center">{!! $about_us_english !!}</p>
             </div>
@@ -60,16 +60,16 @@
                     </ul>
                     <ul class="tab__content">
 
-                    <li class="tab__content_item active" id="arabic_inpopups-content">
+                    <li class="tab__content_item {{ App::isLocale('ar') ? 'active' : '' }}" id="arabic_inpopups-content">
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                         <p class="text-left">اضف المحتوي باللغة العربية</p>
-                        <textarea required class="tinyMce form-control" id="tinyMce-1" name="arabicContent" cols="100" rows="10">{!! $about_us_arabic ? $about_us_arabic : '' !!}</textarea>
+                        <textarea required="required" class="tinyMce form-control" id="tinyMce-1" name="arabicContent" cols="100" rows="10">{!! $about_us_arabic ? $about_us_arabic : '' !!}</textarea>
                         </div>
                     </li>
-                    <li class="tab__content_item" id="english_inpopups-content">
+                    <li class="tab__content_item {{ App::isLocale('en') ? 'active' : '' }}" id="english_inpopups-content">
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                         <p class="text-left">Add English Content</p>
-                        <textarea required class="tinyMce form-control" id="tinyMce-2" name="englishContent" cols="100" rows="10">{!! $about_us_english ? $about_us_english : '' !!}</textarea>
+                        <textarea required="required" class="tinyMce form-control" id="tinyMce-2" name="englishContent" cols="100" rows="10">{!! $about_us_english ? $about_us_english : '' !!}</textarea>
                         </div>
                     </li>
 
@@ -80,7 +80,6 @@
                 <div class="col-xs-12">
                 <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
                 <button type="submit" class="remodal-confirm">save</button>
-                <button class="remodal-confirm" data-remodal-action="confirm" disabled>disabled</button>
                 </div>
             </form>
         </div>
@@ -88,5 +87,10 @@
     </div>
 </div>
 
-
+<script>
+    $(document).ready(function(){
+        $('#menu_1').addClass('openedmenu');
+        $('#sub_1_1').addClass('pure-active');
+    });
+</script>
 @endsection

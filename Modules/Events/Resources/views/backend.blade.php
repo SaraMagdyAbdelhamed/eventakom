@@ -3,13 +3,13 @@
 @section('content')
 <div class="row">
     <div class="col-xs-12">
-      <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( '../img/covers/dummy2.jpg ' )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
+      <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
         <div class="row">
           <div class="col-xs-12">
             <div class="text-xs-center">         
               <div class="text-wraper">
-                <h4 class="cover-inside-title">Events </h4><i class="fa fa-chevron-circle-right"></i>
-                <h4 class="cover-inside-title sub-lvl-2">Added from backend </h4>
+                <h4 class="cover-inside-title">@lang('keywords.events') </h4><i class="fa fa-chevron-circle-right"></i>
+                <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.addfrombackend') </h4>
               </div>
             </div>
           </div>
@@ -21,7 +21,7 @@
     <div class="col-xs-12">
       <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="full-table">
-          <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>filters</a></div>
+          <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>@lang('keywords.filter')</a></div>
           <div class="bottomActions__btns"><a class="master-btn" href="#">Delete selected</a><a class="master-btn" href="#">Add New Event</a>
           </div>
           <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
@@ -118,10 +118,16 @@
                             <td><span class="cellcontent">{{ $event->venu ? $event->venu : '' }}</span></td>
                             <td><span class="cellcontent">{{ $event->start_datetime ? $event->start_datetime : '' }}</span></td>
                             <td><span class="cellcontent">{{ $event->end_datetime ? $event->end_datetime : '' }}</span></td>
-                            <td><span class="cellcontent">1-1-1975</span></td>
-                            <td><span class="cellcontent">John Doe</span></td>
-                            <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
-                            <td><span class="cellcontent"><a href= events_backend_view.html ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= events_backend_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                            <td><span class="cellcontent">{{ $event->created_at ? $event->created_at : '' }}</span></td>
+                            <td><span class="cellcontent">{{ $event->user ? $event->user->name : '' }}</span></td>
+                            <td><span class="cellcontent"><i class = "{{ $event->is_active ? ($event->is_active == 0 ? 'fa icon-in-table-false fa-times' : 'fa icon-in-table-true fa-check' ) : 'fa icon-in-table-false fa-times' }}"></i></i></span></td>
+                            <td>
+                                <span class="cellcontent">
+                                    <a href= events_backend_view.html ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a>
+                                    <a href= events_backend_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a>
+                                    <a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a>
+                                </span>
+                            </td>
                         </tr>
                     @endforeach
                 @endif
@@ -291,4 +297,11 @@
       </div>
     </div><br>
   </div>
+
+  <script>
+    $(document).ready(function(){
+      $('#menu_3').addClass('openedmenu');
+      $('#sub_3_1').addClass('pure-active');
+    });
+  </script>
 @endsection

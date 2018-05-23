@@ -50,8 +50,14 @@ class LoginController extends Controller
             $user->last_login = Carbon::now()->toDateTimeString();
             $user->timezone = $request->timezone;
             $user->save();
+            if($user->IsBackEndUser()){
+                return redirect($userLocale.'/about');
+            }else{
+                return redirect('/login')->with('error', 'ليس لديك الصلاحية للدخول');
 
-            return redirect( $userLocale.'/about');
+            }
+
+            
         } else {
             return redirect('/login')->with('error', 'من فضلك ، تأكد من الاسم وكلمة السر ثم حاول ثانيةَ');
         }

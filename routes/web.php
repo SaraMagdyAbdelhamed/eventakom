@@ -33,6 +33,11 @@ Route::get('/login', function($lang = null) {
     return view('auth.login');
 });
 Route::get('/test_connection', 'HomeController@test_connection')->name('test_connection');   // for testing purposes
+
+// change language
+Route::post('/change/language', 'ChangeLanguage@changeLang')->name('changeLang');
+
+
 // custom login/logout
 Route::post('/login' , 'Auth\LoginController@login')->name('login'); // override authentication urls to manually use languages
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');   // for testing purposes
@@ -89,10 +94,11 @@ Route::group(['middleware' => 'auth'], function() {
 
 // ONLY VIEWS WITH MENDATORY LANGUAGE PREFIX
 Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = null) {
+    $segment = Request::segment(\Config::get('app.segment'));
 
-    if( in_array(Request::segment(1), ['en', 'ar']) ) {
-        App::setLocale(Request::segment(1));
-        Session::put('locale', Request::segment(1));
+    if( in_array($segment, ['en', 'ar']) ) {
+        App::setLocale($segment);
+        Session::put('locale', $segment);
     } else {
         App::setLocale('en');
     }

@@ -16,6 +16,10 @@
         'edit'              => 'Edit',
         'distance'          => 'Distance',
         'unit'              => 'Unit',
+        'filter'            => 'Filter',
+        'km' => 'Km',
+        'm' => 'Meter',
+        'mi' => 'Mile',
 
         // fixed pages
         'registered'=> 'Registered',
@@ -75,6 +79,12 @@
         'Inactive'=>'Inactive',
         'Save'=>'Save',
         'pleaseSetTheUserStatus'=>'pleaseSetTheUserStatus',
+
+
+
+        // Events
+        'events'    => 'Events',
+        'addfrombackend' => 'Added From Backend',
 
     ];
 

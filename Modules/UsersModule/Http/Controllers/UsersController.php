@@ -50,7 +50,8 @@ class UsersController extends Controller
 
     public function test(){
        $users = Users::find(5);
-      echo  $users->CurrentRule();
+      $rules = $users->rules->toArray();
+      var_dump($rules); 
       
     }
 

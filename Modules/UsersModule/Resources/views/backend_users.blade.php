@@ -130,7 +130,7 @@
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_user">@lang('keywords.UserName')</label>
-                          <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user"><span class="master_message inherit">
+                          <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user" onkeypress="return RestrictSpace()"><span class="master_message inherit">
                                   @if ($errors->has('name'))
                                     {{ $errors->first('name')}}
                                     @endif</span>
@@ -379,7 +379,7 @@
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_user">@lang('keywords.UserName')</label>
-                          <input name="name" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user"><span class="master_message inherit">
+                          <input name="name" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user" onkeypress="return RestrictSpace()"><span class="master_message inherit">
                                   @if ($errors->has('name'))
                                     {{ $errors->first('name')}}
                                     @endif</span>
@@ -450,15 +450,25 @@
             </div>
           </div>
 @section('js')
-                  <script type="text/javascript">
+    <script type="text/javascript">
+     function RestrictSpace() {
+          if (event.keyCode == 32) {
+              return false;
+          }
+      }
       $(document).ready(function(){
         // "use strict";
+        //diable space in enter
+       
+
+
+
         $('.btn-warning-confirm').click(function(){
           var user_id = $(this).closest('tr').attr('data-user-id');
           var _token = '{{csrf_token()}}';
           swal({
             title: "Are you sure?",
-            text: "You will not be able to recover this imaginary file!",
+            text: "You will not be able to recover this user!",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#281160',
@@ -474,7 +484,7 @@
               $('tr[data-user-id='+user_id+']').fadeOut();
             }
           });
-            swal("Deleted!", "Your imaginary file has been deleted!", "success");
+            swal("Deleted!", "Your user  has been deleted!", "success");
           });
         });
 
