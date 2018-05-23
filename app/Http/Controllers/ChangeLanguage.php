@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 class ChangeLanguage extends Controller
 {
     public function changeLang(Request $request) {
-
         $url = $request->url;
         $segment = $request->segment;
         $newSegment = $segment == 'ar' ? 'en' : 'ar';
