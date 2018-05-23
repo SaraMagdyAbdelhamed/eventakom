@@ -16,6 +16,10 @@
         'edit'              => 'تعديل',
         'distance'          => 'المسافة',
         'unit'              => 'الوحدة',
+        'filter'            => 'فلتر',
+        'km' => 'كيلومتر',
+        'm' => 'متر',
+        'mi' => 'ميل',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
@@ -75,6 +79,12 @@
         'Inactive'=>'Inactive',
         'Save'=>'Save',
         'pleaseSetTheUserStatus'=>'pleaseSetTheUserStatus',
+
+
+
+        // Events
+        'events'    => 'الاحداث',
+        'addfrombackend' => 'المضاف من الموقع',
     ];
 
 ?>

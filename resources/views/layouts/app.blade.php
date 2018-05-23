@@ -72,8 +72,15 @@
                 <div class="collapse navbar-collapse nav pull-right  " id="navbarSupportedContent">
                   <ul class="navbar-nav">
 
-                  {{-- the link in the follwing li tag changes depends on the current locale if it is arabic it will replace ar with en and vice-versa , in preg_replace, paramater #3 (int) indicates the position of url segment yet to be changed --}}
-                  <li class="nav-item"><a class="nav-link English  " href="{{ App::isLocale('ar') ? preg_replace("/ar\b/", 'en', Request::url()) : preg_replace("/en\b/", 'ar', Request::url()) }}" title="{{ App::isLocale('ar') ? 'English' : 'Arabic' }}">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</a></li>
+                  <li class="nav-item">
+                    <form action="{{ route('changeLang') }}" method="POST">
+                      {{ csrf_field() }}
+                      <input type="hidden" name="url" value="{{ Request::url() }}">
+                      <input type="hidden" name="segment" value="{{ Request::segment(\Config::get('app.segment')) }}">
+                        <button type="submit" class="nav-link English">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</button>
+                    </form>
+                    
+                  </li>
                   </ul>
                   <ul class="actionsbar desktop-view hidden-xs">
                     <li class="dropdowny"><a class="nav-link dropdowny-toggle  " href="#"><i class="fa fa-bell"></i></a>
@@ -162,57 +169,57 @@
               </div>
               <div class="side">
                 <ul class="side-menu">
-                  <li class="side__list openedmenu"><a class="side__item side__item--sub">@lang('keywords.mainData')</a>
+                  <li class="side__list" id="menu_1"><a class="side__item side__item--sub">@lang('keywords.mainData')</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem pure-active" href="{{ \Helper::route('about') }}">@lang('keywords.aboutUs')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_1" href="{{ \Helper::route('about') }}">@lang('keywords.aboutUs')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('terms')  }}">@lang('keywords.terms')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_2" href="{{ \Helper::route('terms')  }}">@lang('keywords.terms')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('privacy')  }}">@lang('keywords.privacy')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_3" href="{{ \Helper::route('privacy')  }}">@lang('keywords.privacy')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('contact')  }}">@lang('keywords.contactUs')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_4" href="{{ \Helper::route('contact')  }}">@lang('keywords.contactUs')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('event/categories')  }}">@lang('keywords.eventCategories')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_5" href="{{ \Helper::route('event/categories')  }}">@lang('keywords.eventCategories')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('famous/attraction') }}">@lang('keywords.famous')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_6" href="{{ \Helper::route('famous/attraction') }}">@lang('keywords.famous')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('sponsors') }}">@lang('keywords.sponsors')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_7" href="{{ \Helper::route('sponsors') }}">@lang('keywords.sponsors')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('trends') }}">@lang('keywords.trends')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_8" href="{{ \Helper::route('trends') }}">@lang('keywords.trends')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('notifications') }}">@lang('keywords.notifications')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_9" href="{{ \Helper::route('notifications') }}">@lang('keywords.notifications')</a>
                       </li>
                     </ul>
                   </li>
-                  <li class="side__list"> <a class="side__item side__item--sub">@lang('keywords.Users')</a>
+                  <li class="side__list" id="menu_2"> <a class="side__item side__item--sub">@lang('keywords.Users')</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('users_mobile')  }}">@lang('keywords.MobileAppUsers')</a></li>
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('users_backend')  }}">@lang('keywords.BackendUsers')</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_2_1" href="{{ \Helper::route('users_mobile')  }}">@lang('keywords.MobileAppUsers')</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_2_2" href="{{ \Helper::route('users_backend')  }}">@lang('keywords.BackendUsers')</a></li>
                     </ul>
                   </li>
-                  <li class="side__list"> <a class="side__item side__item--sub">Events</a>
+                  <li class="side__list" id="menu_3"> <a class="side__item side__item--sub">@lang('keywords.events')</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" href="{{ \Helper::route('events/backend') }}">Added from backend</a></li>
-                      <li class="side__sublist"><a class="side__subitem" href="events_mobile_app.html">Added from mobile application</a></li>
-                      <li class="side__sublist"><a class="side__subitem" href="events_big.html">Big events</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_3_1" href="{{ \Helper::route('events/backend') }}">@lang('keywords.addfrombackend')</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_3_2" href="events_mobile_app.html">Added from mobile application</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="events_big.html">Big events</a></li>
                     </ul>
                   </li>
-                  <li class="side__list"> <a class="side__item side__item--sub">barcode</a>
+                  <li class="side__list" id="menu_4"> <a class="side__item side__item--sub">barcode</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" href="barcode_scaning.html">barcode scaning</a></li>
-                      <li class="side__sublist"><a class="side__subitem" href="barcode_success.html">barcode success</a></li>
-                      <li class="side__sublist"><a class="side__subitem" href="barcode_failed.html">barcode failed</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_4_1"  href="barcode_scaning.html">barcode scaning</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_4_2"  href="barcode_success.html">barcode success</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_4_3"  href="barcode_failed.html">barcode failed</a></li>
                     </ul>
                   </li>
-                  <li class="side__list"> <a class="side__item" href="famous_attractions.html">Famous attractions</a>
+                  <li class="side__list" id="menu_5"> <a class="side__item" href="famous_attractions.html">Famous attractions</a>
                   </li>
-                  <li class="side__list"> <a class="side__item" href="offers_and_deals.html">Offers and deals</a>
+                  <li class="side__list" id="menu_6"> <a class="side__item" href="offers_and_deals.html">Offers and deals</a>
                   </li>
-                  <li class="side__list"> <a class="side__item" href="shop_and_dine.html">Shop and dine</a>
+                  <li class="side__list" id="menu_7"> <a class="side__item" href="shop_and_dine.html">Shop and dine</a>
                   </li>
-                  <li class="side__list"> <a class="side__item" href="notifications.html">Notifications</a>
+                  <li class="side__list" id="menu_8"> <a class="side__item" href="notifications.html">Notifications</a>
                   </li>
-                  <li class="side__list"> <a class="side__item" href="google_analytics.html">Google analytics</a>
+                  <li class="side__list" id="menu_9"> <a class="side__item" href="google_analytics.html">Google analytics</a>
                   </li>
                 </ul>
               </div>
@@ -233,6 +240,10 @@
                 @if (Session::has('error'))
                   <div class="alert alert-danger text-center">{{ Session::get('error') }}</div>
                 @endif
+
+                @foreach ($errors->all() as $error)
+                    <div class="alert alert-danger text-center">{{ $error }}</div>
+                @endforeach
               </div>
               {{-- End alert --}}
 
@@ -269,12 +280,13 @@
     <script type="text/javascript">
       $(document).ready(function () {
         tinyMCE.init({
-          selector: ".tinyMce",
+          selector: "textarea.tinyMce",
           plugins: [ "image" , "code visualblocks"],
           valid_elements : '*[*]',
           toolbar: "image | undo | redo | styleselect | bold | italic | fontsizeselect | alignleft | aligncenter | alignright | alignjustify | preview ",
           schema: "html5",
         });
+        
       });
 
       // hide alert message after 4 seconds => 4000 ms

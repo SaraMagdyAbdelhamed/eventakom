@@ -43,6 +43,10 @@ class Users extends Authenticatable
     }
 
     public function eventCategories() {
-        return $this->hasMany('App\EventCategory', 'created_at');
+        return $this->hasMany('App\EventCategory', 'created_by');
+    }
+
+    public function eventBackend() {
+        return $this->hasMany('App\EventBackend', 'created_by');
     }
 }

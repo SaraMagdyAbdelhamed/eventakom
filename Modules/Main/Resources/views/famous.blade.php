@@ -256,7 +256,6 @@
                     <div class="col-xs-12">
                     <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
                     <button type="submit" class="remodal-confirm">save</button>
-                    <button class="remodal-confirm" data-remodal-action="confirm" disabled>save disabled</button>
                     </div>
                 </div>
             </form>
@@ -307,7 +306,6 @@
                     <div class="col-xs-12">
                     <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
                     <button type="submit" class="remodal-confirm">save</button>
-                    <button class="remodal-confirm" data-remodal-action="confirm" disabled>save disabled</button>
                     </div>
                 </div>
             </form>
@@ -317,7 +315,10 @@
 
   <script>
         $(document).ready(function() {
-    
+          $('#menu_1').addClass('openedmenu');
+          $('#sub_1_6').addClass('pure-active');
+
+
             // delete multi
             $('#deleteSelected').click(function(){
                 var allVals = [];                   // selected IDs

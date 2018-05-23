@@ -37,9 +37,9 @@
               <div class="master_field">
                 <label class="master_label mandatory" for="distance">@lang('keywords.unit') </label>
                 <select name="measurement" class="master_input" id="distance">
-                  <option value="1" {{ isset($unit) ? ($unit == 1 ? 'selected' : '') : '' }}>Km </option>
-                  <option value="2" {{ isset($unit) ? ($unit == 2 ? 'selected' : '') : '' }}>Meter</option>
-                  <option value="3" {{ isset($unit) ? ($unit == 3 ? 'selected' : '') : '' }}>Mile</option>
+                  <option value="1" {{ isset($unit) ? ($unit == 1 ? 'selected' : '') : '' }}>@lang('keywords.km') </option>
+                  <option value="2" {{ isset($unit) ? ($unit == 2 ? 'selected' : '') : '' }}>@lang('keywords.m')</option>
+                  <option value="3" {{ isset($unit) ? ($unit == 3 ? 'selected' : '') : '' }}>@lang('keywords.mi')</option>
                 </select>
               </div>
             </div>
@@ -59,4 +59,11 @@
   </form>
 
   </div>    
+
+<script>
+  $(document).ready(function(){
+      $('#menu_1').addClass('openedmenu');
+      $('#sub_1_9').addClass('pure-active');
+  });
+</script>
 @endsection

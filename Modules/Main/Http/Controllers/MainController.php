@@ -400,8 +400,16 @@ class MainController extends Controller
         $this->validate($request, [
             'arabic'  =>  'required',
             'english'  =>  'required',
-            'logoAr'  =>  'required',
-            'logoEn'  =>  'required'
+            'logoAr'  =>  'required|image|mimes:jpeg,jpg,png',
+            'logoEn'  =>  'required|image|mimes:jpeg,jpg,png'
+        ],[
+            'arabic.required'   => 'اسم الراعي باللغة العربية غير موجود ، برجاء كتابته ثم المحاولة مجددا',
+            'english.required'  => 'Sponsor name is required, please type it and try again!',
+            'logoAr.required'   => 'شعار الراعي غير متواجد ، برجاء اختيار شعار ثم المحاولة مرة اخري',
+            'logoAr.image'      => 'الشعار الذي ادخلته ليس صورة',
+            'logoAr.mimes'      => 'اصيغة الشعار الذي ادخلته غير صالحة ، برجاء اختيار شعار بامتداد jpg jpeg png',
+            'logoEn.image'      => 'Logo is not a valid image',
+            'logoEn.mimes'      => 'Logo extension is not supported, please choose a logo with an extension of jpg, jpeg or png'
         ]);
 
         // Logo
