@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 class ChangeLanguage extends Controller
 {
     public function changeLang(Request $request) {
-
+dd($request);
         $url = $request->url;
         
         $segment = $request->segment;
