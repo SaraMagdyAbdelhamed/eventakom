@@ -136,7 +136,7 @@
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_user">@lang('keywords.UserName')</label>
-                          <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user"><span class="master_message inherit">
+                          <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" required id="new_user"><span class="master_message inherit">
                                   @if ($errors->has('name'))
                                     {{ $errors->first('name')}}
                                     @endif</span>
@@ -146,7 +146,7 @@
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_email">@lang('keywords.UserEmail')</label>
-                          <input name="email" value="{{$user->email}}" class="master_input" type="email" placeholder="ex:john_doe@domail.com" Required id="new_email"><span class="valid-label"></span><span class="master_message inherit">
+                          <input name="email" value="{{$user->email}}" class="master_input" type="email" placeholder="ex:john_doe@domail.com" required id="new_email"><span class="valid-label"></span><span class="master_message inherit">
                                   @if ($errors->has('email'))
                                     {{ $errors->first('email')}}
                                     @endif</span>
@@ -156,7 +156,7 @@
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_phone">@lang('keywords.UserPhone')</label>
-                          <input name="phone" value="{{$user->mobile}}" class="master_input" type="number" placeholder="ex:+201234567" Required id="new_phone"><span class="master_message inherit"> @if ($errors->has('phone'))
+                          <input name="phone" value="{{$user->mobile}}" class="master_input" type="number" placeholder="ex:+201234567" required id="new_phone"><span class="master_message inherit"> @if ($errors->has('phone'))
                                     {{ $errors->first('phone')}}
                                     @endif</span>
                         </div>
@@ -384,7 +384,7 @@ e                    </div>
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_user">@lang('keywords.UserName')</label>
-                          <input name="name" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user"><span class="master_message inherit">
+                          <input name="name" class="master_input" type="text" placeholder="ex:john_doe" required id="new_user"><span class="master_message inherit">
                                   @if ($errors->has('name'))
                                     {{ $errors->first('name')}}
                                     @endif</span>
@@ -394,7 +394,7 @@ e                    </div>
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_email">@lang('keywords.UserEmail')</label>
-                          <input name="email" class="master_input" type="email" placeholder="ex:john_doe@domail.com" Required id="new_email"><span class="valid-label"></span><span class="master_message inherit">
+                          <input name="email" class="master_input" type="email" placeholder="ex:john_doe@domail.com" required id="new_email"><span class="valid-label"></span><span class="master_message inherit">
                                   @if ($errors->has('email'))
                                     {{ $errors->first('email')}}
                                     @endif</span>
@@ -404,7 +404,7 @@ e                    </div>
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_phone">@lang('keywords.UserPhone')</label>
-                          <input name="phone" class="master_input" type="number" placeholder="ex:+201234567" Required id="new_phone"><span class="master_message inherit"> @if ($errors->has('phone'))
+                          <input name="phone" class="master_input" type="number" placeholder="ex:+201234567" required id="new_phone"><span class="master_message inherit"> @if ($errors->has('phone'))
                                     {{ $errors->first('phone')}}
                                     @endif</span>
                         </div>

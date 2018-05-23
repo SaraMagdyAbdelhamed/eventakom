@@ -38,14 +38,14 @@
                 <form class="login-form" action="{{ route('login') }}" method="POST">
                     {{ csrf_field() }}
 
-                    <input name="username" class="inherit inherit bradius--small inherit" type="text" placeholder="username">
+                    <input name="username" class="inherit inherit bradius--small inherit" type="text" placeholder="username" required>
                     @if ($errors->has('username'))
                         <span class="help-block">
                             <strong>{{ $errors->first('username') }}</strong>
                         </span>
                     @endif
 
-                    <input name="password" class="inherit inherit bradius--small inherit" type="password" placeholder="password">
+                    <input name="password" class="inherit inherit bradius--small inherit" type="password" placeholder="password" required>
                      @if ($errors->has('password'))
                         <span class="help-block">
                             <strong>{{ $errors->first('password') }}</strong>
