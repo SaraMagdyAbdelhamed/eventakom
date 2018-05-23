@@ -12,7 +12,9 @@ class ChangeLanguage extends Controller
     public function changeLang(Request $request) {
 
         $url = $request->url;
+        
         $segment = $request->segment;
+        dd($segment);
         $newSegment = $segment == 'ar' ? 'en' : 'ar';
 
         $newURL  = $segment == 'ar' ? preg_replace("/ar\b/", 'en', $url) : preg_replace("/en\b/", 'ar', $url);
