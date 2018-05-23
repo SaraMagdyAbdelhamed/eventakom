@@ -117,7 +117,7 @@
                               <td><span class="cellcontent">{{$mobile->mobile ? : __('keywords.not')}}</span></td>
                               <td><span class="cellcontent">{{\App::isLocale('en') ? $mobile->country->name : \Helper::localization('geo_countries','name',$mobile->country_id,'2', $mobile->country->name)}}</span></td>
                               <td><span class="cellcontent">{{\App::isLocale('en') ? $mobile->city->name : \Helper::localization('geo_cities','name',$mobile->city_id,'2', $mobile->city->name)}}</span></td>
-                              <td><span class="cellcontent">{{\App::isLocale('en') ? ($mobile->gender ? $mobile->gender->name : '') : \Helper::localization('genders','name',$mobile->gender_id,'2', ($mobile->gender ? $mobile->gender->name : '' ) ) }}</span></td>
+                              <td><span class="cellcontent">{{\App::isLocale('en') ? ($mobile->gender ? $mobile->gender->name :  __('keywords.not')) : \Helper::localization('genders','name',$mobile->gender_id,'2', ($mobile->gender ? $mobile->gender->name :  __('keywords.not') ) ) }}</span></td>
                               <td><span class="cellcontent">{{$mobile->birthdate ? $mobile->birthdate : __('keywords.not')}}</span></td>
                               <td><span class="cellcontent">{{$mobile->created_at}}</span></td>
                               <td><span class="cellcontent">
