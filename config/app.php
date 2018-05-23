@@ -80,7 +80,7 @@ return [
 
     'locale' => 'en',
     'available_locale' => ['en', 'ar'],
-    'segment'   => $_ENV['SEGMENT'],
+    'segment'   => ENV('SEGMENT'),
 
     /*
     |--------------------------------------------------------------------------
