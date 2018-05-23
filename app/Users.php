@@ -49,4 +49,20 @@ class Users extends Authenticatable
     public function eventBackend() {
         return $this->hasMany('App\EventBackend', 'created_by');
     }
+
+    public  function CurrentRule(){
+        foreach($this->rules as $rule){
+            if($rule->pivot->rule_id != 1){
+               $result= \App::isLocale('en') ? \Helper::localization('rules','name',$rule->id,1) : \Helper::localization('rules','name',$rule->id,2);
+               $rule = ($result == 'Error')? $this->rules[0]->name : $result;
+               return $rule;
+                 }
+      }
+    }
+
+    public function IsBackEndUser(){
+        
+        dd($this->rules);
+        return ($this->rules[1]->id == 1);
+    }
 }

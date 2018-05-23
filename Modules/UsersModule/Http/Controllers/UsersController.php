@@ -44,8 +44,15 @@ class UsersController extends Controller
         $data['users'] = Users::whereHas('rules', function($q){
         $q->where('rule_id',1);
                     })->get();
-        $data['rules'] = Rules::whereIn('id',[3,4,5])->get();
+        $data['rules'] = Rules::whereIn('id',[4,5])->get();
         return view('usersmodule::backend_users',$data);
+    }
+
+    public function test(){
+       $users = Users::find(5);
+      $rules = $users->rules->toArray();
+      var_dump($rules); 
+      
     }
 
         public function mobile_status(Request $request,$id)
