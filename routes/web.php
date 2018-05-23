@@ -94,7 +94,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 // ONLY VIEWS WITH MENDATORY LANGUAGE PREFIX
 Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = null) {
-    $segment = Request::segment(\Config::get('app.segment'));
+    $segment = Request::segment(ENV('SEGMENT'));
 
     if( in_array($segment, ['en', 'ar']) ) {
         App::setLocale($segment);

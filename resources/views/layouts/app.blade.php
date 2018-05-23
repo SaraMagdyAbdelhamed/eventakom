@@ -76,7 +76,7 @@
                     <form action="{{ route('changeLang') }}" method="POST">
                       {{ csrf_field() }}
                       <input type="hidden" name="url" value="{{ Request::url() }}">
-                      <input type="hidden" name="segment" value="{{ Request::segment(\Config::get('app.segment')) }}">
+                      <input type="hidden" name="segment" value="{{ Request::segment(ENV('SEGMENT')) }}">
                         <button type="submit" class="nav-link English">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</button>
                     </form>
                     
