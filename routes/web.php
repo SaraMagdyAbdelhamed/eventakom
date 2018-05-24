@@ -133,7 +133,7 @@ Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = 
     //users.mobile
     Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users_mobile');
     Route::get('/users_backend', '\Modules\UsersModule\Http\Controllers\UsersController@index_backend')->name('users_backend');
-
+    Route::get('/test','\Modules\UsersModule\Http\Controllers\UsersController@test');
 
     // Events: Back-end
     Route::get('/events/backend', '\Modules\Events\Http\Controllers\EventsController@index');

@@ -239,7 +239,7 @@
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                     <div class="master_field">
                       <label class="master_label" for="trending_search">اضافة كلمة بحث باللغة العربية</label>
-                      <input name="arabic" class="master_input" type="text" placeholder="new Trending searches words in Arabic" Required id="trending_search">
+                      <input name="arabic" class="master_input" type="text" placeholder="new Trending searches words in Arabic" required id="trending_search">
                     </div>
                   </div>
                 </li>
@@ -247,7 +247,7 @@
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                     <div class="master_field">
                       <label class="master_label" for="trending_search">Add new keyword in English</label>
-                      <input name="english" class="master_input" type="text" placeholder="new Trending searches words in English" Required id="trending_search">
+                      <input name="english" class="master_input" type="text" placeholder="new Trending searches words in English" required id="trending_search">
                     </div>
                   </div>
                 </li>
@@ -288,7 +288,7 @@
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                     <div class="master_field">
                       <label class="master_label" for="trending_search">اضافة كلمة بحث باللغة العربية</label>
-                      <input name="arabic" class="master_input" type="text" placeholder="new Trending searches words in Arabic" Required id="arabicEdit">
+                      <input name="arabic" class="master_input" type="text" placeholder="new Trending searches words in Arabic" required id="arabicEdit">
                     </div>
                   </div>
                 </li>
@@ -296,7 +296,7 @@
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                     <div class="master_field">
                       <label class="master_label" for="trending_search">Add new keyword in English</label>
-                      <input name="english" class="master_input" type="text" placeholder="new Trending searches words in English" Required id="englishEdit">
+                      <input name="english" class="master_input" type="text" placeholder="new Trending searches words in English" required id="englishEdit">
                     </div>
                   </div>
                 </li>

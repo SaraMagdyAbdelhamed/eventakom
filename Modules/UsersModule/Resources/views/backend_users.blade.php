@@ -87,7 +87,6 @@
                             <tr class="bgcolor--gray_mm color--gray_d">
                               <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
                               <th><span class="cellcontent">@lang('keywords.serialNo')</span></th>
-                              <th><span class="cellcontent">@lang('keywords.Name')</span></th>
                               <th><span class="cellcontent">@lang('keywords.UserName')</span></th>
                               <th><span class="cellcontent">@lang('keywords.Email')</span></th>
                               <th><span class="cellcontent">@lang('keywords.Phone')</span></th>
@@ -102,18 +101,13 @@
                             @foreach($users as $user)
                             <tr data-user-id="{{$user->id}}">
                               <td><span class="cellcontent"></span></td>
-                              <td><span class="cellcontent">{{$user->id}}</span></td>
-                              <td><span class="cellcontent">{{$user->first_name}}</span></td>
+                              <td><span class="cellcontent">{{$loop->index}}</span></td>
                               <td><span class="cellcontent">{{$user->username}}</span></td>
                               <td><span class="cellcontent">{{$user->email}}</span></td>
                               <td><span class="cellcontent">{{$user->mobile}}</span></td>
                               <td><span class="cellcontent"><img src = "{{asset(''.$user->photo)}}" , class = " img-in-table"></span></td>
                               <td><span class="cellcontent">
-                                @foreach($user->rules as $rule)
-                                @if($rule->pivot->rule_id != 1)
-                                {{\App::isLocale('en') ? \Helper::localization('rules','name',$rule->rule_id,'1') : \Helper::localization('rules','name',$rule->rule_id,'2')}}
-                                @endif
-                                @endforeach
+                                {{$user->CurrentRule()}}
                               </span></td>
                               <td><span class="cellcontent">
                                 @if($user->is_active==1)
@@ -136,7 +130,11 @@
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_user">@lang('keywords.UserName')</label>
-                          <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user"><span class="master_message inherit">
+<<<<<<< HEAD
+                          <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" required id="new_user"><span class="master_message inherit">
+=======
+                          <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user" onkeypress="return RestrictSpace()"><span class="master_message inherit">
+>>>>>>> 112eecb2181b0ecd4fa98b76cbcbf034e3a1425a
                                   @if ($errors->has('name'))
                                     {{ $errors->first('name')}}
                                     @endif</span>
@@ -146,7 +144,7 @@
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_email">@lang('keywords.UserEmail')</label>
-                          <input name="email" value="{{$user->email}}" class="master_input" type="email" placeholder="ex:john_doe@domail.com" Required id="new_email"><span class="valid-label"></span><span class="master_message inherit">
+                          <input name="email" value="{{$user->email}}" class="master_input" type="email" placeholder="ex:john_doe@domail.com" required id="new_email"><span class="valid-label"></span><span class="master_message inherit">
                                   @if ($errors->has('email'))
                                     {{ $errors->first('email')}}
                                     @endif</span>
@@ -156,7 +154,7 @@
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_phone">@lang('keywords.UserPhone')</label>
-                          <input name="phone" value="{{$user->mobile}}" class="master_input" type="number" placeholder="ex:+201234567" Required id="new_phone"><span class="master_message inherit"> @if ($errors->has('phone'))
+                          <input name="phone" value="{{$user->mobile}}" class="master_input" type="number" placeholder="ex:+201234567" required id="new_phone"><span class="master_message inherit"> @if ($errors->has('phone'))
                                     {{ $errors->first('phone')}}
                                     @endif</span>
                         </div>
@@ -368,7 +366,8 @@
                           </div>
                         </div>
                       </div>
-e                    </div>
+                      <!-- <button id="delete-test">Delete Tests</button> -->
+                    </div>
                   </div>
                 </div><br>
               </div>
@@ -384,7 +383,7 @@ e                    </div>
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_user">@lang('keywords.UserName')</label>
-                          <input name="name" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user"><span class="master_message inherit">
+                          <input name="name" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user" onkeypress="return RestrictSpace()"><span class="master_message inherit">
                                   @if ($errors->has('name'))
                                     {{ $errors->first('name')}}
                                     @endif</span>
@@ -394,7 +393,7 @@ e                    </div>
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_email">@lang('keywords.UserEmail')</label>
-                          <input name="email" class="master_input" type="email" placeholder="ex:john_doe@domail.com" Required id="new_email"><span class="valid-label"></span><span class="master_message inherit">
+                          <input name="email" class="master_input" type="email" placeholder="ex:john_doe@domail.com" required id="new_email"><span class="valid-label"></span><span class="master_message inherit">
                                   @if ($errors->has('email'))
                                     {{ $errors->first('email')}}
                                     @endif</span>
@@ -404,7 +403,7 @@ e                    </div>
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_phone">@lang('keywords.UserPhone')</label>
-                          <input name="phone" class="master_input" type="number" placeholder="ex:+201234567" Required id="new_phone"><span class="master_message inherit"> @if ($errors->has('phone'))
+                          <input name="phone" class="master_input" type="number" placeholder="ex:+201234567" required id="new_phone"><span class="master_message inherit"> @if ($errors->has('phone'))
                                     {{ $errors->first('phone')}}
                                     @endif</span>
                         </div>
@@ -455,15 +454,25 @@ e                    </div>
             </div>
           </div>
 @section('js')
-                  <script type="text/javascript">
+    <script type="text/javascript">
+     function RestrictSpace() {
+          if (event.keyCode == 32) {
+              return false;
+          }
+      }
       $(document).ready(function(){
         // "use strict";
+        //diable space in enter
+       
+
+
+
         $('.btn-warning-confirm').click(function(){
           var user_id = $(this).closest('tr').attr('data-user-id');
           var _token = '{{csrf_token()}}';
           swal({
             title: "Are you sure?",
-            text: "You will not be able to recover this imaginary file!",
+            text: "You will not be able to recover this user!",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#281160',
@@ -479,7 +488,7 @@ e                    </div>
               $('tr[data-user-id='+user_id+']').fadeOut();
             }
           });
-            swal("Deleted!", "Your imaginary file has been deleted!", "success");
+            swal("Deleted!", "Your user  has been deleted!", "success");
           });
         });
 

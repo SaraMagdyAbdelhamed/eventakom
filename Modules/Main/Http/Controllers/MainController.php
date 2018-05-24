@@ -671,7 +671,7 @@ class MainController extends Controller
         ]);
 
         try {
-            $notification = new SystemSetting;
+            $notification = SystemSetting::where('name', 'notification_distance')->first();
             $notification->name = 'notification_distance';
             $notification->value = $request->notification .','. $request->measurement;
             $notification->save();

@@ -244,7 +244,7 @@
                     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                         <div class="master_field">
                         <label class="master_label" for="cat_id_ar">اضف الحدث باللغة العربية</label>
-                        <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="cat_id_ar" >
+                        <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="cat_id_ar" required >
                         </div>
                     </div>
                     </li>
@@ -252,7 +252,7 @@
                     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                         <div class="master_field">
                         <label class="master_label" for="cat_id_en">Add event name in English</label>
-                        <input name="englishContent" class="master_input" type="text" placeholder="new categories in English" id="cat_id_en" >
+                        <input name="englishContent" class="master_input" type="text" placeholder="new categories in English" id="cat_id_en" required >
                         </div>
                     </div>
                     </li>
@@ -294,7 +294,7 @@
                     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                         <div class="master_field">
                         <label class="master_label" for="cat_id_ar">اضف الحدث باللغة العربية</label>
-                        <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="arabicEdit" >
+                        <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="arabicEdit" required >
                         </div>
                     </div>
                     </li>
@@ -302,7 +302,7 @@
                     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                         <div class="master_field">
                         <label class="master_label" for="cat_id_en">Add event name in English</label>
-                        <input name="englishContent" class="master_input" type="text" placeholder="new categories in English" id="englishEdit" >
+                        <input name="englishContent" class="master_input" type="text" placeholder="new categories in English" id="englishEdit" required >
                         </div>
                     </div>
                     </li>

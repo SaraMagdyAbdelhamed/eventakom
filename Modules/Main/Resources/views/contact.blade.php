@@ -211,7 +211,7 @@
           
             <div class="master_field">
               <label class="master_label" for="client_email">@lang('keywords.email')</label>
-              <input name="email" value="{{ $email }}" class="master_input" type="email" placeholder="ex:info@eventakom.com" id="client_email"><span class="valid-label"></span>
+              <input name="email" value="{{ $email }}" class="master_input" type="email" placeholder="ex:info@eventakom.com" id="client_email" required ><span class="valid-label"></span>
             </div>
         </div>
         <div class="col-xs-12">
