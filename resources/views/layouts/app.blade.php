@@ -22,7 +22,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- =============== APP TITLE ===============-->
-    <title>Eventakom | ايفينتاكوم</title>
+    <title>@lang('keywords.website_name')</title>
     <!-- =============== APP STYLES ===============-->
     <link rel="stylesheet" href="{{ asset( App::isLocale('ar') ? 'css/style__0__rtl.min.css' : 'css/style__0__ltr.min.css') }}">
     <!-- =============== APP SCRIPT ===============-->
