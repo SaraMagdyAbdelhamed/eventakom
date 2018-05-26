@@ -160,7 +160,7 @@
                   </span>
                 </td>
                 <td>
-                  <span class="cellcontent">{{$mobile->email ? : __('keywords.not')}}</span>
+                  <span class="cellcontent" style="text-transform: lowercase;">{{$mobile->email ? : __('keywords.not')}}</span>
                 </td>
                 <td>
                   <span class="cellcontent">{{$mobile->tele_code ? : __('keywords.not')}}</span>
