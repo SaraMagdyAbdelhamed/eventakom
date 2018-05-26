@@ -29,7 +29,7 @@
           <a class="{{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">Delete selected</a>
         </div>
         <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-          <form role="form" action="{{ '/'.Helper::getUserLocale().'/mobile_filter' }}" method="GET" accept-charset="utf-8">
+          <form role="form" action="{{ route('mobile_filter') }}" method="POST" accept-charset="utf-8">
             {{csrf_field()}}
             <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
             <div>

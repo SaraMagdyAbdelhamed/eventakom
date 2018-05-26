@@ -28,7 +28,7 @@
               <thead>
                 <tr class="bgcolor--gray_mm color--gray_d">
                   <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
-                  <th><span class="cellcontent">serial No</span></th>
+                  <th><span class="cellcontent">@lang('keywords.serialNo') </span></th>
                   <th><span class="cellcontent">Trending searches words</span></th>
                   <th><span class="cellcontent">actions</span></th>
                 </tr>
@@ -40,10 +40,10 @@
                     <tr data-id="{{ $trend->id }}">
                       <td><span class="cellcontent" data-id="{{ $trend->id }}"></span></td>
                       <td><span class="cellcontent">{{ $trend->id }}</span></td>
-                      <td><span class="cellcontent">{{ $trend->name ? (App::isLocale('en') ? $trend->name : Helper::localization('trending_keywords', 'trends', $trend->id, 2) ) : __('keywords.not') }}</span></td>
+                      <td><span class="cellcontent">{{ $trend->name ? (App::isLocale('en') ? $trend->name : Helper::localization('trending_keywords', 'name', $trend->id, 2) ) : __('keywords.not') }}</span></td>
                       <td>
                         <span class="cellcontent">
-                          <a href="#popupModal_2" data-id="{{ $trend->id }}" data-english="{{ $trend->name ? $trend->name : '' }}" data-arabic="{{ Helper::localization('trending_keywords', 'trends', $trend->id, 2) }}" class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
+                          <a href="#popupModal_2" data-id="{{ $trend->id }}" data-english="{{ $trend->name ? $trend->name : '' }}" data-arabic="{{ Helper::localization('trending_keywords', 'name', $trend->id, 2) }}" class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
                           <a data-id="{{ $trend->id }}" href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white deleteRecord"><i class = "fa  fa-trash-o"></i></a>
                         </span>
                       </td>

@@ -12,15 +12,6 @@
 |
 */
 
-
-// Set locale based on prefix value
-if( in_array(Request::segment(1), ['en', 'ar']) ) {
-    App::setLocale(Request::segment(1));
-    Session::put('locale', Request::segment(1));
-} else {
-    App::setLocale('en');
-}
-
 // first route
 Route::get('/', function () {
     return redirect('/login');
@@ -29,9 +20,9 @@ Route::get('/', function () {
 // login form route
 Route::get('/login', function($lang = null) {
     App::setlocale('en');
-
     return view('auth.login');
 });
+
 Route::get('/test_connection', 'HomeController@test_connection')->name('test_connection');   // for testing purposes
 
 // change language
@@ -92,52 +83,44 @@ Route::group(['middleware' => 'auth'], function() {
 });
 
 // ONLY VIEWS WITH MENDATORY LANGUAGE PREFIX
-Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = null) {
-    $segment = Request::segment(ENV('SEGMENT'));
-
-    if( in_array($segment, ['en', 'ar']) ) {
-        App::setLocale($segment);
-        Session::put('locale', $segment);
-    } else {
-        App::setLocale('en');
-    }
+Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
 
     // about us
-    Route::get('/about', '\Modules\Main\Http\Controllers\MainController@about');    
+    Route::get('/about', '\Modules\Main\Http\Controllers\MainController@about')->name('about');    
 
     // terms & conditions
-    Route::get('/terms', '\Modules\Main\Http\Controllers\MainController@terms');
+    Route::get('/terms', '\Modules\Main\Http\Controllers\MainController@terms')->name('terms');
 
     // privacy & policy
-    Route::get('/privacy', '\Modules\Main\Http\Controllers\MainController@privacy');
+    Route::get('/privacy', '\Modules\Main\Http\Controllers\MainController@privacy')->name('privacy');
 
     // contact us
-    Route::get('/contact', '\Modules\Main\Http\Controllers\MainController@contact');
+    Route::get('/contact', '\Modules\Main\Http\Controllers\MainController@contact')->name('contact');
     
     // event categories
-    Route::get('/event/categories', '\Modules\Main\Http\Controllers\MainController@event_category');
+    Route::get('/event/categories', '\Modules\Main\Http\Controllers\MainController@event_category')->name('event.categories');
 
     // famous attraction
-    Route::get('/famous/attraction', '\Modules\Main\Http\Controllers\MainController@famous');
+    Route::get('/famous/attraction', '\Modules\Main\Http\Controllers\MainController@famous')->name('famous.attraction');
 
     // sponsors
-    Route::get('/sponsors', '\Modules\Main\Http\Controllers\MainController@sponsors');
+    Route::get('/sponsors', '\Modules\Main\Http\Controllers\MainController@sponsors')->name('sponsors');
 
     // Trending searches
-    Route::get('/trends', '\Modules\Main\Http\Controllers\MainController@trends');
+    Route::get('/trends', '\Modules\Main\Http\Controllers\MainController@trends')->name('trends');
 
     // Notifications
-    Route::get('/notifications', '\Modules\Main\Http\Controllers\MainController@notifications');
+    Route::get('/notifications', '\Modules\Main\Http\Controllers\MainController@notifications')->name('notifications');
 
     //users.mobile
     Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users_mobile');
     Route::get('/users_backend', '\Modules\UsersModule\Http\Controllers\UsersController@index_backend')->name('users_backend');
-    Route::get('/mobile_filter', '\Modules\UsersModule\Http\Controllers\UsersController@mobile_filter')->name('mobile_filter');
+    Route::post('/mobile_filter', '\Modules\UsersModule\Http\Controllers\UsersController@mobile_filter')->name('mobile_filter');
 
     Route::get('/test','\Modules\UsersModule\Http\Controllers\UsersController@test');
 
     // Events: Back-end
-    Route::get('/events/backend', '\Modules\Events\Http\Controllers\EventsController@index');
+    Route::get('/events/backend', '\Modules\Events\Http\Controllers\EventsController@index')->name('event_backend');
 
     
 });

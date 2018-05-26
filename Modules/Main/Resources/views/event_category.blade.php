@@ -28,7 +28,7 @@
               <thead>
                 <tr class="bgcolor--gray_mm color--gray_d">
                   <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
-                  <th><span class="cellcontent">serial No</span></th>
+                  <th><span class="cellcontent">@lang('keywords.serialNo') </span></th>
                   <th><span class="cellcontent">Events category</span></th>
                   <th><span class="cellcontent">actions</span></th>
                 </tr>

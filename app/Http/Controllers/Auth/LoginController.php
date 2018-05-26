@@ -50,7 +50,7 @@ class LoginController extends Controller
             $user->last_login = Carbon::now()->toDateTimeString();
             $user->timezone = $request->timezone;
             $user->save(); 
-            return redirect($userLocale.'/about');
+            return redirect('/about');
 
         } else {
             return redirect('/login')->with('error', 'من فضلك ، تأكد من الاسم وكلمة السر ثم حاول ثانيةَ');
