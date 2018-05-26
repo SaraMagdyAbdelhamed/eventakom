@@ -23,80 +23,87 @@ use App\Age_Ranges;
 
 class UsersController extends Controller
 {
-     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     /**
      * Display a listing of the resource.
      * @return Response
      */
     public function index()
     {
-        $data['mobiles'] = Users::whereHas('rules', function($q){
-        $q->where('rule_id',2);
-                    })->get();
-        $data['countries'] = Countries::all() ; 
-        $data['cities'] = Cities::all() ; 
+        $data['mobiles'] = Users::whereHas('rules', function ($q) {
+            $q->where('rule_id', 2);
+        })->get();
+        $data['countries'] = Countries::all();
+        $data['cities'] = Cities::all();
         $data['age_ranges'] = Age_Ranges::all();
-        return view('usersmodule::mobile_users',$data);
+        return view('usersmodule::mobile_users', $data);
     }
 
-        public function index_backend()
+    public function index_backend()
     {
-        $data['users'] = Users::whereHas('rules', function($q){
-        $q->where('rule_id',1);
-                    })->get();
-        $data['rules'] = Rules::whereIn('id',[4,5])->get();
-        return view('usersmodule::backend_users',$data);
+        $data['users'] = Users::whereHas('rules', function ($q) {
+            $q->where('rule_id', 1);
+        })->get();
+        $data['rules'] = Rules::whereIn('id', [4, 5])->get();
+        return view('usersmodule::backend_users', $data);
     }
 
-    public function test(){
-       $users = Users::find(5);
-      $rules = $users->rules->toArray();
-      var_dump($rules); 
-      
+    public function test()
+    {
+        $users = Users::find(5);
+        $rules = $users->rules->toArray();
+        var_dump($rules);
+
     }
 
-        public function mobile_status(Request $request,$id)
+    public function mobile_status(Request $request, $id)
     {
         $user = Users::find($id);
         $user->is_active = $request->is_active;
         $user->save();
-        return redirect()->back()->with('success','تم تغيير الحاله بنجاح');
+        return redirect()->back()->with('success', 'تم تغيير الحاله بنجاح');
     }
 
     public function mobile_filter(Request $request)
     {
-        $data['mobiles'] =Users::where(function($q) use($request){
-            $q->whereHas('rules', function($q){
-                $q->where('rule_id',2);
+        $data['mobiles'] = Users::where(function ($q) use ($request) {
+            $q->whereHas('rules', function ($q) {
+                $q->where('rule_id', 2);
             });
 
-            if(isset($request->countries)) {
-                $q->whereIn('country_id',$request->countries);
+            if (isset($request->countries)) {
+                $q->whereIn('country_id', $request->countries);
             }
-            if(isset($request->cities)) {
-                $q->whereIn('city_id',$request->cities);
+            if (isset($request->cities)) {
+                $q->whereIn('city_id', $request->cities);
             }
-            if(isset($request->age)){
+            if (isset($request->age)) {
                 $range = Age_Ranges::find($request->age);
-                $to =  date('Y')-$range->from;
-                $from = date('Y')-$range->to;
+                $to = date('Y') - $range->from;
+                $from = date('Y') - $range->to;
                 $to_date = date("$to-12-31 23:59:59");
                 $from_date = date("$from-01-01 00:00:00");
-                $q->whereBetween('birthdate',array($from_date,$to_date))->get();
+                $q->whereBetween('birthdate', array($from_date, $to_date))->get();
             }
 
-            if(isset($request->gender)) {
-                $q->whereIn('gender_id',$request->gender);
+            if (isset($request->gender)) {
+                $q->whereIn('gender_id', $request->gender);
             }
 
         })->get();
 
-        $data['countries'] = Countries::all() ; 
-        $data['cities'] = Cities::all() ; 
+        $data['countries'] = Countries::all();
+        $data['cities'] = Cities::all();
         $data['age_ranges'] = Age_Ranges::all();
-        return view('usersmodule::mobile_users',$data);
+
+        return view('usersmodule::mobile_users', $data);
+        // return redirect()->back()
+        //             ->with('mobiles', $data['mobiles'])
+        //             ->with('countries', $data['countries'])
+        //             ->with('cities', $data['cities'])
+        //             ->with('age_ranges', $data['age_ranges']);   
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -115,37 +122,37 @@ class UsersController extends Controller
     public function backend_store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'=>'required',
-            'rule'=>'required',
-            'email'=>'required|email|max:40',
-            'phone'=>'required|digits_between:1,14',
-            'image'=>'required|image|mimes:jpg,jpeg,png|max:5120',
+            'name' => 'required',
+            'rule' => 'required',
+            'email' => 'required|email|max:40',
+            'phone' => 'required|digits_between:1,14',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         if ($validator->fails()) {
             return redirect('ar/users_backend#popupModal_1')
-            ->withErrors($validator)
-            ->withInput();
-    }
+                ->withErrors($validator)
+                ->withInput();
+        }
 
 
-    if($request->hasFile('image')){
-        $destinationPath='backend_users';
-        $fileNameToStore=$destinationPath.'/'.$request->name.time().rand(111,999).'.'.Input::file('image')->getClientOriginalExtension();
+        if ($request->hasFile('image')) {
+            $destinationPath = 'backend_users';
+            $fileNameToStore = $destinationPath . '/' . $request->name . time() . rand(111, 999) . '.' . Input::file('image')->getClientOriginalExtension();
             // dd($fileNameToStore);
-        Input::file('image')->move($destinationPath,$fileNameToStore);
-    }
+            Input::file('image')->move($destinationPath, $fileNameToStore);
+        }
         $user = new Users;
-        $user->username= $request->name;
+        $user->username = $request->name;
         $user->email = $request->email;
         $user->mobile = $request->phone;
         $user->is_active = $request->status;
         $user->photo = $fileNameToStore;
         $user->save();
-        $user->rules()->attach([$request->rule,1]);
+        $user->rules()->attach([$request->rule, 1]);
 
         return redirect()->back();
-}
+    }
 
     /**
      * Show the specified resource.
@@ -160,36 +167,36 @@ class UsersController extends Controller
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function backend_edit($id,Request $request)
+    public function backend_edit($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'=>'required',
-            'rule'=>'required',
-            'email'=>'required|email|max:40',
-            'phone'=>'required|digits_between:1,14',
-            'image'=>'image|mimes:jpg,jpeg,png|max:5120',
+            'name' => 'required',
+            'rule' => 'required',
+            'email' => 'required|email|max:40',
+            'phone' => 'required|digits_between:1,14',
+            'image' => 'image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()
-            ->withErrors($validator)
-            ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
         $user = Users::find($id);
-        if($request->hasFile('image')){
-        $destinationPath='backend_users';
-            $fileNameToStore = $destinationPath.'/'.$request->username.time().rand(111,999).'.'.Input::file('image')->getClientOriginalExtension();
-            File::delete($user->photo); 
-            Input::file('image')->move($destinationPath,$fileNameToStore);
-            $user->photo = $fileNameToStore;   
+        if ($request->hasFile('image')) {
+            $destinationPath = 'backend_users';
+            $fileNameToStore = $destinationPath . '/' . $request->username . time() . rand(111, 999) . '.' . Input::file('image')->getClientOriginalExtension();
+            File::delete($user->photo);
+            Input::file('image')->move($destinationPath, $fileNameToStore);
+            $user->photo = $fileNameToStore;
         }
-        $user->username= $request->name;
+        $user->username = $request->name;
         $user->email = $request->email;
         $user->mobile = $request->phone;
         $user->is_active = $request->status;
         $user->save();
         $user->rules()->detach();
-        $user->rules()->attach([$request->rule,1]);
+        $user->rules()->attach([$request->rule, 1]);
 
         return redirect()->back();
     }
@@ -213,12 +220,11 @@ class UsersController extends Controller
         $user->delete();
     }
 
-        public function destroy_all()
+    public function destroy_all()
     {
         $ids = $_POST['ids'];
-        foreach($ids as $id)
-        {
+        foreach ($ids as $id) {
             Users::find($id)->delete();
-        } 
+        }
     }
 }
