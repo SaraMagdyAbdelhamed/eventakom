@@ -172,7 +172,7 @@ class MainController extends Controller
 
         // arabic version
         try {
-            Helper::add_localization(15, 'interests', $event->id, $request->arabicContent, 2);
+            Helper::add_localization(15, 'name', $event->id, $request->arabicContent, 2);
         } catch(\Exception $ex) {
             $event->delete();
             Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
@@ -209,7 +209,7 @@ class MainController extends Controller
 
         // arabic version
         try {
-            Helper::edit_entity_localization('interests', 'interests', $request->id, 2, $request->arabicContent);
+            Helper::edit_entity_localization('interests', 'name', $request->id, 2, $request->arabicContent);
         } catch(\Exception $ex) {
             Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
             return redirect()->back();

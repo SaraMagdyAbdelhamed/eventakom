@@ -84,7 +84,6 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::post('/mobile_status/{id}', '\Modules\UsersModule\Http\Controllers\UsersController@mobile_status')->name('mobile_status');
 
-    Route::post('/mobile_filter', '\Modules\UsersModule\Http\Controllers\UsersController@mobile_filter')->name('mobile_filter');
 
     Route::post('/backend_store', '\Modules\UsersModule\Http\Controllers\UsersController@backend_store')->name('backend_store');
     Route::post('/backend_edit/{id}', '\Modules\UsersModule\Http\Controllers\UsersController@backend_edit')->name('backend_edit');
@@ -133,6 +132,8 @@ Route::group( ['prefix' => '{lang?}', 'middleware' => 'auth'], function($lang = 
     //users.mobile
     Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users_mobile');
     Route::get('/users_backend', '\Modules\UsersModule\Http\Controllers\UsersController@index_backend')->name('users_backend');
+    Route::get('/mobile_filter', '\Modules\UsersModule\Http\Controllers\UsersController@mobile_filter')->name('mobile_filter');
+
     Route::get('/test','\Modules\UsersModule\Http\Controllers\UsersController@test');
 
     // Events: Back-end

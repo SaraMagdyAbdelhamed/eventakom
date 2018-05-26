@@ -42,7 +42,7 @@
                             <td><span class="cellcontent" id="chbox" data-id="{{ $event->id }}"></span></td>
                             <td><span class="cellcontent">{{ $event->id }}</span></td>
                             <td><span class="cellcontent">
-                                {{ $event->name ? (App::isLocale('en') ? $event->name : Helper::localization('interests', 'interests', $event->id, 2) ) : __('keywords.not') }}
+                                {{ $event->name ? (App::isLocale('en') ? $event->name : Helper::localization('interests', 'name', $event->id, 2) ) : __('keywords.not') }}
                             </span></td>
                             <td>
                                 <span class="cellcontent">

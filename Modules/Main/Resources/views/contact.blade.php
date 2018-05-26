@@ -22,7 +22,7 @@
       <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="main-title-conts">
           <div class="caption">
-            <h3 class="inherit">@lang('keywords.EditContact')</h3>
+            <h3 class="inherit"></h3>
           </div>
         </div>
         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
@@ -30,7 +30,7 @@
             <table class="verticaltable table-master">
               <tr>
                 <th><span class="cellcontent">@lang('keywords.email')</span></th>
-                <td><span class="cellcontent">{{ $email }}</span></td>
+                <td><span class="cellcontent" style="text-transform: lowercase;">{{ $email }}</span></td>
               </tr>
             </table>
             <div class="remodal log-custom" data-remodal-id="log_linkX" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
