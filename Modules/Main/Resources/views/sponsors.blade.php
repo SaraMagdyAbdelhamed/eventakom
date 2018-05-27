@@ -28,7 +28,7 @@
               <thead>
                 <tr class="bgcolor--gray_mm color--gray_d">
                   <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
-                  <th><span class="cellcontent">serial No</span></th>
+                  <th><span class="cellcontent">@lang('keywords.serialNo') </span></th>
                   <th><span class="cellcontent">Sponsors logo</span></th>
                   <th><span class="cellcontent">Sponsors name</span></th>
                   <th><span class="cellcontent">Actions</span></th>
@@ -43,10 +43,10 @@
                             <td><span class="cellcontent" data-id="{{ $sponsor->id }}"></span></td>
                             <td><span class="cellcontent">{{ $sponsor->id }}</span></td>
                             <td><span class="cellcontent"><img src="{{ \App::isLocale('ar') ?  asset($sponsor->logo_ar ? $sponsor->logo_ar : '') : asset($sponsor->logo_en ? $sponsor->logo_en : '') }}" class = " img-in-table" alt="@lang('keywords.noImage')"></span></td>
-                            <td><span class="cellcontent">{{ App::isLocale('en') ? $sponsor->name : Helper::localization('sponsors', 'sponsors', $sponsor->id, 2) }}</span></td>
+                            <td><span class="cellcontent">{{ App::isLocale('en') ? $sponsor->name : Helper::localization('sponsors', 'name', $sponsor->id, 2) }}</span></td>
                             <td>
                                 <span class="cellcontent">
-                                    <a href="#popupModal_2" data-id="{{ $sponsor->id }}" data-english-sponsor="{{ $sponsor->name }}" data-arabic-sponsor="{{  Helper::localization('sponsors', 'sponsors', $sponsor->id, 2) }}" class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
+                                    <a href="#popupModal_2" data-id="{{ $sponsor->id }}" data-english-sponsor="{{ $sponsor->name }}" data-arabic-sponsor="{{  Helper::localization('sponsors', 'name', $sponsor->id, 2) }}" class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
                                     <a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white deleteRecord" data-id="{{ $sponsor->id }}"><i class = "fa  fa-trash-o"></i></a>
                                 </span>
                             </td>
@@ -402,7 +402,8 @@
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#281160',
-            confirmButtonText: 'Yes, delete it!',
+            confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
+            cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
             closeOnConfirm: false
             },
             function(isConfirm){
@@ -453,7 +454,8 @@
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#281160',
-            confirmButtonText: 'Yes, delete it!',
+            confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
+            cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
             closeOnConfirm: false
             },
             function(isConfirm){

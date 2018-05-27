@@ -47,7 +47,7 @@
         'Users' => 'Users',
         'MobileAppUsers' => 'Mobile Application Users',
         'BackendUsers' => 'Backend Users',
-        'serialNo'=>'serial No',
+        'serialNo'=>'Serial No',
         'UserName'=>'UserName',
         'Name'=>'Name',
         'Image'=>'Image',

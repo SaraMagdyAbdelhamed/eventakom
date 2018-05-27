@@ -11,20 +11,14 @@ class ChangeLanguage extends Controller
 {
     public function changeLang(Request $request) {
         $url = $request->url;
-        $segment = $request->segment; 
-        $newSegment = $segment == 'ar' ? 'en' : 'ar';
+        $locale = $request->locale;
 
-        $newURL  = $segment == 'ar' ? preg_replace("/ar\b/", 'en', $url) : preg_replace("/en\b/", 'ar', $url);
+        $user = Auth::user();
+        $user->lang_id = $locale == 'ar' ? 1 : 2;
+        $user->save();
 
-        if( in_array($segment, ['en', 'ar']) ) {
+        \App::setLocale( \Helper::getUserLocale() );
 
-            $user = Auth::user();
-            $user->lang_id = ($segment == 'ar') ? 1 : 2;
-            $user->save();
-
-            return \Redirect::to($newURL);
-        } else {
-            \App::setLocale('en');
-        }
+        return \Redirect::to($url);
     }
 }
