@@ -2,12 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use Helper;
 use Closure;
 
 class SetLocale
 {
-    private $locales = ['ar', 'en'];
-
     /**
      * Handle an incoming request.
      *
@@ -15,13 +14,11 @@ class SetLocale
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $locale)
+    public function handle($request, Closure $next)
     {
-        if (array_search($locale, $this->locales) === false) {
-            return redirect('/');
-        }
-
+        $locale = Helper::getUserLocale();
         \App::setLocale($locale);
+        \Session::put('locale', $locale);
 
         return $next($request);
     }

@@ -28,7 +28,7 @@
               <thead>
                 <tr class="bgcolor--gray_mm color--gray_d">
                   <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
-                  <th><span class="cellcontent">serial No</span></th>
+                  <th><span class="cellcontent">@lang('keywords.serialNo') </span></th>
                   <th><span class="cellcontent">Events category</span></th>
                   <th><span class="cellcontent">actions</span></th>
                 </tr>
@@ -46,7 +46,7 @@
                             </span></td>
                             <td>
                                 <span class="cellcontent">
-                                    <a href="#popupModal_2" data-id="{{ $event->id }}" data-english="{{ $event->name }}" data-arabic="{{ Helper::localization('interests', 'interests', $event->id, 2) }}" class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
+                                    <a href="#popupModal_2" data-id="{{ $event->id }}" data-english="{{ $event->name }}" data-arabic="{{ Helper::localization('interests', 'name', $event->id, 2) }}" class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
                                     <a data-id="{{ $event->id }}" href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white deleteRecord"><i class = "fa  fa-trash-o"></i></a>
                                 </span>
                             </td>
@@ -244,7 +244,7 @@
                     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                         <div class="master_field">
                         <label class="master_label" for="cat_id_ar">اضف الحدث باللغة العربية</label>
-                        <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="cat_id_ar" required >
+                        <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="cat_id_ar" required oninvalid="this.setCustomValidity('من فضلك لا تترك هذا الحقل فارغاَ')">
                         </div>
                     </div>
                     </li>
@@ -349,7 +349,8 @@
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#281160',
-            confirmButtonText: 'Yes, delete it!',
+            confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
+            cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
             closeOnConfirm: false
             },
             function(isConfirm){
@@ -399,7 +400,8 @@
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#281160',
-            confirmButtonText: 'Yes, delete it!',
+            confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
+            cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
             closeOnConfirm: false
             },
             function(isConfirm){

@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
         if (Auth::guard($guard)->check()) {
             // \App::setLocale(\Request::segment(1));
             // return redirect(\Request::segment(1).'/main');
-            return redirect( Session::get('locale').'/about' );
+            return redirect('/about' );
         }
 
         return $next($request);

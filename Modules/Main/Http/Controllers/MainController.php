@@ -296,7 +296,7 @@ class MainController extends Controller
 
         // arabic version
         try {
-            Helper::add_localization(12, 'famous_attractions', $event->id, $request->arabicContent, 2);
+            Helper::add_localization(12, 'name', $event->id, $request->arabicContent, 2);
         } catch(\Exception $ex) {
             $event->delete();
             Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
@@ -333,7 +333,7 @@ class MainController extends Controller
 
         // arabic version
         try {
-            Helper::edit_entity_localization('famous_attractions', 'famous_attractions', $request->id, 2, $request->arabicContent);
+            Helper::edit_entity_localization('famous_attractions', 'name', $request->id, 2, $request->arabicContent);
         } catch(\Exception $ex) {
             Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
             return redirect()->back();
@@ -446,7 +446,7 @@ class MainController extends Controller
 
         // arabic
         try {
-            Helper::add_localization(11, 'sponsors', $sponsor->id, $request->arabic, 2);
+            Helper::add_localization(11, 'name', $sponsor->id, $request->arabic, 2);
         } catch (\Exception $ex) {
             $sponsor->delete();
             dd($ex);
@@ -504,7 +504,7 @@ class MainController extends Controller
 
         // arabic
         try {
-            Helper::edit_entity_localization('sponsors', 'sponsors', $sponsor->id, 2, $request->arabic);
+            Helper::edit_entity_localization('sponsors', 'name', $sponsor->id, 2, $request->arabic);
         } catch (\Exception $ex) {
             $sponsor->delete();
             dd($ex);
@@ -568,7 +568,7 @@ class MainController extends Controller
 
         // insert arabic
         try {
-            Helper::add_localization(16, 'trends', $trend->id, $request->arabic, 2);
+            Helper::add_localization(16, 'name', $trend->id, $request->arabic, 2);
         } catch(\Exception $ex) {
             dd($ex);
             Session::flash('warning', 'لا يمكن الاضافة');
@@ -600,7 +600,7 @@ class MainController extends Controller
 
         // arabic
         try {
-            Helper::edit_entity_localization('trending_keywords', 'trends', $trend->id, 2, $request->arabic);
+            Helper::edit_entity_localization('trending_keywords', 'name', $trend->id, 2, $request->arabic);
         } catch (\Exception $ex) {
             dd($ex);
             Session::flash('warning', 'لا يمكن التعديل باللغة العربية');
@@ -657,7 +657,14 @@ class MainController extends Controller
     /** NOTIFICATIONS */
     // view notifications
     public function notifications() {
-        $chunks = explode(',', SystemSetting::where('name', 'notification_distance')->first()->value);
+
+        if( SystemSetting::where('name', 'notification_distance')->first() ) {
+            $value =  SystemSetting::where('name', 'notification_distance')->first()->value;
+            $chunks = explode(',', $value);
+        } else {
+            $chunks = 0;
+        }
+
         return view('main::notifications')
                     ->with('distance', $chunks[0])
                     ->with('unit', $chunks[1]);
@@ -671,7 +678,13 @@ class MainController extends Controller
         ]);
 
         try {
-            $notification = SystemSetting::where('name', 'notification_distance')->first();
+
+            if ( SystemSetting::where('name', 'notification_distance')->first() ) {
+                $notification = SystemSetting::where('name', 'notification_distance')->first();
+            } else {
+                $notification = new SystemSetting;
+            }
+            
             $notification->name = 'notification_distance';
             $notification->value = $request->notification .','. $request->measurement;
             $notification->save();

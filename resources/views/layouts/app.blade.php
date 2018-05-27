@@ -76,7 +76,7 @@
                     <form action="{{ route('changeLang') }}" method="POST">
                       {{ csrf_field() }}
                       <input type="hidden" name="url" value="{{ Request::url() }}">
-                      <input type="hidden" name="segment" value="{{ Request::segment( env('SEGMENT') ) }}">
+                      <input type="hidden" name="locale" value="{{ \Helper::getUserLocale() }}">
                         <button type="submit" class="nav-link English" style="background-color: inherit; border: 0px; color: white;">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</button>
                     </form>
                     
@@ -171,35 +171,35 @@
                 <ul class="side-menu">
                   <li class="side__list" id="menu_1"><a class="side__item side__item--sub">@lang('keywords.mainData')</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" id="sub_1_1" href="{{ \Helper::route('about') }}">@lang('keywords.aboutUs')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_1" href="{{ route('about') }}">@lang('keywords.aboutUs')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_1_2" href="{{ \Helper::route('terms')  }}">@lang('keywords.terms')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_2" href="{{ route('terms')  }}">@lang('keywords.terms')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_1_3" href="{{ \Helper::route('privacy')  }}">@lang('keywords.privacy')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_3" href="{{ route('privacy')  }}">@lang('keywords.privacy')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_1_4" href="{{ \Helper::route('contact')  }}">@lang('keywords.contactUs')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_4" href="{{ route('contact')  }}">@lang('keywords.contactUs')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_1_5" href="{{ \Helper::route('event/categories')  }}">@lang('keywords.eventCategories')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_5" href="{{ route('event.categories')  }}">@lang('keywords.eventCategories')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_1_6" href="{{ \Helper::route('famous/attraction') }}">@lang('keywords.famous')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_6" href="{{ route('famous.attraction') }}">@lang('keywords.famous')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_1_7" href="{{ \Helper::route('sponsors') }}">@lang('keywords.sponsors')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_7" href="{{ route('sponsors') }}">@lang('keywords.sponsors')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_1_8" href="{{ \Helper::route('trends') }}">@lang('keywords.trends')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_8" href="{{ route('trends') }}">@lang('keywords.trends')</a>
                       </li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_1_9" href="{{ \Helper::route('notifications') }}">@lang('keywords.notifications')</a>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_1_9" href="{{ route('notifications') }}">@lang('keywords.notifications')</a>
                       </li>
                     </ul>
                   </li>
                   <li class="side__list" id="menu_2"> <a class="side__item side__item--sub">@lang('keywords.Users')</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" id="sub_2_1" href="{{ \Helper::route('users_mobile')  }}">@lang('keywords.MobileAppUsers')</a></li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_2_2" href="{{ \Helper::route('users_backend')  }}">@lang('keywords.BackendUsers')</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_2_1" href="{{ route('users_mobile')  }}">@lang('keywords.MobileAppUsers')</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_2_2" href="{{ route('users_backend')  }}">@lang('keywords.BackendUsers')</a></li>
                     </ul>
                   </li>
                   <li class="side__list" id="menu_3"> <a class="side__item side__item--sub">@lang('keywords.events')</a>
                     <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" id="sub_3_1" href="{{ \Helper::route('events/backend') }}">@lang('keywords.addfrombackend')</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_3_1" href="{{ route('event_backend') }}">@lang('keywords.addfrombackend')</a></li>
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_2" href="events_mobile_app.html">Added from mobile application</a></li>
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="events_big.html">Big events</a></li>
                     </ul>
@@ -228,21 +228,21 @@
             <div class="container-fluid">
 
               {{-- Start alert messages --}}
-              <div class="col-lg-12">
+              <div class="col-lg-12 text-center">
                 @if (Session::has('success'))
-                  <div class="alert alert-success text-center">{{ Session::get('success') }}</div>
+                  <div class="alert text-center" style="background-color: #2ecc71; color: white; padding: 10px;">{{ Session::get('success') }}</div>
                 @endif
 
                 @if (Session::has('warning'))
-                  <div class="alert alert-warning text-center">{{ Session::get('warning') }}</div>
+                  <div class="alert text-center" style="background-color: #f39c12; color: white; padding: 10px;">{{ Session::get('warning') }}</div>
                 @endif
 
                 @if (Session::has('error'))
-                  <div class="alert alert-danger text-center">{{ Session::get('error') }}</div>
+                  <div class="alert text-center" style="background-color: #c0392b; color: white; padding: 10px;">{{ Session::get('error') }}</div>
                 @endif
 
                 @foreach ($errors->all() as $error)
-                    <div class="alert alert-danger text-center">{{ $error }}</div>
+                    <div class="alert alert-danger text-center" style="background-color: #c0392b; color: white; padding: 10px;">{{ $error }}</div>
                 @endforeach
               </div>
               {{-- End alert --}}
@@ -452,24 +452,28 @@
     </script>
 
     @yield('js')
-{{--     <script type="text/javascript">
-      $(document).ready(function(){
-        // "use strict";
-        $('.btn-warning-confirm').click(function(){
-          swal({
-            title: "Are you sure?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#281160',
-            confirmButtonText: 'Yes, delete it!',
-            closeOnConfirm: false
-          },
-          function(){
-            swal("Deleted!", "Your imaginary file has been deleted!", "success");
-          });
-        });
-      });
-    </script> --}}
+
+// Leave it deleted - because this code will override a similar working code.
+//  <script type="text/javascript">
+//       $(document).ready(function(){
+//         // "use strict";
+//         $('.btn-warning-confirm').click(function(){
+//           swal({
+//             title: "Are you sure?",
+//             text: "You will not be able to recover this imaginary file!",
+//             type: "warning",
+//             showCancelButton: true,
+//             confirmButtonColor: '#281160',
+//             confirmButtonText: 'Yes, delete it!',
+//             closeOnConfirm: false
+//           },
+//           function(){
+//             swal("Deleted!", "Your imaginary file has been deleted!", "success");
+//           });
+//         });
+//       });
+// </script> 
+
+
   </body>
 </html>
