@@ -238,7 +238,7 @@
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                             <div class="master_field">
                             <label class="master_label" for="cat_id_ar">اضف الحدث باللغة العربية</label>
-                            <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="cat_id_ar" >
+                            <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="cat_id_ar" required oninvalid="this.setCustomValidity('من فضلك لا تترك هذا الحقل فارغاَ')" >
                             </div>
                         </div>
                         </li>
@@ -343,7 +343,8 @@
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: '#281160',
-                confirmButtonText: 'Yes, delete it!',
+                confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
+                cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
                 closeOnConfirm: false
                 },
                 function(isConfirm){
@@ -394,7 +395,8 @@
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: '#281160',
-                confirmButtonText: 'Yes, delete it!',
+                confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
+                cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",                
                 closeOnConfirm: false
                 },
                 function(isConfirm){

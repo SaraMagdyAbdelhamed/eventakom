@@ -343,7 +343,8 @@
               type: "warning",
               showCancelButton: true,
               confirmButtonColor: '#281160',
-              confirmButtonText: 'Yes, delete it!',
+              confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
+              cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
               closeOnConfirm: false
               },
               function(isConfirm){
@@ -394,7 +395,8 @@
               type: "warning",
               showCancelButton: true,
               confirmButtonColor: '#281160',
-              confirmButtonText: 'Yes, delete it!',
+              confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
+              cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
               closeOnConfirm: false
               },
               function(isConfirm){
