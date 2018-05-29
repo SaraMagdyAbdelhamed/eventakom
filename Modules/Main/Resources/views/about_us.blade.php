@@ -78,8 +78,8 @@
                 </div>
                 
                 <div class="col-xs-12">
-                <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
-                <button type="submit" class="remodal-confirm">@lang('keywords.save')</button>
+                <button class="remodal-cancel" data-remodal-action="cancel">{{trans('keywords.cancel')}}</button>
+                <button type="submit" class="remodal-confirm">{{trans('keywords.save')}}</button>
                 </div>
             </form>
         </div>
