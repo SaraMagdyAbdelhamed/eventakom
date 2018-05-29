@@ -41,7 +41,7 @@ class UsersController extends Controller
 
     public function index_backend()
     {
-        $data['users'] = Users::whereHas('rules', function ($q) {
+        $data['users'] = Users::whereHas('rules', function ($q) {   
             $q->where('rule_id', 1);
         })->get();
         $data['rules'] = Rules::whereIn('id', [4, 5])->get();
@@ -135,19 +135,20 @@ class UsersController extends Controller
                 ->withInput();
         }
 
+        $user = new Users;
 
         if ($request->hasFile('image')) {
             $destinationPath = 'backend_users';
             $fileNameToStore = $destinationPath . '/' . $request->name . time() . rand(111, 999) . '.' . Input::file('image')->getClientOriginalExtension();
             // dd($fileNameToStore);
             Input::file('image')->move($destinationPath, $fileNameToStore);
+            $user->photo = $fileNameToStore;
         }
-        $user = new Users;
+        
         $user->username = $request->name;
         $user->email = $request->email;
         $user->mobile = $request->phone;
         $user->is_active = $request->status;
-        $user->photo = $fileNameToStore;
         $user->save();
         $user->rules()->attach([$request->rule, 1]);
 

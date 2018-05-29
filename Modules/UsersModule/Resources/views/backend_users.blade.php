@@ -130,11 +130,7 @@
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
                           <label class="master_label" for="new_user">@lang('keywords.UserName')</label>
-<<<<<<< HEAD
-                          <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" required id="new_user"><span class="master_message inherit">
-=======
                           <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user" onkeypress="return RestrictSpace()"><span class="master_message inherit">
->>>>>>> 112eecb2181b0ecd4fa98b76cbcbf034e3a1425a
                                   @if ($errors->has('name'))
                                     {{ $errors->first('name')}}
                                     @endif</span>
@@ -180,7 +176,7 @@
                           <div class="file-upload">
                             <div class="file-select">
                               <div class="file-select-name" id="noFile">click to add user image</div>
-                              <input class="chooseFile" type="file" name="image" id="user_img" Required>
+                              <input class="chooseFile" type="file" name="image" id="user_img">
                             </div>
                           </div><span class="master_message inherit">png,jpg and max size is 5MB</span>
                         </div>
