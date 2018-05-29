@@ -21,7 +21,7 @@
     <div class="col-xs-12">
       <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="full-table">
-          <div id="deleteSelected" class="bottomActions__btns"><a class="master-btn" href="#">@lang('keywords.deleteSelected)</a>
+          <div id="deleteSelected" class="bottomActions__btns"><a class="master-btn" href="#">@lang('keywords.deleteSelected')</a>
           </div>
           <form id="dataTableTriggerId_001_form">
             <table class="data-table-trigger table-master" id="dataTableTriggerId_001">
