@@ -41,7 +41,7 @@
                   <div class="master_field">
                     <label class="master_label" for="filter_countries">@lang('keywords.Countries') </label>
                     <select name="countries[]" class="master_input select2" id="filter_countries" multiple="multiple" data-placeholder="Countries"
-                      style="width:100%;" ,>
+                      style="width:100%;" ,>f
                       @foreach($countries as $country)
                       <option value="{{$country->id}}">{{$country->name}}</option>
 
