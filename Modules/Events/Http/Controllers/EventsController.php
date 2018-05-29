@@ -20,6 +20,10 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests; 
 
 use App\EventBackend;
+use App\Genders;
+use App\Age_Ranges;
+use App\EventCategory;
+use App\Currency;
 
 class EventsController extends Controller
 {
@@ -41,7 +45,12 @@ class EventsController extends Controller
      */
     public function create()
     {
-        return view('events::create');
+        $data['genders'] = Genders::all();
+        $data['age_range'] = Age_Ranges::all();
+        $data['categories'] = EventCategory::all();
+        $data['currencies'] = Currency::all();
+
+        return view('events::create', $data);
     }
 
     /**
@@ -51,6 +60,8 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
+        
+        dd($request->all());
     }
 
     /**
