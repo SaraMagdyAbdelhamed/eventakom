@@ -90,6 +90,10 @@
         // Events
         'events'    => 'الاحداث',
         'addfrombackend' => 'المضاف من الموقع',
+		
+		// Events Mobile
+		'addfromMobile' => 'المضاف من الموبايل',
+		
     ];
 
 ?>
