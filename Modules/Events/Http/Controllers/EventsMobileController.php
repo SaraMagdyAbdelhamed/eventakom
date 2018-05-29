@@ -1,34 +1,34 @@
 <?php
 
-namespace Modules\EventsMobile\Http\Controllers;
+namespace Modules\Events\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use App\EventMobile;
-
 class EventsMobileController extends Controller
 {
     /**
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+     public function index()
     {
         $current_events = EventMobile::CurrentEvents()->get();
         $pending_events = EventMobile::PendingEvents()->get();
 
-        return view('eventsmobile::index')
+        return view('events::eventsMobile.list')
                     // ->with('events', EventMobile::MobileApproved()->get());
                       ->with(compact('current_events', 'pending_events'));
      }
+
     /**
      * Show the form for creating a new resource.
      * @return Response
      */
     public function create()
     {
-        return view('eventsmobile::create');
+        return view('events::create');
     }
 
     /**
@@ -46,7 +46,7 @@ class EventsMobileController extends Controller
      */
     public function show()
     {
-        return view('eventsmobile::show');
+        return view('events::show');
     }
 
     /**
@@ -55,7 +55,7 @@ class EventsMobileController extends Controller
      */
     public function edit()
     {
-        return view('eventsmobile::edit');
+        return view('events::edit');
     }
 
     /**
