@@ -20,6 +20,11 @@
         'km' => 'Km',
         'm' => 'Meter',
         'mi' => 'Mile',
+        'save' => 'Save',
+        'cancel' => 'Cancel',
+        'Save' => 'Save',
+        'deleteSelected' => 'Delete Selected',
+        'delete' => 'Delete',
 
         // fixed pages
         'registered'=> 'Registered',
