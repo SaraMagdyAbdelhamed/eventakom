@@ -41,6 +41,9 @@ class UsersController extends Controller
 
     public function index_backend()
     {
+        // auth is super admin : show super admins + admins + backendusers
+
+        // auth is admin : show admins + backendusers
         $data['users'] = Users::whereHas('rules', function ($q) {   
             $q->where('rule_id', 1);
         })->get();
