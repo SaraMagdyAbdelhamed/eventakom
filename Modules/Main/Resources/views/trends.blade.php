@@ -254,8 +254,9 @@
               </ul>
             </div>
             <div class="col-xs-12">
-              <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-              <button class="remodal-confirm" type="submit">save</button>
+                 <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+                <button type="submit" class="remodal-confirm">@lang('keywords.save')</button>
+              
             </div>
           </form>
         </div>

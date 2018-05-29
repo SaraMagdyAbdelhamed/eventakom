@@ -50,7 +50,7 @@
     <div class="col-lg-12"> 
       <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="col-lg-3 pull-right">
-          <button class="master-btn  btn-block color--white bgcolor--fadegreen bradius--noborder bshadow--0" type="submit"><i class="fa fa-check"></i><span>save</span>
+          <button class="master-btn  btn-block color--white bgcolor--fadegreen bradius--noborder bshadow--0" type="submit"><i class="fa fa-check"></i><span>@lang('keywords.save')</span>
           </button>
         </div>
         <div class="clearfix"></div>
