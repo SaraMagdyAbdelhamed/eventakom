@@ -22,9 +22,10 @@
         'mi' => 'ميل',
         'save' => 'حفظ',
         'cancel' => 'الغاء',
-        'Actions'=>'الاجرائات',
+        'Actions'=>'الاجراءات',
         'deleteSelected' => 'مسح المحدد',
         'delete' => 'مسح',
+        'pleaseSelect' => 'اختر احدى القيم',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
@@ -46,6 +47,7 @@
         'EditPrivacy'   => 'تعديل الخصوصية وسياسة الشركة',
         'EditContact'   => 'تعديل تواصل معنا',
         'EditEvent'     => 'تعديل حدث',
+        'EditUser' => 'تعجيل المستخدم',
 
 
         //Users

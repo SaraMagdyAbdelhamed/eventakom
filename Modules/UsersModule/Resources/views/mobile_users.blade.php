@@ -26,7 +26,7 @@
             <i class="fa fa-filter"></i>@lang('keywords.filter')</a>
         </div>
         <div class="bottomActions__btns">
-          <a class="{{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">Delete selected</a>
+          <a class="{{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">@lang('keywords.deleteSelected')</a>
         </div>
         <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
           <form role="form" action="{{ route('mobile_filter') }}" method="POST" accept-charset="utf-8">
@@ -35,7 +35,7 @@
             <div>
               <div class="row">
                 <div class="col-xs-12">
-                  <h3 class="text-center">Filters</h3>
+                  <h3 class="text-center">@lang('keywords.filter')</h3>
                 </div>
                 <div class="col-sm-6 col-xs-12">
                   <div class="master_field">
@@ -66,7 +66,7 @@
                     <label class="master_label" for="filter_age">@lang('keywords.Age')</label>
                     <select name="age" class="master_input select2" id="filter_age" data-placeholder="-- Select age please --" style="width:100%;"
                       ,>
-                      <option value="" disabled selected>-- Select age please --</option>
+                      <option value="" disabled selected>-- @lang('keywords.pleaseSelect') -- </option>
                       @foreach($age_ranges as $age_range)
                       <option value="{{$age_range->id}}">{{$age_range->name}}</option>
                       @endforeach
@@ -89,7 +89,7 @@
               </div>
             </div>
             <br>
-            <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.Cancel')</button>
+            <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
             <button class="remodal-confirm" type="submit">@lang('keywords.ApplyFilter')</button>
           </form>
         </div>
@@ -211,186 +211,27 @@
                  <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
                   <form action="{{route('mobile_status',$mobile->id)}}" method="POST">
                     {{csrf_field()}}
-
                     <div class="row">
-                      <h3>Edit User</h3>
+                      <h3>@lang('keywords.EditUser')</h3>
                       <div class="col-xs-12 text-center">
                         <div class="master_field text-center">
-                          <label class="master_label">please set the user status</label>
+                          <label class="master_label">@lang('keywords.pleaseSetTheUserStatus')</label>
                           <input class="icon" type="radio" name="is_active" id="radbtn_2{{$mobile->id}}" value="1" >
-                          <label for="radbtn_2{{$mobile->id}}">Active</label>
+                          <label for="radbtn_2{{$mobile->id}}">@lang('keywords.Active')</label>
                           <input class="icon" type="radio" name="is_active" id="radbtn_3{{$mobile->id}}" value="0" >
-                          <label for="radbtn_3{{$mobile->id}}">Inactive</label>
+                          <label for="radbtn_3{{$mobile->id}}">@lang('keywords.Inactive')</label>
                         </div>
                       </div>
                     </div>
                   <br>
-                  <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                  <button class="remodal-confirm" type="submit">Save</button>
+                  <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+                  <button class="remodal-confirm" type="submit">@lang('keywords.save')</button>
                 </form>
               </div>
-
               @endforeach
             </tbody>
           </table>
         </form>
-        <div class="remodal log-custom" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-          <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-          <div>
-            <h2 class="title">title of the changing log in</h2>
-            <div class="log-content">
-              <div class="log-container">
-                <table class="log-table">
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <th>log title</th>
-                    <th>user</th>
-                    <th>time</th>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>January</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr class="log-row" data-link="https://www.google.com.eg/">
-                    <td>February</td>
-                    <td>$80</td>
-                    <td>$80</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>

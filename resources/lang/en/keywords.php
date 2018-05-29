@@ -25,6 +25,7 @@
         'Actions'=>'Actions',
         'deleteSelected' => 'Delete Selected',
         'delete' => 'Delete',
+        'pleaseSelect' => 'Please Select',
 
         // fixed pages
         'registered'=> 'Registered',
@@ -46,6 +47,7 @@
         'EditPrivacy'   => 'Edit Privacy and Policy',
         'EditContact'   => 'Edit Contact Us',
         'EditEvent'     => 'Edit an Event',
+        'EditUser' => 'Edit User',
         
 
         //Users
