@@ -214,9 +214,8 @@
               <input name="email" value="{{ $email }}" class="master_input" type="email" placeholder="ex:info@eventakom.com" id="client_email" required ><span class="valid-label"></span>
             </div>
         </div>
-        <div class="col-xs-12">
-          <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-          <button type="submit" class="remodal-confirm">save</button>
+        <div class="col-xs-12"><button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+        <button type="submit" class="remodal-confirm">@lang('keywords.save')</button>
         </div>
         </form>
 
