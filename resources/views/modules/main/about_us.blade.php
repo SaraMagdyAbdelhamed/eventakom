@@ -79,7 +79,7 @@
                 
                 <div class="col-xs-12">
                 <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                <button type="submit" class="remodal-confirm">savffffffffffffffffffffffffffffffffffffffe</button>
+                <button type="submit" class="remodal-confirm">save</button>
                 </div>
             </form>
         </div>
