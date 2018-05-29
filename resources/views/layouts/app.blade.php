@@ -453,26 +453,7 @@
 
     @yield('js')
 
-// Leave it deleted - because this code will override a similar working code.
-//  <script type="text/javascript">
-//       $(document).ready(function(){
-//         // "use strict";
-//         $('.btn-warning-confirm').click(function(){
-//           swal({
-//             title: "Are you sure?",
-//             text: "You will not be able to recover this imaginary file!",
-//             type: "warning",
-//             showCancelButton: true,
-//             confirmButtonColor: '#281160',
-//             confirmButtonText: 'Yes, delete it!',
-//             closeOnConfirm: false
-//           },
-//           function(){
-//             swal("Deleted!", "Your imaginary file has been deleted!", "success");
-//           });
-//         });
-//       });
-// </script> 
+</script> 
 
 
   </body>

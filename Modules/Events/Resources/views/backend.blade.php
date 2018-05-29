@@ -13,7 +13,7 @@
               </div>
             </div>
           </div>
-          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="events_backend_edit.html">Add New Event</a>
+          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{ route('event_backend.add') }}">Add New Event</a>
           </div>
         </div>
       </div>
@@ -22,7 +22,7 @@
       <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="full-table">
           <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>@lang('keywords.filter')</a></div>
-          <div class="bottomActions__btns"><a class="master-btn" href="#">Delete selected</a><a class="master-btn" href="#">Add New Event</a>
+          <div class="bottomActions__btns"><a class="master-btn" href="#">Delete selected</a><a class="master-btn" href="{{ route('event_backend.add') }}">Add New Event</a>
           </div>
           <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
             <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
