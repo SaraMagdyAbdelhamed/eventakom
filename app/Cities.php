@@ -10,13 +10,13 @@ class Cities extends Model
     protected $table = 'geo_cities';
     public $timestamps = false;
 
-        public function country()
+    public function country()
     {
-        return $this->belongsTo('App\Countries','country_id');
+        return $this->belongsTo('App\Countries', 'country_id');
     }
 
-        public function users()
+    public function users()
     {
-        return $this->hasMany('App\Users','city_id');
+        return $this->hasMany('App\Users', 'city_id');
     }
 }

@@ -1,6 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
+
+<style>
+  /* Always set the map height explicitly to define the size of the div
+   * element that contains the map. */
+  #map {
+    height: 100%;
+  }
+  /* Optional: Makes the sample page fill the window. */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  #submit {
+    color: white;
+    background-color: #281160;
+    border: 0px;
+    padding: 12px 36px;
+  }
+</style>
+
+
 <div class="row">
   <div class="col-xs-12">
     <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
@@ -21,7 +44,10 @@
   </div>
   <div class="col-xs-12">
     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+
       <form id="horizontal-pill-steps" action="{{ route('event_backend.store') }}" method="POST" enctype="multipart/form-data">
+        {{ csrf_field() }}
+        
         <h3>Info in En</h3>
         <fieldset>
           <div class="row">
@@ -30,7 +56,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">Event name</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="event_name">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="english_event_name">
                 @if ($errors->has('event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('event_name') }}</span>
                 @endif
@@ -42,307 +68,483 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">Description</label>
-                <textarea class="master_input" id="description" placeholder="Description" Required name="description"></textarea>
-                @if ($errors->has('description'))
-                  <span class="master_message color--fadegreen">{{ $errors->first('description') }}</span>
+                <textarea class="master_input" id="description" placeholder="Description" Required name="english_description"></textarea>
+                @if ($errors->has('english_description'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
                 @endif
               </div>
             </div>
 
 
-
+            {{-- Google Maps API --}}
             <div class="col-xs-12">
               <div class="mapouter">
-                <div class="gmap_canvas">
-                    <div id="googleMap" style="width:100%;height:400px;"></div>
-                </div>
+                <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
+                <input type="hidden" name="lat" id="lat" value="1.234">
+                <input type="hidden" name="lng" id="lng" value="2.345">
               </div>
             </div>
 
 
+            {{-- English Venu --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">Venue</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue"><span class="master_message color--fadegreen">validation message will be here</span>
+                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="english_venu">
+                @if ($errors->has('english_venu'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('english_venu') }}</span>
+                @endif
               </div>
             </div>
+
+
+            {{-- English Hashtags --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">Hashtags</label>
-                <input type="text" value="Amsterdam,KSA" data-role="tagsinput">
+                <input type="text" value="KSA,Sports" data-role="tagsinput" name="english_hashtags">
               </div>
               <div class="clearfix"></div>
             </div>
+
+
+            {{-- Allowed Genders --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory" for="gender">gender</label>
-                <select class="master_input select2" id="gender" style="width:100%;">
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>both</option>
-                </select><span class="master_message inherit">message content</span>
+                <select class="master_input select2" id="gender" style="width:100%;" name="gender">
+                  <option value="" disabled selected>-- Please select a gender --</option>
+                  @if ( isset($genders) && !empty($genders) )
+                      @foreach ($genders as $gender)
+                          <option value="{{ $gender->id }}">{{ $gender->name }}</option>
+                      @endforeach
+                  @endif
+                </select>
+
               </div>
             </div>
+
+            {{-- Allowed Age ranges --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label mandatory" for="age">select2</label>
-                <select class="master_input select2" id="age" style="width:100%;">
-                  <option>Kids</option>
-                  <option>15-18 years</option>
-                  <option>18-25 years</option>
-                  <option>More than 25 years</option>
-                </select><span class="master_message inherit">message content</span>
+                <label class="master_label mandatory" for="age">Allowed Age Range</label>
+                <select class="master_input select2" id="age" style="width:100%;" name="age_range">
+                  <option value="" disabled selected>-- Please Select Age Range</option>
+                  @if ( isset($age_range) && !empty($age_range) )
+                      @foreach ($age_range as $range)
+                          <option value="{{ $range->id }}">{{ $range->name }}</option>
+                      @endforeach
+                  @endif
+                </select>
+                @if ($errors->has('age_range'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('age_range') }}</span>
+                @endif
               </div>
             </div>
+
+
+            {{-- Start date --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="start_date">start date</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="start date" Required id="start_date">
-                </div><span class="master_message inherit">message content</span>
+                  <input class="datepicker master_input" type="text" placeholder="start date" Required id="start_date" name="start_date">
+                </div>
+                @if ($errors->has('start_date'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('start_date') }}</span>
+                @endif
               </div>
             </div>
+
+
+            {{-- Start time --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="start_time">start date time</label>
                 <div class="bootstrap-timepicker">
-                  <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time">
-                </div><span class="master_message inherit">message content</span>
+                  <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time" name="start_time">
+                </div>
+                @if ($errors->has('start_time'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('start_time') }}</span>
+                @endif
               </div>
             </div>
+
+
+            {{-- End date --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="end_date">end date</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="end date" Required id="end_date">
-                </div><span class="master_message inherit">message content</span>
+                  <input class="datepicker master_input" type="text" placeholder="end date" Required id="end_date" name="end_date">
+                </div>
+                @if ($errors->has('end_date'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('end_date') }}</span>
+                @endif
               </div>
             </div>
+
+
+            {{-- End time --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="end_time">end date time</label>
                 <div class="bootstrap-timepicker">
-                  <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time">
-                </div><span class="master_message inherit">message content</span>
+                  <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="end_time">
+                </div>
+                @if ($errors->has('end_time'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('end_time') }}</span>
+                @endif
               </div>
             </div>
+
+
+            {{-- Categories --}}
             <div class="col-sm-6 col-xs-12">
               <div class="master_field">
                 <label class="master_label mandatory" for="category">category</label>
-                <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" ,>
-                  <option>Category 1</option>
-                  <option>Category 2</option>
-                  <option>Category 3</option>
-                  <option>Category 4</option>
-                </select><span class="master_message inherit">message content</span>
+                <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="categories[]">
+                  @if ( isset($categories) && !empty($categories) )
+                      @foreach ($categories as $category)
+                          <option value="{{ $category->id }}">{{ $category->name }}</option>
+                      @endforeach
+                  @endif
+                </select>
+                @if ($errors->has('categories'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('categories') }}</span>
+                @endif
               </div>
             </div>
+
+            {{-- Suggest as big Event --}}
             <div class="col-sm-3 col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="big_event">Suggest as big event</label>
-                <input class="make-switch" type="checkbox" checked data-on-text="yes" data-off-text="no">
+                <input class="make-switch" type="checkbox" checked data-on-text="yes" data-off-text="no" name="is_big_event">
               </div>
             </div>
+
+
+            {{-- Is Event Active or Not --}}
             <div class="col-sm-3 col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="active_event">is your event active or in active</label>
-                <input class="make-switch" type="checkbox" checked data-on-text="active" data-off-text="inactive">
+                <input class="make-switch" type="checkbox" checked data-on-text="active" data-off-text="inactive" name="is_active">
               </div>
             </div>
           </div>
         </fieldset>
+
         <h3>Info in Ar</h3>
         <fieldset>
           <div class="row">
+
+            {{-- Arabic Event Name --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="Event_name">Event name</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name"><span class="master_message color--fadegreen">validation message will be here</span>
+                <label class="master_label" for="Event_name">اسم الحدث</label>
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="arabic_event_name">
+                @if ($errors->has('arabic_event_name'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('arabic_event_name') }}</span>
+                @endif
               </div>
             </div>
+
+
+            {{-- Arabic Description --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="description">Description</label>
-                <textarea class="master_input" name="textarea" id="description" placeholder="Description" Required></textarea><span class="master_message inherit">message content</span>
+                <label class="master_label" for="description">وصف الحدث</label>
+                <textarea class="master_input" id="description" placeholder="Description" Required name="arabic_description"></textarea>
+                @if ($errors->has('arabic_description'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('arabic_description') }}</span>
+                @endif
               </div>
             </div>
+
+
+            {{-- Arabic Venu --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="venue">Venue</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue"><span class="master_message color--fadegreen">validation message will be here</span>
+                <label class="master_label" for="venue">مكان الحدث</label>
+                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="arabic_venu">
+                @if ($errors->has('arabic_venu'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('arabic_venu') }}</span>
+                @endif
               </div>
             </div>
+
+
+            {{-- Arabic Hashtags --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label mandatory">Hashtags</label>
-                <input type="text" value="Amsterdam,KSA" data-role="tagsinput">
+                <label class="master_label mandatory">الكلمات البحثية</label>
+                <input type="text" value="المملكة,الرياضة" data-role="tagsinput" name="arabic_hashtags">
               </div>
+              @if ($errors->has('arabic_hashtags'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('arabic_hashtags') }}</span>
+                @endif
               <div class="clearfix"></div>
             </div>
           </div>
         </fieldset>
+
         <h3>Tickets</h3>
         <fieldset>
+
+          {{-- Is Event for Free or Paid --}}
           <div class="row">
             <div class="col-xs-12">
               <div class="master_field">
                 <label class="master_label mandatory">Is it free or paid ?</label>
-                <input class="icon" type="radio" name="icon" id="radbtn_2_free" checked="true">
+                <input class="icon" type="radio" name="is_paid" id="radbtn_2_free" checked="true" value="0">
                 <label for="radbtn_2_free">free</label>
-                <input class="icon" type="radio" name="icon" id="radbtn_3_paid">
+                <input class="icon" type="radio" name="is_paid" id="radbtn_3_paid" value="1">
                 <label for="radbtn_3_paid">paid</label>
               </div>
             </div>
           </div>
           <div class="paid-details">
+
+            {{-- Ticket Price --}}
             <div class="row">
               <div class="col-xs-8">
                 <div class="master_field">
                   <label class="master_label" for="Price">Price</label>
-                  <input class="master_input" type="number" placeholder="50" Required id="Price"><span class="master_message color--fadegreen">validation message will be here</span>
+                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price">
+                  @if ($errors->has('price'))
+                    <span class="master_message color--fadegreen">{{ $errors->first('price') }}</span>
+                  @endif
                 </div>
               </div>
+
+
+              {{-- Currency Symbol --}}
               <div class="col-xs-4">
                 <div class="master_field">
                   <label class="master_label mandatory" for="Currency">Currency</label>
-                  <select class="master_input" id="Currency">
-                    <option>SAR</option>
-                    <option>USD</option>
-                  </select><span class="master_message inherit">message content</span>
+                  <select class="master_input" id="Currency" name="currency">
+                    <option value="" disabled selected>-- Please Select a Currency Symbol --</option>
+                    @if ( isset($currencies) && !empty($currencies) )
+                        @foreach ($currencies as $currency)
+                            <option value="{{ $currency->id }}">{{ $currency->symbol }}</option>
+                        @endforeach
+                    @endif
+                  </select>
+                  @if ($errors->has('currency'))
+                    <span class="master_message color--fadegreen">{{ $errors->first('currency') }}</span>
+                  @endif
                 </div>
               </div>
+
+
+              {{-- Number of Tickets --}}
               <div class="col-xs-12">
                 <div class="master_field">
                   <label class="master_label" for="Available_tickets">Available tickets</label>
-                  <input class="master_input" type="number" placeholder="5" Required id="Available_tickets"><span class="master_message color--fadegreen">validation message will be here</span>
+                  <input class="master_input" type="number" placeholder="5" min="0" Required id="Available_tickets" name="number_of_tickets">
+                  @if ($errors->has('number_of_tickets'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('number_of_tickets') }}</span>
+                @endif
                 </div>
               </div>
             </div>
           </div>
         </fieldset>
+
+
         <h3>Contact Info</h3>
         <fieldset>
           <div class="row">
+
+            {{-- Website URL --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Website">Website</label>
-                <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website"><span class="master_message inherit">message content</span>
+                <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website" name="website">
+                @if ($errors->has('website'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('website') }}</span>
+                @endif
               </div>
             </div>
+
+
+            {{-- Email --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="e_email">email</label>
-                <input class="master_input" type="email" placeholder="email" Required id="e_email"><span class="valid-label"></span><span class="master_message inherit">message content</span>
+                <input class="master_input" type="email" placeholder="email" Required id="e_email" name="email">
+                @if ($errors->has('email'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('email') }}</span>
+                @endif
               </div>
             </div>
+
+
+            {{-- Code Number --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Code_numbe">Code number</label>
-                <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe"><span class="master_message color--fadegreen">validation message will be here</span>
+                <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe" name="code_number">
+                @if ($errors->has('code_number'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('code_number') }}</span>
+                @endif
               </div>
             </div>
+
+
+            {{-- Mobile Number --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Mobile_number">mobile number</label>
-                <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number"><span class="master_message color--fadegreen">validation message will be here</span>
+                <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number" name="mobile_number">
+                @if ($errors->has('mobile_number'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('mobile_number') }}</span>
+                @endif
               </div>
             </div>
           </div>
         </fieldset>
+
+
         <h3>Media</h3>
         <fieldset>
+          
           <div class="row">
+
+            {{-- 1st Youtube vedio in Arabic --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">Add YouTube video (1) Link in Arabic</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en"><span class="master_message inherit">message content</span>
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_1">
+                @if ($errors->has('youtube_ar_1'))
+                  <span class="master_message inherit">{{ $errors->first('youtube_ar_1') }}</span>
+                @endif
               </div>
             </div>
+
+            {{-- 1st Youtube video in English --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">Add YouTube video (1) Link in English</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar"><span class="master_message inherit">message content</span>
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_1">
+                @if ($errors->has('youtube_en_1'))
+                  <span class="master_message inherit">{{ $errors->first('youtube_en_1') }}</span>
+                @endif
               </div>
             </div>
+
+            {{-- 2nd Youtube video in Arabic --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">Add YouTube video (2) Link in Arabic</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en"><span class="master_message inherit">message content</span>
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_2">
+                @if ($errors->has('youtube_ar_2'))
+                  <span class="master_message inherit">{{ $errors->first('youtube_ar_2') }}</span>
+                @endif
               </div>
             </div>
+
+            {{-- 2nd Youtube video in English --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">Add YouTube video (2) Link in English</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar"><span class="master_message inherit">message content</span>
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_2">
+                @if ($errors->has('youtube_en_2'))
+                  <span class="master_message inherit">{{ $errors->first('youtube_en_2') }}</span>
+                @endif
               </div>
             </div>
             <div class="col-xs-12">
               <hr>
             </div>
+              
+            {{-- Arabic images --}}
             <div class="col-sm-6 col-xs-12 text-center">
               <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
               <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                 <div class="row">
                   <section class="l-main" role="main">
-                    <div class="uploader__box js-uploader__box l-center-box">
-                      <form action="your/nonjs/fallback/" method="POST">
-                        <div class="uploader__contents">
+                    <div class=" l-center-box">
+                        <div class="">
                           <label class="button button--secondary" for="fileinput">Select Files</label>
-                          <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files">
+                          <input class="" id="" type="file" multiple value="Select Files" name="arabic_images[]">
                         </div>
-                        <input class="button button--big-bottom" type="submit" value="Upload Selected Files">
-                      </form>
                     </div>
                   </section>
                 </div>
               </div>
             </div>
+
+            {{-- English images --}}
             <div class="col-sm-6 col-xs-12 text-center">
               <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
               <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                 <div class="row">
                   <section class="l-main" role="main">
                     <div class="uploader__box js-uploader__box l-center-box">
-                      <form action="your/nonjs/fallback/" method="POST">
                         <div class="uploader__contents">
                           <label class="button button--secondary" for="fileinput">Select Files</label>
-                          <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files">
+                          <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files" name="english_images[]">
                         </div>
-                        <input class="button button--big-bottom" type="submit" value="Upload Selected Files">
-                      </form>
                     </div>
                   </section>
                 </div>
               </div>
             </div>
+
           </div>
+
+          <button type="submit" id="submit">Submit</button>
         </fieldset>
       </form>
+
+
     </div>
   </div><br>
 </div>
       
 
+{{-- Google maps API key --}}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
+
+{{-- Map script --}}
 <script>
-  function myMap() {
-    var mapProp= {
-        center:new google.maps.LatLng(51.508742,-0.120850),
-        zoom:5,
-    };
-    var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
-    google.maps.event.addListener(map, 'click', function(event) {
-    alert(event.latLng.lat() + ", " + event.latLng.lng());
-    });
+    var map;
+    function initMap() {
 
-  }
+      var myLatlng = {lat: 30.042701, lng: 31.432662};
 
-  //  google.maps.event.addListener(map, 'click', function(event) {
-  //     marker = new google.maps.Marker({position: event.latLng, map: map});
-  //     console.log(event.latLng);   // Get latlong info as object.
-  //     console.log( "Latitude: "+event.latLng.lat()+" "+", longitude: "+event.latLng.lng()); // Get separate lat long.
-  //   });
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: new google.maps.LatLng(myLatlng),
+        zoom: 10
+      });
+
+      var marker = new google.maps.Marker({
+          position: myLatlng,
+          map: map,
+          title: 'Click to zoom'
+        });
+
+        map.addListener('center_changed', function() {
+          // 3 seconds after the center of the map has changed, pan back to the
+          // marker.
+          window.setTimeout(function() {
+            map.panTo(marker.getPosition());
+          }, 3000);
+        });
+
+        marker.addListener('click', function() {
+          map.setZoom(8);
+          map.setCenter(marker.getPosition());
+          console.log(marker.getPosition());
+        });
+    }
 </script>
+
+  
+
 
 <script type="text/javascript">
 
@@ -397,8 +599,5 @@ $(document).ready(function(){
 });
 
 </script>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=myMap"></script>
-
 
 @endsection
