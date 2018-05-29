@@ -22,7 +22,7 @@
         'mi' => 'Mile',
         'save' => 'Save',
         'cancel' => 'Cancel',
-        'Save' => 'Save',
+        'Actions'=>'Actions',
         'deleteSelected' => 'Delete Selected',
         'delete' => 'Delete',
 
@@ -65,12 +65,11 @@
         'Birthdate'=>'Birthdate',
         'RegisterationDate'=>'RegisterationDate',
         'Status'=>'Status',
-        'Actions'=>'Actions',
+        
         'UserType'=>'UserType',
         'SelectGender'=>'SelectGender',
         'Male'=>'Male',
         'Female'=>'Female',
-        'Cancel'=>'Cancel',
         'ApplyFilter'=>'ApplyFilter',
         'Countries'=>'Countries',
         'Cities'=>'Cities',
