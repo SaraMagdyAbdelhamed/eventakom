@@ -81,7 +81,6 @@
         'UserImage'=>'UserImage',
         'Active'=>'Active',
         'Inactive'=>'Inactive',
-        'Save'=>'Save',
         'pleaseSetTheUserStatus'=>'pleaseSetTheUserStatus',
 
 
