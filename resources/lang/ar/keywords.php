@@ -20,6 +20,10 @@
         'km' => 'كيلومتر',
         'm' => 'متر',
         'mi' => 'ميل',
+        'save' => 'حفظ',
+        'cancel' => 'الغاء',
+        'Save' => 'حفظ',
+        
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
@@ -77,7 +81,7 @@
         'UserImage'=>'صورة المستخدم',
         'Active'=>'مفعل',
         'Inactive'=>'غير مفعل',
-        'Save'=>'حفظ',
+       
         'pleaseSetTheUserStatus'=>'من فضلك اضف حالة المستخدم',
 
 
