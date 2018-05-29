@@ -282,8 +282,8 @@
                         </div>
                       </div>
                       <div class="col-xs-12">
-                        <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.Cancel')</button>
-                        <button class="remodal-confirm" type="submit">@lang('keywords.Save')</button>
+                        <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+                        <button class="remodal-confirm" type="submit">@lang('keywords.save')</button>
                       </div>
 
                   </div>
