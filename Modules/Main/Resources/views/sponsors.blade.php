@@ -287,8 +287,9 @@
                   </li>
                 </ul>
               </div>
-              <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-              <button class="remodal-confirm" type="submit">save</button>
+                <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+                <button type="submit" class="remodal-confirm">@lang('keywords.save')</button>
+        
             
         </form>
         </div>
@@ -362,8 +363,8 @@
                   </li>
                 </ul>
               </div>
-              <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-              <button class="remodal-confirm" type="submit">save</button>
+               <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+                <button type="submit" class="remodal-confirm">@lang('keywords.save')</button>
             
         </form>
         </div>

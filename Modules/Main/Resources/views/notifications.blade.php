@@ -7,7 +7,7 @@
       {{ csrf_field() }}
 
     <div class="col-xs-12">
-      <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( '../img/covers/dummy2.jpg ' )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
+      <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
         <div class="row">
           <div class="col-xs-12">
             <div class="text-xs-center">         
@@ -50,7 +50,7 @@
     <div class="col-lg-12"> 
       <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="col-lg-3 pull-right">
-          <button class="master-btn  btn-block color--white bgcolor--fadegreen bradius--noborder bshadow--0" type="submit"><i class="fa fa-check"></i><span>save</span>
+          <button class="master-btn  btn-block color--white bgcolor--fadegreen bradius--noborder bshadow--0" type="submit"><i class="fa fa-check"></i><span>@lang('keywords.save')</span>
           </button>
         </div>
         <div class="clearfix"></div>

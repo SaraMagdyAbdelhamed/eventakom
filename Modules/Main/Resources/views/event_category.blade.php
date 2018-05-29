@@ -21,7 +21,7 @@
     <div class="col-xs-12">
       <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="full-table">
-          <div class="bottomActions__btns"><a id="deleteSelected" class="master-btn" href="#">delete selected</a>
+          <div class="bottomActions__btns"><a id="deleteSelected" class="master-btn" href="#">@lang('keywords.deleteSelected)</a>
           </div>
           <form id="dataTableTriggerId_001_form">
             <table class="data-table-trigger table-master" id="dataTableTriggerId_001">
@@ -29,8 +29,8 @@
                 <tr class="bgcolor--gray_mm color--gray_d">
                   <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
                   <th><span class="cellcontent">@lang('keywords.serialNo') </span></th>
-                  <th><span class="cellcontent">Events category</span></th>
-                  <th><span class="cellcontent">actions</span></th>
+                  <th><span class="cellcontent">@lang('keywords.eventCategories')</span></th>
+                  <th><span class="cellcontent">@lang('keywords.Actions')</span></th>
                 </tr>
               </thead>
 
@@ -259,8 +259,8 @@
                 </ul>
                 </div>
                 <div class="col-xs-12">
-                <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                <button type="submit" class="remodal-confirm">save</button>
+                <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+                <button type="submit" class="remodal-confirm">@lang('keywords.save')</button>
                 </div>
             </div>
         </form>
@@ -309,8 +309,8 @@
                 </ul>
                 </div>
                 <div class="col-xs-12">
-                <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                <button type="submit" class="remodal-confirm">save</button>
+                <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+                <button type="submit" class="remodal-confirm">@lang('keywords.save')</button>
                 </div>
             </div>
         </form>

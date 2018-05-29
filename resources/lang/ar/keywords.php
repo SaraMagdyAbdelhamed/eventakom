@@ -20,6 +20,11 @@
         'km' => 'كيلومتر',
         'm' => 'متر',
         'mi' => 'ميل',
+        'save' => 'حفظ',
+        'cancel' => 'الغاء',
+        'Actions'=>'الاجرائات',
+        'deleteSelected' => 'مسح المحدد',
+        'delete' => 'مسح',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
@@ -60,12 +65,12 @@
         'Birthdate'=>'تاريخ الميلاد',
         'RegisterationDate'=>'تاريخ التسجيل',
         'Status'=>'الحالة',
-        'Actions'=>'الاجرائات',
+        
         'UserType'=>'نوع المستخدم',
         'SelectGender'=>'اختر النوع',
         'Male'=>'ذكر',
         'Female'=>'انثي',
-        'Cancel'=>'الغاء',
+        
         'ApplyFilter'=>'فعل الفلتر',
         'Countries'=>'البلاد',
         'Cities'=>'المدن',
@@ -77,7 +82,7 @@
         'UserImage'=>'صورة المستخدم',
         'Active'=>'مفعل',
         'Inactive'=>'غير مفعل',
-        'Save'=>'حفظ',
+       
         'pleaseSetTheUserStatus'=>'من فضلك اضف حالة المستخدم',
 
 

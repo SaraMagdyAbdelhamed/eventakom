@@ -10,8 +10,8 @@ class Genders extends Model
     protected $table = 'genders';
     public $timestamps = false;
 
-     public function users()
+    public function users()
     {
-        return $this->hasMany('App\Users','gender_id');
+        return $this->hasMany('App\Users', 'gender_id');
     }
 }

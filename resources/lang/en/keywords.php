@@ -20,6 +20,11 @@
         'km' => 'Km',
         'm' => 'Meter',
         'mi' => 'Mile',
+        'save' => 'Save',
+        'cancel' => 'Cancel',
+        'Actions'=>'Actions',
+        'deleteSelected' => 'Delete Selected',
+        'delete' => 'Delete',
 
         // fixed pages
         'registered'=> 'Registered',
@@ -60,12 +65,11 @@
         'Birthdate'=>'Birthdate',
         'RegisterationDate'=>'RegisterationDate',
         'Status'=>'Status',
-        'Actions'=>'Actions',
+        
         'UserType'=>'UserType',
         'SelectGender'=>'SelectGender',
         'Male'=>'Male',
         'Female'=>'Female',
-        'Cancel'=>'Cancel',
         'ApplyFilter'=>'ApplyFilter',
         'Countries'=>'Countries',
         'Cities'=>'Cities',
@@ -77,7 +81,6 @@
         'UserImage'=>'UserImage',
         'Active'=>'Active',
         'Inactive'=>'Inactive',
-        'Save'=>'Save',
         'pleaseSetTheUserStatus'=>'pleaseSetTheUserStatus',
 
 
