@@ -110,9 +110,9 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::post('/events/backend/store', '\Modules\Events\Http\Controllers\EventsController@store')->name('event_backend.store');
 
  // Events: Mobile
-    Route::get('/events/mobile', '\Modules\EventsMobile\Http\Controllers\EventsMobileController@index')->name('event_mobile');
-    Route::get('/events/mobile/add', '\Modules\EventsMobile\Http\Controllers\EventsMobileController@create')->name('event_mobile.add');
-    Route::post('/events/mobile/store', '\Modules\EventsMobile\Http\Controllers\EventsMobileController@store')->name('event_mobile.store');
+    Route::get('/events/mobile', '\Modules\Events\Http\Controllers\EventsMobileController@index')->name('event_mobile');
+    Route::get('/events/mobile/add', '\Modules\Events\Http\Controllers\EventsMobileController@create')->name('event_mobile.add');
+    Route::post('/events/mobile/store', '\Modules\Events\Http\Controllers\EventsMobileController@store')->name('event_mobile.store');
 
     
 });
