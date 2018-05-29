@@ -85,6 +85,9 @@
         // Events
         'events'    => 'Events',
         'addfrombackend' => 'Added From Backend',
+		
+		// Events Mobile
+		'addfromMobile' => 'Added From Mobile',
 
     ];
 

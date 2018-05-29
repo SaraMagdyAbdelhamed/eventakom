@@ -200,7 +200,7 @@
                   <li class="side__list" id="menu_3"> <a class="side__item side__item--sub">@lang('keywords.events')</a>
                     <ul class="side__submenu">
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_1" href="{{ route('event_backend') }}">@lang('keywords.addfrombackend')</a></li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_3_2" href="events_mobile_app.html">Added from mobile application</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_3_2" href="{{ route('event_mobile') }}">@lang('keywords.addfromMobile')</a></li>
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="events_big.html">Big events</a></li>
                     </ul>
                   </li>
@@ -427,6 +427,168 @@
       
         }
       });
+     
+     //--Data table trigger --2
+      $(document).ready(function(){
+        if ( $('html').attr('lang') == 'ar' ) {
+          var datatable_two = $("#dataTableTriggerId_002").DataTable({
+          'columnDefs': [{
+            'targets': 0,
+            'searchable':false,
+            'orderable':false,
+            'className': 'this-include-check',
+            'render': function (data, type, full, meta){
+              return '<input class="input-in-table" type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+            }
+          }],
+          'order': [1, 'asc'],
+            dom: '   <"row"    <" filterbar" flr + <"sortingr__btns_cont"  >> <"filter__btns_cont"  >    >  <"row"   <"data-table-trigger-cont"  t>    >  <"row"<"tableActions__btns_cont"> <"viewing-pagination"pi>  > ' ,
+            "language": {
+              "search": "dd",
+              "sLengthMenu": "عرض _MENU_  ",
+              search: " البحث _INPUT_",
+              searchPlaceholder: "ابحث فى الجدول"          ,
+              "emptyTable":     "لا توجد بيانات متاحه فى الجدول",
+              "info":           "عرض _START_ إلى _END_ من أصل _TOTAL_ مُدخل",
+              "infoEmpty":      " عرض  0 to 0 of 0 مُدخل",
+              "infoFiltered":   "(filtered from _MAX_ total entries)",
+              "loadingRecords": "جارى التحميل...",
+              "processing":     "جارى المعالجة...",
+              "zeroRecords":    "لا توجد نتائج مطابخة",
+              "paginate": {
+                "first":      "الاول",
+                "last":       "الاخير",
+                "next":       "التالى",
+                "previous":   "السابق"
+              },
+              "aria": {
+                "sortAscending":  ": رتب تصاعدياً",
+                "sortDescending": ": رتب تنازلياً"
+              }
+            }
+          });
+      
+          //-trigger check one by one 
+          $(document).on('click','#dataTableTriggerId_002 tbody tr input.input-in-table',function(){
+            var RowParent = $(this).parents('tr') ;
+      
+            if ( $(this).parents('tr').hasClass('selected') ) {
+              $(this).parents('tr').removeClass('selected');
+            }
+            else {
+              $(this).parents('tr').addClass('selected');
+            }  
+          });
+      
+          //-trigger check All
+          $('#dataTableTriggerId_002 #select-all').on('click',function(){
+            if($(this).attr('data-click-state') == 0) {
+              $(this).attr('data-click-state',1)
+              var rows = datatable_two.rows().nodes();
+              $('input.input-in-table' , rows).prop('checked',this.checked).parents('tr').addClass('selected');
+      
+            } else {
+              var rows = datatable_two.rows().nodes();
+              $('input.input-in-table' , rows).prop('checked',false).parents('tr').removeClass('selected');
+              $(this).attr('data-click-state', 0);
+            }
+          });
+      
+          //-Delete all selected Function
+          function deleteIt() {
+           var selectedRows = datatable_two.rows( $('#dataTableTriggerId_002 tr.selected') ).data().to$();
+           datatable_two.rows( '.selected' ).remove().draw(false);
+          };
+      
+          //-Delete buttons
+          $('#delete-test-2').on('click', function() {
+           deleteIt();
+          });
+          
+          //-Accept btn-single
+          $('button.accepted-btn').on('click' , function(){
+           var acceptedRow = $(this).parents('tr');
+           var selectedRows = datatable_two.rows( $('#dataTableTriggerId_002 tr.selectAccepted') ).data().to$();
+           acceptedRow.addClass('selectAccepted');
+           datatable_two.rows( '.selectAccepted' ).remove().draw(false);
+           console.log("clicked");
+          });
+      
+      
+        } else {
+      
+          var datatable_two = $("#dataTableTriggerId_002").DataTable({
+            'columnDefs': [{
+            'targets': 0,
+            'searchable':false,
+            'orderable':false,
+            'className': 'this-include-check',
+            'render': function (data, type, full, meta){
+              return '<input class="input-in-table" type="checkbox" name="id[]" >';
+            }
+          }],
+          'order': [1, 'asc'],
+            dom: '   <"row"    <" filterbar" f + <"quick_filter_cont"  > + lr + <"sortingr__btns_cont"  >> <"filter__btns_cont"  >    >  <"row"   <"data-table-trigger-cont"  t>    >  <"row"<"tableActions__btns_cont"> <"viewing-pagination"pi>  > ' ,
+            "language": {
+              "search": "dd",
+              "sLengthMenu": "Entries _MENU_  ",
+              search: " Search _INPUT_",
+              searchPlaceholder: "Search table ...."
+            }
+          });
+      
+      
+          
+          $(document).on('click','#dataTableTriggerId_002 tbody tr input.input-in-table',function(){
+           var RowParent = $(this).parents('tr') ;
+      
+           if ( $(this).parents('tr').hasClass('selected') ) {
+             $(this).parents('tr').removeClass('selected');
+           }
+           else {
+             $(this).parents('tr').addClass('selected');
+           }  
+          });
+      
+          //-trigger check All
+          $('#dataTableTriggerId_002 #select-all').on('click',function(){
+            if($(this).attr('data-click-state') == 0) {
+              $(this).attr('data-click-state',1)
+              var rows = datatable_two.rows().nodes();
+              $('input.input-in-table' , rows).prop('checked',this.checked).parents('tr').addClass('selected');
+      
+            } else {
+              var rows = datatable_two.rows().nodes();
+              $('input.input-in-table' , rows).prop('checked',false).parents('tr').removeClass('selected');
+              $(this).attr('data-click-state', 0);
+            }
+          });
+          
+          //-Delete all selected Function
+          function deleteIt() {
+           var selectedRows = datatable_two.rows( $('#dataTableTriggerId_002 tr.selected') ).data().to$();
+           datatable_two.rows( '.selected' ).remove().draw(false);
+          };
+      
+          //-Delete buttons
+          $('#delete-test-2').on('click', function() {
+           deleteIt();
+          });
+          
+          //-Accept btn-single
+          $('button.accepted-btn').on('click' , function(){
+           var acceptedRow = $(this).parents('tr');
+           var selectedRows = datatable_two.rows( $('#dataTableTriggerId_002 tr.selectAccepted') ).data().to$();
+           acceptedRow.addClass('selectAccepted');
+           datatable_two.rows( '.selectAccepted' ).remove().draw(false);
+           console.log("clicked");
+          });
+          
+          
+        }
+      });
+      
+
       
       
       $(document).ready(function(){

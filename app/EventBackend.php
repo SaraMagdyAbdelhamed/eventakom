@@ -13,6 +13,6 @@ class EventBackend extends Model
 
     // relations
     public function user() {
-        $this->belongsTo('App\Users', 'created_by');
+      return  $this->belongsTo('App\Users', 'created_by');
     }
 }
