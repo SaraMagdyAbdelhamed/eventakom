@@ -41,15 +41,16 @@ class UsersController extends Controller
 
     public function index_backend()
     {
+        // check current usere rule that based on it, filter backend-users will work as follows: 
         if( Auth::user()->isSuperAdmin() ) {
-            $rule_names = ['Super Admin', 'Admin', 'Data Entry'];
-        } else if ( Auth::user()->isAdmin() ) {
+            $rule_names = ['Super Admin', 'Admin', 'Data Entry'];   // Current user is Super Admin, it will list Super Admins, Admins and data entry
+        } else if ( Auth::user()->isAdmin() ) {                     // Current user is Admin it will list Admins & Data entry only
             $rule_names = ['Admin', 'Data Entry'];
         } else {
-            $rule_names = ['Data Entry'];
+            $rule_names = ['Data Entry'];                           // else it will list data entry only
         }
         
-        $data['users'] = Users::where('id', '!=', Auth::id())->whereHas('rules', function ($q) use($rule_names){   
+        $data['users'] = Users::whereHas('rules', function ($q) use($rule_names){   
             $q->whereIn('rules.name', $rule_names);
         })->get();
 
