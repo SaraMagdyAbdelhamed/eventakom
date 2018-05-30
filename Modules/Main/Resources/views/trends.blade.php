@@ -39,7 +39,7 @@
                     @foreach ($trends as $trend)
                     <tr data-id="{{ $trend->id }}">
                       <td><span class="cellcontent" data-id="{{ $trend->id }}"></span></td>
-                      <td><span class="cellcontent">{{ $trend->id }}</span></td>
+                      <td><span class="cellcontent">{{ $loop->index + 1 }}</span></td>
                       <td><span class="cellcontent">{{ $trend->name ? (App::isLocale('en') ? $trend->name : Helper::localization('trending_keywords', 'name', $trend->id, 2) ) : __('keywords.not') }}</span></td>
                       <td>
                         <span class="cellcontent">

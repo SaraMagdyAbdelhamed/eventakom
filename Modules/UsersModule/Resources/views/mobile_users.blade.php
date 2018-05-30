@@ -149,7 +149,7 @@
                   <span class="cellcontent"></span>
                 </td>
                 <td>
-                  <span class="cellcontent">{{$mobile->id}}</span>
+                  <span class="cellcontent">{{ $loop->index + 1 }}</span>
                 </td>
                 <td>
                   <span class="cellcontent">{{$mobile->username ? : __('keywords.not') }}</span>

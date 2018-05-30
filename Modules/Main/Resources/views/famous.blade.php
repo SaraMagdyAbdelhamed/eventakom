@@ -38,7 +38,7 @@
                     @foreach ($attractions as $att)
                         <tr data-id="{{ $att->id }}">
                             <td><span class="cellcontent" data-id="{{ $att->id }}"></span></td>
-                            <td><span class="cellcontent">{{ $att->id }}</span></td>                      
+                            <td><span class="cellcontent">{{ $loop->index + 1 }}</span></td>                      
                             <td><span class="cellcontent">{{ $att->name ? (App::isLocale('en') ? $att->name : Helper::localization('famous_attractions', 'name', $att->id, 2) ) : __('keywords.not') }}</span></td> 
                             <td>
                                 <span class="cellcontent">
