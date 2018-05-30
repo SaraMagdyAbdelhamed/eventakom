@@ -10,7 +10,7 @@ class Rules extends Model
     protected $table = 'rules';
     public $timestamps = false;
 
-        public function users()
+    public function users()
     {
         return $this->belongsToMany('App\Users','user_rules','user_id','rule_id');
     }
