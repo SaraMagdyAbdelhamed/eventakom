@@ -21,7 +21,7 @@
     <div class="col-xs-12">
       <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="full-table">
-          <div id="deleteSelected" class="bottomActions__btns"><a class="master-btn" href="#">delete selected</a>
+          <div id="deleteSelected" class="bottomActions__btns"><a class="master-btn" href="#">@lang('keywords.deleteSelected')</a>
           </div>
           <form id="dataTableTriggerId_001_form">
             <table class="data-table-trigger table-master" id="dataTableTriggerId_001">
@@ -304,8 +304,8 @@
               </ul>
             </div>
             <div class="col-xs-12">
-              <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-              <button class="remodal-confirm" type="submit">save</button>
+                <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+                <button type="submit" class="remodal-confirm">@lang('keywords.save')</button>
             </div>
           </form>
         </div>
