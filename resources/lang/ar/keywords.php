@@ -22,8 +22,10 @@
         'mi' => 'ميل',
         'save' => 'حفظ',
         'cancel' => 'الغاء',
-        'Save' => 'حفظ',
-        
+        'Actions'=>'الاجراءات',
+        'deleteSelected' => 'مسح المحدد',
+        'delete' => 'مسح',
+        'pleaseSelect' => 'اختر احدى القيم',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
@@ -45,6 +47,7 @@
         'EditPrivacy'   => 'تعديل الخصوصية وسياسة الشركة',
         'EditContact'   => 'تعديل تواصل معنا',
         'EditEvent'     => 'تعديل حدث',
+        'EditUser' => 'تعجيل المستخدم',
 
 
         //Users
@@ -64,12 +67,12 @@
         'Birthdate'=>'تاريخ الميلاد',
         'RegisterationDate'=>'تاريخ التسجيل',
         'Status'=>'الحالة',
-        'Actions'=>'الاجرائات',
+        
         'UserType'=>'نوع المستخدم',
         'SelectGender'=>'اختر النوع',
         'Male'=>'ذكر',
         'Female'=>'انثي',
-        'Cancel'=>'الغاء',
+        
         'ApplyFilter'=>'فعل الفلتر',
         'Countries'=>'البلاد',
         'Cities'=>'المدن',
@@ -77,7 +80,7 @@
         'AddBackendUser'=>'اضف مستخدم موقع',
         'UserName'=>'اسم المستخدم',
         'UserEmail'=>'البريد الالكتروني للمستخدم',
-        'UserPhone'=>'هاتفف المستخدم',
+        'UserPhone'=>'هاتف المستخدم',
         'UserImage'=>'صورة المستخدم',
         'Active'=>'مفعل',
         'Inactive'=>'غير مفعل',
@@ -89,6 +92,10 @@
         // Events
         'events'    => 'الاحداث',
         'addfrombackend' => 'المضاف من الموقع',
+		
+		// Events Mobile
+		'addfromMobile' => 'المضاف من الموبايل',
+		
     ];
 
 ?>
