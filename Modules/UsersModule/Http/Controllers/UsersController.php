@@ -41,18 +41,18 @@ class UsersController extends Controller
 
     public function index_backend()
     {
-        // auth is super admin : show super admins + admins + backendusers
-        if( Users::find(Auth::id())->rules->first()->id == 3 && Users::find(Auth::id())->rules->last()->id == 4) {
-            $rule_id = [3, 4, 5];
-        } else 
-        // auth is admin : show admins + backendusers
-        if( Users::find(Auth::id())->rules->first()->id == 1 && Users::find(Auth::id())->rules->last()->id == 4) {
-            $rule_id = [4, 5];
+        if( Auth::user()->isSuperAdmin() ) {
+            $rule_names = ['Super Admin', 'Admin', 'Data Entry'];
+        } else if ( Auth::user()->isAdmin() ) {
+            $rule_names = ['Admin', 'Data Entry'];
+        } else {
+            $rule_names = ['Data Entry'];
         }
         
-        $data['users'] = Users::where('id', '!=', Auth::id())->whereHas('rules', function ($q) use($rule_id) {   
-            $q->whereIn('rule_id', $rule_id);
+        $data['users'] = Users::where('id', '!=', Auth::id())->whereHas('rules', function ($q) use($rule_names){   
+            $q->whereIn('rules.name', $rule_names);
         })->get();
+
         $data['rules'] = Rules::whereIn('id', [4, 5])->get();
         return view('usersmodule::backend_users', $data);
     }
