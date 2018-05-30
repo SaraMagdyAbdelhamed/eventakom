@@ -43,6 +43,20 @@ class EventsMobileController extends Controller
                 $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
 
             }
+
+
+             if (!isset($request->enddate_from ) && isset($request->endtdate_to)) {
+                $from_date = Carbon::now()->format('Y-m-d');
+                $to_date = date('Y-m-d', strtotime($request->endtdate_to));
+                
+                $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
+            } elseif(isset($request->enddate_from ) && isset($request->enddate_to)){
+             
+                $from_date = date('Y-m-d', strtotime($request->enddate_from));
+                $to_date = date('Y-m-d', strtotime($request->enddate_to));
+                $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
+
+            }
                 $q->whereIn('c.interest_id', $request->categories);
                 $q->select('events.*'); 
                  if (isset($request->status)) {
@@ -60,6 +74,33 @@ class EventsMobileController extends Controller
 
             if (isset($request->status)) {
                 $q->whereIn('is_active', $request->status);
+            }
+
+             if (isset($request->startdate_from ) && !isset($request->startdate_to)) {
+             
+                $from_date = date('Y-m-d', strtotime($request->startdate_from));
+                $to_date = Carbon::now()->format('Y-m-d');
+                $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
+            } elseif(isset($request->startdate_from ) && isset($request->startdate_to)){
+             
+                $from_date = date('Y-m-d', strtotime($request->startdate_from));
+                $to_date = date('Y-m-d', strtotime($request->startdate_to));
+                $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
+
+            }
+
+
+             if (!isset($request->enddate_from ) && isset($request->endtdate_to)) {
+                $from_date = Carbon::now()->format('Y-m-d');
+                $to_date = date('Y-m-d', strtotime($request->endtdate_to));
+                
+                $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
+            } elseif(isset($request->enddate_from ) && isset($request->enddate_to)){
+             
+                $from_date = date('Y-m-d', strtotime($request->enddate_from));
+                $to_date = date('Y-m-d', strtotime($request->enddate_to));
+                $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
+
             }
 
         })->get();

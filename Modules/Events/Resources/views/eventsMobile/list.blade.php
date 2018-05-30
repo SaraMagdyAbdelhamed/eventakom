@@ -81,7 +81,7 @@
                                     <div class="master_field">
                                       <label class="master_label" for="bootstrap_date_End_from">End date from</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="End date from" id="bootstrap_date_End_from">
+                                        <input class="datepicker master_input" type="text" placeholder="End date from" id="bootstrap_date_End_from" name="enddate_from">
                                       </div>
                                     </div>
                                   </div>
@@ -89,7 +89,7 @@
                                     <div class="master_field">
                                       <label class="master_label" for="bootstrap_date_End_to">End date to</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="End date to" id="bootstrap_date_End_to">
+                                        <input class="datepicker master_input" type="text" placeholder="End date to" id="bootstrap_date_End_to" name="enddate_to">
                                       </div>
                                     </div>
                                   </div>
