@@ -33,19 +33,18 @@
                             <div class="bottomActions__btns"><a class="master-btn" href="#">Delete selected</a><a class="master-btn" href="#">Add New Event</a>
                             </div>
                             <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+                               <form role="form" action="{{ route('event_filter') }}" method="POST" accept-charset="utf-8">
+                               {{csrf_field()}}
                               <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
                               <div>
                                 <div class="row">
                                   <div class="col-sm-6 col-xs-12">
                                     <div class="master_field">
                                       <label class="master_label" for="filter_cat">Event categories </label>
-                                      <select class="master_input select2" id="filter_cat" multiple="multiple" data-placeholder="Event categories" style="width:100%;" ,>
-                                        <option>Egypt</option>
-                                        <option>KSA</option>
-                                        <option>USA</option>
-                                        <option>Sudan</option>
-                                        <option>France</option>
-                                        <option>Etc</option>
+                                      <select class="master_input select2" id="filter_cat" multiple="multiple" data-placeholder="Event categories" name="categories[]" style="width:100%;" ,>
+                                      @foreach($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                        @endforeach
                                       </select>
                                     </div>
                                   </div>
@@ -53,11 +52,11 @@
                                     <div class="master_field">
                                       <label class="master_label">Events status</label>
                                       <div class="funkyradio">
-                                        <input type="checkbox" name="radio" id="event_status_2">
+                                        <input type="checkbox" name="status[]" value="1" id="event_status_2">
                                         <label for="event_status_2">Active</label>
                                       </div>
                                       <div class="funkyradio">
-                                        <input type="checkbox" name="radio" id="event_status_3">
+                                        <input type="checkbox" name="status[]"  value="0" id="event_status_3">
                                         <label for="event_status_3">inActive</label>
                                       </div>
                                     </div>
@@ -66,7 +65,7 @@
                                     <div class="master_field">
                                       <label class="master_label" for="bootstrap_date_start_from">start date from</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="start date from" id="bootstrap_date_start_from">
+                                        <input class="datepicker master_input" type="text" placeholder="start date from" id="bootstrap_date_start_from" name="startdate_from">
                                       </div>
                                     </div>
                                   </div>
@@ -74,7 +73,7 @@
                                     <div class="master_field">
                                       <label class="master_label" for="bootstrap_date_start_to">start date to</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="start date to" id="bootstrap_date_start_to">
+                                        <input class="datepicker master_input" type="text" placeholder="start date to" id="bootstrap_date_start_to"  name="startdate_to">
                                       </div>
                                     </div>
                                   </div>
@@ -97,7 +96,8 @@
                                 </div>
                               </div><br>
                               <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                              <button class="remodal-confirm" data-remodal-action="confirm">Apply Filters</button>
+                              <button class="remodal-confirm" type="submit">Apply Filters</button>
+                               </form>
                             </div>
                             <form id="dataTableTriggerId_001_form">
                               <table class="data-table-trigger table-master" id="dataTableTriggerId_001">
@@ -126,7 +126,7 @@
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_by}}</span></td>
-                                    <td><span class="cellcontent">@if($event->is_active==1)<i class = "fa icon-in-table-true fa-check"></i>@elseif($event->is_active==1)<i class = "fa icon-in-table-false fa-times"></i>@endif</span></td>
+                                    <td><span class="cellcontent">@if($event->is_active==1)<i class = "fa icon-in-table-true fa-check"></i>@elseif($event->is_active==0)<i class = "fa icon-in-table-false fa-times"></i>@endif</span></td>
                                     <td><span class="cellcontent"><a href= events_mobile_view.html ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= events_mobile_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
                                   @endforeach
@@ -537,4 +537,47 @@
       $('#sub_3_2').addClass('pure-active');
     });
   </script>
+  <script type="text/javascript">
+      $(function () {
+        $('.datepicker').datepicker({autoclose: true});
+      });
+    </script>
+    <script type="text/javascript">
+      var swiper = new Swiper('.slideperview .swiper-container', {
+        pagination: '.swiper-pagination',
+        slidesPerView: 3,
+        paginationClickable: true,
+        spaceBetween: 5,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        autoplay: 2500,
+        keyboardControl: true,
+        loop: true,
+        autoplayDisableOnInteraction: false,
+        mousewheelControl: false,
+      });
+    </script>
+        <script type="text/javascript">
+      $(document).ready(function(){
+        "use strict";
+        $('.btn-warning-confirm').click(function(){
+          swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this imaginary file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnConfirm: false
+          },
+          function(){
+            swal("Deleted!", "Your imaginary file has been deleted!", "success");
+          });
+        });
+        $('.btn-warning-accept').click(function(){
+         swal("Accepted", "You can find this event in Current Tab", "success");
+        });
+      });
+      
+    </script>
 @endsection
