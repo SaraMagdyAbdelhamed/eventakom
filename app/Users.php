@@ -60,9 +60,16 @@ class Users extends Authenticatable
       }
     }
 
-    public function IsBackEndUser(){
-        
-        dd($this->rules);
-        return ($this->rules[1]->id == 1);
+    public function IsBackEndUser(){        
+        return ($this->rules[0]->id == 1) ? true : false;
     }
+
+    public function isSuperAdmin() {
+        return ($this->rules[0]->id == 1 && $this->rules[1]->id == 3) ? true : false;
+    }
+
+    public function isAdmin() {
+        return ($this->rules[0]->id == 1 && $this->rules[1]->id == 4) ? true : false;
+    }
+
 }
