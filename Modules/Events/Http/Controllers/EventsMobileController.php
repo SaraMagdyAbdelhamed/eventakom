@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use App\EventMobile;
+use App\EventCategory;
+
 class EventsMobileController extends Controller
 {
     /**
@@ -16,11 +18,60 @@ class EventsMobileController extends Controller
     {
         $current_events = EventMobile::CurrentEvents()->get();
         $pending_events = EventMobile::PendingEvents()->get();
-
+        $categories = EventCategory::all();
         return view('events::eventsMobile.list')
                     // ->with('events', EventMobile::MobileApproved()->get());
-                      ->with(compact('current_events', 'pending_events'));
+                      ->with(compact('current_events', 'pending_events','categories'));
      }
+
+      public function event_filter(Request $request)
+    {
+        if (isset($request->categories)) {
+        $data['current_events'] = EventMobile::join('event_categories as c','events.id','=','c.event_id')->where(function ($q) use ($request) {
+            $q->where('is_backend','=',0);
+            $q->where('event_status_id', 2);
+
+         if (isset($request->startdate_from ) && !isset($request->startdate_to)) {
+             
+                $from_date = date('Y-m-d', strtotime($request->startdate_from));
+                $to_date = Carbon::now()->format('Y-m-d');
+                $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
+            } elseif(isset($request->startdate_from ) && isset($request->startdate_to)){
+             
+                $from_date = date('Y-m-d', strtotime($request->startdate_from));
+                $to_date = date('Y-m-d', strtotime($request->startdate_to));
+                $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
+
+            }
+                $q->whereIn('c.interest_id', $request->categories);
+                $q->select('events.*'); 
+                 if (isset($request->status)) {
+                $q->whereIn('is_active', $request->status);
+                 }
+
+              
+              
+              })->get();
+
+            } else{
+            $data['current_events'] = EventMobile::where(function ($q) use ($request) {
+            $q->where('is_backend','=',0);
+            $q->where('event_status_id', 2);
+
+            if (isset($request->status)) {
+                $q->whereIn('is_active', $request->status);
+            }
+
+        })->get();
+        }
+
+        $data['categories'] = EventCategory::all();
+        //$data['current_events'] = EventMobile::CurrentEvents()->get();
+        $data['pending_events'] = EventMobile::PendingEvents()->get();
+        return view('events::eventsMobile.list', $data);
+  
+    }
+
 
     /**
      * Show the form for creating a new resource.
