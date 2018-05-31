@@ -125,7 +125,7 @@
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
-                                    <td><span class="cellcontent">{{$event->created_by}}</span></td>
+                                    <td><span class="cellcontent">{{ $event->user ? $event->user->username : '' }}</span></td>
                                     <td><span class="cellcontent">@if($event->is_active==1)<i class = "fa icon-in-table-true fa-check"></i>@elseif($event->is_active==0)<i class = "fa icon-in-table-false fa-times"></i>@endif</span></td>
                                     <td><span class="cellcontent"><a href= events_mobile_view.html ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= events_mobile_edit.html ,  class= " action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
@@ -329,8 +329,8 @@
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
-                                    <td><span class="cellcontent">{{$event->created_by}}</span></td>
-                                    <td><span class="cellcontent"><button class= " accepted-btn master-btn btn-warning-accept action-btn bgcolor--fadepurple  color--white ">accept</button><a href= #popupModal_r ,  class= "action-btn bgcolor--fadeorange color--white ">reject</a><a href= events_mobile_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                                    <td><span class="cellcontent">{{ $event->user ? $event->user->username : '' }}</span></td>
+                                    <td><span class="cellcontent"><button class= " accepted-btn master-btn btn-warning-accept action-btn bgcolor--fadepurple  color--white ">accept</button><a href= #popupModal_r ,  class= "action-btn bgcolor--fadeorange color--white ">reject</a><a href= "events_mobile_edit.html" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
                                   @endforeach
                                 </tbody>
