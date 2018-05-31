@@ -6,7 +6,7 @@
                   <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
                     <div class="row">
                       <div class="col-xs-12">
-                        <div class="text-xs-center">         
+                        <div class="text-xs-center">
                           <div class="text-wraper">
                             <h4 class="cover-inside-title">Events </h4><i class="fa fa-chevron-circle-right"></i>
                             <h4 class="cover-inside-title sub-lvl-2">Added from mobile application </h4>
@@ -30,7 +30,7 @@
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <div class="full-table">
                             <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>filters</a></div>
-                            <div class="bottomActions__btns"><a class="master-btn" href="#">Delete selected</a><a class="master-btn" href="#">Add New Event</a>
+                            <div class="bottomActions__btns"><a class="{{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">Delete selected</a>
                             </div>
                             <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
                                <form role="form" action="{{ route('event_filter') }}" method="POST" accept-charset="utf-8">
@@ -81,7 +81,7 @@
                                     <div class="master_field">
                                       <label class="master_label" for="bootstrap_date_End_from">End date from</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="End date from" id="bootstrap_date_End_from">
+                                        <input class="datepicker master_input" type="text" placeholder="End date from" id="bootstrap_date_End_from" name="enddate_from">
                                       </div>
                                     </div>
                                   </div>
@@ -89,7 +89,7 @@
                                     <div class="master_field">
                                       <label class="master_label" for="bootstrap_date_End_to">End date to</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="End date to" id="bootstrap_date_End_to">
+                                        <input class="datepicker master_input" type="text" placeholder="End date to" id="bootstrap_date_End_to" name="enddate_to">
                                       </div>
                                     </div>
                                   </div>
@@ -117,9 +117,9 @@
                                 </thead>
                                 <tbody>
                                 	@foreach($current_events as $event)
-                                  <tr>
+                                  <tr data-event-id={{$event->id}}>
                                     <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent">{{$event->id}}</span></td>
+                                    <td><span class="cellcontent" >{{$event->id}}</span></td>
                                     <td><span class="cellcontent">{{$event->name}}</span></td>
                                     <td><span class="cellcontent">{{$event->venue}}</span></td>
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
@@ -127,10 +127,10 @@
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_by}}</span></td>
                                     <td><span class="cellcontent">@if($event->is_active==1)<i class = "fa icon-in-table-true fa-check"></i>@elseif($event->is_active==0)<i class = "fa icon-in-table-false fa-times"></i>@endif</span></td>
-                                    <td><span class="cellcontent"><a href= events_mobile_view.html ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= events_mobile_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                                    <td><span class="cellcontent"><a href= events_mobile_view.html ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= events_mobile_edit.html ,  class= " action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
                                   @endforeach
-                                  
+
                                 </tbody>
                               </table>
                             </form>
@@ -299,6 +299,7 @@
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <div class="full-table">
                             <div class="bottomActions__btns"><a class="master-btn" href="#">Accept Selected</a>
+                          <a class="{{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">Delete selected</a>
                             </div>
                             <form id="dataTableTriggerId_002_form">
                               <table class="data-table-trigger table-master" id="dataTableTriggerId_002">
@@ -317,10 +318,10 @@
                                 </thead>
                                 <tbody>
 
-                              
-                                 
+
+
                                   @foreach($pending_events as $event)
-                                  <tr>
+                                    <tr data-event-id={{$event->id}}>
                                     <td><span class="cellcontent"></span></td>
                                     <td><span class="cellcontent">{{$event->id}}</span></td>
                                     <td><span class="cellcontent">{{$event->name}}</span></td>
@@ -329,7 +330,7 @@
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_by}}</span></td>
-                                    <td><span class="cellcontent"><button class= " accepted-btn master-btn btn-warning-accept action-btn bgcolor--fadepurple  color--white ">accept</button><a href= #popupModal_r ,  class= "action-btn bgcolor--fadeorange color--white ">reject</a><a href= events_mobile_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                                    <td><span class="cellcontent"><button class= " accepted-btn master-btn btn-warning-accept action-btn bgcolor--fadepurple  color--white ">accept</button><a href= #popupModal_r ,  class= "action-btn bgcolor--fadeorange color--white ">reject</a><a href= events_mobile_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
                                   @endforeach
                                 </tbody>
@@ -537,6 +538,7 @@
       $('#sub_3_2').addClass('pure-active');
     });
   </script>
+  @section('js')
   <script type="text/javascript">
       $(function () {
         $('.datepicker').datepicker({autoclose: true});
@@ -578,6 +580,120 @@
          swal("Accepted", "You can find this event in Current Tab", "success");
         });
       });
-      
+
     </script>
-@endsection
+    <!-- delete -->
+    <script type="text/javascript">
+      $(document).ready(function () {
+        // "use strict";
+        $('.btn-warning-confirm').click(function () {
+          var event_id = $(this).closest('tr').attr('data-event-id');
+          var _token = '{{csrf_token()}}';
+          swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this imaginary file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnConfirm: false
+          },
+            function () {
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_destroy')}}' + '/' + event_id,
+                data: { _token: _token },
+                success: function (data) {
+                  $('tr[data-event-id=' + event_id + ']').fadeOut();
+                }
+              });
+              swal("Deleted!", "Your imaginary file has been deleted!", "success");
+            });
+        });
+
+        $('.btn-warning-confirm-ar').click(function () {
+          var event_id = $(this).closest('tr').attr('data-event-id');
+          var _token = '{{csrf_token()}}';
+          swal({
+            title: "هل أنت متأكد ؟",
+            text: "لن تكون قادرًا على استرداد هذا الملف !",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'نعم , احذف هذا',
+            closeOnConfirm: false
+          },
+            function () {
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_destroy')}}' + '/' + event_id,
+                data: { _token: _token },
+                success: function (data) {
+                  $('tr[data-event-id=' + event_id + ']').fadeOut();
+                }
+              });
+              swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
+            });
+        });
+
+        $('.btn-warning-confirm-all').click(function () {
+          var selectedIds = $("input:checkbox:checked").map(function () {
+            return $(this).closest('tr').attr('data-event-id');
+          }).get();
+          var _token = '{{csrf_token()}}';
+          swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this imaginary file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnConfirm: false
+          },
+            function () {
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_destroy_all')}}',
+                data: { ids: selectedIds, _token: _token },
+                success: function (data) {
+                  $.each(selectedIds, function (key, value) {
+                    $('tr[data-event-id=' + value + ']').fadeOut();
+                  });
+                }
+              });
+              swal("Deleted!", "Your imaginary file has been deleted!", "success");
+            });
+        });
+
+        $('.btn-warning-confirm-all-ar').click(function () {
+          var selectedIds = $("input:checkbox:checked").map(function () {
+            return $(this).closest('tr').attr('data-event-id');
+          }).get();
+          var _token = '{{csrf_token()}}';
+          swal({
+            title: "هل أنت متأكد ?",
+            text: "لن تكون قادرًا على استرداد هذا الملف !",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'نعم , احذف هذا!',
+            closeOnConfirm: false
+          },
+            function () {
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_destroy_all')}}',
+                data: { ids: selectedIds, _token: _token },
+                success: function (data) {
+                  $.each(selectedIds, function (key, value) {
+                    $('tr[data-event-id=' + value + ']').fadeOut();
+                  });
+                }
+              });
+              swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
+            });
+        });
+
+      });
+    </script>
+@endsection @endsection
