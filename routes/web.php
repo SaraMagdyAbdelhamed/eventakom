@@ -38,7 +38,7 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('logout');   // for t
 Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
 
     // about us
-    Route::get('/about', '\Modules\Main\Http\Controllers\MainController@about')->name('about');    
+    Route::get('/about', '\Modules\Main\Http\Controllers\MainController@about')->name('about');
     Route::post('/main/about/edit/{id}', '\Modules\Main\Http\Controllers\MainController@update_fixed')->name('about.edit');
 
     // terms & conditions
@@ -55,7 +55,7 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::get('/contact', '\Modules\Main\Http\Controllers\MainController@contact')->name('contact');
     Route::post('/main/contact/edit', '\Modules\Main\Http\Controllers\MainController@update_contact')->name('contact.edit');
 
-    
+
     // event categories
     Route::get('/event/categories', '\Modules\Main\Http\Controllers\MainController@event_category')->name('event.categories');
     Route::post('/event/add', '\Modules\Main\Http\Controllers\MainController@event_store')->name('event.add');
@@ -113,7 +113,7 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::get('/events/mobile', '\Modules\Events\Http\Controllers\EventsMobileController@index')->name('event_mobile');
     Route::get('/events/mobile/add', '\Modules\Events\Http\Controllers\EventsMobileController@create')->name('event_mobile.add');
     Route::post('/events/mobile/store', '\Modules\Events\Http\Controllers\EventsMobileController@store')->name('event_mobile.store');
-   Route::post('/event_filter', '\Modules\Events\Http\Controllers\EventsMobileController@event_filter')->name('event_filter');
-    
+    Route::post('/event_filter', '\Modules\Events\Http\Controllers\EventsMobileController@event_filter')->name('event_filter');
+    Route::post('/event_destroy/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@destroy')->name('event_destroy');
+    Route::post('/event_destroy_all', '\Modules\Events\Http\Controllers\EventsMobileController@destroy_all')->name('event_destroy_all');
 });
-

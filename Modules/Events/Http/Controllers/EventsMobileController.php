@@ -32,12 +32,12 @@ class EventsMobileController extends Controller
             $q->where('event_status_id', 2);
 
          if (isset($request->startdate_from ) && !isset($request->startdate_to)) {
-             
+
                 $from_date = date('Y-m-d', strtotime($request->startdate_from));
                 $to_date = Carbon::now()->format('Y-m-d');
                 $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
             } elseif(isset($request->startdate_from ) && isset($request->startdate_to)){
-             
+
                 $from_date = date('Y-m-d', strtotime($request->startdate_from));
                 $to_date = date('Y-m-d', strtotime($request->startdate_to));
                 $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
@@ -48,23 +48,23 @@ class EventsMobileController extends Controller
              if (!isset($request->enddate_from ) && isset($request->endtdate_to)) {
                 $from_date = Carbon::now()->format('Y-m-d');
                 $to_date = date('Y-m-d', strtotime($request->endtdate_to));
-                
+
                 $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
             } elseif(isset($request->enddate_from ) && isset($request->enddate_to)){
-             
+
                 $from_date = date('Y-m-d', strtotime($request->enddate_from));
                 $to_date = date('Y-m-d', strtotime($request->enddate_to));
                 $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
 
             }
                 $q->whereIn('c.interest_id', $request->categories);
-                $q->select('events.*'); 
+                $q->select('events.*');
                  if (isset($request->status)) {
                 $q->whereIn('is_active', $request->status);
                  }
 
-              
-              
+
+
               })->get();
 
             } else{
@@ -77,12 +77,12 @@ class EventsMobileController extends Controller
             }
 
              if (isset($request->startdate_from ) && !isset($request->startdate_to)) {
-             
+
                 $from_date = date('Y-m-d', strtotime($request->startdate_from));
                 $to_date = Carbon::now()->format('Y-m-d');
                 $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
             } elseif(isset($request->startdate_from ) && isset($request->startdate_to)){
-             
+
                 $from_date = date('Y-m-d', strtotime($request->startdate_from));
                 $to_date = date('Y-m-d', strtotime($request->startdate_to));
                 $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
@@ -93,10 +93,10 @@ class EventsMobileController extends Controller
              if (!isset($request->enddate_from ) && isset($request->endtdate_to)) {
                 $from_date = Carbon::now()->format('Y-m-d');
                 $to_date = date('Y-m-d', strtotime($request->endtdate_to));
-                
+
                 $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
             } elseif(isset($request->enddate_from ) && isset($request->enddate_to)){
-             
+
                 $from_date = date('Y-m-d', strtotime($request->enddate_from));
                 $to_date = date('Y-m-d', strtotime($request->enddate_to));
                 $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
@@ -110,7 +110,7 @@ class EventsMobileController extends Controller
         //$data['current_events'] = EventMobile::CurrentEvents()->get();
         $data['pending_events'] = EventMobile::PendingEvents()->get();
         return view('events::eventsMobile.list', $data);
-  
+
     }
 
 
@@ -163,7 +163,17 @@ class EventsMobileController extends Controller
      * Remove the specified resource from storage.
      * @return Response
      */
-    public function destroy()
-    {
-    }
+     public function destroy($id)
+     {
+         $event = EventMobile::find($id);
+         $event->delete();
+     }
+
+     public function destroy_all()
+     {
+         $ids = $_POST['ids'];
+         foreach ($ids as $id) {
+             EventMobile::find($id)->delete();
+         }
+     }
 }
