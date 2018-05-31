@@ -160,6 +160,34 @@ class EventsMobileController extends Controller
     }
 
     /**
+     * Accept the specified Event.
+     * @param  Id $id
+     * @return Response
+     */
+    public function accept($id)
+    {
+      $accepted = EventMobile::find($id);
+      $accepted->update(['event_status_id' =>2]);
+      $accepted->save();
+    }
+
+    /**
+     * Accept the Selected Events.
+     *
+     */
+
+    public function accept_all()
+    {
+        $ids = $_POST['ids'];
+        foreach ($ids as $id) {
+          $accepted = EventMobile::find($id);
+          $accepted->update(['event_status_id' =>2]);
+          $accepted->save();
+        }
+
+    }
+
+    /**
      * Remove the specified resource from storage.
      * @return Response
      */

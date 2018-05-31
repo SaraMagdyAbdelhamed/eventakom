@@ -116,4 +116,6 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::post('/event_filter', '\Modules\Events\Http\Controllers\EventsMobileController@event_filter')->name('event_filter');
     Route::post('/event_destroy/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@destroy')->name('event_destroy');
     Route::post('/event_destroy_all', '\Modules\Events\Http\Controllers\EventsMobileController@destroy_all')->name('event_destroy_all');
+    Route::post('/event_accept/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@accept')->name('event_accept');
+    Route::post('/event_accept_all', '\Modules\Events\Http\Controllers\EventsMobileController@accept_all')->name('event_accept_all');
 });
