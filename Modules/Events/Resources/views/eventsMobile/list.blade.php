@@ -330,7 +330,7 @@
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
                                     <td><span class="cellcontent">{{ $event->user ? $event->user->username : '' }}</span></td>
-                                    <td><span class="cellcontent"><button class= " accepted-btn master-btn btn-warning-accept action-btn bgcolor--fadepurple  color--white ">accept</button><a href= #popupModal_r ,  class= "action-btn bgcolor--fadeorange color--white ">reject</a><a href= "events_mobile_edit.html" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                                    <td><span class="cellcontent"><button class= "{{\App::isLocale('en') ?'btn-warning-accept':'btn-warning-accept-ar'}} accepted-btn master-btn  action-btn bgcolor--fadepurple  color--white ">accept</button><a href= #popupModal_r ,  class= "action-btn bgcolor--fadeorange color--white ">reject</a><a href= "events_mobile_edit.html" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
                                   @endforeach
                                 </tbody>
@@ -559,29 +559,7 @@
         mousewheelControl: false,
       });
     </script>
-        <script type="text/javascript">
-      $(document).ready(function(){
-        "use strict";
-        $('.btn-warning-confirm').click(function(){
-          swal({
-            title: "Are you sure?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#281160',
-            confirmButtonText: 'Yes, delete it!',
-            closeOnConfirm: false
-          },
-          function(){
-            swal("Deleted!", "Your imaginary file has been deleted!", "success");
-          });
-        });
-        $('.btn-warning-accept').click(function(){
-         swal("Accepted", "You can find this event in Current Tab", "success");
-        });
-      });
 
-    </script>
     <!-- delete -->
     <script type="text/javascript">
       $(document).ready(function () {
@@ -634,6 +612,100 @@
               });
               swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
             });
+        });
+
+        $('.btn-warning-confirm-all').click(function () {
+          var selectedIds = $("input:checkbox:checked").map(function () {
+            return $(this).closest('tr').attr('data-event-id');
+          }).get();
+          var _token = '{{csrf_token()}}';
+          swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this imaginary file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnConfirm: false
+          },
+            function () {
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_destroy_all')}}',
+                data: { ids: selectedIds, _token: _token },
+                success: function (data) {
+                  $.each(selectedIds, function (key, value) {
+                    $('tr[data-event-id=' + value + ']').fadeOut();
+                  });
+                }
+              });
+              swal("Deleted!", "Your imaginary file has been deleted!", "success");
+            });
+        });
+
+        $('.btn-warning-confirm-all-ar').click(function () {
+          var selectedIds = $("input:checkbox:checked").map(function () {
+            return $(this).closest('tr').attr('data-event-id');
+          }).get();
+          var _token = '{{csrf_token()}}';
+          swal({
+            title: "هل أنت متأكد ?",
+            text: "لن تكون قادرًا على استرداد هذا الملف !",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'نعم , احذف هذا!',
+            closeOnConfirm: false
+          },
+            function () {
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_destroy_all')}}',
+                data: { ids: selectedIds, _token: _token },
+                success: function (data) {
+                  $.each(selectedIds, function (key, value) {
+                    $('tr[data-event-id=' + value + ']').fadeOut();
+                  });
+                }
+              });
+              swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
+            });
+        });
+
+      });
+    </script>
+    <!-- Accept -->
+    <script type="text/javascript">
+      $(document).ready(function () {
+
+        $('.btn-warning-accept').click(function () {
+          var event_id = $(this).closest('tr').attr('data-event-id');
+          var _token = '{{csrf_token()}}';
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_accept')}}' + '/' + event_id,
+                data: { _token: _token },
+                success: function (data) {
+                  $('tr[data-event-id=' + event_id + ']').fadeOut();
+                }
+              });
+              swal("Accepted", "You can find this event in Current Tab", "success");
+
+        });
+
+        $('.btn-warning-accept-ar').click(function () {
+          var event_id = $(this).closest('tr').attr('data-event-id');
+          var _token = '{{csrf_token()}}';
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_accept')}}' + '/' + event_id,
+                data: { _token: _token },
+                success: function (data) {
+                  $('tr[data-event-id=' + event_id + ']').fadeOut();
+                }
+              });
+              swal("تم القبول", "يمكنك ايجاد هذا الحدث في قائمة الأحداث الحالية", "success");
+
         });
 
         $('.btn-warning-confirm-all').click(function () {
