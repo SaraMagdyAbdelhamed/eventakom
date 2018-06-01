@@ -298,7 +298,7 @@
                       <li class="tab__content_item" id="pending-content">
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <div class="full-table">
-                            <div class="bottomActions__btns"><a class="master-btn" href="#">Accept Selected</a>
+                            <div class="bottomActions__btns"><a class="{{\App::isLocale('en') ?'btn-warning-accept-all':'btn-warning-accept-all-ar'}} master-btn" href="#">Accept Selected</a>
                           <a class="{{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">Delete selected</a>
                             </div>
                             <form id="dataTableTriggerId_002_form">
@@ -493,7 +493,7 @@
                                 </div>
                               </div>
                             </div>
-                            <button class="btn-warning-accept" id="delete-test-2">Accept selected</button>
+                            <!-- <button class="btn-warning-accept" id="delete-test-2">Accept selected</button> -->
                           </div>
                         </div><br>
                       </li>
@@ -708,24 +708,14 @@
 
         });
 
-        $('.btn-warning-confirm-all').click(function () {
+        $('.btn-warning-accept-all').click(function () {
           var selectedIds = $("input:checkbox:checked").map(function () {
             return $(this).closest('tr').attr('data-event-id');
           }).get();
           var _token = '{{csrf_token()}}';
-          swal({
-            title: "Are you sure?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#281160',
-            confirmButtonText: 'Yes, delete it!',
-            closeOnConfirm: false
-          },
-            function () {
               $.ajax({
                 type: 'POST',
-                url: '{{url('event_destroy_all')}}',
+                url: '{{url('event_accept_all')}}',
                 data: { ids: selectedIds, _token: _token },
                 success: function (data) {
                   $.each(selectedIds, function (key, value) {
@@ -733,28 +723,18 @@
                   });
                 }
               });
-              swal("Deleted!", "Your imaginary file has been deleted!", "success");
-            });
+                swal("Accepted", "You can find these events in Current Tab", "success");
+
         });
 
-        $('.btn-warning-confirm-all-ar').click(function () {
+        $('.btn-warning-accept-all-ar').click(function () {
           var selectedIds = $("input:checkbox:checked").map(function () {
             return $(this).closest('tr').attr('data-event-id');
           }).get();
           var _token = '{{csrf_token()}}';
-          swal({
-            title: "هل أنت متأكد ?",
-            text: "لن تكون قادرًا على استرداد هذا الملف !",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#281160',
-            confirmButtonText: 'نعم , احذف هذا!',
-            closeOnConfirm: false
-          },
-            function () {
               $.ajax({
                 type: 'POST',
-                url: '{{url('event_destroy_all')}}',
+                url: '{{url('event_accept_all')}}',
                 data: { ids: selectedIds, _token: _token },
                 success: function (data) {
                   $.each(selectedIds, function (key, value) {
@@ -762,9 +742,10 @@
                   });
                 }
               });
-              swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
-            });
+              swal("تم القبول", "يمكنك ايجاد الاحداث المقبولة في قائمة الأحداث الحالية", "success");
+
         });
+
 
       });
     </script>
