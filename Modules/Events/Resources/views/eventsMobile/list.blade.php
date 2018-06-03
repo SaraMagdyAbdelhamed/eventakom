@@ -798,7 +798,7 @@
 
                
                window.location.replace("{{ url('events/mobile') }}");
-;
+
            }
        });
    });

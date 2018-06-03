@@ -7,6 +7,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use App\EventMobile;
 use App\EventCategory;
+use App\EntityLocalization;
+
 
 class EventsMobileController extends Controller
 {
@@ -189,13 +191,19 @@ class EventsMobileController extends Controller
    
     public function reject(Request $request)
     {
-        $id = $request['event_id'];
+      $id = $request['event_id'];
       $rejected = EventMobile::find($id);
       $rejected->update(['event_status_id' =>3,'rejection_reason'=>$request['reason']]);
-     if($rejected->save()){
+      // arabic rejection reson "instead of these 5 lines later we can create function in EntityLocalization model takes these 4 parameters and return 1"
+      $reason_ar = new EntityLocalization;
+      $reason_ar->entity_id = 4;
+      $reason_ar->field = 'rejection_reason';
+      $reason_ar->item_id = $id;
+      $reason_ar->value = $request['reason_ar'];
+     if($rejected->save() && $reason_ar->save() ){
        $response = array(
             'status' => 'success',
-            'msg' => 'Setting created successfully',
+            'msg' => 'Event rejected successfully',
         );
       //  return Response::json($response);
         return response()->json($response);  // <<<<<<<<< see this line
