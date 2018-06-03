@@ -330,7 +330,7 @@
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
                                     <td><span class="cellcontent">{{ $event->user ? $event->user->username : '' }}</span></td>
-                                    <td><span class="cellcontent"><button class= "{{\App::isLocale('en') ?'btn-warning-accept':'btn-warning-accept-ar'}} accepted-btn master-btn  action-btn bgcolor--fadepurple  color--white ">accept</button><a href= #popupModal_r ,  class= "action-btn bgcolor--fadeorange color--white ">reject</a><a href= "events_mobile_edit.html" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                                    <td><span class="cellcontent"><button class= "{{\App::isLocale('en') ?'btn-warning-accept':'btn-warning-accept-ar'}} accepted-btn master-btn  action-btn bgcolor--fadepurple  color--white ">accept</button><a href= "#" ,  class= "{{\App::isLocale('en') ?'btn-modal-reject':'btn-modal-reject-ar'}} action-btn bgcolor--fadeorange color--white " data-remodal-target='popupModal_r'>reject</a><a href= "events_mobile_edit.html" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
                                   @endforeach
                                 </tbody>
@@ -510,6 +510,7 @@
                       </div>
                       <div class="col-xs-12">
                         <form>
+                          <input type="hidden" name='event_id' id='eventID' value='placeholder'>
                           <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                             <p class="text-left">add Arabic Content</p>
                             <div class="master_field">
@@ -744,6 +745,65 @@
               });
               swal("تم القبول", "يمكنك ايجاد الاحداث المقبولة في قائمة الأحداث الحالية", "success");
 
+        });
+
+
+      });
+    </script>
+
+        <!-- reject -->
+    <script type="text/javascript">
+      
+      $(document).ready(function () {
+        //test1
+       /* $('.btn-modal-reject').click(function () {
+          var event_id = $(this).closest('tr').attr('data-event-id');
+          //alert(event_id);
+          var _token = '{{csrf_token()}}';
+         var inst = jQuery('[data-remodal-id=popupModal_r').remodal();
+         inst.open();
+        });*/
+
+        //test2
+           // declare global var
+  var gEventId;
+  // register click event for anchor
+  $("[data-remodal-target='popupModal_r']").click(function(){
+    // assign into global var
+    gEventId = $(this).closest('tr').attr('data-event-id');
+  });
+
+  $(document).on('opening', '.remodal', function () {
+    // let catch the global var
+    var event_id = gEventId;
+   //alert( 'The event id is ' + event_id );
+    $('#eventID').val( event_id );
+  });
+
+
+        $('.btn-warning-confirm-ar').click(function () {
+          var event_id = $(this).closest('tr').attr('data-event-id');
+          var _token = '{{csrf_token()}}';
+          swal({
+            title: "هل أنت متأكد ؟",
+            text: "لن تكون قادرًا على استرداد هذا الملف !",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'نعم , احذف هذا',
+            closeOnConfirm: false
+          },
+            function () {
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_destroy')}}' + '/' + event_id,
+                data: { _token: _token },
+                success: function (data) {
+                  $('tr[data-event-id=' + event_id + ']').fadeOut();
+                }
+              });
+              swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
+            });
         });
 
 
