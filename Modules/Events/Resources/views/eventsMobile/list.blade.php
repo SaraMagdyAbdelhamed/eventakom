@@ -509,14 +509,14 @@
                         <h3>Please enter reject reason</h3>
                       </div>
                       <div class="col-xs-12">
-                        <form role="form" action="{{ route('event_reject') }}" method="POST" accept-charset="utf-8" >
+                        <form role="form"  method="POST" accept-charset="utf-8" id="reject_form">
                            {{csrf_field()}}
                           <input type="hidden" name='event_id' id='eventID' value='placeholder'>
                           <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                             <p class="text-left">add Arabic Content</p>
                             <div class="master_field">
                               <label class="master_label" for="ID_No-12">reject reason in arabic</label>
-                              <textarea class="master_input" name="textarea" id="ID_No-12" placeholder="reject reason in arabic" Required></textarea><span class="master_message inherit">message content</span>
+                              <textarea class="master_input" name="reason-ar" id="ID_No-12" placeholder="reject reason in arabic" Required></textarea><span class="master_message inherit">message content</span>
                             </div>
                             <p class="text-left">add English Content</p>
                             <div class="master_field">
@@ -525,7 +525,7 @@
                             </div>
                             <div class="clearfix"></div>
                             <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                            <button class="remodal-confirm" type="submit">save</button>
+                            <button class="remodal-confirm" >save</button>
                             <button class="remodal-confirm" data-remodal-action="confirm" disabled>disabled</button>
                           </div>
                         </form>
@@ -780,6 +780,28 @@
    //alert( 'The event id is ' + event_id );
        $('#eventID').val( event_id );
        });
+
+       //ajax submit
+
+        $('#reject_form').on('submit', function(e) {
+       e.preventDefault(); 
+       var _token = '{{csrf_token()}}';
+       var reason_ar = $('#ID_No-12').val();
+       var reason = $('#ID_No-15').val();
+       var event_id = $('#eventID').val();
+       $.ajax({
+           type: "POST",
+           url: '{{ url('event_reject') }}',
+           data: {_token: _token ,reason_ar:reason_ar, reason:reason, event_id:event_id},
+           success: function( msg ) {
+               $("#reject_form").append("<div>"+msg.msg+"</div>");
+
+               
+               window.location.replace("{{ url('events/mobile') }}");
+;
+           }
+       });
+   });
 
 
         $('.btn-warning-confirm-ar').click(function () {

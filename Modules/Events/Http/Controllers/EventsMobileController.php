@@ -192,7 +192,22 @@ class EventsMobileController extends Controller
         $id = $request['event_id'];
       $rejected = EventMobile::find($id);
       $rejected->update(['event_status_id' =>3,'rejection_reason'=>$request['reason']]);
-      $rejected->save();
+     if($rejected->save()){
+       $response = array(
+            'status' => 'success',
+            'msg' => 'Setting created successfully',
+        );
+      //  return Response::json($response);
+        return response()->json($response);  // <<<<<<<<< see this line
+    }else{
+       $response = array(
+            'status' => 'error',
+            'msg' => 'Something goes wrong!',
+        );
+       return response()->json($response); 
+    }
+
+
     }
 
 
