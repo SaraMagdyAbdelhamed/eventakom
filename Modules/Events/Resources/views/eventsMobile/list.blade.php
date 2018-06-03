@@ -509,7 +509,8 @@
                         <h3>Please enter reject reason</h3>
                       </div>
                       <div class="col-xs-12">
-                        <form>
+                        <form role="form" action="{{ route('event_reject') }}" method="POST" accept-charset="utf-8" >
+                           {{csrf_field()}}
                           <input type="hidden" name='event_id' id='eventID' value='placeholder'>
                           <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                             <p class="text-left">add Arabic Content</p>
@@ -520,11 +521,11 @@
                             <p class="text-left">add English Content</p>
                             <div class="master_field">
                               <label class="master_label" for="ID_No-15">reject reason in English</label>
-                              <textarea class="master_input" name="textarea" id="ID_No-15" placeholder="reject reason in English" Required></textarea><span class="master_message inherit">message content</span>
+                              <textarea class="master_input" name="reason" id="ID_No-15" placeholder="reject reason in English" Required></textarea><span class="master_message inherit">message content</span>
                             </div>
                             <div class="clearfix"></div>
                             <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                            <button class="remodal-confirm" data-remodal-action="confirm">save</button>
+                            <button class="remodal-confirm" type="submit">save</button>
                             <button class="remodal-confirm" data-remodal-action="confirm" disabled>disabled</button>
                           </div>
                         </form>
@@ -766,19 +767,19 @@
 
         //test2
            // declare global var
-  var gEventId;
+       var gEventId;
   // register click event for anchor
-  $("[data-remodal-target='popupModal_r']").click(function(){
+       $("[data-remodal-target='popupModal_r']").click(function(){
     // assign into global var
-    gEventId = $(this).closest('tr').attr('data-event-id');
-  });
+       gEventId = $(this).closest('tr').attr('data-event-id');
+        });
 
-  $(document).on('opening', '.remodal', function () {
+       $(document).on('opening', '.remodal', function () {
     // let catch the global var
-    var event_id = gEventId;
+       var event_id = gEventId;
    //alert( 'The event id is ' + event_id );
-    $('#eventID').val( event_id );
-  });
+       $('#eventID').val( event_id );
+       });
 
 
         $('.btn-warning-confirm-ar').click(function () {

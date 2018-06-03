@@ -186,6 +186,15 @@ class EventsMobileController extends Controller
         }
 
     }
+   
+    public function reject(Request $request)
+    {
+        $id = $request['event_id'];
+      $rejected = EventMobile::find($id);
+      $rejected->update(['event_status_id' =>3,'rejection_reason'=>$request['reason']]);
+      $rejected->save();
+    }
+
 
     /**
      * Remove the specified resource from storage.

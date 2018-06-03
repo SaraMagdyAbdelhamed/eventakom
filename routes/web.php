@@ -118,4 +118,5 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::post('/event_destroy_all', '\Modules\Events\Http\Controllers\EventsMobileController@destroy_all')->name('event_destroy_all');
     Route::post('/event_accept/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@accept')->name('event_accept');
     Route::post('/event_accept_all', '\Modules\Events\Http\Controllers\EventsMobileController@accept_all')->name('event_accept_all');
+     Route::post('/event_reject/', '\Modules\Events\Http\Controllers\EventsMobileController@reject')->name('event_reject');
 });
