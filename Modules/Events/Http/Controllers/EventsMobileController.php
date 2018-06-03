@@ -115,6 +115,23 @@ class EventsMobileController extends Controller
 
     }
 
+    /**
+     * Show the specified resource.
+     * @return Response
+     */
+    public function view($id)
+    {
+        $data['event'] = EventMobile::find($id);
+        $data['categories'] =  EventMobile::join('event_categories as c','events.id','=','c.event_id')->where(function ($q) use ($id) {
+            $q->where('is_backend','=',0);
+            $q->where('event_status_id', 2);
+            $q->where('event_id', $id);
+            $q->select('interest_id');
+                })->get();
+       // dd($data['categories']);
+        return view('events::eventsMobile.view',$data);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -142,6 +159,7 @@ class EventsMobileController extends Controller
     {
         return view('events::show');
     }
+
 
     /**
      * Show the form for editing the specified resource.

@@ -127,7 +127,7 @@
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
                                     <td><span class="cellcontent">{{ $event->user ? $event->user->username : '' }}</span></td>
                                     <td><span class="cellcontent">@if($event->is_active==1)<i class = "fa icon-in-table-true fa-check"></i>@elseif($event->is_active==0)<i class = "fa icon-in-table-false fa-times"></i>@endif</span></td>
-                                    <td><span class="cellcontent"><a href= events_mobile_view.html ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= events_mobile_edit.html ,  class= " action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                                    <td><span class="cellcontent"><a href= {{url('/events/mobile/view')}}/{{$event->id}} ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= events_mobile_edit.html ,  class= " action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
                                   @endforeach
 
@@ -692,6 +692,7 @@
                 }
               });
               swal("Accepted", "You can find this event in Current Tab", "success");
+               window.location.replace("{{ url('events/mobile') }}");
 
         });
 
@@ -707,6 +708,8 @@
                 }
               });
               swal("تم القبول", "يمكنك ايجاد هذا الحدث في قائمة الأحداث الحالية", "success");
+
+               window.location.replace("{{ url('events/mobile') }}");
 
         });
 
@@ -766,18 +769,18 @@
         });*/
 
         //test2
-           // declare global var
+       // declare global var
        var gEventId;
-  // register click event for anchor
+       // register click event for anchor
        $("[data-remodal-target='popupModal_r']").click(function(){
-    // assign into global var
+       // assign into global var
        gEventId = $(this).closest('tr').attr('data-event-id');
         });
 
        $(document).on('opening', '.remodal', function () {
-    // let catch the global var
+       // let catch the global var
        var event_id = gEventId;
-   //alert( 'The event id is ' + event_id );
+      //alert( 'The event id is ' + event_id );
        $('#eventID').val( event_id );
        });
 
@@ -802,33 +805,6 @@
            }
        });
    });
-
-
-        $('.btn-warning-confirm-ar').click(function () {
-          var event_id = $(this).closest('tr').attr('data-event-id');
-          var _token = '{{csrf_token()}}';
-          swal({
-            title: "هل أنت متأكد ؟",
-            text: "لن تكون قادرًا على استرداد هذا الملف !",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#281160',
-            confirmButtonText: 'نعم , احذف هذا',
-            closeOnConfirm: false
-          },
-            function () {
-              $.ajax({
-                type: 'POST',
-                url: '{{url('event_destroy')}}' + '/' + event_id,
-                data: { _token: _token },
-                success: function (data) {
-                  $('tr[data-event-id=' + event_id + ']').fadeOut();
-                }
-              });
-              swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
-            });
-        });
-
 
       });
     </script>
