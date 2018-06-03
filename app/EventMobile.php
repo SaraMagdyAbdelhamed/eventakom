@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Interest;
 class EventMobile extends Model
 {
     protected $id = 'id';
@@ -38,6 +38,10 @@ class EventMobile extends Model
     	return static::query()->join('event_statuses','events.event_status_id','=','event_statuses.id')
     		   ->select('events.*','event_statuses.name');
 
+    }
+
+      public static function getCategory($category_id){
+            return Interest::find($category_id);
     }
 
     //localizations

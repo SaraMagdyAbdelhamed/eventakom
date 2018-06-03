@@ -7,6 +7,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use App\EventMobile;
 use App\EventCategory;
+use App\EntityLocalization;
+
 
 class EventsMobileController extends Controller
 {
@@ -113,6 +115,23 @@ class EventsMobileController extends Controller
 
     }
 
+    /**
+     * Show the specified resource.
+     * @return Response
+     */
+    public function view($id)
+    {
+        $data['event'] = EventMobile::find($id);
+        $data['categories'] =  EventMobile::join('event_categories as c','events.id','=','c.event_id')->where(function ($q) use ($id) {
+            $q->where('is_backend','=',0);
+            $q->where('event_status_id', 2);
+            $q->where('event_id', $id);
+            $q->select('interest_id');
+                })->get();
+       // dd($data['categories']);
+        return view('events::eventsMobile.view',$data);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -141,6 +160,7 @@ class EventsMobileController extends Controller
         return view('events::show');
     }
 
+
     /**
      * Show the form for editing the specified resource.
      * @return Response
@@ -158,6 +178,64 @@ class EventsMobileController extends Controller
     public function update(Request $request)
     {
     }
+
+    /**
+     * Accept the specified Event.
+     * @param  Id $id
+     * @return Response
+     */
+    public function accept($id)
+    {
+      $accepted = EventMobile::find($id);
+      $accepted->update(['event_status_id' =>2]);
+      $accepted->save();
+    }
+
+    /**
+     * Accept the Selected Events.
+     *
+     */
+
+    public function accept_all()
+    {
+        $ids = $_POST['ids'];
+        foreach ($ids as $id) {
+          $accepted = EventMobile::find($id);
+          $accepted->update(['event_status_id' =>2]);
+          $accepted->save();
+        }
+
+    }
+   
+    public function reject(Request $request)
+    {
+      $id = $request['event_id'];
+      $rejected = EventMobile::find($id);
+      $rejected->update(['event_status_id' =>3,'rejection_reason'=>$request['reason']]);
+      // arabic rejection reson "instead of these 5 lines later we can create function in EntityLocalization model takes these 4 parameters and return 1"
+      $reason_ar = new EntityLocalization;
+      $reason_ar->entity_id = 4;
+      $reason_ar->field = 'rejection_reason';
+      $reason_ar->item_id = $id;
+      $reason_ar->value = $request['reason_ar'];
+     if($rejected->save() && $reason_ar->save() ){
+       $response = array(
+            'status' => 'success',
+            'msg' => 'Event rejected successfully',
+        );
+      //  return Response::json($response);
+        return response()->json($response);  // <<<<<<<<< see this line
+    }else{
+       $response = array(
+            'status' => 'error',
+            'msg' => 'Something goes wrong!',
+        );
+       return response()->json($response); 
+    }
+
+
+    }
+
 
     /**
      * Remove the specified resource from storage.

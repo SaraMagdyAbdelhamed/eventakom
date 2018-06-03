@@ -125,9 +125,9 @@
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
-                                    <td><span class="cellcontent">{{$event->created_by}}</span></td>
+                                    <td><span class="cellcontent">{{ $event->user ? $event->user->username : '' }}</span></td>
                                     <td><span class="cellcontent">@if($event->is_active==1)<i class = "fa icon-in-table-true fa-check"></i>@elseif($event->is_active==0)<i class = "fa icon-in-table-false fa-times"></i>@endif</span></td>
-                                    <td><span class="cellcontent"><a href= events_mobile_view.html ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= events_mobile_edit.html ,  class= " action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                                    <td><span class="cellcontent"><a href= {{url('/events/mobile/view')}}/{{$event->id}} ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= events_mobile_edit.html ,  class= " action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
                                   @endforeach
 
@@ -298,7 +298,7 @@
                       <li class="tab__content_item" id="pending-content">
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <div class="full-table">
-                            <div class="bottomActions__btns"><a class="master-btn" href="#">Accept Selected</a>
+                            <div class="bottomActions__btns"><a class="{{\App::isLocale('en') ?'btn-warning-accept-all':'btn-warning-accept-all-ar'}} master-btn" href="#">Accept Selected</a>
                           <a class="{{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">Delete selected</a>
                             </div>
                             <form id="dataTableTriggerId_002_form">
@@ -329,8 +329,8 @@
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
-                                    <td><span class="cellcontent">{{$event->created_by}}</span></td>
-                                    <td><span class="cellcontent"><button class= " accepted-btn master-btn btn-warning-accept action-btn bgcolor--fadepurple  color--white ">accept</button><a href= #popupModal_r ,  class= "action-btn bgcolor--fadeorange color--white ">reject</a><a href= events_mobile_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                                    <td><span class="cellcontent">{{ $event->user ? $event->user->username : '' }}</span></td>
+                                    <td><span class="cellcontent"><button class= "{{\App::isLocale('en') ?'btn-warning-accept':'btn-warning-accept-ar'}} accepted-btn master-btn  action-btn bgcolor--fadepurple  color--white ">accept</button><a href= "#" ,  class= "{{\App::isLocale('en') ?'btn-modal-reject':'btn-modal-reject-ar'}} action-btn bgcolor--fadeorange color--white " data-remodal-target='popupModal_r'>reject</a><a href= "events_mobile_edit.html" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
                                   @endforeach
                                 </tbody>
@@ -493,7 +493,7 @@
                                 </div>
                               </div>
                             </div>
-                            <button class="btn-warning-accept" id="delete-test-2">Accept selected</button>
+                            <!-- <button class="btn-warning-accept" id="delete-test-2">Accept selected</button> -->
                           </div>
                         </div><br>
                       </li>
@@ -509,21 +509,23 @@
                         <h3>Please enter reject reason</h3>
                       </div>
                       <div class="col-xs-12">
-                        <form>
+                        <form role="form"  method="POST" accept-charset="utf-8" id="reject_form">
+                           {{csrf_field()}}
+                          <input type="hidden" name='event_id' id='eventID' value='placeholder'>
                           <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                             <p class="text-left">add Arabic Content</p>
                             <div class="master_field">
                               <label class="master_label" for="ID_No-12">reject reason in arabic</label>
-                              <textarea class="master_input" name="textarea" id="ID_No-12" placeholder="reject reason in arabic" Required></textarea><span class="master_message inherit">message content</span>
+                              <textarea class="master_input" name="reason-ar" id="ID_No-12" placeholder="reject reason in arabic" Required></textarea><span class="master_message inherit">message content</span>
                             </div>
                             <p class="text-left">add English Content</p>
                             <div class="master_field">
                               <label class="master_label" for="ID_No-15">reject reason in English</label>
-                              <textarea class="master_input" name="textarea" id="ID_No-15" placeholder="reject reason in English" Required></textarea><span class="master_message inherit">message content</span>
+                              <textarea class="master_input" name="reason" id="ID_No-15" placeholder="reject reason in English" Required></textarea><span class="master_message inherit">message content</span>
                             </div>
                             <div class="clearfix"></div>
                             <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                            <button class="remodal-confirm" data-remodal-action="confirm">save</button>
+                            <button class="remodal-confirm" >save</button>
                             <button class="remodal-confirm" data-remodal-action="confirm" disabled>disabled</button>
                           </div>
                         </form>
@@ -559,29 +561,7 @@
         mousewheelControl: false,
       });
     </script>
-        <script type="text/javascript">
-      $(document).ready(function(){
-        "use strict";
-        $('.btn-warning-confirm').click(function(){
-          swal({
-            title: "Are you sure?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#281160',
-            confirmButtonText: 'Yes, delete it!',
-            closeOnConfirm: false
-          },
-          function(){
-            swal("Deleted!", "Your imaginary file has been deleted!", "success");
-          });
-        });
-        $('.btn-warning-accept').click(function(){
-         swal("Accepted", "You can find this event in Current Tab", "success");
-        });
-      });
 
-    </script>
     <!-- delete -->
     <script type="text/javascript">
       $(document).ready(function () {
@@ -693,6 +673,138 @@
               swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
             });
         });
+
+      });
+    </script>
+    <!-- Accept -->
+    <script type="text/javascript">
+      $(document).ready(function () {
+
+        $('.btn-warning-accept').click(function () {
+          var event_id = $(this).closest('tr').attr('data-event-id');
+          var _token = '{{csrf_token()}}';
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_accept')}}' + '/' + event_id,
+                data: { _token: _token },
+                success: function (data) {
+                  $('tr[data-event-id=' + event_id + ']').fadeOut();
+                }
+              });
+              swal("Accepted", "You can find this event in Current Tab", "success");
+               window.location.replace("{{ url('events/mobile') }}");
+
+        });
+
+        $('.btn-warning-accept-ar').click(function () {
+          var event_id = $(this).closest('tr').attr('data-event-id');
+          var _token = '{{csrf_token()}}';
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_accept')}}' + '/' + event_id,
+                data: { _token: _token },
+                success: function (data) {
+                  $('tr[data-event-id=' + event_id + ']').fadeOut();
+                }
+              });
+              swal("تم القبول", "يمكنك ايجاد هذا الحدث في قائمة الأحداث الحالية", "success");
+
+               window.location.replace("{{ url('events/mobile') }}");
+
+        });
+
+        $('.btn-warning-accept-all').click(function () {
+          var selectedIds = $("input:checkbox:checked").map(function () {
+            return $(this).closest('tr').attr('data-event-id');
+          }).get();
+          var _token = '{{csrf_token()}}';
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_accept_all')}}',
+                data: { ids: selectedIds, _token: _token },
+                success: function (data) {
+                  $.each(selectedIds, function (key, value) {
+                    $('tr[data-event-id=' + value + ']').fadeOut();
+                  });
+                }
+              });
+                swal("Accepted", "You can find these events in Current Tab", "success");
+
+        });
+
+        $('.btn-warning-accept-all-ar').click(function () {
+          var selectedIds = $("input:checkbox:checked").map(function () {
+            return $(this).closest('tr').attr('data-event-id');
+          }).get();
+          var _token = '{{csrf_token()}}';
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_accept_all')}}',
+                data: { ids: selectedIds, _token: _token },
+                success: function (data) {
+                  $.each(selectedIds, function (key, value) {
+                    $('tr[data-event-id=' + value + ']').fadeOut();
+                  });
+                }
+              });
+              swal("تم القبول", "يمكنك ايجاد الاحداث المقبولة في قائمة الأحداث الحالية", "success");
+
+        });
+
+
+      });
+    </script>
+
+        <!-- reject -->
+    <script type="text/javascript">
+      
+      $(document).ready(function () {
+        //test1
+       /* $('.btn-modal-reject').click(function () {
+          var event_id = $(this).closest('tr').attr('data-event-id');
+          //alert(event_id);
+          var _token = '{{csrf_token()}}';
+         var inst = jQuery('[data-remodal-id=popupModal_r').remodal();
+         inst.open();
+        });*/
+
+        //test2
+       // declare global var
+       var gEventId;
+       // register click event for anchor
+       $("[data-remodal-target='popupModal_r']").click(function(){
+       // assign into global var
+       gEventId = $(this).closest('tr').attr('data-event-id');
+        });
+
+       $(document).on('opening', '.remodal', function () {
+       // let catch the global var
+       var event_id = gEventId;
+      //alert( 'The event id is ' + event_id );
+       $('#eventID').val( event_id );
+       });
+
+       //ajax submit
+
+        $('#reject_form').on('submit', function(e) {
+       e.preventDefault(); 
+       var _token = '{{csrf_token()}}';
+       var reason_ar = $('#ID_No-12').val();
+       var reason = $('#ID_No-15').val();
+       var event_id = $('#eventID').val();
+       $.ajax({
+           type: "POST",
+           url: '{{ url('event_reject') }}',
+           data: {_token: _token ,reason_ar:reason_ar, reason:reason, event_id:event_id},
+           success: function( msg ) {
+               $("#reject_form").append("<div>"+msg.msg+"</div>");
+
+               
+               window.location.replace("{{ url('events/mobile') }}");
+
+           }
+       });
+   });
 
       });
     </script>
