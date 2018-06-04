@@ -143,6 +143,15 @@ class EventsMobileController extends Controller
         return view('events::eventsMobile.view',$data);
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     * @return Response
+     */
+    public function edit()
+    {
+        return view('events::eventsMobile.edit');
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -172,14 +181,7 @@ class EventsMobileController extends Controller
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     * @return Response
-     */
-    public function edit()
-    {
-        return view('events::edit');
-    }
+    
 
     /**
      * Update the specified resource in storage.
