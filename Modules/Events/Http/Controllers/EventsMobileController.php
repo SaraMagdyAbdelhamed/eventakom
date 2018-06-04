@@ -7,6 +7,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use App\EventMobile;
 use App\EventCategory;
+use App\EventTicket;
+use App\EventBookingTicket;
 use App\EntityLocalization;
 
 
@@ -121,6 +123,7 @@ class EventsMobileController extends Controller
      */
     public function view($id)
     {
+        //INFO
         $data['event'] = EventMobile::find($id);
         $data['categories'] =  EventMobile::join('event_categories as c','events.id','=','c.event_id')->where(function ($q) use ($id) {
             $q->where('is_backend','=',0);
@@ -129,6 +132,12 @@ class EventsMobileController extends Controller
             $q->select('interest_id');
                 })->get();
        // dd($data['categories']);
+        //POSTS
+
+        //TICKETS
+        $data['tickets'] = EventTicket::where('event_id','=',$id)->get();
+        $data['booked_tickets'] = EventBookingTicket::where('event_id','=',$id)->get();
+
         return view('events::eventsMobile.view',$data);
     }
 

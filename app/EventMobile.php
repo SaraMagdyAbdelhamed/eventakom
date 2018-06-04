@@ -16,6 +16,18 @@ class EventMobile extends Model
      return   $this->belongsTo('App\Users', 'created_by');
     }
 
+     public function ticket() {
+        return $this->hasMany('App\EventTicket', 'event_id');
+    }
+
+     public function bookedTicket() {
+        return $this->hasMany('App\EventBookingTicket', 'event_id');
+    }
+
+    public function booking() {
+        return $this->hasMany('App\EventBooking', 'event_id');
+    }
+
     //quiries
 
      public static function getEventsMobile(){

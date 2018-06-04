@@ -54,8 +54,12 @@
                               </tr>
                               <tr>
                                 <th><span class="cellcontent">Category</span></th>
-                                <td><span class="cellcontent">@foreach($categories as $category)
-                                 {{$category->getCategory($category->interest_id)->name}}<br>
+                                <td><span class="cellcontent">@foreach($categories as $key=>$category)
+                                 @if($key==0)
+                                 {{$category->getCategory($category->interest_id)->name}}
+                                 @else
+                                 <span>, </span>{{$category->getCategory($category->interest_id)->name}}
+                                 @endif
                                 @endforeach</span></td>
                               </tr>
                             </table>
@@ -422,20 +426,28 @@
                                 </div>
                               </div>
                             </div>
-                            <button id="delete-test">Delete Tests</button>
+                           <!--  <button id="delete-test">Delete Tests</button> -->
                           </div>
                         </div>
                       </li>
                       <li class="tab__content_item" id="tickets-content">
+                      	@if($event->use_ticketing_system!=1)
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <p class="text-center">This event is free no tickets </p>
                         </div>
+                        @else
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <div class="full-table">
                             <table class="verticaltable table-master">
                               <tr>
+                              	@foreach($tickets as $ticket)
+                              	<tr>
+                              	 <th><span class="cellcontent">ticket category</span></th>
+                                <td><span class="cellcontent">{{$ticket->name}}</span></td>
                                 <th><span class="cellcontent"> Price</span></th>
-                                <td><span class="cellcontent">50 USD</span></td>
+                                <td><span class="cellcontent">{{$ticket->price}} USD</span></td>
+                            </tr>
+                                @endforeach
                               </tr>
                             </table>
                             <div class="remodal log-custom" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
@@ -598,6 +610,7 @@
                           </div>
                           <div class="clearfix"></div>
                         </div>
+                        
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <div class="full-table">
                             <form id="dataTableTriggerId_002_form">
@@ -615,36 +628,19 @@
                                   </tr>
                                 </thead>
                                 <tbody>
+                                	@foreach($booked_tickets as $ticket)
                                   <tr>
                                     <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent">02</span></td>
+                                    <td><span class="cellcontent">{{$ticket->id}}</span></td>
                                     <td><span class="cellcontent"><img src = "https://source.unsplash.com/random" , class = " img-in-table"></span></td>
-                                    <td><span class="cellcontent">213456794546478</span></td>
+                                    <td><span class="cellcontent">{{$ticket->serial_number}}</span></td>
                                     <td><span class="cellcontent">Booked</span></td>
-                                    <td><span class="cellcontent">John Doe</span></td>
-                                    <td><span class="cellcontent">1-1-1975</span></td>
-                                    <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
+                                    <td><span class="cellcontent">{{$ticket->booking->user->username}}</span></td>
+                                    <td><span class="cellcontent"><?=date('Y-m-d h:i A', strtotime($ticket->created_at))?></span></td>
+                                    <td><span class="cellcontent">@if($ticket->is_used==1)<i class = "fa icon-in-table-true fa-check"></i> @else  <i class = "fa icon-in-table-false fa-times"></i> @endif</span></td>
                                   </tr>
-                                  <tr>
-                                    <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent">02</span></td>
-                                    <td><span class="cellcontent"><img src = "https://source.unsplash.com/random" , class = " img-in-table"></span></td>
-                                    <td><span class="cellcontent">213456794546478</span></td>
-                                    <td><span class="cellcontent">Booked</span></td>
-                                    <td><span class="cellcontent">John Doe</span></td>
-                                    <td><span class="cellcontent">1-1-1975</span></td>
-                                    <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
-                                  </tr>
-                                  <tr>
-                                    <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent">02</span></td>
-                                    <td><span class="cellcontent"><img src = "https://source.unsplash.com/random" , class = " img-in-table"></span></td>
-                                    <td><span class="cellcontent">213456794546478</span></td>
-                                    <td><span class="cellcontent">Booked</span></td>
-                                    <td><span class="cellcontent">John Doe</span></td>
-                                    <td><span class="cellcontent">1-1-1975</span></td>
-                                    <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
-                                  </tr>
+                                  @endforeach
+                            
                                 </tbody>
                               </table>
                             </form>
@@ -807,6 +803,7 @@
                             </div>
                           </div>
                         </div>
+                        @endif
                       </li>
                     </ul>
                   </div>
