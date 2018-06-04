@@ -56,7 +56,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">Event name</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="english_event_name">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="english_event_name" value="{{ old('english_event_name') }}">
                 @if ($errors->has('event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('event_name') }}</span>
                 @endif
@@ -68,7 +68,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">Description</label>
-                <textarea class="master_input" id="description" placeholder="Description" Required name="english_description"></textarea>
+                <textarea class="master_input" id="description" placeholder="Description" Required name="english_description">{{ old('english_description') }}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
                 @endif
@@ -90,7 +90,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">Venue</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="english_venu">
+                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="english_venu" value="{{ old('english_venu') }}">
                 @if ($errors->has('english_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_venu') }}</span>
                 @endif
@@ -102,7 +102,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">Hashtags</label>
-                <input type="text" value="KSA,Sports" data-role="tagsinput" name="english_hashtags">
+                <input type="text" value="KSA,Sports" data-role="tagsinput" name="english_hashtags" value="{{ old('english_hashtags') }}">
               </div>
               <div class="clearfix"></div>
             </div>
@@ -148,7 +148,7 @@
               <div class="master_field">
                 <label class="master_label" for="start_date">start date</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="start date" Required id="start_date" name="start_date">
+                  <input class="datepicker master_input" type="text" placeholder="start date" Required id="start_date" name="start_date" value="{{ old('start_date') }}">
                 </div>
                 @if ($errors->has('start_date'))
                   <span class="master_message color--fadegreen">{{ $errors->first('start_date') }}</span>
@@ -162,7 +162,7 @@
               <div class="master_field">
                 <label class="master_label" for="start_time">start date time</label>
                 <div class="bootstrap-timepicker">
-                  <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time" name="start_time">
+                  <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time" name="start_time" value="{{ old('start_time') }}">
                 </div>
                 @if ($errors->has('start_time'))
                   <span class="master_message color--fadegreen">{{ $errors->first('start_time') }}</span>
@@ -176,7 +176,7 @@
               <div class="master_field">
                 <label class="master_label" for="end_date">end date</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="end date" Required id="end_date" name="end_date">
+                  <input class="datepicker master_input" type="text" placeholder="end date" Required id="end_date" name="end_date" value="{{ old('end_date') }}">
                 </div>
                 @if ($errors->has('end_date'))
                   <span class="master_message color--fadegreen">{{ $errors->first('end_date') }}</span>
@@ -190,7 +190,7 @@
               <div class="master_field">
                 <label class="master_label" for="end_time">end date time</label>
                 <div class="bootstrap-timepicker">
-                  <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="end_time">
+                  <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="end_time" value="{{ old('end_date') }}">
                 </div>
                 @if ($errors->has('end_time'))
                   <span class="master_message color--fadegreen">{{ $errors->first('end_time') }}</span>
@@ -220,7 +220,7 @@
             <div class="col-sm-3 col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="big_event">Suggest as big event</label>
-                <input class="make-switch" type="checkbox" checked data-on-text="yes" data-off-text="no" name="is_big_event">
+                <input class="make-switch" type="checkbox" checked data-on-text="yes" data-off-text="no" name="is_big_event" value="1">
               </div>
             </div>
 
@@ -229,7 +229,7 @@
             <div class="col-sm-3 col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="active_event">is your event active or in active</label>
-                <input class="make-switch" type="checkbox" checked data-on-text="active" data-off-text="inactive" name="is_active">
+                <input class="make-switch" type="checkbox" checked data-on-text="active" data-off-text="inactive" name="is_active" value="1">
               </div>
             </div>
           </div>
@@ -243,7 +243,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">اسم الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="arabic_event_name">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="arabic_event_name" value="{{ old('arabic_event_name') }}">
                 @if ($errors->has('arabic_event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_event_name') }}</span>
                 @endif
@@ -255,7 +255,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">وصف الحدث</label>
-                <textarea class="master_input" id="description" placeholder="Description" Required name="arabic_description"></textarea>
+                <textarea class="master_input" id="description" placeholder="Description" Required name="arabic_description">{{ old('arabic_description') }}</textarea>
                 @if ($errors->has('arabic_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_description') }}</span>
                 @endif
@@ -267,7 +267,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">مكان الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="arabic_venu">
+                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="arabic_venu" value="{{ old('arabic_venu') }}">
                 @if ($errors->has('arabic_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_venu') }}</span>
                 @endif
@@ -279,7 +279,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">الكلمات البحثية</label>
-                <input type="text" value="المملكة,الرياضة" data-role="tagsinput" name="arabic_hashtags">
+                <input type="text" value="المملكة,الرياضة" data-role="tagsinput" name="arabic_hashtags" value="{{ old('arabic_hashtags') }}">
               </div>
               @if ($errors->has('arabic_hashtags'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_hashtags') }}</span>
@@ -311,7 +311,7 @@
               <div class="col-xs-8">
                 <div class="master_field">
                   <label class="master_label" for="Price">Price</label>
-                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price">
+                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price" value="{{ old('price') }}">
                   @if ($errors->has('price'))
                     <span class="master_message color--fadegreen">{{ $errors->first('price') }}</span>
                   @endif
@@ -342,7 +342,7 @@
               <div class="col-xs-12">
                 <div class="master_field">
                   <label class="master_label" for="Available_tickets">Available tickets</label>
-                  <input class="master_input" type="number" placeholder="5" min="0" Required id="Available_tickets" name="number_of_tickets">
+                  <input class="master_input" type="number" placeholder="5" min="0" Required id="Available_tickets" name="number_of_tickets" value="{{ old('number_of_tickets') }}">
                   @if ($errors->has('number_of_tickets'))
                   <span class="master_message color--fadegreen">{{ $errors->first('number_of_tickets') }}</span>
                 @endif
@@ -361,7 +361,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Website">Website</label>
-                <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website" name="website">
+                <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website" name="website" value="{{ old('website') }}">
                 @if ($errors->has('website'))
                   <span class="master_message color--fadegreen">{{ $errors->first('website') }}</span>
                 @endif
@@ -373,7 +373,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="e_email">email</label>
-                <input class="master_input" type="email" placeholder="email" Required id="e_email" name="email">
+                <input class="master_input" type="email" placeholder="email" Required id="e_email" name="email" value="{{ old('email') }}">
                 @if ($errors->has('email'))
                   <span class="master_message color--fadegreen">{{ $errors->first('email') }}</span>
                 @endif
@@ -385,7 +385,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Code_numbe">Code number</label>
-                <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe" name="code_number">
+                <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe" name="code_number" value="{{ old('code_number') }}">
                 @if ($errors->has('code_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('code_number') }}</span>
                 @endif
@@ -397,7 +397,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Mobile_number">mobile number</label>
-                <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number" name="mobile_number">
+                <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number" name="mobile_number" value="{{ old('mobile_number') }}">
                 @if ($errors->has('mobile_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('mobile_number') }}</span>
                 @endif
@@ -416,7 +416,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">Add YouTube video (1) Link in Arabic</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_1">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_1" value="{{ old('youtube_ar_1') }}">
                 @if ($errors->has('youtube_ar_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_1') }}</span>
                 @endif
@@ -427,7 +427,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">Add YouTube video (1) Link in English</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_1">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_1" value="{{ old('youtube_en_1') }}">
                 @if ($errors->has('youtube_en_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_1') }}</span>
                 @endif
@@ -438,7 +438,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">Add YouTube video (2) Link in Arabic</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_2">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_2" value="{{ old('youtube_ar_2') }}">
                 @if ($errors->has('youtube_ar_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_2') }}</span>
                 @endif
@@ -449,7 +449,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">Add YouTube video (2) Link in English</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_2">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_2" value="{{ old('youtube_en_2') }}">
                 @if ($errors->has('youtube_en_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_2') }}</span>
                 @endif
@@ -503,54 +503,17 @@
     </div>
   </div><br>
 </div>
-      
 
-{{-- Google maps API key --}}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
-
-{{-- Map script --}}
-<script>
-
-    var map;
-    function initMap() {
-
-      var myLatlng = {lat: 30.042701, lng: 31.432662};
-
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(myLatlng),
-        zoom: 10
-      });
-
-      var marker = new google.maps.Marker({
-          position: myLatlng,
-          map: map,
-          title: 'Click to zoom'
-        });
-
-        map.addListener('center_changed', function() {
-          // 3 seconds after the center of the map has changed, pan back to the
-          // marker.
-          window.setTimeout(function() {
-            map.panTo(marker.getPosition());
-          }, 3000);
-        });
-
-        marker.addListener('click', function() {
-          map.setZoom(8);
-          map.setCenter(marker.getPosition());
-          console.log(marker.getPosition());
-        });
-    }
-</script>
-
-  
 
 
 <script type="text/javascript">
 
 $(document).ready(function(){
 
- 
+  $(function () {
+  $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
+  });
+
   $(".select2").select2();
 
   var form = $("#horizontal-pill-steps").show();
@@ -600,4 +563,50 @@ $(document).ready(function(){
 
 </script>
 
+{{-- Google maps API key --}}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
+
+{{-- Map script --}}
+<script>
+
+    var map;
+    function initMap() {
+
+      var myLatlng = {lat: 30.042701, lng: 31.432662};
+
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: new google.maps.LatLng(myLatlng),
+        zoom: 10
+      });
+
+      var marker = new google.maps.Marker({
+          position: myLatlng,
+          map: map,
+          title: 'Click to zoom'
+        });
+
+        google.maps.event.addListener(map, 'click', function(event) {
+            placeMarker(event.latLng);
+            
+            document.getElementById("lat").value = event.latLng.lat();
+            document.getElementById("lng").value = event.latLng.lng();
+
+        });
+
+        function placeMarker(location) {
+          if (marker == undefined){
+              marker = new google.maps.Marker({
+                  position: location,
+                  map: map, 
+                  animation: google.maps.Animation.DROP,
+              });
+          }
+          else{
+              marker.setPosition(location);
+          }
+          map.setCenter(location);
+        }
+
+    }
+</script>
 @endsection
