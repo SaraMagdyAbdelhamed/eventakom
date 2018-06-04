@@ -28,6 +28,10 @@ class EventMobile extends Model
         return $this->hasMany('App\EventBooking', 'event_id');
     }
 
+     public function post() {
+        return $this->hasMany('App\EventPost', 'event_id');
+    }
+
     //quiries
 
      public static function getEventsMobile(){

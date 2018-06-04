@@ -55,6 +55,9 @@ class Users extends Authenticatable
     public function eventBooking() {
         return $this->hasMany('App\EventBooking','user_id');
     }
+    public function eventPost() {
+        return $this->hasMany('App\EventPost','user_id');
+    }
 
     public  function CurrentRule(){
         foreach($this->rules as $rule){

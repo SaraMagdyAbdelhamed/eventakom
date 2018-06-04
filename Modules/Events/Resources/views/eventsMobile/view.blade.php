@@ -227,7 +227,7 @@
                       <li class="tab__content_item" id="posts-content">
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <div class="full-table">
-                            <div class="bottomActions__btns"><a class="master-btn" href="#">Delete selected</a><a class="master-btn" href="#">Add new Offer and deals</a>
+                            <div class="bottomActions__btns"><a class=" {{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">Delete selected</a><!-- <a class="master-btn" href="#">Add new Offer and deals</a> -->
                             </div>
                             <form id="dataTableTriggerId_003_form">
                               <table class="data-table-trigger table-master" id="dataTableTriggerId_003">
@@ -242,30 +242,16 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
+                                @foreach($event_posts as $post)	
+                                  <tr data-post-id={{$post->id}}>
                                     <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent">10</span></td>
-                                    <td><span class="cellcontent">John Doe</span></td>
-                                    <td><span class="cellcontent">Lorem ipsum lorem ipsum</span></td>
-                                    <td><span class="cellcontent">1-1-1975</span></td>
-                                    <td><span class="cellcontent"><a href= #popupModal_1 ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                                    <td><span class="cellcontent">{{$post->id}}</span></td>
+                                    <td><span class="cellcontent">{{$post->user->username}}</span></td>
+                                    <td><span class="cellcontent">{{$post->post}}</span></td>
+                                    <td><span class="cellcontent"><?=date('Y-m-d h:i A', strtotime($post->created_at))?></span></td>
+                                    <td><span class="cellcontent"><!-- <a href= #popupModal_1 ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a> --><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
-                                  <tr>
-                                    <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent">10</span></td>
-                                    <td><span class="cellcontent">John Doe</span></td>
-                                    <td><span class="cellcontent">Lorem ipsum lorem ipsum</span></td>
-                                    <td><span class="cellcontent">1-1-1975</span></td>
-                                    <td><span class="cellcontent"><a href= #popupModal_1 ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
-                                  </tr>
-                                  <tr>
-                                    <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent">10</span></td>
-                                    <td><span class="cellcontent">John Doe</span></td>
-                                    <td><span class="cellcontent">Lorem ipsum lorem ipsum</span></td>
-                                    <td><span class="cellcontent">1-1-1975</span></td>
-                                    <td><span class="cellcontent"><a href= #popupModal_1 ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
-                                  </tr>
+                                @endforeach
                                 </tbody>
                               </table>
                             </form>
@@ -821,7 +807,7 @@
       $('#sub_3_2').addClass('pure-active');
     });
   </script>
-//--Data table trigger --3
+<!-- --Data table trigger --3 -->
 <script>
       $(document).ready(function(){
         if ( $('html').attr('lang') == 'ar' ) {
@@ -973,10 +959,13 @@
       
       
     </script>
+    <!-- delete -->
     <script type="text/javascript">
-      $(document).ready(function(){
-        "use strict";
-        $('.btn-warning-confirm').click(function(){
+      $(document).ready(function () {
+        // "use strict";
+        $('.btn-warning-confirm').click(function () {
+          var post_id = $(this).closest('tr').attr('data-post-id');
+          var _token = '{{csrf_token()}}';
           swal({
             title: "Are you sure?",
             text: "You will not be able to recover this imaginary file!",
@@ -986,13 +975,103 @@
             confirmButtonText: 'Yes, delete it!',
             closeOnConfirm: false
           },
-          function(){
-            swal("Deleted!", "Your imaginary file has been deleted!", "success");
-          });
+            function () {
+              $.ajax({
+                type: 'POST',
+                url: '{{url('post_destroy')}}' + '/' + post_id,
+                data: { _token: _token },
+                success: function (data) {
+                  $('tr[data-post-id=' + post_id + ']').fadeOut();
+                }
+              });
+              swal("Deleted!", "Your imaginary file has been deleted!", "success");
+            });
         });
+
+        $('.btn-warning-confirm-ar').click(function () {
+          var post_id = $(this).closest('tr').attr('data-post-id');
+          var _token = '{{csrf_token()}}';
+          swal({
+            title: "هل أنت متأكد ؟",
+            text: "لن تكون قادرًا على استرداد هذا الملف !",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'نعم , احذف هذا',
+            closeOnConfirm: false
+          },
+            function () {
+              $.ajax({
+                type: 'POST',
+                url: '{{url('post_destroy')}}' + '/' + post_id,
+                data: { _token: _token },
+                success: function (data) {
+                  $('tr[data-post-id=' + post_id + ']').fadeOut();
+                }
+              });
+              swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
+            });
+        });
+
+        $('.btn-warning-confirm-all').click(function () {
+          var selectedIds = $("input:checkbox:checked").map(function () {
+            return $(this).closest('tr').attr('data-post-id');
+          }).get();
+          var _token = '{{csrf_token()}}';
+          swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this imaginary file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnConfirm: false
+          },
+            function () {
+              $.ajax({
+                type: 'POST',
+                url: '{{url('post_destroy_all')}}',
+                data: { ids: selectedIds, _token: _token },
+                success: function (data) {
+                  $.each(selectedIds, function (key, value) {
+                    $('tr[data-post-id=' + value + ']').fadeOut();
+                  });
+                }
+              });
+              swal("Deleted!", "Your imaginary file has been deleted!", "success");
+            });
+        });
+
+        $('.btn-warning-confirm-all-ar').click(function () {
+          var selectedIds = $("input:checkbox:checked").map(function () {
+            return $(this).closest('tr').attr('data-post-id');
+          }).get();
+          var _token = '{{csrf_token()}}';
+          swal({
+            title: "هل أنت متأكد ?",
+            text: "لن تكون قادرًا على استرداد هذا الملف !",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'نعم , احذف هذا!',
+            closeOnConfirm: false
+          },
+            function () {
+              $.ajax({
+                type: 'POST',
+                url: '{{url('post_destroy_all')}}',
+                data: { ids: selectedIds, _token: _token },
+                success: function (data) {
+                  $.each(selectedIds, function (key, value) {
+                    $('tr[data-post-id=' + value + ']').fadeOut();
+                  });
+                }
+              });
+              swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
+            });
+        });
+
       });
-      
-      
     </script>
     <script type="text/javascript">
       $(function () {
