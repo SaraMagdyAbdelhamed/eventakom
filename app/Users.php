@@ -31,7 +31,7 @@ class Users extends Authenticatable
     {
         return $this->belongsTo('App\Countries','country_id');
     }
-    
+
     public function city()
     {
         return $this->belongsTo('App\Cities','city_id');
@@ -49,6 +49,12 @@ class Users extends Authenticatable
     public function eventBackend() {
         return $this->hasMany('App\EventBackend', 'created_by');
     }
+    public function eventMobile() {
+        return $this->hasMany('App\EventMobile', 'created_by');
+    }
+    public function eventBooking() {
+        return $this->hasMany('App\EventBooking','user_id');
+    }
 
     public  function CurrentRule(){
         foreach($this->rules as $rule){
@@ -60,7 +66,7 @@ class Users extends Authenticatable
       }
     }
 
-    public function IsBackEndUser(){        
+    public function IsBackEndUser(){
         return ($this->rules[0]->id == 1) ? true : false;
     }
 
