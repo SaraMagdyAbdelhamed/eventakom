@@ -353,4 +353,15 @@
     });
 
   });
-</script> @endsection @endsection
+</script> 
+
+{{-- add active class to sidebar menu --}}
+<script>
+  $(document).ready(function(){
+      $('#menu_2').addClass('openedmenu');
+      $('#sub_2_1').addClass('pure-active');
+  });
+</script>
+@endsection
+
+@endsection 

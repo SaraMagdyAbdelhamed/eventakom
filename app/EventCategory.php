@@ -16,4 +16,8 @@ class EventCategory extends Model
     public function user() {
         return $this->belongsTo('App\Users', 'created_by');
     }
+
+    public function eventsbackend() {
+        return $this->belongsToMany('App\EventBackend', 'event_categories', 'event_id', 'interest_id');
+    }
 }

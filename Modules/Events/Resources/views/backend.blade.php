@@ -115,11 +115,11 @@
                             <td><span class="cellcontent" data-id="{{ $event->id }}"></span></td>
                             <td><span class="cellcontent">{{ $event->id }}</span></td>
                             <td><span class="cellcontent">{{ $event->name ? $event->name : '' }}</span></td>
-                            <td><span class="cellcontent">{{ $event->venu ? $event->venu : '' }}</span></td>
-                            <td><span class="cellcontent">{{ $event->start_datetime ? $event->start_datetime : '' }}</span></td>
-                            <td><span class="cellcontent">{{ $event->end_datetime ? $event->end_datetime : '' }}</span></td>
-                            <td><span class="cellcontent">{{ $event->created_at ? $event->created_at : '' }}</span></td>
-                            <td><span class="cellcontent">{{ $event->user ? $event->user->name : '' }}</span></td>
+                            <td><span class="cellcontent">{{ $event->venue ? $event->venue : '' }}</span></td>
+                            <td><span class="cellcontent">{{ $event->start_datetime ? $event->start_datetime->format('Y-m-d h:i A') : '' }}</span></td>
+                            <td><span class="cellcontent">{{ $event->end_datetime ? $event->end_datetime->format('Y-m-d h:i A') : '' }}</span></td>
+                            <td><span class="cellcontent">{{ $event->created_at ? $event->created_at->format('Y-m-d h:i A') : '' }}</span></td>
+                            <td><span class="cellcontent">{{ $event->user ? $event->user->first_name.' '.$event->user->last_name : '' }}</span></td>
                             <td><span class="cellcontent"><i class = "{{ $event->is_active ? ($event->is_active == 0 ? 'fa icon-in-table-false fa-times' : 'fa icon-in-table-true fa-check' ) : 'fa icon-in-table-false fa-times' }}"></i></i></span></td>
                             <td>
                                 <span class="cellcontent">
@@ -292,7 +292,7 @@
               </div>
             </div>
           </div>
-          <button id="delete-test">Delete selected</button>
+
         </div>
       </div>
     </div><br>
@@ -304,4 +304,5 @@
       $('#sub_3_1').addClass('pure-active');
     });
   </script>
+
 @endsection

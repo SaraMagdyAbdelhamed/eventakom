@@ -99,7 +99,7 @@
                           </thead>
                           <tbody>
                             @foreach($users as $user)
-                            
+                            \
                             <tr data-user-id="{{$user->id}}">
                               <td><span class="cellcontent"></span></td>
                               <td><span class="cellcontent">{{ $loop->index + 1 }}</span></td>
@@ -432,5 +432,13 @@
 
       });
     </script>
+    
+    {{-- add active class to sidebar menu --}}
+    <script>
+      $(document).ready(function(){
+          $('#menu_2').addClass('openedmenu');
+          $('#sub_2_2').addClass('pure-active');
+      });
+    </script>
     @endsection
-          @endsection
+@endsection
