@@ -92,6 +92,15 @@
         // Events
         'events'    => 'الاحداث',
         'addfrombackend' => 'المضاف من الموقع',
+        'info'      => 'المعلومات',
+        'posts'     => 'المنشورات',
+        'tickets'   => 'التذاكر',
+        'eventName' => 'اسم الحدث',
+        'venue'     => 'المكان',
+        'start'     => 'يبدأ في',
+        'end'       => 'ينتهي في',
+        'addby'     => 'اضيف بواسطة',
+        'category'  => 'التصنيف',
 		
 		// Events Mobile
 		'addfromMobile' => 'المضاف من الموبايل',
