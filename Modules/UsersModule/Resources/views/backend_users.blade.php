@@ -1,136 +1,7 @@
 @extends('layouts.app')
 @section('content')            
-<div class="row">
-  <div class="col-xs-12">
-    <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="text-xs-center">         
-            <div class="text-wraper">
-              <h4 class="cover-inside-title">@lang('keywords.Users') </h4><i class="fa fa-chevron-circle-right"></i>
-              <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.BackendUsers') </h4>
-            </div>
-          </div>
-        </div>
-        <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="#popupModal_1">@lang('keywords.AddBackendUser')</a></div>
-      </div>
-    </div>
-  </div>
-  <div class="col-xs-12">
-    <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-      <div class="full-table">
-        <div class="bottomActions__btns"><a class="btn-warning-confirm-all master-btn" href="#">@lang('keywords.deleteSelected')</a>
-        </div>
-        <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-          <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-          <div>
-            <div class="row">
-              <div class="col-sm-6 col-xs-12">
-                <div class="master_field">
-                  <label class="master_label" for="filter_countries">@lang('keywords.Countries') </label>
-                  <select class="master_input select2" id="filter_countries" multiple="multiple" data-placeholder="Countries" style="width:100%;" >
-                    <option>Egypt</option>
-                    <option>KSA</option>
-                    <option>USA</option>
-                    <option>Sudan</option>
-                    <option>France</option>
-                    <option>Etc</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-sm-6 col-xs-12">
-                <div class="master_field">
-                  <label class="master_label" for="filter_cities">@lang('keywords.Cities') </label>
-                  <select class="master_input select2" id="filter_cities" multiple="multiple" data-placeholder="Cities" style="width:100%;" >
-                    <option>Abha</option>
-                    <option>Al-Abwa</option>
-                    <option>Al Artaweeiyah</option>
-                    <option>Badr</option>
-                    <option>Baljurashi</option>
-                    <option>Bisha</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-sm-6 col-xs-12">
-                <div class="master_field">
-                  <label class="master_label">@lang('keywords.SelectGender')</label>
-                  <div class="funkyradio">
-                    <input type="checkbox" name="radio" id="checkboxbtn_2">
-                    <label for="checkboxbtn_2">Male</label>
-                  </div>
-                  <div class="funkyradio">
-                    <input type="checkbox" name="radio" id="checkboxbtn_3">
-                    <label for="checkboxbtn_3">Female</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-xs-12">
-                <div class="master_field">
-                  <label class="master_label" for="filter_age">Age</label>
-                  <select class="master_input select2" id="filter_age" multiple="multiple" data-placeholder="Age " style="width:100%;" ,>
-                    <option>Kids</option>
-                    <option>15-18 Y</option>
-                    <option>18-25 Y</option>
-                    <option>More than 25 Y</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div><br>
-          <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
-          <button class="remodal-confirm" data-remodal-action="confirm">@lang('keywords.ApplyFilter')</button>
-        </div>
-        <form id="dataTableTriggerId_001_form">
-          <table class="data-table-trigger table-master" id="dataTableTriggerId_001">
-            <thead>
-              <tr class="bgcolor--gray_mm color--gray_d">
-                <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
-                <th><span class="cellcontent">@lang('keywords.serialNo')</span></th>
-                <th><span class="cellcontent">@lang('keywords.UserName')</span></th>
-                <th><span class="cellcontent">@lang('keywords.Email')</span></th>
-                <th><span class="cellcontent">@lang('keywords.Phone')</span></th>
-                <th><span class="cellcontent">@lang('keywords.Image')</span></th>
-                <th><span class="cellcontent">@lang('keywords.UserType')</span></th>
-                <th><span class="cellcontent">@lang('keywords.Status')</span></th>
-                <th><span class="cellcontent">@lang('keywords.RegisterationDate')</span></th>
-                <th><span class="cellcontent">@lang('keywords.Actions')</span></th>
-              </tr>
-            </thead>
-            <tbody>
-            @foreach($users as $user)
-              <tr data-user-id="{{$user->id}}">
-                <td><span class="cellcontent"></span></td>
-                <td><span class="cellcontent">{{$loop->index + 1 }}</span></td>
-                <td><span class="cellcontent">{{$user->username}}</span></td>
-                <td><span class="cellcontent">{{$user->email}}</span></td>
-                <td><span class="cellcontent">{{$user->mobile}}</span></td>
-                <td><span class="cellcontent"><img src = "{{asset(''.$user->photo)}}" class="img-in-table"></span></td>
-                <td>
-                  <span class="cellcontent">
-                    {{$user->CurrentRule()}}
-                  </span>
-                </td>
-                <td>
-                  <span class="cellcontent">
-                    @if($user->is_active==1)
-                      <i class = "fa icon-in-table-true fa-check"></i>
-                      @else
-                      <i class = "fa icon-in-table-false fa-times"></i>
-                    @endif
-                  </span>
-                </td>
-                <td><span class="cellcontent">{{$user->created_at}}</span></td>
-                <td>
-                  <span class="cellcontent">
-                    <a href= "#popupModal_1{{$user->id}}" ,  class= "action-btn bgcolor--fadegreen color--white ">
-                      <i class = "fa  fa-pencil"></i>
-                    </a>
-                    <a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white ">
-                      <i class = "fa  fa-trash-o"></i>
-                    </a>
-                  </span>
-                </td>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="master_field">
@@ -512,6 +383,8 @@
       </div>
     </form>
     </div>
+=======
+>>>>>>> da4a6c40281e5ee4a4789a3170b8401907a565c4
 @section('js')
 <script type="text/javascript">
     function RestrictSpace() {
