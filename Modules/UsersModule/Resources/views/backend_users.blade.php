@@ -360,6 +360,8 @@
       </div>
     </form>
     </div>
+    </div>
+</div>
 @section('js')
 <script type="text/javascript">
     function RestrictSpace() {
