@@ -98,7 +98,7 @@
               </tr>
             </thead>
             <tbody>
-              @foreach($users as $user)
+            @foreach($users as $user)
               <tr data-user-id="{{$user->id}}">
                 <td><span class="cellcontent"></span></td>
                 <td><span class="cellcontent">{{$loop->index + 1 }}</span></td>
@@ -121,155 +121,94 @@
                   </span>
                 </td>
                 <td><span class="cellcontent">{{$user->created_at}}</span></td>
-                <td><span class="cellcontent">
-                  <a href= "#popupModal_1{{$user->id}}" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                <td>
+                  <span class="cellcontent">
+                    <a href= "#popupModal_1{{$user->id}}" ,  class= "action-btn bgcolor--fadegreen color--white ">
+                      <i class = "fa  fa-pencil"></i>
+                    </a>
+                    <a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white ">
+                      <i class = "fa  fa-trash-o"></i>
+                    </a>
+                  </span>
+                </td>
 
-                  <div class="remodal" data-remodal-id="popupModal_1{{$user->id}}" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-                    <form role="form" action="{{route('backend_edit',$user->id)}}" method="post" enctype="multipart/form-data" accept-charset="utf-8">
-                      {{csrf_field()}}
+                <div class="remodal" data-remodal-id="popupModal_1{{$user->id}}" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
 
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="master_field">
-                          <label class="master_label" for="new_user">@lang('keywords.UserName')</label>
-                          <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user" onkeypress="return RestrictSpace()"><span class="master_message inherit">
-                                  @if ($errors->has('name'))
-                                    {{ $errors->first('name')}}
-                                    @endif</span>
-                        </div>
-                        <div class="clearfix"></div>
+                  {{-- START FORM --}}
+                  <form role="form" action="{{route('backend_edit',$user->id)}}" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+                    {{csrf_field()}}
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="master_field">
+                        <label class="master_label" for="new_user">@lang('keywords.UserName')</label>
+                        <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user" onkeypress="return RestrictSpace()"><span class="master_message inherit">
+                                @if ($errors->has('name'))
+                                  {{ $errors->first('name')}}
+                                  @endif</span>
                       </div>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="master_field">
-                          <label class="master_label" for="new_email">@lang('keywords.UserEmail')</label>
-                          <input name="email" value="{{$user->email}}" class="master_input" type="email" placeholder="ex:john_doe@domail.com" required id="new_email"><span class="valid-label"></span><span class="master_message inherit">
-                                  @if ($errors->has('email'))
-                                    {{ $errors->first('email')}}
-                                    @endif</span>
-                        </div>
-                        <div class="clearfix"></div>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="master_field">
+                        <label class="master_label" for="new_email">@lang('keywords.UserEmail')</label>
+                        <input name="email" value="{{$user->email}}" class="master_input" type="email" placeholder="ex:john_doe@domail.com" required id="new_email"><span class="valid-label"></span><span class="master_message inherit">
+                                @if ($errors->has('email'))
+                                  {{ $errors->first('email')}}
+                                  @endif</span>
                       </div>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="master_field">
-                          <label class="master_label" for="new_phone">@lang('keywords.UserPhone')</label>
-                          <input name="phone" value="{{$user->mobile}}" class="master_input" type="number" placeholder="ex:+201234567" required id="new_phone"><span class="master_message inherit"> @if ($errors->has('phone'))
-                                    {{ $errors->first('phone')}}
-                                    @endif</span>
-                        </div>
-                        <div class="clearfix"></div>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="master_field">
+                        <label class="master_label" for="new_phone">@lang('keywords.UserPhone')</label>
+                        <input name="phone" value="{{$user->mobile}}" class="master_input" type="number" placeholder="ex:+201234567" required id="new_phone"><span class="master_message inherit"> @if ($errors->has('phone'))
+                                  {{ $errors->first('phone')}}
+                                  @endif</span>
                       </div>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="master_field">
-                          <label class="master_label mandatory" for="new_User_type">@lang('keywords.UserType')</label>
-                          <select name="rule" class="master_input" id="new_User_type">
-                            {{-- <option value="choose" selected disabled>اختر دور المستخدم</option> --}}
-                            @foreach($rules as $rule)
-                            <option value="{{$rule->id}}">{{$rule->name}}</option>
-                            @endforeach
-                          </select><span class="master_message inherit">
-                                  @if ($errors->has('rule'))
-                                    {{ $errors->first('rule')}}
-                                    @endif</span>
-                        </div>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="master_field">
+                        <label class="master_label mandatory" for="new_User_type">@lang('keywords.UserType')</label>
+                        <select name="rule" class="master_input" id="new_User_type">
+                          @foreach($rules as $rule)
+                          <option value="{{$rule->id}}" {{ Auth::user()->rules->last()->id == $rule->id ? 'selected' : '' }}>{{$rule->name}}</option>
+                          @endforeach
+                        </select><span class="master_message inherit">
+                                @if ($errors->has('rule'))
+                                  {{ $errors->first('rule')}}
+                                  @endif</span>
                       </div>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="master_field">
-                          <label class="master_label" for="user_img">@lang('keywords.UserImage')</label>
-                          <div class="file-upload">
-                            <div class="file-select">
-                              <div class="file-select-name" id="noFile">click to add user image</div>
-                              <input class="chooseFile" type="file" name="image" id="user_img">
-                            </div>
-                          </div><span class="master_message inherit">png,jpg and max size is 5MB</span>
-                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="master_field">
+                        <label class="master_label" for="user_img">@lang('keywords.UserImage')</label>
+                        <div class="file-upload">
+                          <div class="file-select">
+                            <div class="file-select-name" id="noFile">click to add user image</div>
+                            <input class="chooseFile" type="file" name="image" id="user_img">
+                          </div>
+                        </div><span class="master_message inherit">png,jpg and max size is 5MB</span>
                       </div>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="master_field text-center">
-                          <label class="master_label">@lang('keywords.pleaseSetTheUserStatus')</label>
-                          <input {{$user->is_active ? 'checked' :''}}  value="1" class="icon" type="radio" name="status" id="radbtn_4{{$user->id}}">
-                          <label for="radbtn_4{{$user->id}}">@lang('keywords.Active')</label>
-                          <input {{$user->is_active ? '' :'checked'}}  value="0" class="icon" type="radio" name="status" id="radbtn_5{{$user->id}}">
-                          <label for="radbtn_5{{$user->id}}">@lang('keywords.Inactive')</label>
-                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="master_field text-center">
+                        <label class="master_label">@lang('keywords.pleaseSetTheUserStatus')</label>
+                        <input {{$user->is_active ? 'checked' :''}}  value="1" class="icon" type="radio" name="status" id="radbtn_4{{$user->id}}">
+                        <label for="radbtn_4{{$user->id}}">@lang('keywords.Active')</label>
+                        <input {{$user->is_active ? '' :'checked'}}  value="0" class="icon" type="radio" name="status" id="radbtn_5{{$user->id}}">
+                        <label for="radbtn_5{{$user->id}}">@lang('keywords.Inactive')</label>
                       </div>
-                      <div class="col-xs-12">
-                        <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
-                        <button class="remodal-confirm" type="submit">@lang('keywords.save')</button>
-                      </div>
+                    </div>
+                    <div class="col-xs-12">
+                      <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+                      <button class="remodal-confirm" type="submit">@lang('keywords.save')</button>
+                    </div>
+                  </form>
+                  {{-- END FORM --}}
 
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="master_field">
-                          <label class="master_label" for="new_user">@lang('keywords.UserName')</label>
-                          <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user" onkeypress="return RestrictSpace()"><span class="master_message inherit">
-                                  @if ($errors->has('name'))
-                                    {{ $errors->first('name')}}
-                                    @endif</span>
-                        </div>
-                        <div class="clearfix"></div>
-                      </div>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="master_field">
-                          <label class="master_label" for="new_email">@lang('keywords.UserEmail')</label>
-                          <input name="email" value="{{$user->email}}" class="master_input" type="email" placeholder="ex:john_doe@domail.com" required id="new_email"><span class="valid-label"></span><span class="master_message inherit">
-                                  @if ($errors->has('email'))
-                                    {{ $errors->first('email')}}
-                                    @endif</span>
-                        </div>
-                        <div class="clearfix"></div>
-                      </div>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="master_field">
-                          <label class="master_label" for="new_phone">@lang('keywords.UserPhone')</label>
-                          <input name="phone" value="{{$user->mobile}}" class="master_input" type="number" placeholder="ex:+201234567" required id="new_phone"><span class="master_message inherit"> @if ($errors->has('phone'))
-                                    {{ $errors->first('phone')}}
-                                    @endif</span>
-                        </div>
-                        <div class="clearfix"></div>
-                      </div>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="master_field">
-                          <label class="master_label mandatory" for="new_User_type">@lang('keywords.UserType')</label>
-                          <select name="rule" class="master_input" id="new_User_type">
-                            {{-- <option value="choose" selected disabled>اختر دور المستخدم</option> --}}
-                            @foreach($rules as $rule)
-                            <option value="{{$rule->id}}">{{$rule->name}}</option>
-                            @endforeach
-                          </select><span class="master_message inherit">
-                                  @if ($errors->has('rule'))
-                                    {{ $errors->first('rule')}}
-                                    @endif</span>
-                        </div>
-                      </div>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="master_field">
-                          <label class="master_label" for="user_img">@lang('keywords.UserImage')</label>
-                          <div class="file-upload">
-                            <div class="file-select">
-                              <div class="file-select-name" id="noFile">click to add user image</div>
-                              <input class="chooseFile" type="file" name="image" id="user_img">
-                            </div>
-                          </div><span class="master_message inherit">png,jpg and max size is 5MB</span>
-                        </div>
-                      </div>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="master_field text-center">
-                          <label class="master_label">@lang('keywords.pleaseSetTheUserStatus')</label>
-                          <input {{$user->is_active ? 'checked' :''}}  value="1" class="icon" type="radio" name="status" id="radbtn_4{{$user->id}}">
-                          <label for="radbtn_4{{$user->id}}">@lang('keywords.Active')</label>
-                          <input {{$user->is_active ? '' :'checked'}}  value="0" class="icon" type="radio" name="status" id="radbtn_5{{$user->id}}">
-                          <label for="radbtn_5{{$user->id}}">@lang('keywords.Inactive')</label>
-                        </div>
-                      </div>
-                      <div class="col-xs-12">
-                        <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.Cancel')</button>
-                        <button class="remodal-confirm" type="submit">@lang('keywords.Save')</button>
-                      </div>
-
-                  </div>
                 </div>
-              </form>
-            </div>
 
-          </tr>
+              </tr>
           @endforeach
         </tbody>
       </table>

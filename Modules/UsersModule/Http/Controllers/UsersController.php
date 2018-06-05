@@ -54,7 +54,8 @@ class UsersController extends Controller
             $q->whereIn('rules.name', $rule_names);
         })->get();
 
-        $data['rules'] = Rules::whereIn('id', [4, 5])->get();
+        $rules = Auth::user()->rules->last()->id == 3 ? [3, 4, 5] : [4, 5];
+        $data['rules'] = Rules::whereIn('id', $rules)->get();
         return view('usersmodule::backend_users', $data);
     }
 
