@@ -14,4 +14,8 @@ class EventHashtags extends Model
     public function event() {
         return $this->belongsToMany('App\EventBackend', 'event_hash_tags', 'event_id', 'hash_tag_id');
     }
+
+     public function eventMobile() {
+        return $this->belongsToMany('App\EventMobile', 'event_hash_tags', 'event_id', 'hash_tag_id');
+    }
 }
