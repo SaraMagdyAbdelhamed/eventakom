@@ -37,7 +37,8 @@ class EventsController extends Controller
     public function index()
     {
         return view('events::backend')
-            ->with('events', EventBackend::where('is_backend', 1)->get());
+            ->with('events', EventBackend::where('is_backend', 1)->get())
+            ->with('categories', EventCategory::all());
     }
 
     /**
@@ -289,5 +290,68 @@ class EventsController extends Controller
 
         Session::flash('success', 'Event deleted successfully! تم مسح الحدث بنجاح');
         return response()->json(['success', 'event deleted!']);
+    }
+
+    public function filter(Request $request) 
+    {
+        // dd($request->all());
+       $events = new EventBackend;
+        $flag = 0;
+
+        // category
+        if( isset($request->categories) && !empty($request->categories) ) {
+            $flag = 1;
+            $cats = $request->categories;
+            $events = $events->whereHas('categories', function($q) use($cats){
+                $q->whereIn('event_categories.interest_id', $cats);
+            });
+        }
+
+        // active
+        if( $request->active == 1 && !isset($request->inactive) ) {
+            $flag = 1;
+            $events = $events->where('is_active', 1);
+        } else 
+        if( $request->active == NULL && $request->inactive == 1) {
+            $flag = 1;
+            $events = $events->where('is_active', 0);
+        }
+
+        // start datetime
+        if( isset($request->start_from) && !empty($request->start_from) ) {
+            $flag = 1;
+            $Datetime = date('Y-m-d', strtotime($request->start_from));
+            $events = $events->where('start_datetime','>=', $Datetime);
+        }
+
+        if( isset($request->start_to) && !empty($request->start_to) ) {
+            $flag = 1;
+            $Datetime = date('Y-m-d', strtotime($request->start_to));
+            $events = $events->where('start_datetime','<=', $Datetime);
+        }
+
+        
+
+        // end datetime
+        if( isset($request->end_from) && !empty($request->end_from) ) {
+            $flag = 1;
+            $Datetime = date('Y-m-d', strtotime($request->end_from));
+            $events = $events->where('end_datetime','>=', $Datetime);
+        }
+
+        if( isset($request->end_to) && !empty($request->end_to) ) {
+            $flag = 1;
+            $Datetime = date('Y-m-d', strtotime($request->end_to));
+            $events = $events->where('end_datetime','<=', $Datetime);
+        }
+
+        if( $flag == 0 ) {
+            $events = $events->all();
+        } else {
+            $events = $events->get();
+        }
+        
+        $data['categories'] = EventCategory::all();
+        return view('events::backend', $data)->with('events', $events);
     }
 }
