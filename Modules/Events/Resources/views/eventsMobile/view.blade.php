@@ -425,7 +425,7 @@
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <div class="full-table">
                             <table class="verticaltable table-master">
-                              <tr>
+                              <!-- <tr>
                               	@foreach($tickets as $ticket)
                               	<tr>
                               	 <th><span class="cellcontent">ticket category</span></th>
@@ -434,7 +434,12 @@
                                 <td><span class="cellcontent">{{$ticket->price}} USD</span></td>
                             </tr>
                                 @endforeach
-                              </tr>
+                              </tr> -->
+                              <tr>
+                              <th><span class="cellcontent"> Price</span></th>
+                                <td><span class="cellcontent">{{$tickets[0]->price}} USD</span></td>
+                               
+                            </tr>
                             </table>
                             <div class="remodal log-custom" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
                               <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>

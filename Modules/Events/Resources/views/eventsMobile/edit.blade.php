@@ -243,7 +243,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">اسم الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="arabic_event_name" value="{{ old('arabic_event_name') }}">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="arabic_event_name" value="{{$event->arabic('name',$event->id)}}" value="{{ old('arabic_event_name') }}">
                 @if ($errors->has('arabic_event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_event_name') }}</span>
                 @endif
@@ -255,7 +255,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">وصف الحدث</label>
-                <textarea class="master_input" id="description" placeholder="Description" Required name="arabic_description">{{ old('arabic_description') }}</textarea>
+                <textarea class="master_input" id="description" placeholder="Description" Required name="arabic_description">{{$event->arabic('description',$event->id)}}{{ old('arabic_description') }}</textarea>
                 @if ($errors->has('arabic_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_description') }}</span>
                 @endif
@@ -267,7 +267,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">مكان الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="arabic_venu" value="{{ old('arabic_venu') }}">
+                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="arabic_venu" value="{{$event->arabic('venue',$event->id)}}"  value="{{ old('arabic_venu') }}">
                 @if ($errors->has('arabic_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_venu') }}</span>
                 @endif
@@ -279,7 +279,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">الكلمات البحثية</label>
-                <input type="text" value="المملكة,الرياضة" data-role="tagsinput" name="arabic_hashtags" value="{{ old('arabic_hashtags') }}">
+                <input type="text" data-role="tagsinput" name="arabic_hashtags" value="@foreach($event->hashtags as $value) {{$value->arabic('name',$value->id)}} , @endforeach" value="{{ old('arabic_hashtags') }}">
               </div>
               @if ($errors->has('arabic_hashtags'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_hashtags') }}</span>
@@ -297,9 +297,9 @@
             <div class="col-xs-12">
               <div class="master_field">
                 <label class="master_label mandatory">Is it free or paid ?</label>
-                <input class="icon" type="radio" name="is_paid" id="radbtn_2_free" checked="true" value="0">
+                <input class="icon" type="radio" name="is_paid" id="radbtn_2_free" @if($event->is_paid!=1) checked="true" @endif value="0">
                 <label for="radbtn_2_free">free</label>
-                <input class="icon" type="radio" name="is_paid" id="radbtn_3_paid" value="1">
+                <input class="icon" type="radio" name="is_paid" @if($event->is_paid==1) checked="true" @endif  id="radbtn_3_paid" value="1">
                 <label for="radbtn_3_paid">paid</label>
               </div>
             </div>
@@ -311,7 +311,7 @@
               <div class="col-xs-8">
                 <div class="master_field">
                   <label class="master_label" for="Price">Price</label>
-                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price" value="{{ old('price') }}">
+                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price" value="{{$event_tickets->price}}" value="{{ old('price') }}">
                   @if ($errors->has('price'))
                     <span class="master_message color--fadegreen">{{ $errors->first('price') }}</span>
                   @endif
@@ -327,7 +327,7 @@
                     <option value="" disabled selected>-- Please Select a Currency Symbol --</option>
                     @if ( isset($currencies) && !empty($currencies) )
                         @foreach ($currencies as $currency)
-                            <option value="{{ $currency->id }}">{{ $currency->symbol }}</option>
+                            <option value="{{ $currency->id }}" @if($event_tickets->currency_id == $currency->id) selected @endif>{{ $currency->symbol }}</option>
                         @endforeach
                     @endif
                   </select>
@@ -342,7 +342,7 @@
               <div class="col-xs-12">
                 <div class="master_field">
                   <label class="master_label" for="Available_tickets">Available tickets</label>
-                  <input class="master_input" type="number" placeholder="5" min="0" Required id="Available_tickets" name="number_of_tickets" value="{{ old('number_of_tickets') }}">
+                  <input class="master_input" type="number" placeholder="5" min="0" Required id="Available_tickets" name="number_of_tickets" value="{{$event_tickets->available_tickets}}"  value="{{ old('number_of_tickets') }}">
                   @if ($errors->has('number_of_tickets'))
                   <span class="master_message color--fadegreen">{{ $errors->first('number_of_tickets') }}</span>
                 @endif
@@ -361,7 +361,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Website">Website</label>
-                <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website" name="website" value="{{ old('website') }}">
+                <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website" name="website" value="{{$event->website}}" value="{{ old('website') }}">
                 @if ($errors->has('website'))
                   <span class="master_message color--fadegreen">{{ $errors->first('website') }}</span>
                 @endif
@@ -373,7 +373,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="e_email">email</label>
-                <input class="master_input" type="email" placeholder="email" Required id="e_email" name="email" value="{{ old('email') }}">
+                <input class="master_input" type="email" placeholder="email" Required id="e_email" name="email" value="{{$event->email}}" value="{{ old('email') }}">
                 @if ($errors->has('email'))
                   <span class="master_message color--fadegreen">{{ $errors->first('email') }}</span>
                 @endif
@@ -385,7 +385,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Code_numbe">Code number</label>
-                <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe" name="code_number" value="{{ old('code_number') }}">
+                <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe" name="code_number" value="{{$event->code}}" value="{{ old('code_number') }}">
                 @if ($errors->has('code_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('code_number') }}</span>
                 @endif
@@ -397,7 +397,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Mobile_number">mobile number</label>
-                <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number" name="mobile_number" value="{{ old('mobile_number') }}">
+                <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number" name="mobile_number" value="{{$event->mobile}}" value="{{ old('mobile_number') }}">
                 @if ($errors->has('mobile_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('mobile_number') }}</span>
                 @endif
@@ -416,7 +416,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">Add YouTube video (1) Link in Arabic</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_1" value="{{ old('youtube_ar_1') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_1" value="{{$event_media[2]['link']}}" value="{{ old('youtube_ar_1') }}">
                 @if ($errors->has('youtube_ar_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_1') }}</span>
                 @endif
@@ -427,7 +427,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">Add YouTube video (1) Link in English</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_1" value="{{ old('youtube_en_1') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_1" value="{{$event_media[0]['link']}}" value="{{ old('youtube_en_1') }}">
                 @if ($errors->has('youtube_en_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_1') }}</span>
                 @endif
@@ -438,7 +438,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">Add YouTube video (2) Link in Arabic</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_2" value="{{ old('youtube_ar_2') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_2" value="{{$event_media[3]['link']}}" value="{{ old('youtube_ar_2') }}">
                 @if ($errors->has('youtube_ar_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_2') }}</span>
                 @endif
@@ -449,7 +449,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">Add YouTube video (2) Link in English</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_2" value="{{ old('youtube_en_2') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_2" value="{{$event_media[1]['link']}}" value="{{ old('youtube_en_2') }}">
                 @if ($errors->has('youtube_en_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_2') }}</span>
                 @endif

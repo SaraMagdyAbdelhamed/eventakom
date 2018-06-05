@@ -15,6 +15,9 @@ use App\Genders;
 use App\Age_Ranges;
 use App\Currency;
 use App\EventHashtags;
+use App\Helpers\Helper;
+use App\EventMedia;
+
 class EventsMobileController extends Controller
 {
     /**
@@ -158,6 +161,8 @@ class EventsMobileController extends Controller
         $data['categories']    = EventCategory::all();
         $data['currencies']    = Currency::all();
         $data['bigEventCount'] = EventMobile::BigEvent($id);
+        $data['event_tickets'] = EventTicket::where('event_id','=',$id)->first();
+        $data['event_media']   = EventMedia::where('event_id','=',$id)->get();
         
         return view('events::eventsMobile.edit',$data);
     }

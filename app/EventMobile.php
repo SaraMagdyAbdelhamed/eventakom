@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Interest;
+use App\Entity;
+use App\Helpers\Helper;
 class EventMobile extends Model
 {
     protected $id = 'id';
@@ -75,7 +77,9 @@ class EventMobile extends Model
     }
 
     //localizations
+   public static function arabic($field,$item_id){
 
-
-
+      $result = Helper::localization('events', $field, $item_id, 2);
+      return $result;
+    }
 }
