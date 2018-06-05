@@ -9,6 +9,7 @@ use App\EventMobile;
 use App\EventCategory;
 use App\EventTicket;
 use App\EventBookingTicket;
+use App\EventPost;
 use App\EntityLocalization;
 
 
@@ -133,6 +134,7 @@ class EventsMobileController extends Controller
                 })->get();
        // dd($data['categories']);
         //POSTS
+        $data['event_posts'] = EventPost::where('event_id','=',$id)->get();
 
         //TICKETS
         $data['tickets'] = EventTicket::where('event_id','=',$id)->get();
@@ -261,6 +263,20 @@ class EventsMobileController extends Controller
          $ids = $_POST['ids'];
          foreach ($ids as $id) {
              EventMobile::find($id)->delete();
+         }
+     }
+
+      public function post_destroy($id)
+     {
+         $event = EventPost::find($id);
+         $event->delete();
+     }
+
+     public function post_destroy_all()
+     {
+         $ids = $_POST['ids'];
+         foreach ($ids as $id) {
+             EventPost::find($id)->delete();
          }
      }
 }

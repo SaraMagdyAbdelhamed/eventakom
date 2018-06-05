@@ -194,7 +194,7 @@ class EventsController extends Controller
         try {
             Helper::add_localization(4, 'name',         $event->id, $request->arabic_event_name,    2);             // arabic_event_name
             Helper::add_localization(4, 'description',  $event->id, $request->arabic_description,   2);             // arabic_description
-            Helper::add_localization(4, 'venu',         $event->id, $request->arabic_venu,          2);             // arabic_venu
+            Helper::add_localization(4, 'venue',         $event->id, $request->arabic_venu,          2);             // arabic_venu
 
             // Explode hashtags into an array
             $arabic_hashtags = explode(',', $request->arabic_hashtags);
@@ -217,9 +217,11 @@ class EventsController extends Controller
      * Show the specified resource.
      * @return Response
      */
-    public function show()
+    public function show($id)
     {
-        return view('events::show');
+        $data['event'] = EventBackend::find($id);
+        
+        return view('events::backend_event_show', $data);
     }
 
     /**
@@ -247,13 +249,17 @@ class EventsController extends Controller
      */
     public function destroy(Request $request)
     {
+        // find that record
+        $event = EventBackend::find($request->id);
+
         // delete english images or files
 
         // delete arabic images or files
 
-        // delete events
-
-        // delete related relations
+        $event->media()->delete();          // delete english & arabic youtube links
+        $event->hashtags()->detach();       // delete hashtags
+        $event->categories()->detach();     // delete categories
+        $event->delete();                   // delete events
 
         Session::flash('success', 'Event deleted successfully! تم مسح الحدث بنجاح');
         return response()->json(['success', 'event deleted!']);
@@ -266,15 +272,22 @@ class EventsController extends Controller
      * @return Response
      */
     public function destroySelected(Request $request) {
-        // delete english images or files
+        
+        foreach($request->ids as $id) {
+            // find that record
+            $event = EventBackend::find($id);
 
-        // delete arabic images or files
+            // delete english images or files
 
-        // delete events
+            // delete arabic images or files
 
-        // delete related relations
+            $event->media()->delete();          // delete english & arabic youtube links
+            $event->hashtags()->detach();       // delete hashtags
+            $event->categories()->detach();     // delete categories
+            $event->delete();                   // delete events
+        }
 
-        Session::flash('success', 'Events deleted successfully! تم مسح الاحداث بنجاح');
+        Session::flash('success', 'Event deleted successfully! تم مسح الحدث بنجاح');
         return response()->json(['success', 'event deleted!']);
     }
 }

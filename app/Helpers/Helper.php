@@ -108,4 +108,45 @@ class Helper {
         $localization->lang_id = $lang_id;
         $localization->save();
     }
+
+     public static function CleanText($text){
+        $arr = ['أ' => 'ا',
+            'إ' => 'ا',
+            'آ' => 'ا',
+            "ة" => 'ه',
+            "ّ" => '',
+            "َّ" => '',
+            "ُّ" => '',
+            "ٌّ" => '',
+            "ًّ" => '',
+            "ِّ" => '',
+            "ٍّ" => '',
+            "ْ" => '',
+            "َ" => '',
+            "ً" => '',
+            "ُ" => '',
+            "ِ" => '',
+            "ٍ" => '',
+            "ٰ" => '',
+            "ٌ" => '',
+            "ۖ" => '',
+            "ۗ" => '',
+            "ـ" => ''
+        ];
+        foreach ($arr as $key => $val) {
+            $cleaned_text = str_replace($key, $val, $text);
+            $text = $cleaned_text;
+        }
+        return $text;
+
+    }
+
+      public static function CleanStriptagText($text){
+                $text = html_entity_decode($text);
+                $text = strip_tags($text);
+                $text = str_replace('&nbsp;', '', $text);
+                $text = trim(preg_replace('/\s+/', ' ', $text));
+                $text = Helper::CleanText($text);
+                return $text;
+      }
 }

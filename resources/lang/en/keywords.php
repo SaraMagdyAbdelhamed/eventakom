@@ -90,6 +90,15 @@
         // Events
         'events'    => 'Events',
         'addfrombackend' => 'Added From Backend',
+        'info'      => 'Info',
+        'posts'     => 'Posts',
+        'tickets'   => 'Tickets',
+        'eventName' => 'Event Name',
+        'venue'     => 'Venue',
+        'start'     => 'Starts',
+        'end'       => 'Ends',
+        'addby'     => 'Add By',
+        'category'  => 'Category',
 		
 		// Events Mobile
 		'addfromMobile' => 'Added From Mobile',
