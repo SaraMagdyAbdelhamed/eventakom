@@ -127,7 +127,7 @@
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
                                     <td><span class="cellcontent">{{ $event->user ? $event->user->username : '' }}</span></td>
                                     <td><span class="cellcontent">@if($event->is_active==1)<i class = "fa icon-in-table-true fa-check"></i>@elseif($event->is_active==0)<i class = "fa icon-in-table-false fa-times"></i>@endif</span></td>
-                                    <td><span class="cellcontent"><a href= {{url('/events/mobile/view')}}/{{$event->id}} ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= events_mobile_edit.html ,  class= " action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                                    <td><span class="cellcontent"><a href= {{url('/events/mobile/view')}}/{{$event->id}} ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= {{url('/events/mobile/edit')}}/{{$event->id}} ,  class= " action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
                                   @endforeach
 
@@ -291,7 +291,7 @@
                                 </div>
                               </div>
                             </div>
-                            <button id="delete-test">Delete Tests</button>
+                           <!--  <button id="delete-test">Delete Tests</button> -->
                           </div>
                         </div><br>
                       </li>

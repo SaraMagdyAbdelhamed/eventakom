@@ -129,4 +129,6 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
      Route::get('/events/mobile/view/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@view')->name('event_mobile_view');
      Route::post('/post_destroy/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@post_destroy')->name('post_destroy');
     Route::post('/post_destroy_all', '\Modules\Events\Http\Controllers\EventsMobileController@post_destroy_all')->name('post_destroy_all');
+    Route::get('events/mobile/edit/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@edit')->name('event_edit');
+
 });
