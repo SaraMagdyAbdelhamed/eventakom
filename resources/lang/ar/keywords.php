@@ -102,8 +102,8 @@
         'addby'     => 'اضيف بواسطة',
         'category'  => 'التصنيف',
 		
-		// Events Mobile
-		'addfromMobile' => 'المضاف من الموبايل',
+        // Events Mobile
+        'addfromMobile' => 'المضاف من الموبايل',
 		
     ];
 
