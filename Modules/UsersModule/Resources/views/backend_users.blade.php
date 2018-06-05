@@ -99,7 +99,6 @@
             </thead>
             <tbody>
               @foreach($users as $user)
-              \
               <tr data-user-id="{{$user->id}}">
                 <td><span class="cellcontent"></span></td>
                 <td><span class="cellcontent">{{ $loop->index + 1 }}</span></td>
