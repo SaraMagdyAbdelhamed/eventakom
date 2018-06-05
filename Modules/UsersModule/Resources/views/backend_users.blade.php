@@ -12,8 +12,7 @@
             </div>
           </div>
         </div>
-        <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="#popupModal_1">@lang('keywords.AddBackendUser')</a>
-        </div>
+        <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="#popupModal_1">@lang('keywords.AddBackendUser')</a></div>
       </div>
     </div>
   </div>
