@@ -32,6 +32,13 @@ class EventMobile extends Model
         return $this->hasMany('App\EventPost', 'event_id');
     }
 
+     public function hashtags() {
+        return $this->belongsToMany('App\EventHashtags', 'event_hash_tags', 'event_id', 'hash_tag_id');
+    }
+    public function categories() {
+        return $this->belongsToMany('App\EventCategory', 'event_categories', 'event_id', 'interest_id');
+    }
+
     //quiries
 
      public static function getEventsMobile(){
@@ -58,6 +65,13 @@ class EventMobile extends Model
 
       public static function getCategory($category_id){
             return Interest::find($category_id);
+    }
+
+     public static function BigEvent($id){
+        return static::query()->join('big_events','events.id','=','big_events.event_id')
+                ->where('event_id',$id)
+               ->count();
+
     }
 
     //localizations

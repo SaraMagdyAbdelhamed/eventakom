@@ -11,8 +11,10 @@ use App\EventTicket;
 use App\EventBookingTicket;
 use App\EventPost;
 use App\EntityLocalization;
-
-
+use App\Genders;
+use App\Age_Ranges;
+use App\Currency;
+use App\EventHashtags;
 class EventsMobileController extends Controller
 {
     /**
@@ -147,9 +149,17 @@ class EventsMobileController extends Controller
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function edit()
+    public function edit($id)
     {
-        return view('events::eventsMobile.edit');
+        // mobile event
+        $data['event']         = EventMobile::find($id);
+        $data['genders']       = Genders::all();
+        $data['age_range']     = Age_Ranges::all();
+        $data['categories']    = EventCategory::all();
+        $data['currencies']    = Currency::all();
+        $data['bigEventCount'] = EventMobile::BigEvent($id);
+        
+        return view('events::eventsMobile.edit',$data);
     }
 
 
