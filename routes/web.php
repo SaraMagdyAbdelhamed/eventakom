@@ -112,6 +112,7 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::get('/events/backend/edit/{id}', '\Modules\Events\Http\Controllers\EventsController@edit')->name('event_backend.edit');
     Route::post('/events/backend/destroy', '\Modules\Events\Http\Controllers\EventsController@destroy')->name('event_backend.destroy');
     Route::post('/events/backend/destroy_selected', '\Modules\Events\Http\Controllers\EventsController@destroySelected')->name('event_backend.destroySelected');
+    Route::post('/events/backend/filter','\Modules\Events\Http\Controllers\EventsController@filter')->name('event_backend.filter');
 
 
  // Events: Mobile

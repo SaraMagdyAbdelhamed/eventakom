@@ -28,18 +28,22 @@
           </div>
           <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
             <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
+
+            {{-- Filter --}}
+            <form action="{{ route('event_backend.filter') }}" method="POST">
+              {{ csrf_field() }}
+
             <div>
               <div class="row">
                 <div class="col-sm-6 col-xs-12">
                   <div class="master_field">
                     <label class="master_label" for="filter_cat">Event categories </label>
-                    <select class="master_input select2" id="filter_cat" multiple="multiple" data-placeholder="Event categories" style="width:100%;" ,>
-                      <option>Egypt</option>
-                      <option>KSA</option>
-                      <option>USA</option>
-                      <option>Sudan</option>
-                      <option>France</option>
-                      <option>Etc</option>
+                    <select class="master_input select2" id="filter_cat" multiple="multiple" data-placeholder="choose a category..." style="width:100%;" name="categories[]">
+                      @if ( isset($categories) && !empty($categories) )
+                          @foreach ($categories as $cat)
+                              <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                          @endforeach
+                      @endif
                     </select>
                   </div>
                 </div>
@@ -47,11 +51,11 @@
                   <div class="master_field">
                     <label class="master_label">Events status</label>
                     <div class="funkyradio">
-                      <input type="checkbox" name="radio" id="event_status_2">
+                      <input type="checkbox" name="active" id="event_status_2" value="1" checked>
                       <label for="event_status_2">Active</label>
                     </div>
                     <div class="funkyradio">
-                      <input type="checkbox" name="radio" id="event_status_3">
+                      <input type="checkbox" name="inactive" id="event_status_3" value="1">
                       <label for="event_status_3">inActive</label>
                     </div>
                   </div>
@@ -60,7 +64,7 @@
                   <div class="master_field">
                     <label class="master_label" for="bootstrap_date_start_from">start date from</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="start date from" id="bootstrap_date_start_from">
+                      <input class="datepicker master_input" type="text" placeholder="start date from" id="bootstrap_date_start_from" name="start_from">
                     </div>
                   </div>
                 </div>
@@ -68,7 +72,7 @@
                   <div class="master_field">
                     <label class="master_label" for="bootstrap_date_start_to">start date to</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="start date to" id="bootstrap_date_start_to">
+                      <input class="datepicker master_input" type="text" placeholder="start date to" id="bootstrap_date_start_to" name="start_to">
                     </div>
                   </div>
                 </div>
@@ -76,7 +80,7 @@
                   <div class="master_field">
                     <label class="master_label" for="bootstrap_date_End_from">End date from</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="End date from" id="bootstrap_date_End_from">
+                      <input class="datepicker master_input" type="text" placeholder="End date from" id="bootstrap_date_End_from" name="end_from">
                     </div>
                   </div>
                 </div>
@@ -84,14 +88,17 @@
                   <div class="master_field">
                     <label class="master_label" for="bootstrap_date_End_to">End date to</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="End date to" id="bootstrap_date_End_to">
+                      <input class="datepicker master_input" type="text" placeholder="End date to" id="bootstrap_date_End_to" name="end_to">
                     </div>
                   </div>
                 </div>
               </div>
             </div><br>
             <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-            <button class="remodal-confirm" data-remodal-action="confirm">Apply Filters</button>
+            <button class="remodal-confirm" type="submit">Apply Filters</button>
+            </form>
+            {{-- End Filter --}}
+
           </div>
           <form id="dataTableTriggerId_001_form">
             <table class="data-table-trigger table-master" id="dataTableTriggerId_001">

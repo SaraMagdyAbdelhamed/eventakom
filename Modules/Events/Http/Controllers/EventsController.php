@@ -37,7 +37,8 @@ class EventsController extends Controller
     public function index()
     {
         return view('events::backend')
-            ->with('events', EventBackend::where('is_backend', 1)->get());
+            ->with('events', EventBackend::where('is_backend', 1)->get())
+            ->with('categories', EventCategory::all());
     }
 
     /**
@@ -289,5 +290,20 @@ class EventsController extends Controller
 
         Session::flash('success', 'Event deleted successfully! تم مسح الحدث بنجاح');
         return response()->json(['success', 'event deleted!']);
+    }
+
+
+    public function filter( Request $request ) {
+        // filter on categories
+        $data['events'] = EventBackend::whereHas('categories', function($q){
+            $q->
+        });
+        // include active or in-active events
+        
+        // filter on start date and start time
+
+        // filter on end date and end time
+
+        return redirect('/events/backend', $data);
     }
 }
