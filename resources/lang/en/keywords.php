@@ -84,6 +84,7 @@
         'Active'=>'Active',
         'Inactive'=>'Inactive',
         'pleaseSetTheUserStatus'=>'pleaseSetTheUserStatus',
+		
 
 
 
@@ -115,6 +116,23 @@
 		'acceptSelected'=>'Accept Selected',
 		'reject'=>'Reject',
 		'PLEASE ENTER REJECT REASON'=>'PLEASE ENTER REJECT REASON',
+		'add Arabic Content'=>'add Arabic Content',
+		'reject reason in arabic'=>'Reject Reason In Arabic',
+		'message content'=>'message content',
+		'add English Content'=>'add English Content',
+		'reject reason in english'=>'Reject Reason In English',
+		'disabled'=>'Disabled',
+		'content'=>'Content',
+		'Ticket Barcode'=>'Ticket Barcode',
+        'Ticket serial'=>'Ticket serial',
+        'Ticket Status'=>'Ticket Status',
+		'Booking date'=>'Booking date',
+		'Price'=>'Price',
+		'This event is free no tickets'=>'This event is free no tickets',
+		
+		
+		
+		
     ];
 
 ?>

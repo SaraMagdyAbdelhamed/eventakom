@@ -125,7 +125,13 @@
 		'add English Content'=>'اضف المحتوى باللغة الانجليزية',
 		'reject reason in english'=>'سبب الرفض باللغة الانجليزية',
 		'disabled'=>'غير مفعل',
-		
+		'content'=>'المحتوى',
+		'Ticket Barcode'=>'باركود التذكرة',
+        'Ticket serial'=>'الرقم المسلسل للتذكرة',
+        'Ticket Status'=>'حالة التذكرة',
+		'Booking date'=>'تاريخ الحجز',
+		'Price'=>'السعر',
+		'This event is free no tickets'=>'هذا الحدث مجاني ، لا يوجد تذاكر.',
 
     ];
 
