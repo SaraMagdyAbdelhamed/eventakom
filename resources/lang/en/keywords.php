@@ -101,8 +101,20 @@
         'category'  => 'Category',
 		
 		// Events Mobile
-		'addfromMobile' => 'Added From Mobile',
-
+		'addfromMobile' => 'Added from mobile application',
+		'Current' => 'Current',
+		'Pendding' => 'Pendding',
+		'EventsStatus' => 'Events status',
+		'startDateFrom' => 'start date from',
+		'startDateTo' => 'start date to',
+		'Startdate/time' => 'Start date/time',
+		'End date/time' => 'End date/time',
+		'Addeddate' => 'Added Date',
+		'EventStatus'=>'Event Status',
+		'accept'=>'ِAccept',
+		'acceptSelected'=>'Accept Selected',
+		'reject'=>'Reject',
+		'PLEASE ENTER REJECT REASON'=>'PLEASE ENTER REJECT REASON',
     ];
 
 ?>

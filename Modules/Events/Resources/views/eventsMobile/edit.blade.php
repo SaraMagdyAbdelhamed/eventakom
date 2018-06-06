@@ -45,7 +45,7 @@
   <div class="col-xs-12">
     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
 
-      <form id="horizontal-pill-steps" action="{{ route('event_backend.store') }}" method="POST" enctype="multipart/form-data">
+      <form id="horizontal-pill-steps" action="{{ route('event_mobile.update') }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
         
         <h3>Info in En</h3>
@@ -56,7 +56,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">Event name</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="english_event_name" value="{{$event->name}}" value="{{ old('english_event_name') }}">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3"  id="Event_name" name="english_event_name" value="{{$event->name}}" value="{{ old('english_event_name') }}">
                 @if ($errors->has('event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('event_name') }}</span>
                 @endif
@@ -68,7 +68,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">Description</label>
-                <textarea class="master_input" id="description" placeholder="Description" Required name="english_description">{{$event->description}}{{ old('english_description') }}</textarea>
+                <textarea class="master_input" id="description" placeholder="Description"  name="english_description">{{$event->description}}{{ old('english_description') }}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
                 @endif
@@ -80,6 +80,7 @@
             <div class="col-xs-12">
               <div class="mapouter">
                 <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
+                <input type="hidden" name="event_id" value="{{$event->id}}">
                 <input type="hidden" name="lat" id="lat" value="1.234">
                 <input type="hidden" name="lng" id="lng" value="2.345">
               </div>
@@ -90,7 +91,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">Venue</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="english_venu" value="{{$event->venue}}" value="{{ old('english_venu') }}">
+                <input class="master_input" type="text" placeholder="ex:CFC"  id="venue" name="english_venu" value="{{$event->venue}}" value="{{ old('english_venu') }}">
                 @if ($errors->has('english_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_venu') }}</span>
                 @endif
@@ -148,7 +149,7 @@
               <div class="master_field">
                 <label class="master_label" for="start_date">start date</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="start date" Required id="start_date" name="start_date" value="<?=date('Y-m-d', strtotime($event->start_datetime))?>{{ old('start_date') }}">
+                  <input class="datepicker master_input" type="text" placeholder="start date"  id="start_date" name="start_date" value="<?=date('Y-m-d', strtotime($event->start_datetime))?>{{ old('start_date') }}">
                 </div>
                 @if ($errors->has('start_date'))
                   <span class="master_message color--fadegreen">{{ $errors->first('start_date') }}</span>
@@ -162,7 +163,7 @@
               <div class="master_field">
                 <label class="master_label" for="start_time">start date time</label>
                 <div class="bootstrap-timepicker">
-                  <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time" name="start_time" value="<?=date('h:i A', strtotime($event->start_datetime))?>{{ old('start_time') }}">
+                  <input class="timepicker master_input" type="text" placeholder="start time"  id="start_time" name="start_time" value="<?=date('h:i A', strtotime($event->start_datetime))?>{{ old('start_time') }}">
                 </div>
                 @if ($errors->has('start_time'))
                   <span class="master_message color--fadegreen">{{ $errors->first('start_time') }}</span>
@@ -176,7 +177,7 @@
               <div class="master_field">
                 <label class="master_label" for="end_date">end date</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="end date" Required id="end_date" name="end_date" value="<?=date('Y-m-d', strtotime($event->end_datetime))?>{{ old('end_date') }}">
+                  <input class="datepicker master_input" type="text" placeholder="end date"  id="end_date" name="end_date" value="<?=date('Y-m-d', strtotime($event->end_datetime))?>{{ old('end_date') }}">
                 </div>
                 @if ($errors->has('end_date'))
                   <span class="master_message color--fadegreen">{{ $errors->first('end_date') }}</span>
@@ -190,7 +191,7 @@
               <div class="master_field">
                 <label class="master_label" for="end_time">end date time</label>
                 <div class="bootstrap-timepicker">
-                  <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="end_time" value="<?=date('h:i A', strtotime($event->start_datetime))?>{{ old('end_date') }}">
+                  <input class="timepicker master_input" type="text" placeholder="end time"  id="end_time" name="end_time" value="<?=date('h:i A', strtotime($event->start_datetime))?>{{ old('end_date') }}">
                 </div>
                 @if ($errors->has('end_time'))
                   <span class="master_message color--fadegreen">{{ $errors->first('end_time') }}</span>
@@ -243,7 +244,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">اسم الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="arabic_event_name" value="{{$event->arabic('name',$event->id)}}" value="{{ old('arabic_event_name') }}">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3"  id="Event_name" name="arabic_event_name" value="{{$event->arabic('name',$event->id)}}" value="{{ old('arabic_event_name') }}">
                 @if ($errors->has('arabic_event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_event_name') }}</span>
                 @endif
@@ -255,7 +256,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">وصف الحدث</label>
-                <textarea class="master_input" id="description" placeholder="Description" Required name="arabic_description">{{$event->arabic('description',$event->id)}}{{ old('arabic_description') }}</textarea>
+                <textarea class="master_input" id="description" placeholder="Description"  name="arabic_description">{{$event->arabic('description',$event->id)}}{{ old('arabic_description') }}</textarea>
                 @if ($errors->has('arabic_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_description') }}</span>
                 @endif
@@ -267,7 +268,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">مكان الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="arabic_venu" value="{{$event->arabic('venue',$event->id)}}"  value="{{ old('arabic_venu') }}">
+                <input class="master_input" type="text" placeholder="ex:CFC"  id="venue" name="arabic_venu" value="{{$event->arabic('venue',$event->id)}}"  value="{{ old('arabic_venu') }}">
                 @if ($errors->has('arabic_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_venu') }}</span>
                 @endif
@@ -342,7 +343,7 @@
               <div class="col-xs-12">
                 <div class="master_field">
                   <label class="master_label" for="Available_tickets">Available tickets</label>
-                  <input class="master_input" type="number" placeholder="5" min="0" Required id="Available_tickets" name="number_of_tickets" value="{{$event_tickets->available_tickets}}"  value="{{ old('number_of_tickets') }}">
+                  <input class="master_input" type="number" placeholder="5" min="0"  id="Available_tickets" name="number_of_tickets" value="{{$event_tickets->available_tickets}}"  value="{{ old('number_of_tickets') }}">
                   @if ($errors->has('number_of_tickets'))
                   <span class="master_message color--fadegreen">{{ $errors->first('number_of_tickets') }}</span>
                 @endif
@@ -373,7 +374,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="e_email">email</label>
-                <input class="master_input" type="email" placeholder="email" Required id="e_email" name="email" value="{{$event->email}}" value="{{ old('email') }}">
+                <input class="master_input" type="email" placeholder="email"  id="e_email" name="email" value="{{$event->email}}" value="{{ old('email') }}">
                 @if ($errors->has('email'))
                   <span class="master_message color--fadegreen">{{ $errors->first('email') }}</span>
                 @endif
@@ -385,7 +386,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Code_numbe">Code number</label>
-                <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe" name="code_number" value="{{$event->code}}" value="{{ old('code_number') }}">
+                <input class="master_input" type="number" placeholder="ex: 2012545"  id="Code_numbe" name="code_number" value="{{$event->code}}" value="{{ old('code_number') }}">
                 @if ($errors->has('code_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('code_number') }}</span>
                 @endif
@@ -397,7 +398,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Mobile_number">mobile number</label>
-                <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number" name="mobile_number" value="{{$event->mobile}}" value="{{ old('mobile_number') }}">
+                <input class="master_input" type="number" placeholder="0123456789"  id="Mobile_number" name="mobile_number" value="{{$event->mobile}}" value="{{ old('mobile_number') }}">
                 @if ($errors->has('mobile_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('mobile_number') }}</span>
                 @endif

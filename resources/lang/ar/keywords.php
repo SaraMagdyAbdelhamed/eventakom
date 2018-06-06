@@ -104,7 +104,29 @@
 		
         // Events Mobile
         'addfromMobile' => 'المضاف من الموبايل',
+		'Current' => 'الحالية',
+		'Pendding' => 'المعلقة',
+		'EventsStatus' => 'حالة الاحداث',
+		'startDateFrom' => 'تاريخ البدء من',
+		'startDateTo' => 'تاريخ البدء الى',
+		'endDateFrom' => 'تاريخ الانتهاء من',
+		'endDateTo' => 'تاريخ الانتهاء الى',
+		'Startdate/time' => 'يبدأ في تاريخ / وقت',
+		'End date/time' => 'ينتهي في تاريخ / وقت',
+		'Addeddate' => 'تاريخ الاضافة',
+		'EventStatus'=>'حالة الحدث',
+		'accept'=>'قبول',
+		'acceptSelected'=>'قبول المحدد',
+		'reject'=>'رفض',
+		'PLEASE ENTER REJECT REASON'=>'من فضلك بين سبب الرفض',
+		'add Arabic Content'=>'اضف المحتوى باللغة العربية',
+		'reject reason in arabic'=>'سبب الرفض ياللغة العربية',
+		'message content'=>'محتوى الرسالة',
+		'add English Content'=>'اضف المحتوى باللغة الانجليزية',
+		'reject reason in english'=>'سبب الرفض باللغة الانجليزية',
+		'disabled'=>'غير مفعل',
 		
+
     ];
 
 ?>
