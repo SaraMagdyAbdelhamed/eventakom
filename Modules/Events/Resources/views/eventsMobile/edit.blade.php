@@ -312,7 +312,7 @@
               <div class="col-xs-8">
                 <div class="master_field">
                   <label class="master_label" for="Price">Price</label>
-                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price" value="{{$event_tickets->price}}" value="{{ old('price') }}">
+                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price"  @if ( isset($event_tickets->price) && !empty($event_tickets->price) ) value="{{$event_tickets->price}}" @endif  value="{{ old('price') }}">
                   @if ($errors->has('price'))
                     <span class="master_message color--fadegreen">{{ $errors->first('price') }}</span>
                   @endif
@@ -328,7 +328,7 @@
                     <option value="" disabled selected>-- Please Select a Currency Symbol --</option>
                     @if ( isset($currencies) && !empty($currencies) )
                         @foreach ($currencies as $currency)
-                            <option value="{{ $currency->id }}" @if($event_tickets->currency_id == $currency->id) selected @endif>{{ $currency->symbol }}</option>
+                            <option value="{{ $currency->id }}" @if(isset($event_tickets->price) && !empty($event_tickets->price) && $event_tickets->currency_id == $currency->id) selected @endif>{{ $currency->symbol }}</option>
                         @endforeach
                     @endif
                   </select>
@@ -343,7 +343,7 @@
               <div class="col-xs-12">
                 <div class="master_field">
                   <label class="master_label" for="Available_tickets">Available tickets</label>
-                  <input class="master_input" type="number" placeholder="5" min="0"  id="Available_tickets" name="number_of_tickets" value="{{$event_tickets->available_tickets}}"  value="{{ old('number_of_tickets') }}">
+                  <input class="master_input" type="number" placeholder="5" min="0"  id="Available_tickets" name="number_of_tickets"  @if ( isset($event_tickets->available_tickets) && !empty($event_tickets->price) )  value="{{$event_tickets->available_tickets}}" @endif  value="{{ old('number_of_tickets') }}">
                   @if ($errors->has('number_of_tickets'))
                   <span class="master_message color--fadegreen">{{ $errors->first('number_of_tickets') }}</span>
                 @endif
@@ -417,7 +417,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">Add YouTube video (1) Link in Arabic</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_1" value="{{$event_media[2]['link']}}" value="{{ old('youtube_ar_1') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_1" @if ( isset($event_media[2]['link']) && !empty($event_media[2]['link']) )   value="{{$event_media[2]['link']}}" @endif value="{{ old('youtube_ar_1') }}">
                 @if ($errors->has('youtube_ar_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_1') }}</span>
                 @endif
@@ -428,7 +428,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">Add YouTube video (1) Link in English</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_1" value="{{$event_media[0]['link']}}" value="{{ old('youtube_en_1') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_1" @if( isset($event_media[0]['link']) && !empty($event_media[0]['link']) )  value="{{$event_media[0]['link']}}" @endif  value="{{ old('youtube_en_1') }}">
                 @if ($errors->has('youtube_en_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_1') }}</span>
                 @endif
@@ -439,7 +439,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">Add YouTube video (2) Link in Arabic</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_2" value="{{$event_media[3]['link']}}" value="{{ old('youtube_ar_2') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_2" @if( isset($event_media[3]['link']) && !empty($event_media[3]['link']) ) value="{{$event_media[3]['link']}}" @endif value="{{ old('youtube_ar_2') }}">
                 @if ($errors->has('youtube_ar_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_2') }}</span>
                 @endif
@@ -450,7 +450,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">Add YouTube video (2) Link in English</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_2" value="{{$event_media[1]['link']}}" value="{{ old('youtube_en_2') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_2" @if( isset($event_media[1]['link']) && !empty($event_media[1]['link']) ) value="{{$event_media[1]['link']}}" @endif value="{{ old('youtube_en_2') }}">
                 @if ($errors->has('youtube_en_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_2') }}</span>
                 @endif
