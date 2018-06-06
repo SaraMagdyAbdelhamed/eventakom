@@ -15,9 +15,6 @@ use App\Genders;
 use App\Age_Ranges;
 use App\Currency;
 use App\EventHashtags;
-use App\Helpers\Helper;
-use App\EventMedia;
-
 class EventsMobileController extends Controller
 {
     /**

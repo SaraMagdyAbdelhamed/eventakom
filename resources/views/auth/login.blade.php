@@ -23,6 +23,19 @@
     <link rel="stylesheet" href="{{ asset('css/style__0__rtl.min.css') }}">
     <!-- =============== APP SCRIPT ===============-->
     <script src="{{ asset('js/modernizr.js') }}"></script>
+
+    <style>
+      #submit-button {
+        border: 0px; 
+        padding: 10px 35px; 
+        background-color: #281160; 
+        color: white;
+      }
+
+      #submit-button:hover {
+        background-color: #473670;
+      }
+    </style>
   </head>
   <body>
     <div class="layout_page">
@@ -62,7 +75,9 @@
                         </div>
                     @endif
                     
-                    <button type="submit" class="inherit inherit bradius--small inherit">login</button>
+                    <button type="submit" class="inherit inherit bradius--small inherit" id="submit-button">
+                      login
+                    </button>
                 </form>
               </div>
             </div>
