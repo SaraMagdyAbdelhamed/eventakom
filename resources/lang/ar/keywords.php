@@ -26,6 +26,7 @@
         'deleteSelected' => 'مسح المحدد',
         'delete' => 'مسح',
         'pleaseSelect' => 'اختر احدى القيم',
+        'actions'   => 'الإجرائات',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
@@ -35,11 +36,12 @@
         'privacy'   => 'الخصوصية وسياسة الشركة',
         'contactUs' => ' تواصل معنا',
         'eventCategories'   => 'انواع الاحداث',
-        'addcat'    => 'إضافة حدث جديد',
         'famous'    => 'تصنيفات الاحداث الشهيرة',
         'sponsors'  => 'الرعاه',
         'trends'    => 'التحكم في البحث المتداول',
         'notifications' => 'التنبيهات',
+        'famousCat' => 'اسم التصنيف',
+        'sponsorLogo'   => 'الشعار',
 
         // Edit fixed pages
         'EditAbout' => 'تعديل قسم عن الشركة',

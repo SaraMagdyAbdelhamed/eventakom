@@ -466,21 +466,22 @@ class MainController extends Controller
         ]);
 
         // Logo
-        if($request->logoAr && $request->logoEn) {
-
-            $imgAr = $request->logoAr;
-            $imgEn = $request->logoEn;
-
+        if($request->logoAr || $request->logoEn) {
             $now = time();
 
-            $newAr = $now.'_'.$imgAr->getClientOriginalName(); // current time + original image name
-            $newEn = $now.'_'.$imgEn->getClientOriginalName(); // current time + original image name
+            if($request->logoAr) {
+                $imgAr = $request->logoAr;
+                $newAr = $now.'_'.$imgAr->getClientOriginalName(); // current time + original image name
+                $imgAr->move('logo/ar', $newAr);               // move to public/logo/ar
+                $imgPathAr = 'logo/ar/'.$newAr;       // new path: public/useres_images/new.jgp 
+            }
 
-            $imgAr->move('logo/ar', $newAr);               // move to public/logo/ar
-            $imgEn->move('logo/en', $newEn);               // move to public/logo/en
-
-            $imgPathAr = 'logo/ar/'.$newAr;       // new path: public/useres_images/new.jgp 
-            $imgPathEn = 'logo/en/'.$newEn;
+            if($request->logoEn) {
+                $imgEn = $request->logoEn;  
+                $newEn = $now.'_'.$imgEn->getClientOriginalName(); // current time + original image name
+                $imgEn->move('logo/en', $newEn);               // move to public/logo/en
+                $imgPathEn = 'logo/en/'.$newEn;
+            }
         }
 
         // english
@@ -491,11 +492,12 @@ class MainController extends Controller
             if($request->logoAr) {
                 $sponsor->logo_ar   = $imgPathAr;
             }
-            if($request->logEn) {
+            if($request->logoEn) {
                 $sponsor->logo_en   = $imgPathEn;
             }
             $sponsor->updated_by = Auth::id();
             $sponsor->save();
+            
         } catch (\Exception $ex) {
             dd($ex);
             Session::flash('warning', 'Can not edit in English');
