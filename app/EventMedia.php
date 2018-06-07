@@ -14,4 +14,8 @@ class EventMedia extends Model
     public function event() {
         return $this->belongsTo('App\EventBackend', 'event_id');
     }
+
+     public function eventMobile() {
+        return $this->belongsTo('App\EventMobile', 'event_id');
+    }
 }
