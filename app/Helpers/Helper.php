@@ -109,6 +109,22 @@ class Helper {
         $localization->save();
     }
 
+       public static function remove_localization($entity_id, $field, $item_id,$lang_id) {
+         EntityLocalization::where('entity_id','=',$entity_id)
+        ->where('field', '=', $field )
+        ->where('item_id', '=', $item_id )
+        ->where('lang_id', '=', $lang_id )
+        ->delete(); 
+    }
+
+       public static function multi_localization($entity_id, $field, $item_id, $lang_id) {
+          EntityLocalization::where('entity_id','=',$entity_id)
+        ->where('field', '=', $field )
+        ->where('item_id', '=', $item_id )
+        ->where('lang_id', '=', $lang_id )
+        ->get(); 
+    }
+
      public static function CleanText($text){
         $arr = ['أ' => 'ا',
             'إ' => 'ا',

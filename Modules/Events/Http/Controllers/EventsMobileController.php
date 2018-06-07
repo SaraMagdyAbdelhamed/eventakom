@@ -167,7 +167,14 @@ class EventsMobileController extends Controller
         $data['bigEventCount'] = EventMobile::BigEvent($id);
         $data['event_tickets'] = EventTicket::where('event_id','=',$id)->first();
         $data['event_media']   = EventMedia::where('event_id','=',$id)->get();
-        
+        $event = EventMobile::find($id);
+        $data['event_categories'] = $event->categories()->select('*')->where('event_id','=',$id)->get();
+        $data['arabic_hashtags'] =   EntityLocalization::where('entity_id','=',4)
+        ->where('field', '=', 'hashtag')
+        ->where('item_id', '=', $id)
+        ->where('lang_id', '=',2)
+        ->get(); 
+        //dd($data['arabic_hashtags']);
         return view('events::eventsMobile.edit',$data);
     }
 
@@ -271,6 +278,7 @@ class EventsMobileController extends Controller
             
             /**  INSERT English Hashtags **/
             // search if the hashtag is already exists, if exists get its ID, if not exists insert the hashtag into `hash_tags` table and get its id.
+            $event->hashtags()->detach();
             for($i=0; $i<count($hashtags); $i++) {
                 // insert hashtag into `hash_tag` table only if it isn't exists.
                 if( EventHashtags::where('name', '=', $hashtags[$i])->first() == NULL ) {
@@ -285,7 +293,9 @@ class EventsMobileController extends Controller
                 $event->hashtags()->attach($id);    
             }
 
-            /**  INSERT Categories **/
+            /** update Categories **/
+            //first remove old and records in pivot then insert the new categories
+            $event->categories()->detach();
             for($i=0; $i<count($request->categories); $i++) {
                 $event->categories()->attach( $request->categories[$i] );
             }
@@ -305,6 +315,11 @@ class EventsMobileController extends Controller
         }
 
         // Insert Arabic localizations
+        //remove old one first then insert newer
+          Helper::remove_localization(4, 'name',         $event->id,2);
+          Helper::remove_localization(4, 'description',  $event->id,2);
+          Helper::remove_localization(4, 'venue',         $event->id,2);
+          Helper::remove_localization(4, 'hashtag',         $event->id,2);
         try {
             Helper::add_localization(4, 'name',         $event->id, $request->arabic_event_name,    2);             // arabic_event_name
             Helper::add_localization(4, 'description',  $event->id, $request->arabic_description,   2);             // arabic_description
@@ -321,6 +336,13 @@ class EventsMobileController extends Controller
             Session::flash('warning', 'Error 2');
             return redirect()->back();
         }
+
+        //tickets
+        $tickets = EventTicket::where('event_id','=',$request['event_id'])->first();
+        $tickets->price = $request->price;
+        $tickets->currency_id = $request->currency;
+        $tickets->available_tickets = $request->number_of_tickets;                           
+        $tickets->save();
 
         // flash success message & redirect to list backend events
         Session::flash('success', 'Event updated Successfully! تم تحديث الحدث بنجاح');

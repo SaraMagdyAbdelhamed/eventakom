@@ -27,13 +27,13 @@
 <div class="row">
   <div class="col-xs-12">
     <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
-      <div class="add-mode">Adding mode</div>
+      <div class="add-mode">Editing mode</div>
       <div class="row">
         <div class="col-xs-12">
           <div class="text-xs-center">         
             <div class="text-wraper">
-              <h4 class="cover-inside-title">Events</h4><i class="fa fa-chevron-circle-right"></i>
-              <h4 class="cover-inside-title sub-lvl-2">Added from Mobile Application</h4>
+              <h4 class="cover-inside-title">@lang('keywords.events')</h4><i class="fa fa-chevron-circle-right"></i>
+              <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.addfromMobile')</h4>
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">@lang('keywords.eventDescription')</label>
-                <textarea class="master_input" id="description" placeholder="Description"  name="english_description">{{$event->description}}{{ old('english_description') }}</textarea>
+                <textarea class="master_input" id="description" placeholder="Description"  name="english_description">{{$event->description}}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
                 @endif
@@ -198,16 +198,17 @@
                 @endif
               </div>
             </div>
-
+         
 
             {{-- Categories --}}
             <div class="col-sm-6 col-xs-12">
               <div class="master_field">
                 <label class="master_label mandatory" for="category">@lang('keywords.category')</label>
-                <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="categories[]">
+                <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" value="hala" name="categories[]">
                   @if ( isset($categories) && !empty($categories) )
                       @foreach ($categories as $category)
-                          <option value="{{ $category->id }}">{{ $category->name }}</option>
+                          <option value="{{ $category->id }}" @foreach($event_categories as $ec) 
+                           <?php $selected = ($category->id == $ec->interest_id)? 'selected' : ''; echo $selected;?> @endforeach>{{ $category->name }}</option>
                       @endforeach
                   @endif
                 </select>
@@ -280,7 +281,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">@lang('keywords.Hashtags')</label>
-                <input type="text" data-role="tagsinput" name="arabic_hashtags" value="@foreach($event->hashtags as $value) {{$value->arabic('name',$value->id)}} , @endforeach" value="{{ old('arabic_hashtags') }}">
+                <input type="text" data-role="tagsinput" name="arabic_hashtags" value="@foreach($arabic_hashtags as $arhash) {{$arhash->value }},   @endforeach" value="{{ old('arabic_hashtags') }}">
               </div>
               @if ($errors->has('arabic_hashtags'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_hashtags') }}</span>
