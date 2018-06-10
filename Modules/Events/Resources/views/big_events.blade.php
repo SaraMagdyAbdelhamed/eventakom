@@ -71,6 +71,7 @@
     var valueSelected = this.value;
     // if(valueSelected == 2){
      $('#multiselect option').remove();
+      $('#multiselect_to option').remove();
 var _token = '{{csrf_token()}}';
     $.ajax({
       type: 'POST',
