@@ -367,13 +367,13 @@ class EventsController extends Controller
     {
         $ids = $request['big_events'];
         // $big_events =   explode( ',', $ids );
-        // $bigevent_delete = BigEvent::all();
+        BigEvent::truncate();
         // $bigevent_delete->delete();
         foreach($ids as $order=>$id)
         {
           $bigevent = new BigEvent;
           $bigevent->event_id = $id;
-          $bigevent->sort_order = $order;
+          $bigevent->sort_order = $order+1;
           $bigevent->save();
         }
         return response()->json($ids);

@@ -85,14 +85,19 @@
 
    <script>
    //get all options from multiselect_to
-  $('#multiselect_rightSelected').click(function(e){
-   var select1 = document.getElementById('multiselect_to');
+  // $('#multiselect_rightSelected').click(function(e){
+function saveSort(e) { 
+
+var select1 = document.getElementById('multiselect_to');
 var values = new Array();
 
 for(var i=0; i < select1.options.length; i++){
     values.push(select1.options[i].value);
 }
-//alert(values);
+//alert(values.length);
+if(values.length>=5){
+  alert('Sorry you have exceeded your 5 big events limit!');
+}else{
 e.preventDefault();
 var _token = '{{csrf_token()}}';
     $.ajax({
@@ -104,6 +109,12 @@ var _token = '{{csrf_token()}}';
            $(".two-divs-select").append("<div>"+data+"</div>");
       }
     });
-  });
+  // });
+}
+}
+$('#multiselect_rightSelected').click(saveSort);
+$('#multiselect_move_up').click(saveSort);
+$('#multiselect_move_down').click(saveSort);
+$('#multiselect_leftSelected').click(saveSort);
    </script>
 @endsection @endsection
