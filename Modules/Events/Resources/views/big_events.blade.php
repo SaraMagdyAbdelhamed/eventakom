@@ -30,8 +30,8 @@
             <div class="master_field">
               <label class="master_label mandatory" for="sort_list">sort_list </label>
               <select class="master_input" id="sort_list">
-                <option>All Events </option>
-                <option>Suggested Events</option>
+                <option value="1">All Events </option>
+                <option value="2">Suggested Events</option>
               </select>
             </div>
           </div>
@@ -66,13 +66,15 @@
 </div>
 @section('js')
  <script>
-    $(document).ready(function(){
+   $('#sort_list').on('change', function (e) {
+    var optionSelected = $("option:selected", this);
+    var valueSelected = this.value;
+    // if(valueSelected == 2){
      $('#multiselect option').remove();
-// e.preventDefault();
 var _token = '{{csrf_token()}}';
     $.ajax({
       type: 'POST',
-      url: '{{url('bigevents_select')}}',
+      url: '{{url('bigevents_select')}}'+ '/' + valueSelected,
       data: { _token: _token},
       success: function (data) {
       //  $('tr[data-event-id=' + event_id + ']').fadeOut();
@@ -83,7 +85,7 @@ $.each(data, function(i){
 });
       }
     });
-
+// }
     });
   </script>
 
@@ -127,8 +129,7 @@ var _token = '{{csrf_token()}}';
       url: '{{url('bigevents_post')}}',
       data: { _token: _token  , big_events: values },
       success: function (data) {
-      //  $('tr[data-event-id=' + event_id + ']').fadeOut();
-           $(".two-divs-select").append("<div>"+data+"</div>");
+           //$(".two-divs-select").append("<div>"+data+"</div>");
       }
     });
   // });

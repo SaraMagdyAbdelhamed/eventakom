@@ -360,12 +360,6 @@ class EventsController extends Controller
     {
         $suggested_big = EventBackend::where('is_active','=',1)->where('suggest_big_event','=',1)->get();
         $allevents = EventBackend::where('is_active','=',1)->get();
-        //  $response = array(
-        //     'suggested_big' => $suggested_big,
-        //     'allevents' => $allevents,
-        // );
-        //dd(response()->json($suggested_big));
-       // $dataArr = response()->json($suggested_big); 
         return view('events::big_events')
              ->with('events', EventBackend::all())
              ->with('dataArr', $suggested_big);
@@ -389,11 +383,15 @@ class EventsController extends Controller
             // ->with('categories', EventCategory::all());
     }
 
-     public function bigevents_select(Request $request)
-    {
-        $suggested_big = EventBackend::where('is_active','=',1)->where('suggest_big_event','=',1)->get();
+     public function bigevents_select($value , Request $request)
+    {   if($value == 2){
+        $events= EventBackend::where('is_active','=',1)->where('suggest_big_event','=',1)->get();
+    } else{
+        $events= EventBackend::where('is_active','=',1)->get();
+
+    }
         $options= array();
-        foreach($suggested_big as $k=>$v)
+        foreach($events as $k=>$v)
         {
           $options[$k] = '<option value="'.$v->id.'">'.$v->name.'</option>';
         }
