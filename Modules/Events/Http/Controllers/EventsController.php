@@ -25,7 +25,7 @@ use App\Age_Ranges;
 use App\EventCategory;
 use App\Currency;
 use App\EventHashtags;
-
+use App\BigEvent;
 class EventsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -365,8 +365,18 @@ class EventsController extends Controller
 
     public function bigevents_post(Request $request)
     {
-          $ids = $request['big_events'];
-          return response()->json($ids);
+        $ids = $request['big_events'];
+        // $big_events =   explode( ',', $ids );
+        // $bigevent_delete = BigEvent::all();
+        // $bigevent_delete->delete();
+        foreach($ids as $order=>$id)
+        {
+          $bigevent = new BigEvent;
+          $bigevent->event_id = $id;
+          $bigevent->sort_order = $order;
+          $bigevent->save();
+        }
+        return response()->json($ids);
             // ->with('categories', EventCategory::all());
     }
 
