@@ -358,11 +358,8 @@ class EventsController extends Controller
     //Big Events
     public function big_events()
     {
-        $suggested_big = EventBackend::where('is_active','=',1)->where('suggest_big_event','=',1)->get();
-        $allevents = EventBackend::where('is_active','=',1)->get();
         return view('events::big_events')
-             ->with('events', EventBackend::all())
-             ->with('dataArr', $suggested_big);
+             ->with('events', EventBackend::all());
 
     }
 
@@ -393,7 +390,7 @@ class EventsController extends Controller
         $options= array();
         foreach($events as $k=>$v)
         {
-          $options[$k] = '<option value="'.$v->id.'">'.$v->name.'</option>';
+          $options[$k] = '<option value="'.$v->id.' onclick="saveSort()">'.$v->name.'</option>';
         }
         //dd(response()->json($options));
         return response()->json($options);

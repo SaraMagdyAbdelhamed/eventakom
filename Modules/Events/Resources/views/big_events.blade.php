@@ -122,8 +122,20 @@ for(var i=0; i < select1.options.length; i++){
 //alert(values.length);
 if(values.length>5){
   alert('Sorry you have exceeded your 5 big events limit!');
+
+  // remove last one in to
+   var selectFrom = document.getElementById("multiselect");
+  var select = document.getElementById("multiselect_to");
+  //readd
+   selectFrom.options[select.options.length-6] = select.options[select.options.length-1];
+  select.options[select.options.length-1] = null;
+
+
+
+
+
 }else{
-e.preventDefault();
+// e.preventDefault();
 var _token = '{{csrf_token()}}';
     $.ajax({
       type: 'POST',
@@ -140,5 +152,11 @@ $('#multiselect_rightSelected').click(saveSort);
 $('#multiselect_move_up').click(saveSort);
 $('#multiselect_move_down').click(saveSort);
 $('#multiselect_leftSelected').click(saveSort);
+//$('#multiselect').ondblclick(saveSort);
+document.getElementById('multiselect').ondblclick = function(){
+    saveSort();
+    // or alert(this.options[this.selectedIndex].value);
+};
+
    </script>
 @endsection @endsection
