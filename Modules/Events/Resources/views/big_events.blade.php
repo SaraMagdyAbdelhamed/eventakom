@@ -65,6 +65,28 @@
   </div>
 </div>
 @section('js')
+ <script>
+    $(document).ready(function(){
+     $('#multiselect option').remove();
+// e.preventDefault();
+var _token = '{{csrf_token()}}';
+    $.ajax({
+      type: 'POST',
+      url: '{{url('bigevents_select')}}',
+      data: { _token: _token},
+      success: function (data) {
+      //  $('tr[data-event-id=' + event_id + ']').fadeOut();
+           //$(".two-divs-select").append("<div>"+data+"</div>");
+           // .each loops through the array
+$.each(data, function(i){
+   $("#multiselect").append(data[i]);
+});
+      }
+    });
+
+    });
+  </script>
+
 <script type="text/javascript">
      /* jQuery(document).ready(function($) {
        $('#multiselect').multiselect();
@@ -95,7 +117,7 @@ for(var i=0; i < select1.options.length; i++){
     values.push(select1.options[i].value);
 }
 //alert(values.length);
-if(values.length>=5){
+if(values.length>5){
   alert('Sorry you have exceeded your 5 big events limit!');
 }else{
 e.preventDefault();
