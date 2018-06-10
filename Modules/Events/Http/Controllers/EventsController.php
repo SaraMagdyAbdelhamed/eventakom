@@ -61,7 +61,7 @@ class EventsController extends Controller
      * @return Response
      */
     public function store(Request $request)
-    {   
+    {
         // Validate incoming request inputs with the following validation rules.
         $this->validate($request, [
             'english_event_name'    => 'required|min:2|max:100',
@@ -137,8 +137,8 @@ class EventsController extends Controller
             $event->gender_id   = $request->gender;
 
             // concatinate start_date + start_time to make them start_datetime
-            $event->start_datetime = date('Y-m-d', strtotime($request->start_date)) .' '. date('h:i:s', strtotime($request->start_time));  
-            
+            $event->start_datetime = date('Y-m-d', strtotime($request->start_date)) .' '. date('h:i:s', strtotime($request->start_time));
+
             // concatinate end_date + end_time to make them end_datetime
             $event->end_datetime = date('Y-m-d', strtotime($request->end_date)) .' '. date('h:i:s', strtotime($request->end_time));
 
@@ -155,7 +155,7 @@ class EventsController extends Controller
             // TODO: youtube links & images
 
             $event->save();
-            
+
             /**  INSERT English Hashtags **/
             // search if the hashtag is already exists, if exists get its ID, if not exists insert the hashtag into `hash_tags` table and get its id.
             for($i=0; $i<count($hashtags); $i++) {
@@ -169,7 +169,7 @@ class EventsController extends Controller
                 $id = EventHashtags::where('name', '=', $hashtags[$i])->first()->id;    // get hashtage id from `hash_tag` table
 
                 // attach event's hashtags with
-                $event->hashtags()->attach($id);    
+                $event->hashtags()->attach($id);
             }
 
             /**  INSERT Categories **/
@@ -221,7 +221,7 @@ class EventsController extends Controller
     public function show($id)
     {
         $data['event'] = EventBackend::find($id);
-        
+
         return view('events::backend_event_show', $data);
     }
 
@@ -273,7 +273,7 @@ class EventsController extends Controller
      * @return Response
      */
     public function destroySelected(Request $request) {
-        
+
         foreach($request->ids as $id) {
             // find that record
             $event = EventBackend::find($id);
@@ -292,7 +292,7 @@ class EventsController extends Controller
         return response()->json(['success', 'event deleted!']);
     }
 
-    public function filter(Request $request) 
+    public function filter(Request $request)
     {
         // dd($request->all());
        $events = new EventBackend;
@@ -311,7 +311,7 @@ class EventsController extends Controller
         if( $request->active == 1 && !isset($request->inactive) ) {
             $flag = 1;
             $events = $events->where('is_active', 1);
-        } else 
+        } else
         if( $request->active == NULL && $request->inactive == 1) {
             $flag = 1;
             $events = $events->where('is_active', 0);
@@ -330,7 +330,7 @@ class EventsController extends Controller
             $events = $events->where('start_datetime','<=', $Datetime);
         }
 
-        
+
 
         // end datetime
         if( isset($request->end_from) && !empty($request->end_from) ) {
@@ -350,8 +350,25 @@ class EventsController extends Controller
         } else {
             $events = $events->get();
         }
-        
+
         $data['categories'] = EventCategory::all();
         return view('events::backend', $data)->with('events', $events);
     }
+
+    //Big Events
+    public function big_events()
+    {
+        return view('events::big_events')
+             ->with('events', EventBackend::all());
+            // ->with('categories', EventCategory::all());
+    }
+
+    public function bigevents_post(Request $request)
+    {
+          $ids = $request['big_events'];
+          return response()->json($ids);
+            // ->with('categories', EventCategory::all());
+    }
+
+
 }
