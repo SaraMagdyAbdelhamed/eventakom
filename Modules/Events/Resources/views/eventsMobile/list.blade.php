@@ -508,7 +508,7 @@
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <div class="full-table">
                            <!--  <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>@lang('keywords.filter')</a></div> -->
-                            <div class="bottomActions__btns"><a class="{{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">@lang('keywords.deleteSelected')</a>
+                            <div class="bottomActions__btns"><a class="{{\App::isLocale('en') ?'btn-warning-accept-all':'btn-warning-accept-all-ar'}} master-btn" href="#">@lang('keywords.acceptSelected')</a><a class="{{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">@lang('keywords.deleteSelected')</a>
                             </div>
                             <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
                                <form role="form" action="{{ route('event_filter') }}" method="POST" accept-charset="utf-8">
@@ -607,7 +607,7 @@
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
                                     <td><span class="cellcontent">{{ $event->user ? $event->user->username : '' }}</span></td>
                                     <td><span class="cellcontent">@if($event->is_active==1)<i class = "fa icon-in-table-true fa-check"></i>@elseif($event->is_active==0)<i class = "fa icon-in-table-false fa-times"></i>@endif</span></td>
-                                    <td><span class="cellcontent"><a href= {{url('/events/mobile/view')}}/{{$event->id}} ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= {{url('/events/mobile/edit')}}/{{$event->id}} ,  class= " action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                                    <td><span class="cellcontent"><button class= "{{\App::isLocale('en') ?'btn-warning-accept':'btn-warning-accept-ar'}} accepted-btn master-btn  action-btn bgcolor--fadepurple  color--white ">@lang('keywords.accept')</button><button class= "{{\App::isLocale('en') ?'btn-warning-pending':'btn-warning-pending-ar'}} pendding-btn master-btn  action-btn bgcolor--fadeorange  color--white ">@lang('keywords.Pend')</button><a href= {{url('/events/mobile/view')}}/{{$event->id}} ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= {{url('/events/mobile/edit')}}/{{$event->id}} ,  class= " action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
                                   @endforeach
 
@@ -897,14 +897,7 @@
            deleteIt();
           });
           
-          //-Accept btn-single
-          $('button.accepted-btn').on('click' , function(){
-           var acceptedRow = $(this).parents('tr');
-           var selectedRows = datatable_three.rows( $('#dataTableTriggerId_003 tr.selectAccepted') ).data().to$();
-           acceptedRow.addClass('selectAccepted');
-           datatable_two.rows( '.selectAccepted' ).remove().draw(false);
-           console.log("clicked");
-          });
+   
       
       
         } else {
@@ -967,14 +960,7 @@
            deleteIt();
           });
           
-          //-Accept btn-single
-          $('button.accepted-btn').on('click' , function(){
-           var acceptedRow = $(this).parents('tr');
-           var selectedRows = datatable_three.rows( $('#dataTableTriggerId_003 tr.selectAccepted') ).data().to$();
-           acceptedRow.addClass('selectAccepted');
-           datatable_three.rows( '.selectAccepted' ).remove().draw(false);
-           console.log("clicked");
-          });
+        
           
           
         }
@@ -1181,7 +1167,7 @@
                 }
               });
                 swal("Accepted", "You can find these events in Current Tab", "success");
-
+                window.location.replace("{{ url('events/mobile') }}");
         });
 
         $('.btn-warning-accept-all-ar').click(function () {
@@ -1200,6 +1186,38 @@
                 }
               });
               swal("تم القبول", "يمكنك ايجاد الاحداث المقبولة في قائمة الأحداث الحالية", "success");
+               window.location.replace("{{ url('events/mobile') }}");
+        });
+
+         $('.btn-warning-pending').click(function () {
+          var event_id = $(this).closest('tr').attr('data-event-id');
+          var _token = '{{csrf_token()}}';
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_pending')}}' + '/' + event_id,
+                data: { _token: _token },
+                success: function (data) {
+                  $('tr[data-event-id=' + event_id + ']').fadeOut();
+                }
+              });
+              swal("pending", "You can find this event in Pending Tab", "success");
+               window.location.replace("{{ url('events/mobile') }}");
+
+        });
+
+         $('.btn-warning-pending-ar').click(function () {
+          var event_id = $(this).closest('tr').attr('data-event-id');
+          var _token = '{{csrf_token()}}';
+              $.ajax({
+                type: 'POST',
+                url: '{{url('event_pending')}}' + '/' + event_id,
+                data: { _token: _token },
+                success: function (data) {
+                  $('tr[data-event-id=' + event_id + ']').fadeOut();
+                }
+              });
+              swal("تم", "تم  وضع الحدث تحت قائمة الاحداث المعلقة", "success");
+               window.location.replace("{{ url('events/mobile') }}");
 
         });
 

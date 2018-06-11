@@ -445,7 +445,23 @@ class EventsMobileController extends Controller
 
     }
 
+      public function pending($id)
+    {
+      $accepted = EventMobile::find($id);
+      $accepted->update(['event_status_id' =>1 , 'is_active' =>1]);
+      $accepted->save();
+    }
 
+     public function pending_all()
+    {
+        $ids = $_POST['ids'];
+        foreach ($ids as $id) {
+          $accepted = EventMobile::find($id);
+          $accepted->update(['event_status_id' =>1]);
+          $accepted->save();
+        }
+
+    }
     /**
      * Remove the specified resource from storage.
      * @return Response

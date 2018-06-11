@@ -108,6 +108,7 @@
 		'addfromMobile' => 'Added from mobile application',
 		'Current' => 'Current',
 		'Pendding' => 'Pendding',
+		'Pend' => 'Pend',
 		'EventsStatus' => 'Events status',
 		'startDateFrom' => 'start date from',
 		'startDateTo' => 'start date to',
