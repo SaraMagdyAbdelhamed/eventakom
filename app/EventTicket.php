@@ -9,7 +9,8 @@ class EventTicket extends Model
     protected $id = 'id';
     protected $table = 'event_tickets';
   
-    public $timestamp = true;
+    public $timestamps = false;
+
 
     // relations
       public function event() {

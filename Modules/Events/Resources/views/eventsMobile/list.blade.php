@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
            <div class="row">
                 <div class="col-xs-12">
                   <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
@@ -116,10 +117,12 @@
                                   </tr>
                                 </thead>
                                 <tbody>
+                                  <?php $i=0; ?>
                                 	@foreach($current_events as $event)
+                                  <?php $i++ ?>
                                   <tr data-event-id={{$event->id}}>
                                     <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent" >{{$event->id}}</span></td>
+                                    <td><span class="cellcontent" ><?=$i?></span></td>
                                     <td><span class="cellcontent">{{$event->name}}</span></td>
                                     <td><span class="cellcontent">{{$event->venue}}</span></td>
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
@@ -320,11 +323,12 @@
                                 <tbody>
 
 
-
+                                 <?php $i=0; ?>
                                   @foreach($pending_events as $event)
+                                   <?php $i++ ?>
                                     <tr data-event-id={{$event->id}}>
                                     <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent">{{$event->id}}</span></td>
+                                    <td><span class="cellcontent"><?=$i?></span></td>
                                     <td><span class="cellcontent">{{$event->name}}</span></td>
                                     <td><span class="cellcontent">{{$event->venue}}</span></td>
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
@@ -527,7 +531,7 @@
                             <div class="clearfix"></div>
                             <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
                             <button class="remodal-confirm" >@lang('keywords.save')</button>
-                            <button class="remodal-confirm" data-remodal-action="confirm" disabled>@lang('keywords.disabled')</button>
+                            <!-- <button class="remodal-confirm" data-remodal-action="confirm" disabled>@lang('keywords.disabled')</button> -->
                           </div>
                         </form>
                       </div>

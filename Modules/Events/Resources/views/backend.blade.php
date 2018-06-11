@@ -6,7 +6,7 @@
       <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
         <div class="row">
           <div class="col-xs-12">
-            <div class="text-xs-center">         
+            <div class="text-xs-center">
               <div class="text-wraper">
                 <h4 class="cover-inside-title">@lang('keywords.events') </h4><i class="fa fa-chevron-circle-right"></i>
                 <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.addfrombackend') </h4>
@@ -346,7 +346,7 @@
     },
     function(isConfirm){
         if (isConfirm){
-            
+
         $.ajax(
         {
             url: "{{ route('event_backend.destroySelected') }}",
@@ -379,7 +379,7 @@
 
   // delete a row
   $('.deleteRecord').click(function(){
-      
+
       var id = $(this).data("id");
       var token = '{{ csrf_token() }}';
 
@@ -393,12 +393,12 @@
       showCancelButton: true,
       confirmButtonColor: '#281160',
       confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
-      cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",                
+      cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
       closeOnConfirm: false
       },
       function(isConfirm){
           if (isConfirm){
-                  
+
           $.ajax(
           {
               url: "{{ route('event_backend.destroy') }}",
@@ -418,7 +418,7 @@
                   console.log(response);
               }
           });
-              
+
           } else {
               swal("تم الإلغاء", "المعلومات مازالت موجودة :)", "error");
           }
