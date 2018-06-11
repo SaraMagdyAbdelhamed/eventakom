@@ -54,13 +54,17 @@
                               </tr>
                               <tr>
                                 <th><span class="cellcontent">@lang('keywords.category')</span></th>
-                                <td><span class="cellcontent">@foreach($categories as $key=>$category)
+                                <td><span class="cellcontent">
+                                 @if(isset($categories) && !empty($categories))
+                                  @foreach($categories as $key=>$category)
                                  @if($key==0)
                                  {{$category->getCategory($category->interest_id)->name}}
                                  @else
                                  <span>, </span>{{$category->getCategory($category->interest_id)->name}}
                                  @endif
-                                @endforeach</span></td>
+                                @endforeach
+                                @endif
+                              </span></td>
                               </tr>
                             </table>
                             <div class="remodal log-custom" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
@@ -439,7 +443,7 @@
                               </tr> -->
                               <tr>
                               <th><span class="cellcontent">@lang('keywords.Price')</span></th>
-                                <td><span class="cellcontent">{{$tickets[0]->price}} USD</span></td>
+                                <td><span class="cellcontent">@if(isset($tickets[0]->price) && !empty($tickets[0]->price)){{$tickets[0]->price}} USD @endif</span></td>
                                
                             </tr>
                             </table>

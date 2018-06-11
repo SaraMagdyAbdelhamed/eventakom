@@ -165,6 +165,7 @@
 		'submit'=>'submit',
 		'next'=>'Next',
 		'prev'=>'Prev',
+		'rejected'=>'Rejected',
 		
     ];
 

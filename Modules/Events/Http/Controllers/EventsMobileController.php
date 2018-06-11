@@ -32,10 +32,11 @@ class EventsMobileController extends Controller
     {
         $current_events = EventMobile::CurrentEvents()->get();
         $pending_events = EventMobile::PendingEvents()->get();
+        $rejected_events= EventMobile::EventsRejected()->get();
         $categories = EventCategory::all();
         return view('events::eventsMobile.list')
                     // ->with('events', EventMobile::MobileApproved()->get());
-                      ->with(compact('current_events', 'pending_events','categories'));
+                      ->with(compact('current_events', 'pending_events','categories','rejected_events'));
      }
 
       public function event_filter(Request $request)

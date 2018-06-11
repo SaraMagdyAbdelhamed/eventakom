@@ -601,6 +601,7 @@
         });
       });
       
+
       //-============================================================
       //-===============================comp__#009__select
       //-============================================================
@@ -617,48 +618,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
 
 {{-- Map script --}}
-<script>
 
-    var map;
-    function initMap() {
-
-      //var myLatlng = {lat: 30.042701, lng: 31.432662};
-      var myLatlng = {lat: <?php echo $event->latitude?>, lng: <?php echo $event->longtuide?> };
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(myLatlng),
-        zoom: 8
-      });
-
-      var marker = new google.maps.Marker({
-          position: myLatlng,
-          map: map,
-          title: 'Click to zoom'
-        });
-
-        google.maps.event.addListener(map, 'click', function(event) {
-            placeMarker(event.latLng);
-            
-            document.getElementById("lat").value = event.latLng.lat();
-            document.getElementById("lng").value = event.latLng.lng();
-
-        });
-
-        function placeMarker(location) {
-          if (marker == undefined){
-              marker = new google.maps.Marker({
-                  position: location,
-                  map: map, 
-                  animation: google.maps.Animation.DROP,
-              });
-          }
-          else{
-              marker.setPosition(location);
-          }
-          map.setCenter(location);
-        }
-
-    }
-</script>
 
     @yield('js')
 

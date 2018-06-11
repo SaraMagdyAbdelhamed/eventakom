@@ -65,8 +65,8 @@ class EventMobile extends Model
     }
 
       public static function EventsRejected(){
-    	return static::query()->join('event_statuses','events.event_status_id','=','event_statuses.id')
-    		   ->select('events.*','event_statuses.name');
+    	return static::query()->where('is_backend','=',0)->where('event_status_id','=',3)
+    		   ->select('events.*');
 
     }
 
