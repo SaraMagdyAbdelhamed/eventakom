@@ -41,7 +41,8 @@ class EventsMobileController extends Controller
       public function event_filter(Request $request)
     {
         if (isset($request->categories)) {
-        $data['current_events'] = EventMobile::join('event_categories as c','events.id','=','c.event_id')->where(function ($q) use ($request) {
+        $data['current_events'] =   $events = EventMobile::whereHas('categories', function($q) use($request){
+            $q->whereIn('event_categories.interest_id', $request->categories);
             $q->where('is_backend','=',0);
             $q->where('event_status_id', 2);
 
@@ -71,14 +72,11 @@ class EventsMobileController extends Controller
                 $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
 
             }
-                $q->whereIn('c.interest_id', $request->categories);
+                $q->whereIn('event_categories.interest_id', $request->categories);
                 $q->select('events.*');
                  if (isset($request->status)) {
                 $q->whereIn('is_active', $request->status);
                  }
-
-
-
               })->get();
 
             } else{
@@ -119,7 +117,7 @@ class EventsMobileController extends Controller
 
         })->get();
         }
-
+      // dd($data['current_events']);
         $data['categories'] = EventCategory::all();
         //$data['current_events'] = EventMobile::CurrentEvents()->get();
         $data['pending_events'] = EventMobile::PendingEvents()->get();

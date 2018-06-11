@@ -242,10 +242,12 @@
                                   </tr>
                                 </thead>
                                 <tbody>
+                                <?php $i=0; ?>
                                 @foreach($event_posts as $post)	
+                                 <?php $i++; ?>
                                   <tr data-post-id={{$post->id}}>
                                     <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent">{{$post->id}}</span></td>
+                                    <td><span class="cellcontent"><?=$i?></span></td>
                                     <td><span class="cellcontent">{{$post->user->username}}</span></td>
                                     <td><span class="cellcontent">{{$post->post}}</span></td>
                                     <td><span class="cellcontent"><?=date('Y-m-d h:i A', strtotime($post->created_at))?></span></td>
@@ -619,10 +621,12 @@
                                   </tr>
                                 </thead>
                                 <tbody>
+                                  <?php $i=0; ?>
                                 	@foreach($booked_tickets as $ticket)
+                                  <?php $i++; ?>
                                   <tr>
                                     <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent">{{$ticket->id}}</span></td>
+                                    <td><span class="cellcontent"><?=$i?></span></td>
                                     <td><span class="cellcontent"><img src = "https://source.unsplash.com/random" , class = " img-in-table"></span></td>
                                     <td><span class="cellcontent">{{$ticket->serial_number}}</span></td>
                                     <td><span class="cellcontent">Booked</span></td>
