@@ -71,7 +71,7 @@
     var valueSelected = this.value;
     // if(valueSelected == 2){
      $('#multiselect option').remove();
-      $('#multiselect_to option').remove();
+     // $('#multiselect_to option').remove();
 var _token = '{{csrf_token()}}';
     $.ajax({
       type: 'POST',
@@ -116,25 +116,32 @@ function saveSort(e) {
 var select1 = document.getElementById('multiselect_to');
 var values = new Array();
 
-for(var i=0; i < select1.options.length; i++){
-    values.push(select1.options[i].value);
-}
-//alert(values.length);
-if(values.length>5){
-  alert('Sorry you have exceeded your 5 big events limit!');
+// for(var i=0; i < select1.options.length; i++){
+//     values.push(select1.options[i].value);
+// }
+$('#multiselect_to option').each(function(){
+   if($.inArray(this.value, values) >-1){
+      $(this).remove()
+      alert('You have already selected this Event!');
+   }else{
+    if(values.length>=5){
+      $(this).remove()
+    alert('Sorry you have exceeded your 5 big events limit!');
+    }else{
+      values.push(this.value);
+    }
+    
+   }
+});
+// if(values.length>5){
+//   alert('Sorry you have exceeded your 5 big events limit!');
 
-  // remove last one in to
-   var selectFrom = document.getElementById("multiselect");
-  var select = document.getElementById("multiselect_to");
-  //readd
-   selectFrom.options[select.options.length-6] = select.options[select.options.length-1];
-  select.options[select.options.length-1] = null;
-
-
-
-
-
-}else{
+//   // remove last one in to
+//    var selectFrom = document.getElementById("multiselect");
+//   var select = document.getElementById("multiselect_to");
+//   //selectFrom.options[select.options.length-6] = select.options[select.options.length-1];
+//   select.options[select.options.length-1] = null;
+// }else{
 // e.preventDefault();
 var _token = '{{csrf_token()}}';
     $.ajax({
@@ -146,7 +153,7 @@ var _token = '{{csrf_token()}}';
       }
     });
   // });
-}
+// }
 }
 $('#multiselect_rightSelected').click(saveSort);
 $('#multiselect_move_up').click(saveSort);

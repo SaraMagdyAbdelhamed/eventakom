@@ -390,7 +390,7 @@ class EventsController extends Controller
         $options= array();
         foreach($events as $k=>$v)
         {
-          $options[$k] = '<option value="'.$v->id.' onclick="saveSort()">'.$v->name.'</option>';
+          $options[$k] = '<option value="'.$v->id.'" onclick="saveSort()">'.$v->name.'</option>';
         }
         //dd(response()->json($options));
         return response()->json($options);
