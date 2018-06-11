@@ -108,6 +108,8 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::get('/events/backend', '\Modules\Events\Http\Controllers\EventsController@index')->name('event_backend');
     Route::get('/events/backend/add', '\Modules\Events\Http\Controllers\EventsController@create')->name('event_backend.add');
     Route::post('/events/backend/store', '\Modules\Events\Http\Controllers\EventsController@store')->name('event_backend.store');
+    Route::get('/events/backend/edit/{id}', '\Modules\Events\Http\Controllers\EventsController@edit')->name('event_backend.edit');
+    Route::post('/events/backend/update', '\Modules\Events\Http\Controllers\EventsController@update')->name('event_backend.update');
     Route::get('/events/backend/show/{id}', '\Modules\Events\Http\Controllers\EventsController@show')->name('event_backend.show');
     Route::get('/events/backend/edit/{id}', '\Modules\Events\Http\Controllers\EventsController@edit')->name('event_backend.edit');
     Route::post('/events/backend/destroy', '\Modules\Events\Http\Controllers\EventsController@destroy')->name('event_backend.destroy');

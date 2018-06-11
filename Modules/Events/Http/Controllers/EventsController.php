@@ -229,9 +229,15 @@ class EventsController extends Controller
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function edit()
+    public function edit($id)
     {
-        return view('events::edit');
+        $data['event'] = EventBackend::find($id);
+        $data['genders'] = Genders::all();
+        $data['age_range'] = Age_Ranges::all();
+        $data['categories'] = EventCategory::all();
+        $data['currencies'] = Currency::all();        
+        
+        return view('events::backend_event_edit', $data);
     }
 
     /**
