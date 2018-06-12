@@ -607,7 +607,7 @@
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
                                     <td><span class="cellcontent">{{ $event->user ? $event->user->username : '' }}</span></td>
                                     <td><span class="cellcontent">@if($event->is_active==1)<i class = "fa icon-in-table-true fa-check"></i>@elseif($event->is_active==0)<i class = "fa icon-in-table-false fa-times"></i>@endif</span></td>
-                                    <td><span class="cellcontent"><button class= "{{\App::isLocale('en') ?'btn-warning-accept':'btn-warning-accept-ar'}} accepted-btn master-btn  action-btn bgcolor--fadepurple  color--white ">@lang('keywords.accept')</button><button class= "{{\App::isLocale('en') ?'btn-warning-pending':'btn-warning-pending-ar'}} pendding-btn master-btn  action-btn bgcolor--fadeorange  color--white ">@lang('keywords.Pend')</button><a href= {{url('/events/mobile/view')}}/{{$event->id}} ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= {{url('/events/mobile/edit')}}/{{$event->id}} ,  class= " action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                                    <td><span class="cellcontent"><a class= "{{\App::isLocale('en') ?'btn-warning-accept':'btn-warning-accept-ar'}} accepted-btn master-btn  action-btn bgcolor--fadepurple  color--white ">@lang('keywords.accept')</a><a class= "{{\App::isLocale('en') ?'btn-warning-pending':'btn-warning-pending-ar'}} pendding-btn master-btn  action-btn bgcolor--fadeorange  color--white ">@lang('keywords.Pend')</a><a href= {{url('/events/mobile/view')}}/{{$event->id}} ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= {{url('/events/mobile/edit')}}/{{$event->id}} ,  class= " action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "{{\App::isLocale('en') ?'btn-warning-confirm':'btn-warning-confirm-ar'}} action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                                   </tr>
                                   @endforeach
 
@@ -886,18 +886,8 @@
             }
           });
       
-          //-Delete all selected Function
-          function deleteIt() {
-           var selectedRows = datatable_three.rows( $('#dataTableTriggerId_003 tr.selected') ).data().to$();
-           datatable_two.rows( '.selected' ).remove().draw(false);
-          };
-      
-          //-Delete buttons
-          $('#delete-test-2').on('click', function() {
-           deleteIt();
-          });
-          
-   
+         
+        
       
       
         } else {
@@ -948,18 +938,6 @@
               $(this).attr('data-click-state', 0);
             }
           });
-          
-          //-Delete all selected Function
-          function deleteIt() {
-           var selectedRows = datatable_three.rows( $('#dataTableTriggerId_003 tr.selected') ).data().to$();
-           datatable_three.rows( '.selected' ).remove().draw(false);
-          };
-      
-          //-Delete buttons
-          $('#delete-test-2').on('click', function() {
-           deleteIt();
-          });
-          
         
           
           
@@ -1023,9 +1001,10 @@
                 data: { _token: _token },
                 success: function (data) {
                   $('tr[data-event-id=' + event_id + ']').fadeOut();
+                  swal("Deleted!", "Your imaginary file has been deleted!", "success");
                 }
               });
-              swal("Deleted!", "Your imaginary file has been deleted!", "success");
+              
             });
         });
 
@@ -1048,9 +1027,10 @@
                 data: { _token: _token },
                 success: function (data) {
                   $('tr[data-event-id=' + event_id + ']').fadeOut();
+                  swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
                 }
               });
-              swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
+              
             });
         });
 
@@ -1077,9 +1057,10 @@
                   $.each(selectedIds, function (key, value) {
                     $('tr[data-event-id=' + value + ']').fadeOut();
                   });
+                   swal("Deleted!", "Your imaginary file has been deleted!", "success");
                 }
               });
-              swal("Deleted!", "Your imaginary file has been deleted!", "success");
+             
             });
         });
 
@@ -1105,10 +1086,11 @@
                 success: function (data) {
                   $.each(selectedIds, function (key, value) {
                     $('tr[data-event-id=' + value + ']').fadeOut();
+                     swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
                   });
                 }
               });
-              swal("تم الحذف!", "لقد تم حذف ملفلك!", "success");
+             
             });
         });
 
@@ -1127,10 +1109,11 @@
                 data: { _token: _token },
                 success: function (data) {
                   $('tr[data-event-id=' + event_id + ']').fadeOut();
+                   swal("Accepted", "You can find this event in Current Tab", "success");
+                 window.location.replace("{{ url('events/mobile') }}");
                 }
               });
-              swal("Accepted", "You can find this event in Current Tab", "success");
-               window.location.replace("{{ url('events/mobile') }}");
+             
 
         });
 
@@ -1143,11 +1126,12 @@
                 data: { _token: _token },
                 success: function (data) {
                   $('tr[data-event-id=' + event_id + ']').fadeOut();
-                }
-              });
-              swal("تم القبول", "يمكنك ايجاد هذا الحدث في قائمة الأحداث الحالية", "success");
+                  swal("تم القبول", "يمكنك ايجاد هذا الحدث في قائمة الأحداث الحالية", "success");
 
                window.location.replace("{{ url('events/mobile') }}");
+                }
+              });
+              
 
         });
 
@@ -1164,10 +1148,12 @@
                   $.each(selectedIds, function (key, value) {
                     $('tr[data-event-id=' + value + ']').fadeOut();
                   });
+                    swal("Accepted", "You can find these events in Current Tab", "success");
+                //window.location.replace("{{ url('events/mobile') }}");
+                window.location.reload(true);
                 }
               });
-                swal("Accepted", "You can find these events in Current Tab", "success");
-                window.location.replace("{{ url('events/mobile') }}");
+              
         });
 
         $('.btn-warning-accept-all-ar').click(function () {
@@ -1182,11 +1168,15 @@
                 success: function (data) {
                   $.each(selectedIds, function (key, value) {
                     $('tr[data-event-id=' + value + ']').fadeOut();
+                       swal("تم القبول", "يمكنك ايجاد الاحداث المقبولة في قائمة الأحداث الحالية", "success");
+              // window.location.replace("{{ url('events/mobile') }}");
+              location = "{{ url('events/mobile') }}" ; 
+              window.location.reload(true);
                   });
                 }
               });
-              swal("تم القبول", "يمكنك ايجاد الاحداث المقبولة في قائمة الأحداث الحالية", "success");
-               window.location.replace("{{ url('events/mobile') }}");
+           
+
         });
 
          $('.btn-warning-pending').click(function () {
@@ -1198,11 +1188,13 @@
                 data: { _token: _token },
                 success: function (data) {
                   $('tr[data-event-id=' + event_id + ']').fadeOut();
+                    swal("pending", "You can find this event in Pending Tab", "success");
+              // window.location.replace("{{ url('events/mobile') }}");
+              location = "{{ url('events/mobile') }}" ; 
+                location.reload(true);
                 }
               });
-              swal("pending", "You can find this event in Pending Tab", "success");
-               window.location.replace("{{ url('events/mobile') }}");
-
+            
         });
 
          $('.btn-warning-pending-ar').click(function () {
@@ -1214,10 +1206,12 @@
                 data: { _token: _token },
                 success: function (data) {
                   $('tr[data-event-id=' + event_id + ']').fadeOut();
+                     swal("تم", "تم  وضع الحدث تحت قائمة الاحداث المعلقة", "success");
+              location = "{{ url('events/mobile') }}" ; 
+              location.reload(true);
                 }
               });
-              swal("تم", "تم  وضع الحدث تحت قائمة الاحداث المعلقة", "success");
-               window.location.replace("{{ url('events/mobile') }}");
+
 
         });
 

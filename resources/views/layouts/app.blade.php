@@ -614,10 +614,6 @@
       
     </script>
 
-    {{-- Google maps API key --}}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
-
-{{-- Map script --}}
 
 
     @yield('js')
@@ -672,7 +668,7 @@
             map.setCenter(location);
           }
 
-      }
+      // }
   </script>
 <script type="text/javascript">
   @if(\App::isLocale('ar'))
