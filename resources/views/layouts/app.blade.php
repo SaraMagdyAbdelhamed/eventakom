@@ -211,15 +211,15 @@
                       <li class="side__sublist"><a class="side__subitem" id="sub_4_3"  href="barcode_failed.html">barcode failed</a></li>
                     </ul>
                   </li>
-                  <li class="side__list" id="menu_5"> <a class="side__item" href="famous_attractions.html">Famous attractions</a>
+                  <li class="side__list" id="menu_5"> <a class="side__item" id="sub_5_1" href="famous_attractions.html">Famous attractions</a>
                   </li>
-                  <li class="side__list" id="menu_6"> <a class="side__item" href="offers_and_deals.html">Offers and deals</a>
+                  <li class="side__list" id="menu_6"> <a class="side__item" id="sub_6_1" href="{{ route('offers.list') }}">@lang('keywords.offers')</a>
                   </li>
-                  <li class="side__list" id="menu_7"> <a class="side__item" href="shop_and_dine.html">Shop and dine</a>
+                  <li class="side__list" id="menu_7"> <a class="side__item" id="sub_7_1" href="shop_and_dine.html">Shop and dine</a>
                   </li>
-                  <li class="side__list" id="menu_8"> <a class="side__item" href="notifications.html">Notifications</a>
+                  <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="notifications.html">Notifications</a>
                   </li>
-                  <li class="side__list" id="menu_9"> <a class="side__item" href="google_analytics.html">Google analytics</a>
+                  <li class="side__list" id="menu_9"> <a class="side__item" id="sub_9_1" href="google_analytics.html">Google analytics</a>
                   </li>
                 </ul>
               </div>
