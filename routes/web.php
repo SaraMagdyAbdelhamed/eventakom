@@ -128,6 +128,8 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::post('/event_accept/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@accept')->name('event_accept');
     Route::post('/event_accept_all', '\Modules\Events\Http\Controllers\EventsMobileController@accept_all')->name('event_accept_all');
     Route::post('/event_reject/', '\Modules\Events\Http\Controllers\EventsMobileController@reject')->name('event_reject');
+     Route::post('/event_pending/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@pending')->name('event_pending');
+    Route::post('/event_pending_all', '\Modules\Events\Http\Controllers\EventsMobileController@pending_all')->name('event_pending_all');
     Route::get('/events/mobile/view/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@view')->name('event_mobile_view');
     Route::post('/post_destroy/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@post_destroy')->name('post_destroy');
     Route::post('/post_destroy_all', '\Modules\Events\Http\Controllers\EventsMobileController@post_destroy_all')->name('post_destroy_all');

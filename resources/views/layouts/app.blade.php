@@ -601,6 +601,7 @@
         });
       });
       
+
       //-============================================================
       //-===============================comp__#009__select
       //-============================================================
@@ -612,6 +613,8 @@
       
       
     </script>
+
+
 
     @yield('js')
 
@@ -634,7 +637,7 @@
 
         map = new google.maps.Map(document.getElementById('map'), {
           center: new google.maps.LatLng(myLatlng),
-          zoom: 11
+          zoom: 8
         });
 
         var marker = new google.maps.Marker({
@@ -665,8 +668,13 @@
             map.setCenter(location);
           }
 
-      }
+      // }
   </script>
-
+<script type="text/javascript">
+  @if(\App::isLocale('ar'))
+ var next = $('#next1').text();
+    $(this).text(next.replace('Next', 'التالي')); 
+@endif
+</script>
   </body>
 </html>

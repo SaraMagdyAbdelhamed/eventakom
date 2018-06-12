@@ -108,6 +108,7 @@
         'addfromMobile' => 'المضاف من الموبايل',
 		'Current' => 'الحالية',
 		'Pendding' => 'المعلقة',
+		'Pend' => 'تعليق',
 		'EventsStatus' => 'حالة الاحداث',
 		'startDateFrom' => 'تاريخ البدء من',
 		'startDateTo' => 'تاريخ البدء الى',
@@ -167,6 +168,7 @@
 		'submit'=>'تسجيل',
 		'next'=>'التالي',
 		'prev'=>'السابق',
+		'rejected'=>'المرفوضة',
 
 
         // Offers & Deals

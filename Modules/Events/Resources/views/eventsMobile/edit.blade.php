@@ -81,8 +81,8 @@
               <div class="mapouter">
                 <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
                 <input type="hidden" name="event_id" value="{{$event->id}}">
-                <input type="hidden" name="lat" id="lat" value="1.234">
-                <input type="hidden" name="lng" id="lng" value="2.345">
+                <input type="hidden" name="lat" id="lat" >
+                <input type="hidden" name="lng" id="lng" >
               </div>
             </div>
 
@@ -217,7 +217,7 @@
                 @endif
               </div>
             </div>
-
+           @if(\App::isLocale('en')) 
             {{-- Suggest as big Event --}}
             <div class="col-sm-3 col-xs-6">
               <div class="master_field">
@@ -234,6 +234,21 @@
                 <input class="make-switch" type="checkbox" @if($event->is_active == 1) checked @endif data-on-text="@lang('keywords.Active')" data-off-text="@lang('keywords.Inactive')" name="is_active" value="1">
               </div>
             </div>
+          @else
+           <div class="col-sm-3 col-xs-6">
+              <div class="master_field" style="display:flex;">
+                <input type="checkbox"  @if($bigEventCount > 0) checked @endif data-on-text="@lang('keywords.yes')" data-off-text="@lang('keywords.no')" name="is_big_event" value="1" data-on-text="yes" data-off-text="no" name="big_event">
+                <label class="master_label" for="big_event" style="padding: 2%;">@lang('keywords.Suggest as big event')</label>
+                 </div>
+                 </div>
+                 <div class="col-sm-3 col-xs-6">
+                 <div class="master_field" style="display:flex;">
+                <input type="checkbox"  @if($event->is_active == 1) checked @endif data-on-text="@lang('keywords.Active')" data-off-text="@lang('keywords.Inactive')" name="is_active" value="1" data-on-text="yes" data-off-text="no" name="active_event">
+                <label class="master_label" for="active_event" style="padding: 2%;">@lang('keywords.is your event active or in active')</label>
+                </div>
+              </div>
+          @endif
+
           </div>
         </fieldset>
 
@@ -304,8 +319,21 @@
                 <input class="icon" type="radio" name="is_paid" @if($event->is_paid==1) checked="true" @endif  id="radbtn_3_paid" value="1">
                 <label for="radbtn_3_paid">@lang('keywords.paid')</label>
               </div>
-            </div>
-          </div>
+            </div> 
+          </div> 
+        
+        <!--   <div class="row">
+                          <div class="col-xs-12">
+                            <div class="master_field">
+                              <label class="master_label mandatory">@lang('keywords.Is it free or paid ?')</label>
+                              <input class="master_input" type="text" name="free">
+                              <input class="icon" type="radio" name="radbtn_2_free" id="radbtn_2_free" @if($event->is_paid!=1) checked="true" @endif value="0">
+                              <label for="radbtn_2_free">@lang('keywords.free')</label>
+                              <input class="icon" type="radio" name="radbtn_3_paid" id="radbtn_3_paid" >
+                              <label for="radbtn_3_paid">@lang('keywords.paid')</label>
+                            </div>
+                          </div>
+                        </div> -->
           <div class="paid-details">
 
             {{-- Ticket Price --}}
@@ -462,38 +490,48 @@
             </div>
               
             {{-- Arabic images --}}
-            <div class="col-sm-6 col-xs-12 text-center">
-              <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
-              <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                <div class="row">
-                  <section class="l-main" role="main">
-                    <div class=" l-center-box">
-                        <div class="">
-                          <label class="button button--secondary" for="fileinput">Select Files</label>
-                          <input class="" id="" type="file" multiple value="Select Files" name="arabic_images[]">
-                        </div>
-                    </div>
-                  </section>
-                </div>
-              </div>
-            </div>
+             <div class="col-sm-6 col-xs-12 text-center">
+                            <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
+                            <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                              <div class="row">
+                                <section class="l-main" role="main">
+                                  <div class="uploader__box js-uploader__box l-center-box">
+                                    <div action="your/nonjs/fallback/" method="POST">
+                                      <div class="uploader__contents">
+                                        <label class="button button--secondary" for="fileinput">Select Files</label>
+                                        <input class="uploader__file-input" id="fileinput" type="file" multiple value="Drag-Drop Files">
+                                        <label class="button button--secondary" for="fileinput1">Select Files</label>
+                                        <input class="uploader__file-input1" id="fileinput" type="file" multiple value="Drag-Drop Files">
+                                      </div>
+                                      <input class="button button--big-bottom" type="submit" value="Upload Selected Files">
+                                    </div>
+                                  </div>
+                                </section>
+                              </div>
+                            </div>
+                          </div>
 
             {{-- English images --}}
-            <div class="col-sm-6 col-xs-12 text-center">
-              <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
-              <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                <div class="row">
-                  <section class="l-main" role="main">
-                    <div class="uploader__box js-uploader__box l-center-box">
-                        <div class="uploader__contents">
-                          <label class="button button--secondary" for="fileinput">Select Files</label>
-                          <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files" name="english_images[]">
-                        </div>
-                    </div>
-                  </section>
-                </div>
-              </div>
-            </div>
+                    <div class="col-sm-6 col-xs-12 text-center">
+                            <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
+                            <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                              <div class="row">
+                                <section class="l-main" role="main">
+                                  <div class="uploader__box js-uploader__box l-center-box">
+                                    <div action="your/nonjs/fallback/" method="POST">
+                                      <div class="uploader__contents">
+                                        <label class="button button--secondary" for="fileinput">Select Files</label>
+                                        <input class="uploader__file-input" id="fileinput" type="file" multiple value="Drag-Drop Files">
+                                        <label class="button button--secondary" for="fileinput1">Select Files</label>
+                                        <input class="uploader__file-input1" id="fileinput" type="file" multiple value="Drag-Drop Files">
+                                      </div>
+                                      <input class="button button--big-bottom" type="submit" value="Upload Selected Files">
+                                    </div>
+                                  </div>
+                                </section>
+                              </div>
+                            </div>
+                          </div>
 
           </div>
 
@@ -551,7 +589,7 @@ $(document).ready(function(){
   $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
 
 
-  $('.paid-details').fadeOut();
+  //$('.paid-details').fadeOut();
   
   $('label[for="radbtn_3_paid"]').on('click' , function(){
     $('.paid-details').fadeIn(100);
@@ -565,50 +603,5 @@ $(document).ready(function(){
 
 </script>
 
-{{-- Google maps API key --}}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
 
-{{-- Map script --}}
-<script>
-
-    var map;
-    function initMap() {
-
-      //var myLatlng = {lat: 30.042701, lng: 31.432662};
-      var myLatlng = {lat: <?php echo $event->latitude?>, lng: <?php echo $event->longtuide?> };
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(myLatlng),
-        zoom: 10
-      });
-
-      var marker = new google.maps.Marker({
-          position: myLatlng,
-          map: map,
-          title: 'Click to zoom'
-        });
-
-        google.maps.event.addListener(map, 'click', function(event) {
-            placeMarker(event.latLng);
-            
-            document.getElementById("lat").value = event.latLng.lat();
-            document.getElementById("lng").value = event.latLng.lng();
-
-        });
-
-        function placeMarker(location) {
-          if (marker == undefined){
-              marker = new google.maps.Marker({
-                  position: location,
-                  map: map, 
-                  animation: google.maps.Animation.DROP,
-              });
-          }
-          else{
-              marker.setPosition(location);
-          }
-          map.setCenter(location);
-        }
-
-    }
-</script>
 @endsection

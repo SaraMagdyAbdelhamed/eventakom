@@ -32,10 +32,11 @@ class EventsMobileController extends Controller
     {
         $current_events = EventMobile::CurrentEvents()->get();
         $pending_events = EventMobile::PendingEvents()->get();
+        $rejected_events= EventMobile::EventsRejected()->get();
         $categories = EventCategory::all();
         return view('events::eventsMobile.list')
                     // ->with('events', EventMobile::MobileApproved()->get());
-                      ->with(compact('current_events', 'pending_events','categories'));
+                      ->with(compact('current_events', 'pending_events','categories','rejected_events'));
      }
 
       public function event_filter(Request $request)
@@ -444,7 +445,23 @@ class EventsMobileController extends Controller
 
     }
 
+      public function pending($id)
+    {
+      $accepted = EventMobile::find($id);
+      $accepted->update(['event_status_id' =>1 , 'is_active' =>1]);
+      $accepted->save();
+    }
 
+     public function pending_all()
+    {
+        $ids = $_POST['ids'];
+        foreach ($ids as $id) {
+          $accepted = EventMobile::find($id);
+          $accepted->update(['event_status_id' =>1]);
+          $accepted->save();
+        }
+
+    }
     /**
      * Remove the specified resource from storage.
      * @return Response
