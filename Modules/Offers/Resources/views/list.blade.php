@@ -352,97 +352,97 @@
 
 {{-- Edit Modal --}}
 <div class="remodal" data-remodal-id="Edit" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-    <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-    <div>
-        <div class="row">
-        <div class="col-xs-12">
-            <h3>Place Name</h3>
-        </div>
-        <div class="col-xs-12">
-            <form>
-            <div class="row">
-                <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                <div class="tabs--wrapper">
-                    <div class="clearfix"></div>
-                    <ul class="tabs">
-                    <li id="arabic">Arabic</li>
-                    <li id="english">English</li>
-                    </ul>
-                    <ul class="tab__content">
-                    <li class="tab__content_item active" id="arabic-content">
-                        <div class="col-xs-12">
-                        <p>Add Arabic Content</p>
-                        </div>
-                        <div class="col-sm-4 col-xs-12">
-                        <div class="master_field">
-                            <label class="master_label" for="upload img">Offer image in Arabic</label>
-                            <div class="file-upload">
-                            <div class="file-select">
-                                <div class="file-select-name" id="noFile">please Offer image</div>
-                                <input class="chooseFile" type="file" id="upload img" Required>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                        <div class="col-sm-4 col-xs-12">
-                        <div class="master_field">
-                            <label class="master_label" for="Offer_title">Offer title in Arabic</label>
-                            <input class="master_input" type="text" placeholder="Offer title" Required id="Offer_title" value=""><span class="master_message inherit">message content</span>
-                        </div>
-                        </div>
-                        <div class="col-sm-4 col-xs-12">
-                        <div class="master_field">
-                            <label class="master_label" for="Offer_Description">Offer Description in Arabic</label>
-                            <textarea class="master_input" id="Offer_Description" placeholder="Offer Description" Required></textarea><span class="master_message inherit">message content</span>
-                        </div>
-                        </div>
-                    </li>
-                    <li class="tab__content_item" id="english-content">
-                        <div class="col-sm-4 col-xs-12">
-                        <div class="master_field">
-                            <label class="master_label" for="upload img">Offer image in English</label>
-                            <div class="file-upload">
-                            <div class="file-select">
-                                <div class="file-select-name" id="noFile">please Offer image</div>
-                                <input class="chooseFile" type="file" id="upload img" Required>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                        <div class="col-sm-4 col-xs-12">
-                        <div class="master_field">
-                            <label class="master_label" for="Offer_title">Offer title in English</label>
-                            <input class="master_input" type="text" placeholder="Offer title" Required id="Offer_title" value=""><span class="master_message inherit">message content</span>
-                        </div>
-                        </div>
-                        <div class="col-sm-4 col-xs-12">
-                        <div class="master_field">
-                            <label class="master_label" for="Offer_Description">Offer Description in English</label>
-                            <textarea class="master_input" id="Offer_Description" placeholder="Offer Description" Required></textarea><span class="master_message inherit">message content</span>
-                        </div>
-                        </div>
-                    </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="col-sm-12 col-xs-12">
-                    <div class="master_field">
-                    <label class="master_label" for="Offers_and_deals_status">Offers and deals status</label>
-                    <input class="make-switch" type="checkbox" checked data-on-text="Active" data-off-text="inActive">
+                <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
+                <div>
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <h3>Edit Place Name</h3>
                     </div>
+                    <div class="col-xs-12">
+                      <form>
+                        <div class="row">
+                          <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                            <div class="tabs--wrapper">
+                              <div class="clearfix"></div>
+                              <ul class="tabs">
+                                <li id="arabic1">Arabic</li>
+                                <li id="english1">English</li>
+                              </ul>
+                              <ul class="tab__content">
+                                <li class="tab__content_item active" id="arabic1-content">
+                                  <div class="col-xs-12">
+                                    <p>Add Arabic Content</p>
+                                  </div>
+                                  <div class="col-sm-4 col-xs-12">
+                                    <div class="master_field">
+                                      <label class="master_label" for="upload img">Offer image in Arabic</label>
+                                      <div class="file-upload">
+                                        <div class="file-select">
+                                          <div class="file-select-name" id="noFile">please Offer image</div>
+                                          <input class="chooseFile" type="file" id="upload img" Required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-4 col-xs-12">
+                                    <div class="master_field">
+                                      <label class="master_label" for="Offer_title">Offer title in Arabic</label>
+                                      <input class="master_input" type="text" placeholder="Offer title" Required id="Offer_title" value=""><span class="master_message inherit">message content</span>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-4 col-xs-12">
+                                    <div class="master_field">
+                                      <label class="master_label" for="Offer_Description">Offer Description in Arabic</label>
+                                      <textarea class="master_input" id="Offer_Description" placeholder="Offer Description" Required></textarea><span class="master_message inherit">message content</span>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li class="tab__content_item" id="english1-content">
+                                  <div class="col-sm-4 col-xs-12">
+                                    <div class="master_field">
+                                      <label class="master_label" for="upload img">Offer image in English</label>
+                                      <div class="file-upload">
+                                        <div class="file-select">
+                                          <div class="file-select-name" id="noFile">please Offer image</div>
+                                          <input class="chooseFile" type="file" id="upload img" Required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-4 col-xs-12">
+                                    <div class="master_field">
+                                      <label class="master_label" for="Offer_title">Offer title in English</label>
+                                      <input class="master_input" type="text" placeholder="Offer title" Required id="Offer_title" value=""><span class="master_message inherit">message content</span>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-4 col-xs-12">
+                                    <div class="master_field">
+                                      <label class="master_label" for="Offer_Description">Offer Description in English</label>
+                                      <textarea class="master_input" id="Offer_Description" placeholder="Offer Description" Required></textarea><span class="master_message inherit">message content</span>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                              <div class="clearfix"></div>
+                            </div>
+                            <div class="col-sm-12 col-xs-12">
+                              <div class="master_field">
+                                <label class="master_label" for="Offers_and_deals_status">Offers and deals status</label>
+                                <input class="make-switch" type="checkbox" checked data-on-text="Active" data-off-text="inActive">
+                              </div>
+                            </div>
+                            <div class="col-xs-12">
+                              <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
+                              <button class="remodal-confirm" data-remodal-action="confirm">Save</button>
+                              <button class="remodal-confirm" data-remodal-action="confirm" disabled>save disabled</button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-xs-12">
-                    <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                    <button class="remodal-confirm" data-remodal-action="confirm">Save</button>
-                    <button class="remodal-confirm" data-remodal-action="confirm" disabled>save disabled</button>
-                </div>
-                </div>
-            </div>
-            </form>
-        </div>
-        </div>
-    </div>
-</div>
+              </div>
 {{-- End Edit --}}
 
 
