@@ -56,7 +56,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">@lang('keywords.eventName')</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3"  id="Event_name" name="english_event_name" value="{{$event->name}}" value="{{ old('english_event_name') }}">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3"  id="Event_name" name="english_event_name" value="{{$event->name}}" >
                 @if ($errors->has('event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('event_name') }}</span>
                 @endif
@@ -91,7 +91,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">@lang('keywords.venue')</label>
-                <input class="master_input" type="text" placeholder="ex:CFC"  id="venue" name="english_venu" value="{{$event->venue}}" value="{{ old('english_venu') }}">
+                <input class="master_input" type="text" placeholder="ex:CFC"  id="venue" name="english_venu" value="{{$event->venue}}" >
                 @if ($errors->has('english_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_venu') }}</span>
                 @endif
@@ -103,7 +103,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">@lang('keywords.Hashtags')</label>
-                <input type="text" value="@foreach($event->hashtags as $value) {{$value->name}} , @endforeach" data-role="tagsinput" name="english_hashtags" value="{{ old('english_hashtags') }}">
+                <input type="text" value="@foreach($event->hashtags as $value) {{$value->name}} , @endforeach" data-role="tagsinput" name="english_hashtags" >
               </div>
               <div class="clearfix"></div>
             </div>
@@ -260,7 +260,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">@lang('keywords.eventName')</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3"  id="Event_name" name="arabic_event_name" value="{{$event->arabic('name',$event->id)}}" value="{{ old('arabic_event_name') }}">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3"  id="Event_name" name="arabic_event_name" value="{{$event->arabic('name',$event->id)}}" >
                 @if ($errors->has('arabic_event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_event_name') }}</span>
                 @endif
@@ -284,7 +284,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">@lang('keywords.venue')</label>
-                <input class="master_input" type="text" placeholder="ex:CFC"  id="venue" name="arabic_venu" value="{{$event->arabic('venue',$event->id)}}"  value="{{ old('arabic_venu') }}">
+                <input class="master_input" type="text" placeholder="ex:CFC"  id="venue" name="arabic_venu" value="{{$event->arabic('venue',$event->id)}}"  >
                 @if ($errors->has('arabic_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_venu') }}</span>
                 @endif
@@ -296,7 +296,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">@lang('keywords.Hashtags')</label>
-                <input type="text" data-role="tagsinput" name="arabic_hashtags" value="@foreach($arabic_hashtags as $arhash) {{$arhash->value }},   @endforeach" value="{{ old('arabic_hashtags') }}">
+                <input type="text" data-role="tagsinput" name="arabic_hashtags" value="@foreach($arabic_hashtags as $arhash) {{$arhash->value }},   @endforeach" >
               </div>
               @if ($errors->has('arabic_hashtags'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_hashtags') }}</span>
@@ -341,7 +341,7 @@
               <div class="col-xs-8">
                 <div class="master_field">
                   <label class="master_label" for="Price">@lang('keywords.Price')</label>
-                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price"  @if ( isset($event_tickets->price) && !empty($event_tickets->price) ) value="{{$event_tickets->price}}" @endif  value="{{ old('price') }}">
+                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price"  @if ( isset($event_tickets->price) && !empty($event_tickets->price) ) value="{{$event_tickets->price}}" @endif  >
                   @if ($errors->has('price'))
                     <span class="master_message color--fadegreen">{{ $errors->first('price') }}</span>
                   @endif
@@ -372,7 +372,7 @@
               <div class="col-xs-12">
                 <div class="master_field">
                   <label class="master_label" for="Available_tickets">@lang('keywords.Available tickets')</label>
-                  <input class="master_input" type="number" placeholder="5" min="0"  id="Available_tickets" name="number_of_tickets"  @if ( isset($event_tickets->available_tickets) && !empty($event_tickets->price) )  value="{{$event_tickets->available_tickets}}" @endif  value="{{ old('number_of_tickets') }}">
+                  <input class="master_input" type="number" placeholder="5" min="0"  id="Available_tickets" name="number_of_tickets"  @if ( isset($event_tickets->available_tickets) && !empty($event_tickets->price) )  value="{{$event_tickets->available_tickets}}" @endif >
                   @if ($errors->has('number_of_tickets'))
                   <span class="master_message color--fadegreen">{{ $errors->first('number_of_tickets') }}</span>
                 @endif
@@ -391,7 +391,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Website">@lang('keywords.Website')</label>
-                <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website" name="website" value="{{$event->website}}" value="{{ old('website') }}">
+                <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website" name="website" value="{{$event->website}}" >
                 @if ($errors->has('website'))
                   <span class="master_message color--fadegreen">{{ $errors->first('website') }}</span>
                 @endif
@@ -403,7 +403,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="e_email">@lang('keywords.email')</label>
-                <input class="master_input" type="email" placeholder="email"  id="e_email" name="email" value="{{$event->email}}" value="{{ old('email') }}">
+                <input class="master_input" type="email" placeholder="email"  id="e_email" name="email" value="{{$event->email}}" >
                 @if ($errors->has('email'))
                   <span class="master_message color--fadegreen">{{ $errors->first('email') }}</span>
                 @endif
@@ -415,7 +415,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Code_numbe">@lang('keywords.Code number')</label>
-                <input class="master_input" type="number" placeholder="ex: 2012545"  id="Code_numbe" name="code_number" value="{{$event->code}}" value="{{ old('code_number') }}">
+                <input class="master_input" type="number" placeholder="ex: 2012545"  id="Code_numbe" name="code_number" value="{{$event->code}}" >
                 @if ($errors->has('code_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('code_number') }}</span>
                 @endif
@@ -427,7 +427,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Mobile_number">@lang('keywords.mobile number')</label>
-                <input class="master_input" type="number" placeholder="0123456789"  id="Mobile_number" name="mobile_number" value="{{$event->mobile}}" value="{{ old('mobile_number') }}">
+                <input class="master_input" type="number" placeholder="0123456789"  id="Mobile_number" name="mobile_number" value="{{$event->mobile}}" >
                 @if ($errors->has('mobile_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('mobile_number') }}</span>
                 @endif
@@ -446,7 +446,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">@lang('keywords.YouTube-ar-1')</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_1" @if ( isset($event_media[2]['link']) && !empty($event_media[2]['link']) )   value="{{$event_media[2]['link']}}" @endif value="{{ old('youtube_ar_1') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_1" @if ( isset($event_media[2]['link']) && !empty($event_media[2]['link']) )   value="{{$event_media[2]['link']}}" @endif >
                 @if ($errors->has('youtube_ar_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_1') }}</span>
                 @endif
@@ -457,7 +457,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">@lang('keywords.YouTube-en-1')</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_1" @if( isset($event_media[0]['link']) && !empty($event_media[0]['link']) )  value="{{$event_media[0]['link']}}" @endif  value="{{ old('youtube_en_1') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_1" @if( isset($event_media[0]['link']) && !empty($event_media[0]['link']) )  value="{{$event_media[0]['link']}}" @endif  >
                 @if ($errors->has('youtube_en_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_1') }}</span>
                 @endif
@@ -468,7 +468,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">@lang('keywords.YouTube-ar-2')</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_2" @if( isset($event_media[3]['link']) && !empty($event_media[3]['link']) ) value="{{$event_media[3]['link']}}" @endif value="{{ old('youtube_ar_2') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_2" @if( isset($event_media[3]['link']) && !empty($event_media[3]['link']) ) value="{{$event_media[3]['link']}}" @endif >
                 @if ($errors->has('youtube_ar_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_2') }}</span>
                 @endif
@@ -479,7 +479,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">@lang('keywords.YouTube-en-2')</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_2" @if( isset($event_media[1]['link']) && !empty($event_media[1]['link']) ) value="{{$event_media[1]['link']}}" @endif value="{{ old('youtube_en_2') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_2" @if( isset($event_media[1]['link']) && !empty($event_media[1]['link']) ) value="{{$event_media[1]['link']}}" @endif >
                 @if ($errors->has('youtube_en_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_2') }}</span>
                 @endif
@@ -490,16 +490,20 @@
             </div>
               
             {{-- Arabic images --}}
+             <input type="file" name="test" accept="image/*">
              <div class="col-sm-6 col-xs-12 text-center">
                             <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="row">
                                 <section class="l-main" role="main">
+                                  <!--  -->
+
+                                  <!--  -->
                                   <div class="uploader__box js-uploader__box l-center-box">
                                     <div action="your/nonjs/fallback/" method="POST">
                                       <div class="uploader__contents">
                                         <label class="button button--secondary" for="fileinput">Select Files</label>
-                                        <input class="uploader__file-input" id="fileinput" type="file" multiple value="Drag-Drop Files">
+                                        <input class="uploader__file-input" id="fileinput" type="file" multiple value="Drag-Drop Files" name="arabic_images[]">
                                         <label class="button button--secondary" for="fileinput1">Select Files</label>
                                         <input class="uploader__file-input1" id="fileinput" type="file" multiple value="Drag-Drop Files">
                                       </div>
@@ -521,7 +525,7 @@
                                     <div action="your/nonjs/fallback/" method="POST">
                                       <div class="uploader__contents">
                                         <label class="button button--secondary" for="fileinput">Select Files</label>
-                                        <input class="uploader__file-input" id="fileinput" type="file" multiple value="Drag-Drop Files">
+                                        <input class="uploader__file-input" id="fileinput" type="file" multiple value="Drag-Drop Files" name="english_images[]">
                                         <label class="button button--secondary" for="fileinput1">Select Files</label>
                                         <input class="uploader__file-input1" id="fileinput" type="file" multiple value="Drag-Drop Files">
                                       </div>

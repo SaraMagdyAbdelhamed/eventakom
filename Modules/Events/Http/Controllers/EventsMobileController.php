@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 class EventsMobileController extends Controller
 {
      use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -180,13 +181,14 @@ class EventsMobileController extends Controller
 
 
  public function update(Request $request)
-    {   
+    { 
+        //dd($request);
         // Validate incoming request inputs with the following validation rules.
         $this->validate($request, [
             'english_event_name'    => 'required|min:2|max:100',
             'english_description'   => 'required|min:2|max:250',
-            'lat'                   => 'required|min:2|max:50',
-            'lng'                   => 'required',
+            // 'lat'                   => 'required|min:2|max:50',
+            // 'lng'                   => 'required',
             'english_venu'          => 'required',
             'english_hashtags'      => 'required',
             'gender'                => 'required',
@@ -220,6 +222,14 @@ class EventsMobileController extends Controller
             // 'english_images'        => 'required',
         ]);
 
+
+        if ( $request->hasfile('test') ) {
+            foreach ( $request->file('test') as $image ) {
+                $name = $image->getClientOriginalName();
+                $image->move( public_path().'/events/arabic', $name );
+                $data_arabic[] = '/public/arabic/'.$name;
+            }
+        }
         // Check if there is any images or files and move them to public/events
         // Arabic Event Images
         if ( $request->hasfile('arabic_images') ) {
@@ -302,6 +312,7 @@ class EventsMobileController extends Controller
 
             /**  Youtube links  **/
            // $event->media()->update(['category_id' => $newCatId]);
+            $event->media()->delete();
             $event->media()->createMany([
                 [ 'link' => $request->youtube_en_1, 'type'=> 2],
                 [ 'link' => $request->youtube_en_2, 'type'=> 2],
