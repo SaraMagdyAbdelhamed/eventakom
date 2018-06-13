@@ -71,6 +71,21 @@ class Helper {
     }
 
     /**
+     *  Return translated entity
+     *  @param  $table_name     field in `entities` table.      ex: 'fixed_pages'
+     *  @param  $field_name     field in `entity_localizations` table.      ex: 'body'
+     *  @param  $item_id        field in `entity_localizations` table.      ex: 1
+     *  @param  $lang_id        field in `entity_localizations` table.      ex: 2
+     * 
+     *  Example:    Helper::localization('fixed_pages', 'name', '1', '2')
+     *  expected result     'عن الشركة'
+    */
+    public static function get_hashtags($item_id, $lang_id) {
+        $localization = EntityLocalization::where('field', 'hashtag')->where('item_id', $item_id)->where('lang_id', $lang_id)->get();
+        return $localization;
+    }
+
+    /**
      *  Edit a record in entity localizations table.
      *  @param  $table_name     field in `entities` table.      ex: 'fixed_pages'
      *  @param  $field_name     field in `entity_localizations` table.      ex: 'body'
@@ -107,6 +122,22 @@ class Helper {
         $localization->item_id = $item_id;
         $localization->lang_id = $lang_id;
         $localization->save();
+    }
+
+       public static function remove_localization($entity_id, $field, $item_id,$lang_id) {
+         EntityLocalization::where('entity_id','=',$entity_id)
+        ->where('field', '=', $field )
+        ->where('item_id', '=', $item_id )
+        ->where('lang_id', '=', $lang_id )
+        ->delete(); 
+    }
+
+       public static function multi_localization($entity_id, $field, $item_id, $lang_id) {
+          EntityLocalization::where('entity_id','=',$entity_id)
+        ->where('field', '=', $field )
+        ->where('item_id', '=', $item_id )
+        ->where('lang_id', '=', $lang_id )
+        ->get(); 
     }
 
      public static function CleanText($text){
@@ -148,5 +179,17 @@ class Helper {
                 $text = trim(preg_replace('/\s+/', ' ', $text));
                 $text = Helper::CleanText($text);
                 return $text;
+      }
+
+      public static function ageRange_count($rangeFrom,$rangeTo){
+               $counter = 0;
+               $users = Users::where('birthdate','!=', NULL)->get();
+               foreach($users as $user){
+                if($rangeFrom <= $user->age && $user->age < $rangeTo){
+
+                  $counter++;  
+                }
+               } 
+                return $counter;
       }
 }

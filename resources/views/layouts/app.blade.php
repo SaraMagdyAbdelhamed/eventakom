@@ -201,7 +201,7 @@
                     <ul class="side__submenu">
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_1" href="{{ route('event_backend') }}">@lang('keywords.addfrombackend')</a></li>
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_2" href="{{ route('event_mobile') }}">@lang('keywords.addfromMobile')</a></li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="events_big.html">Big events</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="{{ route('big_events') }}">Big events</a></li>
                     </ul>
                   </li>
                   <li class="side__list" id="menu_4"> <a class="side__item side__item--sub">barcode</a>
@@ -211,15 +211,17 @@
                       <li class="side__sublist"><a class="side__subitem" id="sub_4_3"  href="barcode_failed.html">barcode failed</a></li>
                     </ul>
                   </li>
-                  <li class="side__list" id="menu_5"> <a class="side__item" href="famous_attractions.html">Famous attractions</a>
+                  <li class="side__list" id="menu_5"> <a class="side__item" id="sub_5_1" href="famous_attractions.html">Famous attractions</a>
                   </li>
-                  <li class="side__list" id="menu_6"> <a class="side__item" href="offers_and_deals.html">Offers and deals</a>
+                  <li class="side__list" id="menu_6"> <a class="side__item" id="sub_6_1" href="{{ route('offers.list') }}">@lang('keywords.offers')</a>
                   </li>
-                  <li class="side__list" id="menu_7"> <a class="side__item" href="shop_and_dine.html">Shop and dine</a>
+                  <li class="side__list" id="menu_7"> <a class="side__item" id="sub_7_1" href="shop_and_dine.html">Shop and dine</a>
                   </li>
-                  <li class="side__list" id="menu_8"> <a class="side__item" href="notifications.html">Notifications</a>
+                  <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="notifications.html">Notifications</a>
                   </li>
-                  <li class="side__list" id="menu_9"> <a class="side__item" href="google_analytics.html">Google analytics</a>
+
+                  <li class="side__list" id="menu_9"> <a class="side__item" href="{{ route('statistics') }}">@lang('keywords.statistics')</a>
+
                   </li>
                 </ul>
               </div>
@@ -601,6 +603,7 @@
         });
       });
       
+
       //-============================================================
       //-===============================comp__#009__select
       //-============================================================
@@ -613,9 +616,72 @@
       
     </script>
 
+    {{-- Google maps API key --}}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
+
+{{-- Map script --}}
+
+
     @yield('js')
 
-</script> 
+  </script> 
+  {{-- Google maps API key --}}
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
 
+  {{-- Map script --}}
+  <script>
+
+      var map;
+      function initMap() {
+
+        @if( isset($event->latitude) && isset($event->longtuide) ) 
+          var myLatlng = {lat: {{ $event->latitude }}, lng: {{ $event->longtuide }} };
+        @else 
+          var myLatlng = {lat: 30.042701, lng: 31.432662};
+        @endif
+        
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: new google.maps.LatLng(myLatlng),
+          zoom: 8
+        });
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: 'Click to zoom'
+          });
+
+          google.maps.event.addListener(map, 'click', function(event) {
+              placeMarker(event.latLng);
+              
+              document.getElementById("lat").value = event.latLng.lat();
+              document.getElementById("lng").value = event.latLng.lng();
+
+          });
+
+          function placeMarker(location) {
+            if (marker == undefined){
+                marker = new google.maps.Marker({
+                    position: location,
+                    map: map, 
+                    animation: google.maps.Animation.DROP,
+                });
+            }
+            else{
+                marker.setPosition(location);
+            }
+            map.setCenter(location);
+          }
+
+      }
+  </script>
+<script type="text/javascript">
+  @if(\App::isLocale('ar'))
+ var next = $('#next1').text();
+    $(this).text(next.replace('Next', 'التالي')); 
+@endif
+</script>
+@include('analytics')
   </body>
 </html>

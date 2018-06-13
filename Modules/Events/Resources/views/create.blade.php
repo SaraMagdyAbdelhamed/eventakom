@@ -6,7 +6,7 @@
   /* Always set the map height explicitly to define the size of the div
    * element that contains the map. */
   #map {
-    height: 100%;
+    height: 100% !important;
   }
   /* Optional: Makes the sample page fill the window. */
   html, body {
@@ -45,7 +45,7 @@
   <div class="col-xs-12">
     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
 
-      <form id="horizontal-pill-steps" action="{{ route('event_backend.store') }}" method="POST" enctype="multipart/form-data">
+      <form id="horizontal-pill-steps" action="{{ route('event_backend.store') }}" method="POST" role="form" enctype="multipart/form-data">
         {{ csrf_field() }}
         
         <h3>Info in En</h3>
@@ -462,18 +462,19 @@
             {{-- Arabic images --}}
             <div class="col-sm-6 col-xs-12 text-center">
               <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
-              <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+              <input class="" id="" type="file" multiple value="Select Files" name="arabic_images[]">
+              {{-- <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                 <div class="row">
                   <section class="l-main" role="main">
-                    <div class=" l-center-box">
-                        <div class="">
+                    <div class="uploader__box js-uploader__box l-center-box">
+                        <div class="uploader__contents">
                           <label class="button button--secondary" for="fileinput">Select Files</label>
-                          <input class="" id="" type="file" multiple value="Select Files" name="arabic_images[]">
+                          <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files" name="arabic_images[]">
                         </div>
                     </div>
                   </section>
                 </div>
-              </div>
+              </div> --}}
             </div>
 
             {{-- English images --}}
@@ -505,108 +506,125 @@
 </div>
 
 
-
 <script type="text/javascript">
-
-$(document).ready(function(){
-
+$(document).ready(function() {
+  
   $(function () {
-  $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
+    $(".select2").select2();
   });
 
-  $(".select2").select2();
+
+  $("#finish1").click(function(){
+    alert("test")
+    var filesDraged0 = document.getElementById('fileinput0');
+    var filesMore0 = document.getElementById('secondaryfileinput0');
+    var filesDraged1 = document.getElementById("fileinput1");
+    var filesMore1 = document.getElementById("secondaryfileinput1");
+      var filesDragedAr = filesDraged0.files; 
+      var filesDragedEn = filesDraged1.files;
+      var filesMoreAr = filesMore0.files;
+      var filesMoreEn = filesMore1.files;
+
+      var filesListAr=[];
+      var filesListEn=[];
+      //Arabic Files
+      $.each(filesDragedAr,function(index,element){
+        filesListAr.push(element.name);
+      });
+      if(filesMoreAr.length > 0){
+        $.each(filesMoreAr,function(index,element){
+          filesListAr.push(element.name);
+        })
+      }
+      console.log(filesListAr);
+      //English Files /*****/
+      $.each(filesDragedEn,function(index,element){
+        filesListEn.push(element.name);
+      });
+      console.log("engish");
+      console.log(filesDragedEn)
+      if(filesMoreEn.length>0){
+        $.each(filesMoreEn,function(index,element){
+          filesListEn.push(element.name);
+        })
+      }
+      console.log(filesListEn)
+    var form = $("#horizontal-pill-steps").serializeArray();
+    var form_data = {};
+    console.log(form);
+    $.each(form,function(index,element){
+      form_data[element.name] = element.value;
+    })
+    if(form_data.active_event == undefined && form_data.big_event == undefined){
+      //big_event & active event =false (API)
+      console.log("2 undefined")
+    }
+    else if(form_data.active_event == undefined){
+      // active_event = false (API)
+      console.log("active undefined")
+    }
+    else if(form_data.big_event == undefined){
+      //big_event = false (API)
+      console.log("big undefined")
+    }
+    else{
+      // 2= true
+      console.log("2 ~undefined")
+    }
+  });
 
   var form = $("#horizontal-pill-steps").show();
-  form.steps({
-    headerTag: "h3",
-    bodyTag: "fieldset",
-    transitionEffect: "slideLeft",
+    form.steps({
+      headerTag: "h3",
+      bodyTag: "fieldset",
+      transitionEffect: "slideLeft",
   });
+
+  $(function() {
+    $('input, select').on('change', function(event) {
+      var $element = $(event.target),
+        $container = $element.closest('.example');
   
-
-  $('input, select').on('change', function(event) {
-    var $element = $(event.target),
-      $container = $element.closest('.example');
-
-    if (!$element.data('tagsinput'))
-      return;
-
-    var val = $element.val();
-    if (val === null)
-      val = "null";
-    $('code', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
-    $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
-  }).trigger('change');
+      if (!$element.data('tagsinput'))
+        return;
   
-
-  $('.datepicker').datepicker({autoclose: true});
-  $(".timepicker").timepicker({showInputs: false});
-
-  var options = {};
-  $('.js-uploader__box').uploader(options);
-
-
-  $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
-
-
-  $('.paid-details').fadeOut();
-  
-  $('label[for="radbtn_3_paid"]').on('click' , function(){
-    $('.paid-details').fadeIn(100);
+      var val = $element.val();
+      if (val === null)
+        val = "null";
+      $('code', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
+      $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+    }).trigger('change');
   });
-  
-  $('label[for="radbtn_2_free"]').on('click' , function(){
+
+  $(function () {
+    $('.datepicker').datepicker({autoclose: true});
+    $(".timepicker").timepicker({showInputs: false});
+  });
+
+  $(function(){
+    var options = {};
+    $('.js-uploader__box').uploader(options);
+  }());
+
+  $(function () {
+    $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
+  });
+
+  $( document ).ready(function() {     
     $('.paid-details').fadeOut();
+    
+    $('label[for="radbtn_3_paid"]').on('click' , function(){
+      $('.paid-details').fadeIn(100);
+    });
+    
+    $('label[for="radbtn_2_free"]').on('click' , function(){
+      $('.paid-details').fadeOut();
+    });
+  
   });
 
 });
-
 </script>
 
-{{-- Google maps API key --}}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
 
-{{-- Map script --}}
-<script>
-
-    var map;
-    function initMap() {
-
-      var myLatlng = {lat: 30.042701, lng: 31.432662};
-
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(myLatlng),
-        zoom: 10
-      });
-
-      var marker = new google.maps.Marker({
-          position: myLatlng,
-          map: map,
-          title: 'Click to zoom'
-        });
-
-        google.maps.event.addListener(map, 'click', function(event) {
-            placeMarker(event.latLng);
-            
-            document.getElementById("lat").value = event.latLng.lat();
-            document.getElementById("lng").value = event.latLng.lng();
-
-        });
-
-        function placeMarker(location) {
-          if (marker == undefined){
-              marker = new google.maps.Marker({
-                  position: location,
-                  map: map, 
-                  animation: google.maps.Animation.DROP,
-              });
-          }
-          else{
-              marker.setPosition(location);
-          }
-          map.setCenter(location);
-        }
-
-    }
-</script>
 @endsection

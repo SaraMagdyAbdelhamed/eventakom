@@ -9,8 +9,8 @@
                       <div class="col-xs-12">
                         <div class="text-xs-center">         
                           <div class="text-wraper">
-                            <h4 class="cover-inside-title">Events </h4><i class="fa fa-chevron-circle-right"></i>
-                            <h4 class="cover-inside-title sub-lvl-2">Added from mobile application </h4>
+                            <h4 class="cover-inside-title">@lang('keywords.events') </h4><i class="fa fa-chevron-circle-right"></i>
+                            <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.addfromMobile')</h4>
                           </div>
                         </div>
                       </div>
@@ -23,9 +23,9 @@
                   <div class="tabs--wrapper">
                     <div class="clearfix"></div>
                     <ul class="tabs">
-                      <li id="info">Info</li>
-                      <li id="posts">Posts</li>
-                      <li id="tickets">Tickets</li>
+                      <li id="info">@lang('keywords.info')</li>
+                      <li id="posts">@lang('keywords.posts')</li>
+                      <li id="tickets">@lang('keywords.tickets')</li>
                     </ul>
                     <ul class="tab__content">
                       <li class="tab__content_item active" id="info-content">
@@ -33,34 +33,38 @@
                           <div class="full-table">
                             <table class="verticaltable table-master">
                               <tr>
-                                <th><span class="cellcontent"> Event name</span></th>
+                                <th><span class="cellcontent">@lang('keywords.eventName')</span></th>
                                 <td><span class="cellcontent">{{$event->name}}</span></td>
                               </tr>
                               <tr>
-                                <th><span class="cellcontent">Venue</span></th>
+                                <th><span class="cellcontent">@lang('keywords.venue')</span></th>
                                 <td><span class="cellcontent">{{$event->venue}}</span></td>
                               </tr>
                               <tr>
-                                <th><span class="cellcontent">Starts</span></th>
+                                <th><span class="cellcontent">@lang('keywords.start')</span></th>
                                 <td><span class="cellcontent"><?=date('Y-m-d h:i A', strtotime($event->start_datetime))?></span></td>
                               </tr>
                               <tr>
-                                <th><span class="cellcontent">Ends</span></th>
+                                <th><span class="cellcontent">@lang('keywords.end')</span></th>
                                 <td><span class="cellcontent"><?=date('Y-m-d h:i A', strtotime($event->end_datetime))?></span></td>
                               </tr>
                               <tr>
-                                <th><span class="cellcontent">Add by </span></th>
+                                <th><span class="cellcontent">@lang('keywords.addby')</span></th>
                                 <td><span class="cellcontent">{{ $event->user ? $event->user->username : '' }}</span></td>
                               </tr>
                               <tr>
-                                <th><span class="cellcontent">Category</span></th>
-                                <td><span class="cellcontent">@foreach($categories as $key=>$category)
+                                <th><span class="cellcontent">@lang('keywords.category')</span></th>
+                                <td><span class="cellcontent">
+                                 @if(isset($categories) && !empty($categories))
+                                  @foreach($categories as $key=>$category)
                                  @if($key==0)
                                  {{$category->getCategory($category->interest_id)->name}}
                                  @else
                                  <span>, </span>{{$category->getCategory($category->interest_id)->name}}
                                  @endif
-                                @endforeach</span></td>
+                                @endforeach
+                                @endif
+                              </span></td>
                               </tr>
                             </table>
                             <div class="remodal log-custom" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
@@ -227,25 +231,27 @@
                       <li class="tab__content_item" id="posts-content">
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <div class="full-table">
-                            <div class="bottomActions__btns"><a class=" {{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">Delete selected</a><!-- <a class="master-btn" href="#">Add new Offer and deals</a> -->
+                            <div class="bottomActions__btns"><a class=" {{\App::isLocale('en') ?'btn-warning-confirm-all':'btn-warning-confirm-all-ar'}} master-btn" href="#">@lang('keywords.deleteSelected')</a><!-- <a class="master-btn" href="#">Add new Offer and deals</a> -->
                             </div>
                             <form id="dataTableTriggerId_003_form">
                               <table class="data-table-trigger table-master" id="dataTableTriggerId_003">
                                 <thead>
                                   <tr class="bgcolor--gray_mm color--gray_d">
                                     <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
-                                    <th><span class="cellcontent">serial</span></th>
-                                    <th><span class="cellcontent">Added by</span></th>
-                                    <th><span class="cellcontent">content</span></th>
-                                    <th><span class="cellcontent">Added date</span></th>
-                                    <th><span class="cellcontent">actions</span></th>
+                                    <th><span class="cellcontent">@lang('keywords.serialNo')</span></th>
+                                    <th><span class="cellcontent">@lang('keywords.addby')</span></th>
+                                    <th><span class="cellcontent">@lang('keywords.content')</span></th>
+                                    <th><span class="cellcontent">@lang('keywords.Addeddate')</span></th>
+                                    <th><span class="cellcontent">@lang('keywords.Actions')</span></th>
                                   </tr>
                                 </thead>
                                 <tbody>
+                                <?php $i=0; ?>
                                 @foreach($event_posts as $post)	
+                                 <?php $i++; ?>
                                   <tr data-post-id={{$post->id}}>
                                     <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent">{{$post->id}}</span></td>
+                                    <td><span class="cellcontent"><?=$i?></span></td>
                                     <td><span class="cellcontent">{{$post->user->username}}</span></td>
                                     <td><span class="cellcontent">{{$post->post}}</span></td>
                                     <td><span class="cellcontent"><?=date('Y-m-d h:i A', strtotime($post->created_at))?></span></td>
@@ -419,13 +425,13 @@
                       <li class="tab__content_item" id="tickets-content">
                       	@if($event->use_ticketing_system!=1)
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                          <p class="text-center">This event is free no tickets </p>
+                          <p class="text-center">@lang('keywords.This event is free no tickets')</p>
                         </div>
                         @else
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <div class="full-table">
                             <table class="verticaltable table-master">
-                              <tr>
+                              <!-- <tr>
                               	@foreach($tickets as $ticket)
                               	<tr>
                               	 <th><span class="cellcontent">ticket category</span></th>
@@ -434,7 +440,12 @@
                                 <td><span class="cellcontent">{{$ticket->price}} USD</span></td>
                             </tr>
                                 @endforeach
-                              </tr>
+                              </tr> -->
+                              <tr>
+                              <th><span class="cellcontent">@lang('keywords.Price')</span></th>
+                                <td><span class="cellcontent">@if(isset($tickets[0]->price) && !empty($tickets[0]->price)){{$tickets[0]->price}} USD @endif</span></td>
+                               
+                            </tr>
                             </table>
                             <div class="remodal log-custom" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
                               <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
@@ -604,20 +615,22 @@
                                 <thead>
                                   <tr class="bgcolor--gray_mm color--gray_d">
                                     <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
-                                    <th><span class="cellcontent"> serial</span></th>
-                                    <th><span class="cellcontent">Ticket Barcode</span></th>
-                                    <th><span class="cellcontent">Ticket serial</span></th>
-                                    <th><span class="cellcontent">Ticket Status</span></th>
-                                    <th><span class="cellcontent">User name</span></th>
-                                    <th><span class="cellcontent">Booking date</span></th>
-                                    <th><span class="cellcontent">status</span></th>
+                                    <th><span class="cellcontent">@lang('keywords.serialNo')</span></th>
+                                    <th><span class="cellcontent">@lang('keywords.Ticket Barcode')</span></th>
+                                    <th><span class="cellcontent">@lang('keywords.Ticket serial')</span></th>
+                                    <th><span class="cellcontent">@lang('keywords.Ticket Status')</span></th>
+                                    <th><span class="cellcontent">@lang('keywords.UserName')</span></th>
+                                    <th><span class="cellcontent">@lang('keywords.Booking date')</span></th>
+                                    <th><span class="cellcontent">@lang('keywords.Status')</span></th>
                                   </tr>
                                 </thead>
                                 <tbody>
+                                  <?php $i=0; ?>
                                 	@foreach($booked_tickets as $ticket)
+                                  <?php $i++; ?>
                                   <tr>
                                     <td><span class="cellcontent"></span></td>
-                                    <td><span class="cellcontent">{{$ticket->id}}</span></td>
+                                    <td><span class="cellcontent"><?=$i?></span></td>
                                     <td><span class="cellcontent"><img src = "https://source.unsplash.com/random" , class = " img-in-table"></span></td>
                                     <td><span class="cellcontent">{{$ticket->serial_number}}</span></td>
                                     <td><span class="cellcontent">Booked</span></td>

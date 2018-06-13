@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -80,5 +80,11 @@ class Users extends Authenticatable
     public function isAdmin() {
         return ($this->rules[0]->id == 1 && $this->rules[1]->id == 4) ? true : false;
     }
+
+    //Attributes
+    public function getAgeAttribute()
+{
+    return Carbon::parse($this->attributes['birthdate'])->age;
+}
 
 }

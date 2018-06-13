@@ -46,7 +46,7 @@
                             <td><span class="cellcontent">{{ App::isLocale('en') ? $sponsor->name : Helper::localization('sponsors', 'name', $sponsor->id, 2) }}</span></td>
                             <td>
                                 <span class="cellcontent">
-                                    <a href="#popupModal_2" data-id="{{ $sponsor->id }}" data-english-sponsor="{{ $sponsor->name }}" data-arabic-sponsor="{{  Helper::localization('sponsors', 'name', $sponsor->id, 2) }}" class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
+                                    <a href="#Edit" data-id="{{ $sponsor->id }}" data-english-sponsor="{{ $sponsor->name }}" data-arabic-sponsor="{{  Helper::localization('sponsors', 'name', $sponsor->id, 2) }}" class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
                                     <a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white deleteRecord" data-id="{{ $sponsor->id }}"><i class = "fa  fa-trash-o"></i></a>
                                 </span>
                             </td>
@@ -140,79 +140,76 @@
 </div>
 
 {{-- edit modal --}}
-<div class="remodal" data-remodal-id="popupModal_2" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" id="modal2">
-    <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-    <div>
-        <div class="row">
-        <div class="col-lg-12">
-            <h3>@lang('keywords.addcat')</h3>
-        </div>
-
+<div class="remodal" data-remodal-id="Edit" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+  <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
+  <div>
+    <div class="row">
+      <div class="col-lg-12">
+        <h3>@lang('keywords.edit') @lang('keywords.famous')</h3>
+      </div>
+      <div class="col-xs-12">
         <form action="{{ route('sponsor.edit') }}" method="POST" enctype="multipart/form-data">
-            {{ csrf_field() }}
+          {{ csrf_field() }}
 
           <input type="hidden" name="hiddenID" id="hiddenID">
 
-            <div class="tabs--wrapper">
-                <div class="clearfix"></div>
-                <ul class="tabs">
-                  <li id="arabic">Arabic</li>
-                  <li id="english">English</li>
-                </ul>
-                <ul class="tab__content">
-                  <li class="tab__content_item active" id="arabic-content">
-                    <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                      <div class="master_field">
-                        <label class="master_label" for="new_cat">sponsor name in Arabic</label>
-                        <input class="master_input" type="text" placeholder="sponsor name" Required id="arabicEdit" name="arabic">
+          <div class="tabs--wrapper">
+            <div class="clearfix"></div>
+            <ul class="tabs">
+              <li id="arabic1">العربية</li>
+              <li id="english1">English</li>
+            </ul>
+            <ul class="tab__content">
+              <li class="tab__content_item active" id="arabic1-content">
+                <div class="master_field">
+                  <label class="master_label" for="edit_id_ar">تعديل راعي باللغة العربية</label>
+                  <input name="arabic"class="master_input" type="text" placeholder="تعديل اسم الراعي" Required id="edit_id_ar" oninvalid="this.setCustomValidity('من فضلك لا تترك هذا الحقل فارغاَ')">
+                </div>
 
-                      </div>
-                      <div class="master_field">
-                        <label class="master_label" for="ID_No-11">sponsor logo in Arabic </label>
-                        <div class="file-upload">
-                          <div class="file-select">
-                            <div class="file-select-name" id="noFile">click to add sponsor logo</div>
-                            <input class="chooseFile" type="file" id="ID_No-11" name="logoAr">
-                            @if ($errors->has('logoAr'))
-                              <span class="master_message color--fadegreen">{{ $errors->first('logoAr') }}</span>
-                            @endif
-                          </div>
-                        </div><span class="master_message inherit">png,jpg and max size is 5MB</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="tab__content_item" id="english-content">
-                    <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                      <div class="master_field">
-                        <label class="master_label" for="new_cat_2">sponsor name in English</label>
-                        <input class="master_input" type="text" placeholder="sponsor name" Required id="englishEdit" name="english">
-                        @if ($errors->has('englishSponsor'))
-                          <span class="master_message color--fadegreen">{{ $errors->first('englishSponsor') }}</span>
+                <div class="master_field">
+                    <label class="master_label" for="ID_No-11">شعار الراعي</label>
+                    <div class="file-upload">
+                      <div class="file-select">
+                        <div class="file-select-name" id="noFile">اضغط لإضافة شعار</div>
+                        <input class="chooseFile" type="file" id="ID_No-11" name="logoAr">
+                        @if ($errors->has('logoAr'))
+                          <span class="master_message color--fadegreen">{{ $errors->first('logoAr') }}</span>
                         @endif
                       </div>
-                      <div class="master_field">
-                        <label class="master_label" for="ID_No-11">sponsor logo in English</label>
-                        <div class="file-upload">
-                          <div class="file-select">
-                            <div class="file-select-name" id="noFile">click to add sponsor logo</div>
-                            <input class="chooseFile" type="file" id="ID_No-11" name="logoEn">
-                            @if ($errors->has('logoEn'))
-                              <span class="master_message color--fadegreen">{{ $errors->first('logoEn') }}</span>
-                            @endif
-                          </div>
-                        </div><span class="master_message inherit">png,jpg and max size is 5MB</span>
+                    </div><span class="master_message inherit">png,jpg and max size is 5MB</span>
+                  </div>
+              </li>
+              <li class="tab__content_item" id="english1-content">
+                <div class="master_field">
+                  <label class="master_label" for="edit_id_en">Edit famous attraction in English</label>
+                  <input name="english" class="master_input" type="text" placeholder="edit a famous attraction" Required id="edit_id_en">
+                </div>
+
+                <div class="master_field">
+                    <label class="master_label" for="ID_No-11">sponsor logo in English</label>
+                    <div class="file-upload">
+                      <div class="file-select">
+                        <div class="file-select-name" id="noFile">click to add sponsor logo</div>
+                        <input class="chooseFile" type="file" id="ID_No-11" name="logoEn">
+                        @if ($errors->has('logoEn'))
+                          <span class="master_message color--fadegreen">{{ $errors->first('logoEn') }}</span>
+                        @endif
                       </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-               <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
-                <button type="submit" class="remodal-confirm">@lang('keywords.save')</button>
-            
+                    </div><span class="master_message inherit">png,jpg and max size is 5MB</span>
+                  </div>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xs-12">
+            <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+            <button class="remodal-confirm">@lang('keywords.save')</button>
+          </div>
         </form>
-        </div>
+      </div>
     </div>
+  </div>
 </div>
+
         
 <script>
     $(document).ready(function() {
@@ -334,65 +331,14 @@
 
         $('.editRow').click(function(){
 
-            $('#modal1').remove();
-
             var id      = $(this).data("id");
             var english = $(this).data("english-sponsor");
             var arabic  = $(this).data("arabic-sponsor");
 
             $('#hiddenID').val(id);
-            $('#arabicEdit').val(arabic);
-            $('#englishEdit').val(english);
+            $('#edit_id_ar').val(arabic);
+            $('#edit_id_en').val(english);
             
-        });
-
-        $('#addNewCat').click(function(){
-            // $('modal1').append("\
-            // <div class="remodal" data-remodal-id="popupModal_1" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" id="modal1">\
-            //     <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>\
-            //     <div>\
-            //       <div class="row">\
-            //         <div class="col-lg-12">\
-            //           <h3>@lang('keywords.addcat')</h3>\
-            //         </div>\
-            //         <form action="{{ route('event.add') }}" method="POST">\
-            //             {{ csrf_field() }}\
-            //             <div class="col-xs-12">\
-            //                 <div class="tabs--wrapper">\
-            //                 <div class="clearfix"></div>\
-            //                 <ul class="tabs">\
-            //                     <li id="arabic">العربية</li>\
-            //                     <li id="english">English</li>\
-            //                 </ul>\
-            //                 <ul class="tab__content">\
-            //                     <li class="tab__content_item active" id="arabic-content">\
-            //                     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">\
-            //                         <div class="master_field">\
-            //                         <label class="master_label" for="cat_id_ar">اضف الحدث باللغة العربية</label>\
-            //                         <input name="arabicContent" class="master_input" type="text" placeholder="new categories in arabic"  id="cat_id_ar" >\
-            //                         </div>\
-            //                     </div>\
-            //                     </li>\
-            //                     <li class="tab__content_item" id="english-content">\
-            //                     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">\
-            //                         <div class="master_field">\
-            //                         <label class="master_label" for="cat_id_en">Add event name in English</label>\
-            //                         <input name="englishContent" class="master_input" type="text" placeholder="new categories in English" id="cat_id_en" >\
-            //                         </div>\
-            //                     </div>\
-            //                     </li>\
-            //                 </ul>\
-            //                 </div>\
-            //                 <div class="col-xs-12">\
-            //                 <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>\
-            //                 <button type="submit" class="remodal-confirm">save</button>\
-            //                 </div>\
-            //             </div>\
-            //         </form>\
-            //       </div>\
-            //     </div>\
-            //   </div>\
-            // ");
         });
 
 

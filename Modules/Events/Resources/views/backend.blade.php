@@ -6,7 +6,7 @@
       <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
         <div class="row">
           <div class="col-xs-12">
-            <div class="text-xs-center">         
+            <div class="text-xs-center">
               <div class="text-wraper">
                 <h4 class="cover-inside-title">@lang('keywords.events') </h4><i class="fa fa-chevron-circle-right"></i>
                 <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.addfrombackend') </h4>
@@ -29,8 +29,8 @@
           <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
             <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
 
-            {{-- Filter --}}
-            <form action="{{ route('event_backend.filter') }}" method="POST">
+            {{-- Start form --}}
+            <form action="{{ route('event_backend.filter') }}" method="GET">
               {{ csrf_field() }}
 
             <div>
@@ -40,8 +40,8 @@
                     <label class="master_label" for="filter_cat">Event categories </label>
                     <select class="master_input select2" id="filter_cat" multiple="multiple" data-placeholder="choose a category..." style="width:100%;" name="categories[]">
                       @if ( isset($categories) && !empty($categories) )
-                          @foreach ($categories as $cat)
-                              <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                          @foreach ($categories as $category)
+                              <option value="{{ $category->id }}">{{ $category->name }}</option>
                           @endforeach
                       @endif
                     </select>
@@ -51,7 +51,7 @@
                   <div class="master_field">
                     <label class="master_label">Events status</label>
                     <div class="funkyradio">
-                      <input type="checkbox" name="active" id="event_status_2" value="1" checked>
+                      <input type="checkbox" name="active" id="event_status_2" value="1">
                       <label for="event_status_2">Active</label>
                     </div>
                     <div class="funkyradio">
@@ -64,7 +64,7 @@
                   <div class="master_field">
                     <label class="master_label" for="bootstrap_date_start_from">start date from</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="start date from" id="bootstrap_date_start_from" name="start_from">
+                      <input class="datepicker master_input" type="text" placeholder="set start date from" id="bootstrap_date_start_from" name="start_from">
                     </div>
                   </div>
                 </div>
@@ -72,7 +72,7 @@
                   <div class="master_field">
                     <label class="master_label" for="bootstrap_date_start_to">start date to</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="start date to" id="bootstrap_date_start_to" name="start_to">
+                      <input class="datepicker master_input" type="text" placeholder="set start date to" id="bootstrap_date_start_to" name="start_to">
                     </div>
                   </div>
                 </div>
@@ -80,7 +80,7 @@
                   <div class="master_field">
                     <label class="master_label" for="bootstrap_date_End_from">End date from</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="End date from" id="bootstrap_date_End_from" name="end_from">
+                      <input class="datepicker master_input" type="text" placeholder="set end date from" id="bootstrap_date_End_from" name="end_from">
                     </div>
                   </div>
                 </div>
@@ -88,7 +88,7 @@
                   <div class="master_field">
                     <label class="master_label" for="bootstrap_date_End_to">End date to</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="End date to" id="bootstrap_date_End_to" name="end_to">
+                      <input class="datepicker master_input" type="text" placeholder="set end date to" id="bootstrap_date_End_to" name="end_to">
                     </div>
                   </div>
                 </div>
@@ -97,7 +97,7 @@
             <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
             <button class="remodal-confirm" type="submit">Apply Filters</button>
             </form>
-            {{-- End Filter --}}
+            {{-- End form --}}
 
           </div>
           <form id="dataTableTriggerId_001_form">
@@ -346,7 +346,7 @@
     },
     function(isConfirm){
         if (isConfirm){
-            
+
         $.ajax(
         {
             url: "{{ route('event_backend.destroySelected') }}",
@@ -379,7 +379,7 @@
 
   // delete a row
   $('.deleteRecord').click(function(){
-      
+
       var id = $(this).data("id");
       var token = '{{ csrf_token() }}';
 
@@ -393,12 +393,12 @@
       showCancelButton: true,
       confirmButtonColor: '#281160',
       confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
-      cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",                
+      cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
       closeOnConfirm: false
       },
       function(isConfirm){
           if (isConfirm){
-                  
+
           $.ajax(
           {
               url: "{{ route('event_backend.destroy') }}",
@@ -418,7 +418,7 @@
                   console.log(response);
               }
           });
-              
+
           } else {
               swal("تم الإلغاء", "المعلومات مازالت موجودة :)", "error");
           }

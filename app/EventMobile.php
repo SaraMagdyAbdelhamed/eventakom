@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Interest;
+use App\Entity;
+use App\Helpers\Helper;
 class EventMobile extends Model
 {
     protected $id = 'id';
@@ -39,6 +41,11 @@ class EventMobile extends Model
         return $this->belongsToMany('App\EventCategory', 'event_categories', 'event_id', 'interest_id');
     }
 
+    public function media() {
+        return $this->hasMany('App\EventMedia', 'event_id');
+    }
+
+
     //quiries
 
      public static function getEventsMobile(){
@@ -58,8 +65,8 @@ class EventMobile extends Model
     }
 
       public static function EventsRejected(){
-    	return static::query()->join('event_statuses','events.event_status_id','=','event_statuses.id')
-    		   ->select('events.*','event_statuses.name');
+    	return static::query()->where('is_backend','=',0)->where('event_status_id','=',3)
+    		   ->select('events.*');
 
     }
 
@@ -75,7 +82,14 @@ class EventMobile extends Model
     }
 
     //localizations
+   public static function arabic($field,$item_id){
 
+      $result = Helper::localization('events', $field, $item_id, 2);
+      return $result;
+    }
+    public static function arabicHashtags($item_id){
 
-
+      $result = Helper::multi_localization(4, 'hashtag', $item_id, 2);
+      return $result;
+    }
 }

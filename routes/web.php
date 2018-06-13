@@ -94,7 +94,7 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     //users.mobile
     Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users_mobile');
     Route::get('/users_backend', '\Modules\UsersModule\Http\Controllers\UsersController@index_backend')->name('users_backend');
-    Route::post('/mobile_filter', '\Modules\UsersModule\Http\Controllers\UsersController@mobile_filter')->name('mobile_filter');
+    Route::get('/mobile_filter', '\Modules\UsersModule\Http\Controllers\UsersController@mobile_filter')->name('mobile_filter');
     Route::post('/mobile_destroy/{id}', '\Modules\UsersModule\Http\Controllers\UsersController@destroy')->name('mobile_destroy');
     Route::post('/mobile_destroy_all', '\Modules\UsersModule\Http\Controllers\UsersController@destroy_all')->name('mobile_destroy_all');
 
@@ -108,11 +108,14 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::get('/events/backend', '\Modules\Events\Http\Controllers\EventsController@index')->name('event_backend');
     Route::get('/events/backend/add', '\Modules\Events\Http\Controllers\EventsController@create')->name('event_backend.add');
     Route::post('/events/backend/store', '\Modules\Events\Http\Controllers\EventsController@store')->name('event_backend.store');
+    Route::get('/events/backend/edit/{id}', '\Modules\Events\Http\Controllers\EventsController@edit')->name('event_backend.edit');
+    Route::post('/events/backend/update', '\Modules\Events\Http\Controllers\EventsController@update')->name('event_backend.update');
     Route::get('/events/backend/show/{id}', '\Modules\Events\Http\Controllers\EventsController@show')->name('event_backend.show');
     Route::get('/events/backend/edit/{id}', '\Modules\Events\Http\Controllers\EventsController@edit')->name('event_backend.edit');
     Route::post('/events/backend/destroy', '\Modules\Events\Http\Controllers\EventsController@destroy')->name('event_backend.destroy');
     Route::post('/events/backend/destroy_selected', '\Modules\Events\Http\Controllers\EventsController@destroySelected')->name('event_backend.destroySelected');
-    Route::post('/events/backend/filter','\Modules\Events\Http\Controllers\EventsController@filter')->name('event_backend.filter');
+    Route::get('/events/backend/filter', '\Modules\Events\Http\Controllers\EventsController@filter')->name('event_backend.filter');
+
 
 
  // Events: Mobile
@@ -124,10 +127,46 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::post('/event_destroy_all', '\Modules\Events\Http\Controllers\EventsMobileController@destroy_all')->name('event_destroy_all');
     Route::post('/event_accept/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@accept')->name('event_accept');
     Route::post('/event_accept_all', '\Modules\Events\Http\Controllers\EventsMobileController@accept_all')->name('event_accept_all');
-     Route::post('/event_reject/', '\Modules\Events\Http\Controllers\EventsMobileController@reject')->name('event_reject');
-     Route::get('/events/mobile/view/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@view')->name('event_mobile_view');
-     Route::post('/post_destroy/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@post_destroy')->name('post_destroy');
+    Route::post('/event_reject/', '\Modules\Events\Http\Controllers\EventsMobileController@reject')->name('event_reject');
+     Route::post('/event_pending/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@pending')->name('event_pending');
+    Route::post('/event_pending_all', '\Modules\Events\Http\Controllers\EventsMobileController@pending_all')->name('event_pending_all');
+    Route::get('/events/mobile/view/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@view')->name('event_mobile_view');
+    Route::post('/post_destroy/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@post_destroy')->name('post_destroy');
     Route::post('/post_destroy_all', '\Modules\Events\Http\Controllers\EventsMobileController@post_destroy_all')->name('post_destroy_all');
     Route::get('events/mobile/edit/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@edit')->name('event_edit');
+    Route::post('/events/mobile/update', '\Modules\Events\Http\Controllers\EventsMobileController@update')->name('event_mobile.update');
 
+    // Big Events
+    Route::get('/events/big_events', '\Modules\Events\Http\Controllers\EventsController@big_events')->name('big_events');
+    Route::post('/bigevents_post', '\Modules\Events\Http\Controllers\EventsController@bigevents_post')->name('bigevents_post');
+    Route::post('/bigevents_select/{value}', '\Modules\Events\Http\Controllers\EventsController@bigevents_select')->name('bigevents_select');
+
+    //Statistics
+    Route::get('/statistics', '\Modules\Statistics\Http\Controllers\StatisticsController@index')->name('statistics');
+
+//analytics
+//     Route::get('/analytics', function() {
+//    // App::setlocale('en');
+//     return view('analytics');
+// });
+
+
+    // Famous Attractions
+    Route::get('/attractions'           , '\Modules\Famous\Http\Controllers\FamousController@index' )->name('fa.list'   );
+    Route::get('/attractions/view/{id}' , '\Modules\Famous\Http\Controllers\FamousController@show'  )->name('fa.show'   );
+    Route::get('/attractions/add'       , '\Modules\Famous\Http\Controllers\FamousController@create')->name('fa.create' );
+    Route::get('/attractions/edit/{id}' , '\Modules\Famous\Http\Controllers\FamousController@edit'  )->name('fa.edit'   );
+    Route::post('/attractions/store'    , '\Modules\Famous\Http\Controllers\FamousController@index' )->name('fa.store'  );
+    Route::post('/attractions/update'   , '\Modules\Famous\Http\Controllers\FamousController@update')->name('fa.update' );
+    Route::post('/attractions/delete'   , '\Modules\Famous\Http\Controllers\FamousController@delete')->name('fa.delete' );
+    Route::post('/attractions/delete/selected', '\Modules\Famous\Http\Controllers\FamousController@deleteSelected')->name('fa.deleteSelected');
+
+
+    // Offers and deals
+    Route::get('/offers'            , '\Modules\Offers\Http\Controllers\OffersController@index' )->name('offers.list'    );
+    Route::post('/offers/store'     , '\Modules\Offers\Http\Controllers\OffersController@store' )->name('offers.store'   );
+    Route::get('/offers/edit'       , '\Modules\Offers\Http\Controllers\OffersController@edit'  )->name('offers.edit'    );
+    Route::post('/offers/update'    , '\Modules\Offers\Http\Controllers\OffersController@update')->name('offers.update'  );
+    Route::post('/offers/delete'    , '\Modules\Offers\Http\Controllers\OffersController@destroy')->name('offers.delete' );
+    Route::post('/offers/delete/selected', '\Modules\Offers\Http\Controllers\OffersController@destroySelected')->name('offers.deleteSelected');
 });

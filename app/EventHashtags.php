@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Helpers\Helper;
 class EventHashtags extends Model
 {
     protected $primaryKey = 'id';
@@ -17,5 +17,11 @@ class EventHashtags extends Model
 
      public function eventMobile() {
         return $this->belongsToMany('App\EventMobile', 'event_hash_tags', 'event_id', 'hash_tag_id');
+    }
+    //localizations
+   public static function arabic($field,$item_id){
+
+      $result = Helper::localization('hash_tags', $field, $item_id, 2);
+      return $result;
     }
 }
