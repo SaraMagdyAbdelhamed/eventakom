@@ -141,4 +141,15 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::post('/bigevents_post/', '\Modules\Events\Http\Controllers\EventsController@bigevents_post')->name('bigevents_post');
     Route::post('/bigevents_select/{value}', '\Modules\Events\Http\Controllers\EventsController@bigevents_select')->name('bigevents_select');
 
+//Statistics
+ Route::get('/statistics', '\Modules\Statistics\Http\Controllers\StatisticsController@index')->name('statistics');
+
+
+
+
+//analytics
+//     Route::get('/analytics', function() {
+//    // App::setlocale('en');
+//     return view('analytics');
+// });
 });

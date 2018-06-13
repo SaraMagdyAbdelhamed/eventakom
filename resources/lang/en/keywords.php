@@ -168,6 +168,16 @@
 		'prev'=>'Prev',
 		'rejected'=>'Rejected',
 		
+		//Statistics
+		'statistics'=>'Statistics',
+		'Number of all users'=>'Number of all users',
+		'Number of male users'=>'Number of male users',
+		'Number of Female users'=>'Number of Female users',
+		'Number of users less than 15 years'=>'Number of users less than 15 years',
+		'Number of users 15-18 years'=>'Number of users 15-18 years',
+		'Number of users 18-25 years'=>'Number of users 18-25 years',
+		'Number of users more than 25 years'=>'Number of users more than 25 years',
+		
     ];
 
 ?>
