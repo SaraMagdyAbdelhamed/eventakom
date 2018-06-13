@@ -356,7 +356,7 @@
     <div>
         <div class="row">
         <div class="col-xs-12">
-            <h3>Edit Place Name</h3>
+            <h3>@lang('keywords.edit')</h3>
         </div>
         <div class="col-xs-12">
             <form method="POST" enctype="multipart/form-data" id="editForm">

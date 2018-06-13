@@ -21,6 +21,18 @@
     border: 0px;
     padding: 12px 36px;
   }
+
+  .main-section{
+      margin:0 auto;
+      padding: 20px;
+      margin-top: 100px;
+      background-color: #fff;
+      box-shadow: 0px 0px 20px #c1c1c1;
+  }
+  .fileinput-remove,
+  .fileinput-upload{
+      display: none;
+  }
 </style>
 
 
@@ -459,40 +471,23 @@
               <hr>
             </div>
               
-            {{-- Arabic images --}}
-            <div class="col-sm-6 col-xs-12 text-center">
-              <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
-              <input class="" id="" type="file" multiple value="Select Files" name="arabic_images[]">
-              {{-- <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                <div class="row">
-                  <section class="l-main" role="main">
-                    <div class="uploader__box js-uploader__box l-center-box">
-                        <div class="uploader__contents">
-                          <label class="button button--secondary" for="fileinput">Select Files</label>
-                          <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files" name="arabic_images[]">
-                        </div>
-                    </div>
-                  </section>
-                </div>
-              </div> --}}
-            </div>
-
-            {{-- English images --}}
-            <div class="col-sm-6 col-xs-12 text-center">
-              <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
-              <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                <div class="row">
-                  <section class="l-main" role="main">
-                    <div class="uploader__box js-uploader__box l-center-box">
-                        <div class="uploader__contents">
-                          <label class="button button--secondary" for="fileinput">Select Files</label>
-                          <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files" name="english_images[]">
-                        </div>
-                    </div>
-                  </section>
-                </div>
+          {{-- Arabic images --}}
+          <div class="col-sm-6 col-xs-12 text-center">
+              <div class="form-group">
+                  <div class="file-loading">
+                      <input id="file-1" type="file" name="file[]" multiple class="file" data-overwrite-initial="false">
+                  </div>
               </div>
-            </div>
+          </div>
+
+          {{-- English images --}}
+          <div class="col-sm-6 col-xs-12 text-center">
+              <div class="form-group">
+                  <div class="file-loading">
+                      <input id="file-1" type="file" name="file1[]" multiple class="file" data-overwrite-initial="false">
+                  </div>
+              </div>
+          </div>
 
           </div>
 
@@ -514,64 +509,15 @@ $(document).ready(function() {
   });
 
 
-  $("#finish1").click(function(){
-    alert("test")
-    var filesDraged0 = document.getElementById('fileinput0');
-    var filesMore0 = document.getElementById('secondaryfileinput0');
-    var filesDraged1 = document.getElementById("fileinput1");
-    var filesMore1 = document.getElementById("secondaryfileinput1");
-      var filesDragedAr = filesDraged0.files; 
-      var filesDragedEn = filesDraged1.files;
-      var filesMoreAr = filesMore0.files;
-      var filesMoreEn = filesMore1.files;
+  var form = $("#horizontal-pill-steps");
+    
+  $("#testSubmit").click(function(){
+    $('#horizontal-pill-steps').submit();
+  })
 
-      var filesListAr=[];
-      var filesListEn=[];
-      //Arabic Files
-      $.each(filesDragedAr,function(index,element){
-        filesListAr.push(element.name);
-      });
-      if(filesMoreAr.length > 0){
-        $.each(filesMoreAr,function(index,element){
-          filesListAr.push(element.name);
-        })
-      }
-      console.log(filesListAr);
-      //English Files /*****/
-      $.each(filesDragedEn,function(index,element){
-        filesListEn.push(element.name);
-      });
-      console.log("engish");
-      console.log(filesDragedEn)
-      if(filesMoreEn.length>0){
-        $.each(filesMoreEn,function(index,element){
-          filesListEn.push(element.name);
-        })
-      }
-      console.log(filesListEn)
-    var form = $("#horizontal-pill-steps").serializeArray();
-    var form_data = {};
-    console.log(form);
-    $.each(form,function(index,element){
-      form_data[element.name] = element.value;
-    })
-    if(form_data.active_event == undefined && form_data.big_event == undefined){
-      //big_event & active event =false (API)
-      console.log("2 undefined")
-    }
-    else if(form_data.active_event == undefined){
-      // active_event = false (API)
-      console.log("active undefined")
-    }
-    else if(form_data.big_event == undefined){
-      //big_event = false (API)
-      console.log("big undefined")
-    }
-    else{
-      // 2= true
-      console.log("2 ~undefined")
-    }
-  });
+  $("#finish1").click(function(){
+    $('#horizontal-pill-steps').submit();
+  })
 
   var form = $("#horizontal-pill-steps").show();
     form.steps({
@@ -623,8 +569,29 @@ $(document).ready(function() {
   
   });
 
+$("#file-1").fileinput({
+            theme: 'fa',
+            uploadUrl: "/image-view",
+            uploadExtraData: function() {
+                return {
+                    _token: $("input[name='_token']").val(),
+                };
+            },
+            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            overwriteInitial: false,
+            maxFileSize:2000,
+            maxFilesNum: 10,
+            slugCallback: function (filename) {
+                return filename.replace('(', '_').replace(']', '_');
+            }
+        });
+
 });
+
+
+
 </script>
+
 
 
 @endsection
