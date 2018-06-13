@@ -166,6 +166,11 @@
 		'submit'=>'submit',
 		'next'=>'Next',
 		'prev'=>'Prev',
+        
+        
+        // Offers & Deals
+        'offers'    => 'Offers and Deals',
+        'placeName' => 'Place Name',
 		'rejected'=>'Rejected',
 		
 		//Statistics

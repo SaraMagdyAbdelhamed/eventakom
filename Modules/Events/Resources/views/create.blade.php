@@ -45,7 +45,7 @@
   <div class="col-xs-12">
     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
 
-      <form id="horizontal-pill-steps" action="{{ route('event_backend.store') }}" method="POST" enctype="multipart/form-data">
+      <form id="horizontal-pill-steps" action="{{ route('event_backend.store') }}" method="POST" role="form" enctype="multipart/form-data">
         {{ csrf_field() }}
         
         <h3>Info in En</h3>
@@ -462,18 +462,19 @@
             {{-- Arabic images --}}
             <div class="col-sm-6 col-xs-12 text-center">
               <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
-              <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+              <input class="" id="" type="file" multiple value="Select Files" name="arabic_images[]">
+              {{-- <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                 <div class="row">
                   <section class="l-main" role="main">
                     <div class="uploader__box js-uploader__box l-center-box">
                         <div class="uploader__contents">
                           <label class="button button--secondary" for="fileinput">Select Files</label>
-                          <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files">
+                          <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files" name="arabic_images[]">
                         </div>
                     </div>
                   </section>
                 </div>
-              </div>
+              </div> --}}
             </div>
 
             {{-- English images --}}
@@ -495,7 +496,7 @@
 
           </div>
 
-          {{-- <button type="submit" id="submit">Submit</button> --}}
+          <button type="submit" id="submit">Submit</button>
         </fieldset>
       </form>
 

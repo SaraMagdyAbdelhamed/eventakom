@@ -26,6 +26,8 @@ use App\EventCategory;
 use App\Currency;
 use App\EventHashtags;
 use App\BigEvent;
+
+
 class EventsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -62,6 +64,7 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
+        dd($_FILES);
         // Validate incoming request inputs with the following validation rules.
         $this->validate($request, [
             'english_event_name'    => 'required|min:2|max:100',

@@ -136,20 +136,36 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::get('events/mobile/edit/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@edit')->name('event_edit');
     Route::post('/events/mobile/update', '\Modules\Events\Http\Controllers\EventsMobileController@update')->name('event_mobile.update');
 
-// Big Events
+    // Big Events
     Route::get('/events/big_events', '\Modules\Events\Http\Controllers\EventsController@big_events')->name('big_events');
-    Route::post('/bigevents_post/', '\Modules\Events\Http\Controllers\EventsController@bigevents_post')->name('bigevents_post');
+    Route::post('/bigevents_post', '\Modules\Events\Http\Controllers\EventsController@bigevents_post')->name('bigevents_post');
     Route::post('/bigevents_select/{value}', '\Modules\Events\Http\Controllers\EventsController@bigevents_select')->name('bigevents_select');
 
-//Statistics
- Route::get('/statistics', '\Modules\Statistics\Http\Controllers\StatisticsController@index')->name('statistics');
-
-
-
+    //Statistics
+    Route::get('/statistics', '\Modules\Statistics\Http\Controllers\StatisticsController@index')->name('statistics');
 
 //analytics
 //     Route::get('/analytics', function() {
 //    // App::setlocale('en');
 //     return view('analytics');
 // });
+
+
+    // Famous Attractions
+    Route::get('/attractions'           , '\Modules\Famous\Http\Controllers\FamousController@index' )->name('fa.list'   );
+    Route::get('/attractions/view/{id}' , '\Modules\Famous\Http\Controllers\FamousController@show'  )->name('fa.show'   );
+    Route::get('/attractions/add'       , '\Modules\Famous\Http\Controllers\FamousController@create')->name('fa.create' );
+    Route::get('/attractions/edit/{id}' , '\Modules\Famous\Http\Controllers\FamousController@edit'  )->name('fa.edit'   );
+    Route::post('/attractions/store'    , '\Modules\Famous\Http\Controllers\FamousController@index' )->name('fa.store'  );
+    Route::post('/attractions/update'   , '\Modules\Famous\Http\Controllers\FamousController@update')->name('fa.update' );
+    Route::post('/attractions/delete'   , '\Modules\Famous\Http\Controllers\FamousController@delete')->name('fa.delete' );
+    Route::post('/attractions/delete/selected', '\Modules\Famous\Http\Controllers\FamousController@deleteSelected')->name('fa.deleteSelected');
+
+
+    // Offers and deals
+    Route::get('/offers'            , '\Modules\Offers\Http\Controllers\OffersController@index' )->name('offers.list'    );
+    Route::post('/offers/store'     , '\Modules\Offers\Http\Controllers\OffersController@store' )->name('offers.store'   );
+    Route::post('/offers/update'    , '\Modules\Offers\Http\Controllers\OffersController@update')->name('offers.update'  );
+    Route::post('/offers/delete'    , '\Modules\Offers\Http\Controllers\OffersController@destroy')->name('offers.delete'  );
+    Route::post('/offers/delete/selected', '\Modules\Offers\Http\Controllers\OffersController@destroySelected')->name('offers.deleteSelected');
 });
