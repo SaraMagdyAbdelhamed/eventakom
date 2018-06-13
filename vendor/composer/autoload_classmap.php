@@ -43,7 +43,17 @@ return array(
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Interest' => $baseDir . '/app/Interest.php',
+<<<<<<< HEAD
     'App\\Offer' => $baseDir . '/app/Offer.php',
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    'App\\Offer' => $baseDir . '/app/Offer.php',
+>>>>>>> 40d593bd5ea033bb8c774b9a09a384490d6ace71
+>>>>>>> b4c4d0e820d4c38398ea8d52dcb2fd7683d8fccf
+>>>>>>> 5c84d3b69dd17bfcb41b6f09c00ed010a4ec1a28
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',

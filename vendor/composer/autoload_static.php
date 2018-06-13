@@ -473,7 +473,17 @@ class ComposerStaticInit133626418be3d6e8037e2403dc53808f
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Interest' => __DIR__ . '/../..' . '/app/Interest.php',
+<<<<<<< HEAD
         'App\\Offer' => __DIR__ . '/../..' . '/app/Offer.php',
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+        'App\\Offer' => __DIR__ . '/../..' . '/app/Offer.php',
+>>>>>>> 40d593bd5ea033bb8c774b9a09a384490d6ace71
+>>>>>>> b4c4d0e820d4c38398ea8d52dcb2fd7683d8fccf
+>>>>>>> 5c84d3b69dd17bfcb41b6f09c00ed010a4ec1a28
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',

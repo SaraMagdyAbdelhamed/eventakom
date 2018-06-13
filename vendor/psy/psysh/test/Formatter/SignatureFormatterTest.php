@@ -13,7 +13,10 @@ namespace Psy\Test\Formatter;
 
 use Psy\Formatter\SignatureFormatter;
 use Psy\Reflection\ReflectionClassConstant;
+<<<<<<< HEAD
 use Psy\Reflection\ReflectionConstant_;
+=======
+>>>>>>> 5c84d3b69dd17bfcb41b6f09c00ed010a4ec1a28
 
 class SignatureFormatterTest extends \PHPUnit\Framework\TestCase
 {
@@ -69,6 +72,7 @@ class SignatureFormatterTest extends \PHPUnit\Framework\TestCase
                 new \ReflectionMethod('Psy\Test\Formatter\Fixtures\BoringTrait', 'boringMethod'),
                 'public function boringMethod($one = 1)',
             ],
+<<<<<<< HEAD
             [
                 new ReflectionConstant_('E_ERROR'),
                 'define("E_ERROR", 1)',
@@ -81,6 +85,8 @@ class SignatureFormatterTest extends \PHPUnit\Framework\TestCase
                 new ReflectionConstant_('__LINE__'),
                 'define("__LINE__", null)', // @todo show this as `unknown` in red or something?
             ],
+=======
+>>>>>>> 5c84d3b69dd17bfcb41b6f09c00ed010a4ec1a28
         ];
     }
 
