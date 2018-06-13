@@ -169,6 +169,15 @@
 		'next'=>'التالي',
 		'prev'=>'السابق',
 		'rejected'=>'المرفوضة',
+		//Statistics
+		'statistics'=>'إحصائيات',
+		'Number of all users'=>'عدد  كل المستخدمين',
+		'Number of male users'=>'عدد المستخدمين الذكور',
+		'Number of Female users'=>'عدد المستخدمين الإناث',
+		'Number of users less than 15 years'=>'عدد المستخدمين للأعمار أقل من 15 عام',
+		'Number of users 15-18 years'=>'عدد المستخدمين للأعمار ما بين 15 و 18 عام',
+		'Number of users 18-25 years'=>'عدد المستخدمين للأعمار ما بين 18 و 25 عام',
+		'Number of users more than 25 years'=>'عدد المستخدمين للأعمار أكثر من 25 عام',
 
 
         // Offers & Deals

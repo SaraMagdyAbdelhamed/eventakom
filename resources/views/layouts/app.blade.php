@@ -219,7 +219,9 @@
                   </li>
                   <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="notifications.html">Notifications</a>
                   </li>
-                  <li class="side__list" id="menu_9"> <a class="side__item" id="sub_9_1" href="google_analytics.html">Google analytics</a>
+
+                  <li class="side__list" id="menu_9"> <a class="side__item" href="{{ route('statistics') }}">@lang('keywords.statistics')</a>
+
                   </li>
                 </ul>
               </div>
@@ -614,6 +616,10 @@
       
     </script>
 
+    {{-- Google maps API key --}}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
+
+{{-- Map script --}}
 
 
     @yield('js')
@@ -668,7 +674,7 @@
             map.setCenter(location);
           }
 
-      // }
+      }
   </script>
 <script type="text/javascript">
   @if(\App::isLocale('ar'))
@@ -676,5 +682,6 @@
     $(this).text(next.replace('Next', 'التالي')); 
 @endif
 </script>
+@include('analytics')
   </body>
 </html>

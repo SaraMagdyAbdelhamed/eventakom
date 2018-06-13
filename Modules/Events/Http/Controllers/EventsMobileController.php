@@ -122,6 +122,7 @@ class EventsMobileController extends Controller
         $data['categories'] = EventCategory::all();
         //$data['current_events'] = EventMobile::CurrentEvents()->get();
         $data['pending_events'] = EventMobile::PendingEvents()->get();
+        $data['rejected_events']= EventMobile::EventsRejected()->get();
         return view('events::eventsMobile.list', $data);
 
     }
@@ -300,6 +301,7 @@ class EventsMobileController extends Controller
             }
 
             /**  Youtube links  **/
+           // $event->media()->update(['category_id' => $newCatId]);
             $event->media()->createMany([
                 [ 'link' => $request->youtube_en_1, 'type'=> 2],
                 [ 'link' => $request->youtube_en_2, 'type'=> 2],

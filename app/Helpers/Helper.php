@@ -180,4 +180,16 @@ class Helper {
                 $text = Helper::CleanText($text);
                 return $text;
       }
+
+      public static function ageRange_count($rangeFrom,$rangeTo){
+               $counter = 0;
+               $users = Users::where('birthdate','!=', NULL)->get();
+               foreach($users as $user){
+                if($rangeFrom <= $user->age && $user->age < $rangeTo){
+
+                  $counter++;  
+                }
+               } 
+                return $counter;
+      }
 }
