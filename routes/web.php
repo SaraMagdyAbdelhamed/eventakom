@@ -157,7 +157,8 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     // Offers and deals
     Route::get('/offers'            , '\Modules\Offers\Http\Controllers\OffersController@index' )->name('offers.list'    );
     Route::post('/offers/store'     , '\Modules\Offers\Http\Controllers\OffersController@store' )->name('offers.store'   );
+    Route::get('/offers/edit'       , '\Modules\Offers\Http\Controllers\OffersController@edit'  )->name('offers.edit'    );
     Route::post('/offers/update'    , '\Modules\Offers\Http\Controllers\OffersController@update')->name('offers.update'  );
-    Route::post('/offers/delete'    , '\Modules\Offers\Http\Controllers\OffersController@destroy')->name('offers.delete'  );
+    Route::post('/offers/delete'    , '\Modules\Offers\Http\Controllers\OffersController@destroy')->name('offers.delete' );
     Route::post('/offers/delete/selected', '\Modules\Offers\Http\Controllers\OffersController@destroySelected')->name('offers.deleteSelected');
 });
