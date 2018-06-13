@@ -64,7 +64,9 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         dd($_FILES);
+
         // Validate incoming request inputs with the following validation rules.
         $this->validate($request, [
             'english_event_name'    => 'required|min:2|max:100',

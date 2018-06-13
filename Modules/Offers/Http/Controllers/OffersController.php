@@ -109,9 +109,18 @@ class OffersController extends Controller
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function edit()
+    public function edit(Request $request)
     {
-        return view('offers::edit');
+        $offer = Offer::find($request->id);
+        $row = [
+            'id'    => $offer->id,
+            'name_en'  => $offer->name,
+            'desc_en'  => $offer->description,
+            'name_ar'  => Helper::localization('offers', 'name', $request->id, 2),
+            'desc_ar'  => Helper::localization('offers', 'description', $request->id, 2),
+            'is_active'=> $offer->is_active
+        ];
+        return response()->json($row);
     }
 
     /**
@@ -121,6 +130,77 @@ class OffersController extends Controller
      */
     public function update(Request $request)
     {
+        $input = $request->all();
+
+        // Request has arabic image file?!
+        if( $request->hasFile('image_ar') ) {
+            // Get images
+            $image_ar = $request->image_ar;
+
+            // Rename it
+            $imageArNewName = time().$image_ar->getClientOriginalName();
+
+            // Move it to public/offers
+            $image_ar->move('offer_images', $imageArNewName);
+
+            // Save its path
+            $imageArPath = 'offer_images/'.$imageArNewName;
+        }
+
+        // Request has english image file!?
+        if( $request->hasFile('image_en') ) {
+            // Get images
+            $image_en = $request->image_en;
+
+            // Rename it
+            $imageEnNewName = time().$image_en->getClientOriginalName();
+
+            // Move it to public/offers
+            $image_en->move('offer_images', $imageEnNewName);
+
+            // Save its path
+            $imageEnPath = 'offer_images/'.$imageEnNewName;
+        }
+
+        // Store English in `offers` table
+        try {
+            $offer = Offer::find($request->id);
+            
+            $offer->name        = $request->image_en_name;
+            $offer->description = $request->image_en_desc;
+
+            if( $request->hasFile('image_en') ) {
+                if ( File::exists($offer->image_en) ) {
+                    File::delete($offer->image_en);
+                }
+                $offer->image_en    = $imageEnPath;
+            }
+
+            if( $request->hasFile('image_ar') ) {
+                if ( File::exists($offer->image_ar) ) {
+                    File::delete($offer->image_ar);
+                }
+                $offer->image_ar    = $imageArPath;
+            }
+
+            $offer->is_active       = $request->offer_status == 1 ? $request->offer_status : 0;
+            $offer->created_by      = Auth::id();
+            $offer->save();
+
+        } catch(\Exception $ex) {
+            return response()->json(['fail' => 'Faild to store offer in English! '. $ex]);
+        }
+
+        // Store Arabic in `entity_localization`
+        try {
+            Helper::edit_entity_localization('offers', 'name', $offer->id, 2, $request->image_ar_name);
+            Helper::edit_entity_localization('offers', 'description', $offer->id, 2, $request->image_ar_desc);
+        } catch(\Exception $ex) {
+            return response()->json(['fail' => 'Faild to store offer in Arabic! '.$ex ]);
+        }
+
+
+        return response()->json(['success' => 'Offer added successfully!']);
     }
 
     /**
