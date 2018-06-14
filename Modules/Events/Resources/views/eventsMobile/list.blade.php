@@ -803,7 +803,7 @@
                             </div>
                             <div class="clearfix"></div>
                             <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
-                            <button class="remodal-confirm" >@lang('keywords.save')</button>
+                            <button class="remodal-confirm" id="reject-submit">@lang('keywords.save')</button>
                             <!-- <button class="remodal-confirm" data-remodal-action="confirm" disabled>@lang('keywords.disabled')</button> -->
                           </div>
                         </form>
@@ -1263,11 +1263,13 @@
            success: function( msg ) {
                $("#reject_form").append("<div>"+msg.msg+"</div>");
 
-               
+           // document.getElementById('reject-submit').disabled = true;   
                window.location.replace("{{ url('events/mobile') }}");
 
            }
        });
+       document.getElementById('reject-submit').disabled = true; 
+       return false;
    });
 
       });
