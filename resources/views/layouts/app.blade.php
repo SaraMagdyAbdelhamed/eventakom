@@ -689,6 +689,6 @@
     $(this).text(next.replace('Next', 'التالي')); 
 @endif
 </script>
-@include('analytics')
+
   </body>
 </html>

@@ -259,10 +259,15 @@ class EventsMobileController extends Controller
            // dd($request['event_id']);
             $event->name        = $request->english_event_name;
             $event->description = $request->english_description;
+            if(isset($request->lng) && isset($request->lat) )
+            {
             $event->longtuide   = $request->lng;
             $event->latitude    = $request->lat;
+            }else{
+            $event->longtuide   = $event->longtuide;
+            $event->latitude    = $event->latitude;   
+            }
             $event->venue       = $request->english_venu;
-
             $event->age_range_id= $request->age_range;
             $event->gender_id   = $request->gender;
 
