@@ -15,4 +15,8 @@ class Interest extends Model
     public function eventCategory() {
         return $this->hasMany('App\EventCategory', 'interest_id');
     }
+    public function interest()
+    {
+    	return $this->belongsTo('App\UsersInterest','interest_id');
+    }
 }

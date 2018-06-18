@@ -223,7 +223,7 @@
                   </li>
                   <li class="side__list" id="menu_7"> <a class="side__item" id="sub_7_1" href="shop_and_dine.html">Shop and dine</a>
                   </li>
-                  <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="notifications.html">Notifications</a>
+                  <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="{{route('notification')}}">Notifications</a>
                   </li>
 
                   <li class="side__list" id="menu_9"> <a class="side__item" href="{{ route('statistics') }}">@lang('keywords.statistics')</a>
