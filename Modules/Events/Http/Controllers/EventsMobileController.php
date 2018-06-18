@@ -167,7 +167,8 @@ class EventsMobileController extends Controller
         $data['currencies']    = Currency::all();
         $data['bigEventCount'] = EventMobile::BigEvent($id);
         $data['event_tickets'] = EventTicket::where('event_id','=',$id)->first();
-        $data['event_media']   = EventMedia::where('event_id','=',$id)->get();
+        $data['event_media']   = EventMedia::where('event_id','=',$id)->where('type','=',2)->get();
+        $data['images']   = EventMedia::where('event_id','=',$id)->where('type','=',1)->get();
         $event = EventMobile::find($id);
         $data['event_categories'] = $event->categories()->select('*')->where('event_id','=',$id)->get();
         $data['arabic_hashtags'] =   EntityLocalization::where('entity_id','=',4)
@@ -224,29 +225,58 @@ class EventsMobileController extends Controller
 
 
         if ( $request->hasfile('test') ) {
+            //dd('test before loop');
             foreach ( $request->file('test') as $image ) {
                 $name = $image->getClientOriginalName();
-                $image->move( public_path().'/events/arabic', $name );
+                // dd($name);
+              try{  $image->move( public_path().'/events/arabic', $name );
+                 }catch( \Exception $ex ) {
+            dd($ex);
+            Session::flash('warning', 'UPLOADD!!');
+            return redirect()->back();
+                }
                 $data_arabic[] = '/public/arabic/'.$name;
             }
         }
         // Check if there is any images or files and move them to public/events
         // Arabic Event Images
         if ( $request->hasfile('arabic_images') ) {
+              $imgs_count = count($_FILES['arabic_images']['name']); 
+              if($imgs_count>5){ 
+         Session::flash('error', 'لم يتم التحديث الحد الاأقصى للصور هو 5 صور');
+        return redirect('/events/mobile');  
+               }else{
             foreach ( $request->file('arabic_images') as $image ) {
                 $name = $image->getClientOriginalName();
                 $image->move( public_path().'/events/arabic', $name );
                 $data_arabic[] = '/public/arabic/'.$name;
+                    $media = new EventMedia;
+                    $media->event_id = $request['event_id']; $media->link = '/events/arabic/'.$name;
+                     $media->type = 1;
+                    $media->save();
             }
+        }
         }
 
         // English Event Images
         if ( $request->hasfile('english_images') ) {
+             $imgs_count = count($_FILES['english_images']['name']); 
+              if($imgs_count>5){ 
+         Session::flash('error', 'لم يتم التحديث الحد الاأقصى للصور هو 5 صور');
+        return redirect('/events/mobile');  
+               }else{
             foreach ($request->file('english_images') as $image) {
                 $name = $image->getClientOriginalName();
                 $image->move( public_path().'/events/english', $name );
                 $data_english[] = '/public/english/'.$name;
+
+                 $media = new EventMedia;
+                 $media->event_id = $request['event_id'];
+                 $media->link = '/events/english/'.$name;
+                 $media->type = 1;
+                 $media->save();
             }
+          }
         }
 
         // Explode english hashtags
@@ -317,7 +347,7 @@ class EventsMobileController extends Controller
 
             /**  Youtube links  **/
            // $event->media()->update(['category_id' => $newCatId]);
-            $event->media()->delete();
+            $event->media()->where('type',2)->delete();
             $event->media()->createMany([
                 [ 'link' => $request->youtube_en_1, 'type'=> 2],
                 [ 'link' => $request->youtube_en_2, 'type'=> 2],
