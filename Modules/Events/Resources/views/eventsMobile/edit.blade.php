@@ -499,6 +499,14 @@
                                   <!--  -->
                      <input type="file" name="arabic_images[]" accept="image/*" multiple id="gallery-photo-add-ar">
                      <div class="gallery-ar"></div>
+                     <div id="old_imgs-ar">
+                     @foreach($images as $image)
+                     @if (strpos($image->link, 'arabic') !== false)
+                      <img src="{{url('/')}}{{$image->link}}" width="75" height="75">
+                     
+                      @endif
+                      @endforeach
+                    </div>
                                   <!--  -->
                                  <!--  <div class="uploader__box js-uploader__box l-center-box">
                                     <div action="your/nonjs/fallback/" method="POST">
@@ -525,6 +533,14 @@
                                   <!--  -->
                                    <input type="file" name="english_images[]" accept="image/*" multiple id="gallery-photo-add-en">
                                      <div class="gallery-en"></div>
+                                       <div id="old_imgs-en">
+                     @foreach($images as $image)
+                     @if (strpos($image->link, 'english') !== false)
+                      <img src="{{url('/')}}{{$image->link}}" width="75" height="75">
+                     
+                      @endif
+                      @endforeach
+                    </div>
                                    <!--  -->
                                <!--    <div class="uploader__box js-uploader__box l-center-box">
                                     <div action="your/nonjs/fallback/" method="POST">
@@ -638,10 +654,12 @@ $(document).ready(function(){
     };
 
     $('#gallery-photo-add-ar').on('change', function() {
+       $('#old_imgs-ar').fadeOut();
         imagesPreview(this, 'div.gallery-ar');
     });
 
     $('#gallery-photo-add-en').on('change', function() {
+      $('#old_imgs-en').fadeOut();
         imagesPreview(this, 'div.gallery-en');
     });
 }); 
