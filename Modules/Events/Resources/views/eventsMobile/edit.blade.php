@@ -603,6 +603,9 @@ $(document).ready(function(){
     $('.paid-details').fadeOut();
   });
 
+   $("#finish1").attr("type", "submit");
+    $("#finish1").val("Submit");
+
 });
 
 </script>
