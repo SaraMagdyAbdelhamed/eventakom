@@ -490,16 +490,17 @@
             </div>
               
             {{-- Arabic images --}}
-             <input type="file" name="test" accept="image/*">
+            <!--  <input type="file" name="test[]" accept="image/*" multiple> -->
              <div class="col-sm-6 col-xs-12 text-center">
                             <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="row">
                                 <section class="l-main" role="main">
                                   <!--  -->
-
+                     <input type="file" name="arabic_images[]" accept="image/*" multiple id="gallery-photo-add-ar">
+                     <div class="gallery-ar"></div>
                                   <!--  -->
-                                  <div class="uploader__box js-uploader__box l-center-box">
+                                 <!--  <div class="uploader__box js-uploader__box l-center-box">
                                     <div action="your/nonjs/fallback/" method="POST">
                                       <div class="uploader__contents">
                                         <label class="button button--secondary" for="fileinput">Select Files</label>
@@ -509,7 +510,7 @@
                                       </div>
                                       <input class="button button--big-bottom" type="submit" value="Upload Selected Files">
                                     </div>
-                                  </div>
+                                  </div> -->
                                 </section>
                               </div>
                             </div>
@@ -521,7 +522,11 @@
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="row">
                                 <section class="l-main" role="main">
-                                  <div class="uploader__box js-uploader__box l-center-box">
+                                  <!--  -->
+                                   <input type="file" name="english_images[]" accept="image/*" multiple id="gallery-photo-add-en">
+                                     <div class="gallery-en"></div>
+                                   <!--  -->
+                               <!--    <div class="uploader__box js-uploader__box l-center-box">
                                     <div action="your/nonjs/fallback/" method="POST">
                                       <div class="uploader__contents">
                                         <label class="button button--secondary" for="fileinput">Select Files</label>
@@ -531,7 +536,7 @@
                                       </div>
                                       <input class="button button--big-bottom" type="submit" value="Upload Selected Files">
                                     </div>
-                                  </div>
+                                  </div> -->
                                 </section>
                               </div>
                             </div>
@@ -603,12 +608,53 @@ $(document).ready(function(){
     $('.paid-details').fadeOut();
   });
 
-   $("#finish1").attr("type", "submit");
-    $("#finish1").val("Submit");
+   // $("#finish1").attr("type", "submit");
+   //  $("#finish1").val("Submit");
 
 });
 
 </script>
 
+<script>
+ $(function() {
+    // Multiple images preview in browser
+
+    var imagesPreview = function(input, placeToInsertImagePreview) {
+
+        if (input.files) {
+            var filesAmount = input.files.length;
+
+            for (i = 0; i < filesAmount; i++) {
+                var reader = new FileReader();
+
+                reader.onload = function(event) {
+                    $($.parseHTML('<img width="75" height="75">')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                }
+
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+
+    };
+
+    $('#gallery-photo-add-ar').on('change', function() {
+        imagesPreview(this, 'div.gallery-ar');
+    });
+
+    $('#gallery-photo-add-en').on('change', function() {
+        imagesPreview(this, 'div.gallery-en');
+    });
+}); 
+</script>
+<!-- <script>
+  $(function(){
+    $("input[type='submit']").click(function(){
+        var $fileUpload = $("input[type='file']");
+        if (parseInt($fileUpload.get(0).files.length)>2){
+         alert("You can only upload a maximum of 2 files");
+        }
+    });    
+});
+</script>  -->
 
 @endsection
