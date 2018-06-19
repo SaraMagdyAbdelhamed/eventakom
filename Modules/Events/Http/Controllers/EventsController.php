@@ -26,6 +26,8 @@ use App\EventCategory;
 use App\Currency;
 use App\EventHashtags;
 use App\BigEvent;
+use App\EventMedia;
+use App\EventTicket;
 
 
 class EventsController extends Controller
@@ -64,8 +66,9 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
+        // return response()->json(['data' => $request->all()]);
         // dd($request->all());
-        dd($_FILES);
+        // dd($_FILES);
 
         // Validate incoming request inputs with the following validation rules.
         $this->validate($request, [
@@ -110,18 +113,18 @@ class EventsController extends Controller
         // Arabic Event Images
         if ( $request->hasfile('arabic_images') ) {
             foreach ( $request->file('arabic_images') as $image ) {
-                $name = $image->getClientOriginalName();
-                $image->move( public_path().'/events/arabic', $name );
-                $data_arabic[] = '/public/arabic/'.$name;
+                $name = time().'_'.$image->getClientOriginalName();
+                $image->move( 'events/arabic', $name );
+                $data_arabic[] = 'events/arabic/'.$name;
             }
         }
-
+        
         // English Event Images
         if ( $request->hasfile('english_images') ) {
             foreach ($request->file('english_images') as $image) {
-                $name = $image->getClientOriginalName();
-                $image->move( public_path().'/events/english', $name );
-                $data_english[] = '/public/english/'.$name;
+                $name = time().'_'.$image->getClientOriginalName();
+                $image->move( 'events/english', $name );
+                $data_english[] = 'events/english/'.$name;
             }
         }
 
@@ -136,6 +139,7 @@ class EventsController extends Controller
             $event->description = $request->english_description;
             $event->longtuide   = $request->lng;
             $event->latitude    = $request->lat;
+            $event->address     = $request->address;
             $event->venue       = $request->english_venu;
 
             $event->age_range_id= $request->age_range;
@@ -157,7 +161,6 @@ class EventsController extends Controller
             $event->code        = $request->code_number;
             $event->mobile      = $request->mobile_number;
             $event->created_by  = Auth::id();
-            // TODO: youtube links & images
 
             $event->save();
 
@@ -189,6 +192,45 @@ class EventsController extends Controller
                 [ 'link' => $request->youtube_ar_1, 'type'=> 2],
                 [ 'link' => $request->youtube_ar_2, 'type'=> 2],
             ]);
+
+            /** Arabic Images **/
+            if ( isset($data_arabic) && !empty($data_arabic) ) {
+                foreach( $data_arabic as $img_ar ) {
+                    $media = new EventMedia;
+
+                    $media->event_id = $event->id;
+                    $media->link = $img_ar;
+                    $media->type = 1;
+                    $media->save();
+                }
+            }
+
+            /** English Images **/
+            if ( isset($data_english) && !empty($data_english) ) {
+                foreach( $data_english as $img_en ) {
+                    $media = new EventMedia;
+
+                    $media->event_id = $event->id;
+                    $media->link = $img_en;
+                    $media->type = 1;
+                    $media->save();
+                }
+            }
+
+            /** Ticket price **/
+            try {
+                $ticket = new EventTicket;
+                $ticket->event_id = $event->id;
+                $ticket->name     = $event->name;
+                $ticket->price    = $event->price;
+                $ticket->available_tickets = $request->number_of_tickets;
+                $ticket->current_available_tickets = $request->number_of_tickets;
+                $ticket->currency_id       = $request->currency;
+                $ticket->save();
+            } catch(\Exception $ex) {
+                Session::flash('warning', 'price error!');
+                return redirect()->back();
+            }
 
         } catch( \Exception $ex ) {
             dd($ex);
@@ -240,7 +282,8 @@ class EventsController extends Controller
         $data['genders'] = Genders::all();
         $data['age_range'] = Age_Ranges::all();
         $data['categories'] = EventCategory::all();
-        $data['currencies'] = Currency::all();        
+        $data['currencies'] = Currency::all();  
+        $data['ticket']    = EventTicket::where('event_id', $id)->first();    
         
         return view('events::backend_event_edit', $data);
     }
@@ -252,6 +295,200 @@ class EventsController extends Controller
      */
     public function update(Request $request)
     {
+        // return response()->json(['data' => $request->all()]);
+        // dd($request->all());
+        // dd($_FILES);
+
+        // Validate incoming request inputs with the following validation rules.
+        $this->validate($request, [
+            'english_event_name'    => 'required|min:2|max:100',
+            'english_description'   => 'required|min:2|max:250',
+            'lat'                   => 'required|min:2|max:50',
+            'lng'                   => 'required',
+            'english_venu'          => 'required',
+            'english_hashtags'      => 'required',
+            'gender'                => 'required',
+            'age_range'             => 'required',
+            'start_date'            => 'required',
+            'start_time'            => 'required',
+            'end_date'              => 'required',
+            'end_time'              => 'required',
+            'categories'            => 'required',
+
+            'arabic_event_name'     => 'required|min:2|max:100',
+            'arabic_description'    => 'required|min:2|max:250',
+            'arabic_venu'           => 'required|',
+            'arabic_hashtags'       => 'required|',
+
+            'is_paid'               => 'required',
+            'price'                 => 'numeric',
+            'currency'              => 'numeric',
+            'number_of_tickets'     => 'numeric',
+
+            'website'               => 'required',
+            'email'                 => 'required',
+            'code_number'           => 'required',
+            'mobile_number'         => 'required',
+
+            'youtube_ar_1'          => 'required|',
+            'youtube_en_1'          => 'required|',
+            'youtube_ar_2'          => 'required|',
+            'youtube_en_2'          => 'required|',
+            // 'arabic_images'         => 'required|',
+            // 'english_images'        => 'required',
+        ]);
+
+        // Check if there is any images or files and move them to public/events
+        // Arabic Event Images
+        if ( $request->hasfile('arabic_images') ) {
+            foreach ( $request->file('arabic_images') as $image ) {
+                $name = time().'_'.$image->getClientOriginalName();
+                $image->move( 'events/arabic', $name );
+                $data_arabic[] = 'events/arabic/'.$name;
+            }
+        }
+        
+        // English Event Images
+        if ( $request->hasfile('english_images') ) {
+            foreach ($request->file('english_images') as $image) {
+                $name = time().'_'.$image->getClientOriginalName();
+                $image->move( 'events/english', $name );
+                $data_english[] = 'events/english/'.$name;
+            }
+        }
+
+        // Explode english hashtags
+        $hashtags = explode(',', $request->english_hashtags);
+
+        // Insert Event in events table
+        try {
+            $event = EventBackend::find($request->id);
+
+            $event->name        = $request->english_event_name;
+            $event->description = $request->english_description;
+            $event->longtuide   = $request->lng;
+            $event->latitude    = $request->lat;
+            $event->address     = $request->address;
+            $event->venue       = $request->english_venu;
+
+            $event->age_range_id= $request->age_range;
+            $event->gender_id   = $request->gender;
+
+            // concatinate start_date + start_time to make them start_datetime
+            $event->start_datetime = date('Y-m-d', strtotime($request->start_date)) .' '. date('h:i:s', strtotime($request->start_time));
+
+            // concatinate end_date + end_time to make them end_datetime
+            $event->end_datetime = date('Y-m-d', strtotime($request->end_date)) .' '. date('h:i:s', strtotime($request->end_time));
+
+            $event->suggest_big_event = $request->is_big_event ? : 0;   // check if value is missing then replace it with zero
+            $event->is_active   = $request->is_active ? : 0;            // check if value is missing then replace it with zero
+
+            $event->is_paid     = $request->is_paid;
+
+            $event->website     = $request->website;
+            $event->email       = $request->email;
+            $event->code        = $request->code_number;
+            $event->mobile      = $request->mobile_number;
+            $event->created_by  = Auth::id();
+
+            $event->save();
+
+            /**  INSERT English Hashtags **/
+            // search if the hashtag is already exists, if exists get its ID, if not exists insert the hashtag into `hash_tags` table and get its id.
+            for($i=0; $i<count($hashtags); $i++) {
+                // insert hashtag into `hash_tag` table only if it isn't exists.
+                if( EventHashtags::where('name', '=', $hashtags[$i])->first() == NULL ) {
+                    $hash = new EventHashtags;
+                    $hash->name = $hashtags[$i];
+                    $hash->save();
+                }
+
+                $id = EventHashtags::where('name', '=', $hashtags[$i])->first()->id;    // get hashtage id from `hash_tag` table
+
+                // attach event's hashtags with
+                $event->hashtags()->attach($id);
+            }
+
+            /**  INSERT Categories **/
+            for($i=0; $i<count($request->categories); $i++) {
+                $event->categories()->attach( $request->categories[$i] );
+            }
+
+            /**  Youtube links  **/
+            $event->media()->delete();
+            $event->media()->createMany([
+                [ 'link' => $request->youtube_en_1, 'type'=> 2],
+                [ 'link' => $request->youtube_en_2, 'type'=> 2],
+                [ 'link' => $request->youtube_ar_1, 'type'=> 2],
+                [ 'link' => $request->youtube_ar_2, 'type'=> 2],
+            ]);
+
+            /** Arabic Images **/
+            if ( isset($data_arabic) && !empty($data_arabic) ) {
+                foreach( $data_arabic as $img_ar ) {
+                    $media = new EventMedia;
+
+                    $media->event_id = $event->id;
+                    $media->link = $img_ar;
+                    $media->type = 1;
+                    $media->save();
+                }
+            }
+
+            /** English Images **/
+            if ( isset($data_english) && !empty($data_english) ) {
+                foreach( $data_english as $img_en ) {
+                    $media = new EventMedia;
+
+                    $media->event_id = $event->id;
+                    $media->link = $img_en;
+                    $media->type = 1;
+                    $media->save();
+                }
+            }
+
+            /** Ticket price **/
+            try {
+                $ticket = new EventTicket;
+                $ticket->event_id = $event->id;
+                $ticket->name     = $event->name;
+                $ticket->price    = $event->price;
+                $ticket->available_tickets = $request->number_of_tickets;
+                $ticket->current_available_tickets = $request->number_of_tickets;
+                $ticket->currency_id       = $request->currency;
+                $ticket->save();
+            } catch(\Exception $ex) {
+                Session::flash('warning', 'price error!');
+                return redirect()->back();
+            }
+
+        } catch( \Exception $ex ) {
+            dd($ex);
+            Session::flash('warning', 'Error 1');
+            return redirect()->back();
+        }
+
+        // Insert Arabic localizations
+        try {
+            Helper::edit_entity_localization('events', 'name',        $event->id, 2, $request->arabic_event_name     );             // arabic_event_name
+            Helper::edit_entity_localization('events', 'description', $event->id, 2, $request->arabic_description    );             // arabic_description
+            Helper::edit_entity_localization('events', 'venue',       $event->id, 2, $request->arabic_venu           );             // arabic_venu
+
+            // Explode hashtags into an array
+            $arabic_hashtags = explode(',', $request->arabic_hashtags);
+            for($i=0; $i<count($arabic_hashtags); $i++) {
+                // Add arabic hashtags in entity_localization table
+                Helper::edit_entity_localization('events', 'hashtag', $event->id, 2, $arabic_hashtags[$i]);                        // arabic_hashtags
+            }
+        } catch(\Exception $ex) {
+            dd($ex);
+            Session::flash('warning', 'Error 2');
+            return redirect()->back();
+        }
+
+        // flash success message & redirect to list backend events
+        Session::flash('success', 'Event Added Successfully! تم إضافة الحدث بنجاح');
+        return redirect('/events/backend');
     }
 
     /**

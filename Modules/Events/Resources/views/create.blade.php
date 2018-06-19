@@ -21,18 +21,6 @@
     border: 0px;
     padding: 12px 36px;
   }
-
-  .main-section{
-      margin:0 auto;
-      padding: 20px;
-      margin-top: 100px;
-      background-color: #fff;
-      box-shadow: 0px 0px 20px #c1c1c1;
-  }
-  .fileinput-remove,
-  .fileinput-upload{
-      display: none;
-  }
 </style>
 
 
@@ -94,6 +82,7 @@
                 <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
                 <input type="hidden" name="lat" id="lat" value="1.234">
                 <input type="hidden" name="lng" id="lng" value="2.345">
+                <input type="hidden" name="address" id="address" value="">
               </div>
             </div>
 
@@ -472,22 +461,11 @@
             </div>
               
           {{-- Arabic images --}}
-          <div class="col-sm-6 col-xs-12 text-center">
-              <div class="form-group">
-                  <div class="file-loading">
-                      <input id="file-1" type="file" name="file[]" multiple class="file" data-overwrite-initial="false">
-                  </div>
-              </div>
-          </div>
+          <input type="file" name="arabic_images[]" multiple>
 
           {{-- English images --}}
-          <div class="col-sm-6 col-xs-12 text-center">
-              <div class="form-group">
-                  <div class="file-loading">
-                      <input id="file-1" type="file" name="file1[]" multiple class="file" data-overwrite-initial="false">
-                  </div>
-              </div>
-          </div>
+          <input type="file" name="english_images[]" multiple>
+
 
           </div>
 

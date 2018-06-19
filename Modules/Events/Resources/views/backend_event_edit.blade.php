@@ -2,6 +2,12 @@
 
 @section('content')
 
+@if ($errors->any())
+  @foreach ($errors->all() as $error)
+      <div class="alert alert-danger">{{ $error }}</div>
+  @endforeach    
+@endif
+
 <style>
   /* Always set the map height explicitly to define the size of the div
    * element that contains the map. */
@@ -47,7 +53,8 @@
 
       <form id="horizontal-pill-steps" action="{{ route('event_backend.update') }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
-        
+        <input type="hidden" name="id" value="{{ $event->id }}">\
+
         <h3>Info in En</h3>
         <fieldset>
           <div class="row">
@@ -56,7 +63,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">Event name</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="english_event_name" value="{{ $event->name ? : '' }}">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required 
+                  id="Event_name" name="english_event_name" value="{{ $event->name ? : '' }}">
                 @if ($errors->has('event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('event_name') }}</span>
                 @endif
@@ -68,7 +76,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">Description</label>
-                <textarea class="master_input" id="description" placeholder="Description" Required name="english_description">{{ $event->description ? : '' }}</textarea>
+                <textarea class="master_input" id="description" placeholder="Description" Required 
+                  name="english_description">{{ $event->description ? : '' }}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
                 @endif
@@ -90,7 +99,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">Venue</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="english_venu" value="{{ $event->venue ? : '' }}">
+                <input class="master_input" type="text" placeholder="ex:CFC" Required 
+                  id="venue" name="english_venu" value="{{ $event->venue ? : '' }}">
                 @if ($errors->has('english_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_venu') }}</span>
                 @endif
@@ -154,7 +164,8 @@
               <div class="master_field">
                 <label class="master_label" for="start_date">start date</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="start date" Required id="start_date" name="start_date" value="{{ $event->start_datetime ? $event->start_datetime->format('d/m/Y') : '' }}">
+                  <input class="datepicker master_input" type="text" placeholder="start date" Required 
+                    id="start_date" name="start_date" value="{{ $event->start_datetime ? $event->start_datetime->format('d/m/Y') : '' }}">
                 </div>
                 @if ($errors->has('start_date'))
                   <span class="master_message color--fadegreen">{{ $errors->first('start_date') }}</span>
@@ -210,11 +221,13 @@
               <div class="master_field">
                 <label class="master_label mandatory" for="category">category</label>
                 <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="categories[]">
+
                   @if ( isset($categories) && !empty($categories) )
                       @foreach ($categories as $category)
-                          <option value="{{ $category->id }}" {{ $category->id == $event->categories[$loop->index]->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                          <option value="{{ $category->id }}" {{ isset( $event->categories[$loop->index] )  ? 'selected' : ''  }} >{{ $category->name }}</option>
                       @endforeach
                   @endif
+                  
                 </select>
                 @if ($errors->has('categories'))
                   <span class="master_message color--fadegreen">{{ $errors->first('categories') }}</span>
@@ -292,7 +305,7 @@
                     @endforeach
                 @endif
                 
-                <input type="text" value="المملكة,الرياضة" data-role="tagsinput" name="arabic_hashtags" value="{{ \Helper::get_hashtags($event->id, 2) ? $hashtagsAr : '' }}">
+                <input type="text" data-role="tagsinput" name="arabic_hashtags" value="{{ \Helper::get_hashtags($event->id, 2) ? $hashtagsAr : '' }}">
               </div>
               @if ($errors->has('arabic_hashtags'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_hashtags') }}</span>
@@ -310,9 +323,9 @@
             <div class="col-xs-12">
               <div class="master_field">
                 <label class="master_label mandatory">Is it free or paid ?</label>
-                <input class="icon" type="radio" name="is_paid" id="radbtn_2_free" checked="true" value="0">
+              <input class="icon" type="radio" name="is_paid" id="radbtn_2_free" checked="{{ $event->is_paid ? false : true }}" value="0">
                 <label for="radbtn_2_free">free</label>
-                <input class="icon" type="radio" name="is_paid" id="radbtn_3_paid" value="1">
+                <input class="icon" type="radio" name="is_paid" checked="{{ $event->is_paid ? true : false }}" value="1" id="event_is_paid">
                 <label for="radbtn_3_paid">paid</label>
               </div>
             </div>
@@ -324,7 +337,7 @@
               <div class="col-xs-8">
                 <div class="master_field">
                   <label class="master_label" for="Price">Price</label>
-                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price" value="{{ old('price') }}">
+                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price" value="{{ $ticket->price ? : 0 }}">
                   @if ($errors->has('price'))
                     <span class="master_message color--fadegreen">{{ $errors->first('price') }}</span>
                   @endif
@@ -340,7 +353,7 @@
                     <option value="" disabled selected>-- Please Select a Currency Symbol --</option>
                     @if ( isset($currencies) && !empty($currencies) )
                         @foreach ($currencies as $currency)
-                            <option value="{{ $currency->id }}">{{ $currency->symbol }}</option>
+                            <option value="{{ $currency->id }}" {{ $currency->id == $ticket->currency_id ? 'selected' : '' }}>{{ $currency->symbol }}</option>
                         @endforeach
                     @endif
                   </select>
@@ -355,7 +368,8 @@
               <div class="col-xs-12">
                 <div class="master_field">
                   <label class="master_label" for="Available_tickets">Available tickets</label>
-                  <input class="master_input" type="number" placeholder="5" min="0" Required id="Available_tickets" name="number_of_tickets" value="{{ old('number_of_tickets') }}">
+                  <input class="master_input" type="number" placeholder="5" min="0" Required 
+                    id="Available_tickets" name="number_of_tickets" value="{{ $ticket->available_tickets ? : 0 }}">
                   @if ($errors->has('number_of_tickets'))
                   <span class="master_message color--fadegreen">{{ $errors->first('number_of_tickets') }}</span>
                 @endif
@@ -365,7 +379,6 @@
           </div>
         </fieldset>
 
-
         <h3>Contact Info</h3>
         <fieldset>
           <div class="row">
@@ -374,7 +387,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Website">Website</label>
-                <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website" name="website" value="{{ old('website') }}">
+                <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website" 
+                    name="website" value="{{ $event->website ? : '' }}">
                 @if ($errors->has('website'))
                   <span class="master_message color--fadegreen">{{ $errors->first('website') }}</span>
                 @endif
@@ -386,7 +400,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="e_email">email</label>
-                <input class="master_input" type="email" placeholder="email" Required id="e_email" name="email" value="{{ old('email') }}">
+                <input class="master_input" type="email" placeholder="email" Required id="e_email" 
+                    name="email" value="{{ $event->email ? : '' }}">
                 @if ($errors->has('email'))
                   <span class="master_message color--fadegreen">{{ $errors->first('email') }}</span>
                 @endif
@@ -398,7 +413,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Code_numbe">Code number</label>
-                <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe" name="code_number" value="{{ old('code_number') }}">
+                <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe" 
+                    name="code_number" value="{{ $event->code ? : '' }}">
                 @if ($errors->has('code_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('code_number') }}</span>
                 @endif
@@ -410,7 +426,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Mobile_number">mobile number</label>
-                <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number" name="mobile_number" value="{{ old('mobile_number') }}">
+                <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number" 
+                    name="mobile_number" value="{{ $event->mobile ? : '' }}">
                 @if ($errors->has('mobile_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('mobile_number') }}</span>
                 @endif
@@ -418,7 +435,6 @@
             </div>
           </div>
         </fieldset>
-
 
         <h3>Media</h3>
         <fieldset>
@@ -429,7 +445,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">Add YouTube video (1) Link in Arabic</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_1" value="{{ old('youtube_ar_1') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" 
+                    name="youtube_ar_1" value="{{ $event->media[2]->link }}">
                 @if ($errors->has('youtube_ar_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_1') }}</span>
                 @endif
@@ -440,7 +457,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">Add YouTube video (1) Link in English</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_1" value="{{ old('youtube_en_1') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" 
+                    name="youtube_en_1" value="{{  $event->media[0]->link }}">
                 @if ($errors->has('youtube_en_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_1') }}</span>
                 @endif
@@ -451,7 +469,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">Add YouTube video (2) Link in Arabic</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_2" value="{{ old('youtube_ar_2') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" 
+                    name="youtube_ar_2" value="{{  $event->media[3]->link }}">
                 @if ($errors->has('youtube_ar_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_2') }}</span>
                 @endif
@@ -462,7 +481,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">Add YouTube video (2) Link in English</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_2" value="{{ old('youtube_en_2') }}">
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" 
+                    name="youtube_en_2" value="{{  $event->media[1]->link }}">
                 @if ($errors->has('youtube_en_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_2') }}</span>
                 @endif
@@ -473,38 +493,10 @@
             </div>
               
             {{-- Arabic images --}}
-            <div class="col-sm-6 col-xs-12 text-center">
-              <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
-              <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                <div class="row">
-                  <section class="l-main" role="main">
-                    <div class="uploader__box js-uploader__box l-center-box">
-                        <div class="uploader__contents">
-                          <label class="button button--secondary" for="fileinput">Select Files</label>
-                          <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files">
-                        </div>
-                    </div>
-                  </section>
-                </div>
-              </div>
-            </div>
+            <input type="file" name="arabic_images[]" multiple>
 
             {{-- English images --}}
-            <div class="col-sm-6 col-xs-12 text-center">
-              <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
-              <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                <div class="row">
-                  <section class="l-main" role="main">
-                    <div class="uploader__box js-uploader__box l-center-box">
-                        <div class="uploader__contents">
-                          <label class="button button--secondary" for="fileinput">Select Files</label>
-                          <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files" name="english_images[]">
-                        </div>
-                    </div>
-                  </section>
-                </div>
-              </div>
-            </div>
+            <input type="file" name="english_images[]" multiple>
 
           </div>
 
@@ -603,7 +595,13 @@ $(document).ready(function() {
   });
   
 });
+
 </script>
 
+<script>
+    @if( $event->is_paid == 1 )
+      $("#event_is_paid").click();
+    @endif
+</script>
 
 @endsection
