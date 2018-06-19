@@ -30,11 +30,6 @@
     <script src="{{ asset('js/modernizr.js') }}"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-    {{-- File input --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/js/fileinput.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/themes/fa/theme.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" type="text/javascript"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" type="text/javascript"></script>
   </head>
   <body>
     <div class="toggled" id="wrapper">
@@ -155,7 +150,7 @@
             <!-- Sidebar-->
             <nav class="navbar navbar-fixed-top   bshadow--0 bradius--noborder " id="sidebar-wrapper" role="navigation">
               <ul class="sidebar-navigation">
-                <li class="brand   bshadow--0"><a href="{{ Helper::route('about') }}"> <img src="{{ asset('img/logo/logo__light.svg') }}" alt="ايفنتكوم"></a></li>
+                <li class="brand   bshadow--0"><a href="{{ route('about') }}"> <img src="{{ asset('img/logo/logo__light.svg') }}" alt="ايفنتكوم"></a></li>
               </ul>
               <div class="coverglobal text-center bshadow--2" style="background:undefined url( '{{ asset('img/covers/dummy.jpg') }}') no-repeat center center; background-size:cover;">
                 <button class="hamburger is-closed" type="button" data-toggle="offcanvas"><span class="hamb-top"></span><span class="hamb-middle"></span><span class="hamb-bottom"></span></button>
@@ -627,7 +622,7 @@
   </script> 
   {{-- Google maps API key --}}
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
-
+  
   {{-- Map script --}}
   <script>
 
@@ -640,6 +635,7 @@
           var myLatlng = {lat: 30.042701, lng: 31.432662};
         @endif
         
+        var geocoder = new google.maps.Geocoder;
 
         map = new google.maps.Map(document.getElementById('map'), {
           center: new google.maps.LatLng(myLatlng),
@@ -658,6 +654,13 @@
               document.getElementById("lat").value = event.latLng.lat();
               document.getElementById("lng").value = event.latLng.lng();
 
+              geocoder.geocode({'latLng': event.latLng}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                  if (results[0]) {
+                    document.getElementById("address").value = results[0].formatted_address;
+                  }
+                }
+              });
           });
 
           function placeMarker(location) {
@@ -676,11 +679,6 @@
 
       }
   </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/js/fileinput.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/themes/fa/theme.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" type="text/javascript"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" type="text/javascript"></script>
 
 
 <script type="text/javascript">

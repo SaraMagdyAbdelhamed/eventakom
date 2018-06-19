@@ -26,6 +26,7 @@ use App\EventCategory;
 use App\Currency;
 use App\EventHashtags;
 use App\BigEvent;
+use App\EventMedia;
 
 
 class EventsController extends Controller
@@ -64,8 +65,9 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
+        // return response()->json(['data' => $request->all()]);
         // dd($request->all());
-        dd($_FILES);
+        // dd($_FILES);
 
         // Validate incoming request inputs with the following validation rules.
         $this->validate($request, [
@@ -110,18 +112,18 @@ class EventsController extends Controller
         // Arabic Event Images
         if ( $request->hasfile('arabic_images') ) {
             foreach ( $request->file('arabic_images') as $image ) {
-                $name = $image->getClientOriginalName();
-                $image->move( public_path().'/events/arabic', $name );
-                $data_arabic[] = '/public/arabic/'.$name;
+                $name = time().'_'.$image->getClientOriginalName();
+                $image->move( 'events/arabic', $name );
+                $data_arabic[] = 'events/arabic/'.$name;
             }
         }
-
+        
         // English Event Images
         if ( $request->hasfile('english_images') ) {
             foreach ($request->file('english_images') as $image) {
-                $name = $image->getClientOriginalName();
-                $image->move( public_path().'/events/english', $name );
-                $data_english[] = '/public/english/'.$name;
+                $name = time().'_'.$image->getClientOriginalName();
+                $image->move( 'events/english', $name );
+                $data_english[] = 'events/english/'.$name;
             }
         }
 
@@ -136,6 +138,7 @@ class EventsController extends Controller
             $event->description = $request->english_description;
             $event->longtuide   = $request->lng;
             $event->latitude    = $request->lat;
+            $event->address     = $request->address;
             $event->venue       = $request->english_venu;
 
             $event->age_range_id= $request->age_range;
@@ -157,7 +160,6 @@ class EventsController extends Controller
             $event->code        = $request->code_number;
             $event->mobile      = $request->mobile_number;
             $event->created_by  = Auth::id();
-            // TODO: youtube links & images
 
             $event->save();
 
@@ -189,6 +191,30 @@ class EventsController extends Controller
                 [ 'link' => $request->youtube_ar_1, 'type'=> 2],
                 [ 'link' => $request->youtube_ar_2, 'type'=> 2],
             ]);
+
+            /** Arabic Images **/
+            if ( isset($data_arabic) && !empty($data_arabic) ) {
+                foreach( $data_arabic as $img_ar ) {
+                    $media = new EventMedia;
+
+                    $media->event_id = $event->id;
+                    $media->link = $img_ar;
+                    $media->type = 1;
+                    $media->save();
+                }
+            }
+
+            /** English Images **/
+            if ( isset($data_english) && !empty($data_english) ) {
+                foreach( $data_english as $img_en ) {
+                    $media = new EventMedia;
+
+                    $media->event_id = $event->id;
+                    $media->link = $img_en;
+                    $media->type = 1;
+                    $media->save();
+                }
+            }
 
         } catch( \Exception $ex ) {
             dd($ex);

@@ -56,7 +56,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">Event name</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="english_event_name" value="{{ $event->name ? : '' }}">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required 
+                  id="Event_name" name="english_event_name" value="{{ $event->name ? : '' }}">
                 @if ($errors->has('event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('event_name') }}</span>
                 @endif
@@ -68,7 +69,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">Description</label>
-                <textarea class="master_input" id="description" placeholder="Description" Required name="english_description">{{ $event->description ? : '' }}</textarea>
+                <textarea class="master_input" id="description" placeholder="Description" Required 
+                  name="english_description">{{ $event->description ? : '' }}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
                 @endif
@@ -90,7 +92,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">Venue</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="english_venu" value="{{ $event->venue ? : '' }}">
+                <input class="master_input" type="text" placeholder="ex:CFC" Required 
+                  id="venue" name="english_venu" value="{{ $event->venue ? : '' }}">
                 @if ($errors->has('english_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_venu') }}</span>
                 @endif
@@ -154,7 +157,8 @@
               <div class="master_field">
                 <label class="master_label" for="start_date">start date</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="start date" Required id="start_date" name="start_date" value="{{ $event->start_datetime ? $event->start_datetime->format('d/m/Y') : '' }}">
+                  <input class="datepicker master_input" type="text" placeholder="start date" Required 
+                    id="start_date" name="start_date" value="{{ $event->start_datetime ? $event->start_datetime->format('d/m/Y') : '' }}">
                 </div>
                 @if ($errors->has('start_date'))
                   <span class="master_message color--fadegreen">{{ $errors->first('start_date') }}</span>
@@ -210,11 +214,13 @@
               <div class="master_field">
                 <label class="master_label mandatory" for="category">category</label>
                 <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="categories[]">
+
                   @if ( isset($categories) && !empty($categories) )
                       @foreach ($categories as $category)
-                          <option value="{{ $category->id }}" {{ $category->id == $event->categories[$loop->index]->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                          <option value="{{ $category->id }}" {{ $category->id == $event->categories[0]->id ? 'selected' : '' }}>{{ $category->name }}</option>
                       @endforeach
                   @endif
+                    
                 </select>
                 @if ($errors->has('categories'))
                   <span class="master_message color--fadegreen">{{ $errors->first('categories') }}</span>
@@ -365,7 +371,6 @@
           </div>
         </fieldset>
 
-
         <h3>Contact Info</h3>
         <fieldset>
           <div class="row">
@@ -418,7 +423,6 @@
             </div>
           </div>
         </fieldset>
-
 
         <h3>Media</h3>
         <fieldset>
