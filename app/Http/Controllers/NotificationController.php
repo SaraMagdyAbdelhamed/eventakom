@@ -45,39 +45,69 @@ class NotificationController extends Controller
     	}
     	else
     	{
-    		$ids=[];
-    		if(isset($request['gender_m']))
+    		$users=Users::where(function($q) use ($request){
+    			if(isset($request['gender_m']))
     		{
-    			$ids[]=Users::where('id',1)->get();
+    			$q->where('gender_id',1);
+    			if(isset($request['gender_f']))
+    		{
+    			$q->orwhere('gender_id',2);
     		}
-    		if(isset($request['gender_f']))
+    		}
+    		else if(isset($request['gender_f']))
     		{
-    			$ids[]=Users::where('id',2)->get();
+    			$q->where('gender_id',2);
     		}
     		if(isset($request['age']))
     		{
-    			// $id=[];
+    			 $id=[];
     			foreach ($request['age'] as $key => $value) {
     				$age_range=Age_Ranges::where('id',$value)->first();
-    				$id=Helper::ageRange_users($age_range->from,$age_range->to);
-    				$ids[]=Users::whereIn('id',$id)->get();
+    				$id[]=Helper::ageRange_users($age_range->from,$age_range->to);
+    				
     			}
-    			
+    			$q->whereIn('id',$id);
     			
     			// dd($ids);
     		}
     		if(isset($request['category']))
     		{
+    			$ids=[];
     			foreach ($request['category'] as $key => $value) {
     				$users_categories=UsersInterest::where('interest_id',$value)->get();
     				foreach ($users_categories as $key1 => $value1) {
-    					$ids[]=Users::where('id',$value1['user_id'])->get();
+    					$ids[]=$value1['user_id'];
     				}
+
     			}
+    			$q->whereIn('id',$ids);
     			// dd($ids);
     			
     		}
-    		dd($ids);
+
+
+    		})->get();
+    		
+    		
+    		$notification = Notification::create([
+    			"msg"=>$request['msg'],
+    			"msg_ar"=>$request['msg_ar'],
+    			"notification_type_id"=>1,
+    			"is_sent"=>0,
+    			"is_read"=>0,
+    			"user_id"=>\Auth::user()->id
+    		]);
+    		// $users= Users::all();
+    		foreach ($users as $key => $value) {
+    			NotificationPush::create([
+    				"notification_id"=>$notification->id,
+    				"user_id"=>$value['id'],
+    				"device_token"=>$value['device_token'],
+    				"mobile_os"=>$value['mobile_os'],
+    				"lang_id"=>$value['lang_id']
+    			]);
+    		}
+    		    		// dd($users);
     	}
     return redirect()->back();
     }
