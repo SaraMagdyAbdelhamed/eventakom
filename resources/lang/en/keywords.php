@@ -172,7 +172,8 @@
         'offers'    => 'Offers and Deals',
         'placeName' => 'Place Name',
         'rejected'=>'Rejected',
-        'bigevents' => 'أهم الأحداث',
+        'bigevents' => 'Big Events',
+        'choosecategory' => 'Choose a category',
 		
         //Statistics
         'statistics'=>'Statistics',

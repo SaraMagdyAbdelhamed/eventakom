@@ -183,7 +183,8 @@
         // Offers & Deals
         'offers'    => 'العروض والصفقات',
         'placeName' => 'اسم المكان',
-        'bigevents' => 'أهم الأحداث'
+        'bigevents' => 'أهم الأحداث',
+        'choosecategory' => 'إختر تصنيف'
     ];
 
 ?>
