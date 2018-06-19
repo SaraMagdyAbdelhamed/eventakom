@@ -56,4 +56,9 @@ class ShopController extends Controller
         } 
         return  redirect()->route('shops');
     }
+
+    public function add_shop(Request $request)
+    {
+    dd($request);
+    }
 }

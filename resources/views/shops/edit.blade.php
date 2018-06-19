@@ -30,13 +30,13 @@
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Place_name">Place name</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
                            <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Place_address">Place Address</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_address"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_address" name="place_address"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
                           
@@ -44,50 +44,50 @@
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Phone_number">Phone number</label>
-                              <input class="master_input" type="number" placeholder="0020123456789" Required id="Phone_number"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="number" placeholder="0020123456789" Required id="Phone_number" name="phone"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="Website">Website</label>
-                              <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">Other info</label>
-                              <textarea class="master_input" name="textarea" id="Other_info" placeholder="Other info" Required></textarea><span class="master_message inherit">message content</span>
+                              <textarea class="master_input" name="info" id="Other_info" placeholder="Other info" Required></textarea><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-sm-12 col-xs-12">
                             <div class="master_field">
                               <label class="master_label">Opening days</label>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days" id="Opening_days_1">
+                                <input type="checkbox" name="days[1]" id="Opening_days_1">
                                 <label for="Opening_days_1">saturday</label>
                               </div>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days" id="Opening_days_2">
+                                <input type="checkbox" name="days[2]" id="Opening_days_2">
                                 <label for="Opening_days_2">sunday</label>
                               </div>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days" id="Opening_days_3">
+                                <input type="checkbox" name="days[3]" id="Opening_days_3">
                                 <label for="Opening_days_3">monday</label>
                               </div>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days" id="Opening_days_4">
+                                <input type="checkbox" name="days[4]" id="Opening_days_4">
                                 <label for="Opening_days_4">tuesday</label>
                               </div>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days" id="Opening_days_5">
+                                <input type="checkbox" name="days[5]" id="Opening_days_5">
                                 <label for="Opening_days_5">wednesday</label>
                               </div>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days" id="Opening_days_6">
+                                <input type="checkbox" name="days[6]" id="Opening_days_6">
                                 <label for="Opening_days_6">thursday</label>
                               </div>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days" id="Opening_days_7">
+                                <input type="checkbox" name="days[7]" id="Opening_days_7">
                                 <label for="Opening_days_7">friday</label>
                               </div>
                             </div>
@@ -96,26 +96,26 @@
                             <div class="col-sm-2 col-xs-4">
                               <div class="master_field">
                                 <label class="master_label" for="branches_1">branch 1 name</label>
-                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1"><span class="master_message color--fadegreen">message</span>
+                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1" name="branch_name[1]"><span class="master_message color--fadegreen">message</span>
                               </div>
                             </div>
                             <div class="col-sm-3 col-xs-4">
                               <div class="master_field">
                                 <label class="master_label" for="branches_1">branch 1 name in arabic</label>
-                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1"><span class="master_message color--fadegreen">message</span>
+                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1" name="branch_name_ar[1]"><span class="master_message color--fadegreen">message</span>
                               </div>
                             </div>
                             <div class="col-sm-3 col-xs-4">
                               <div class="master_field">
                                 <label class="master_label" for="branches_1">branch 1 address</label>
-                                <input class="master_input" type="text" placeholder="branch 1 address" Required id="branches_1"><span class="master_message color--fadegreen">message</span>
+                                <input class="master_input" type="text" placeholder="branch 1 address" Required id="branches_1" name="branch_address[1]"><span class="master_message color--fadegreen">message</span>
                               </div>
                             </div>
                             <div class="col-sm-2 col-xs-6">
                               <div class="master_field">
                                 <label class="master_label" for="start_time">start date time</label>
                                 <div class="bootstrap-timepicker">
-                                  <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time">
+                                  <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time"name="branch_start[1]">
                                 </div><span class="master_message inherit">message content</span>
                               </div>
                             </div>
@@ -123,7 +123,7 @@
                               <div class="master_field">
                                 <label class="master_label" for="end_time">end date time</label>
                                 <div class="bootstrap-timepicker">
-                                  <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time">
+                                  <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="branch_end[1]">
                                 </div><span class="master_message inherit">message content</span>
                               </div>
                             </div>
@@ -307,7 +307,7 @@
       $('.add-more-branch').on('click' , function(){
        var currentCount =$('.branch-container').length;
        var nextCount = currentCount + 1 ;
-       $('.branch-container:last').after(" <div class='branch-container'> <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name in arabic</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" address</label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_"+nextCount+"'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>start date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>end date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"'></div><span class='master_message inherit'>message content</span></div></div></div> ");
+       $('.branch-container:last').after(" <div class='branch-container'> <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name in arabic</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" address</label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>start date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>end date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div></div> ");
       
        var currentCountAr =$('.branch-container-ar').length;
        var nextCount = currentCountAr + 1 ;
