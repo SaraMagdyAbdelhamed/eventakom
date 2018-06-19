@@ -13,7 +13,7 @@
               </div>
             </div>
           </div>
-          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{ route('event_backend.add') }}">Add New Event</a>
+          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{ route('event_backend.add') }}">@lang('keywords.addNew')</a>
           </div>
         </div>
       </div>
