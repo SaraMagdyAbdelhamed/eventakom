@@ -13,6 +13,6 @@ class Day extends Model
 
      public function day()
     {
-    	return $this->belongsTo('App\ShopDay','day_id');
+    	return $this->hasMany('App\ShopDay','day_id');
     }
 }

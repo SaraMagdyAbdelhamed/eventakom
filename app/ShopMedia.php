@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ShopBranch extends Model
+class ShopMedia extends Model
 {
     protected $id = 'id';
-    protected $table = 'shop_branches';
-    protected $fillable = ['shop_id', 'branch','address','longtuide','latitude'];
+    protected $table = 'shop_media';
+    protected $fillable = ['shop_id', 'link','type'];
     public $timestamps = false;
 
 

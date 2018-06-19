@@ -177,6 +177,7 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     // shops
     Route::get('/shops', 'ShopController@index')->name('shops');
     Route::get('/add_shop', 'ShopController@add')->name('add_shop');
-     Route::get('/edit_shop', 'ShopController@edit')->name('edit_shop');
-      Route::get('/shop_destroy/{id}', 'ShopController@destroy')->name('shop_destroy');
+    Route::get('/edit_shop', 'ShopController@edit')->name('edit_shop');
+    Route::get('/shop_destroy/{id}', 'ShopController@destroy')->name('shop_destroy');
+    Route::post('/shop_destroy_all', 'ShopController@destroy_all')->name('shop_destroy_all');
 });
