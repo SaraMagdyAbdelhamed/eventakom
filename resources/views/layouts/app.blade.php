@@ -202,7 +202,7 @@
                     <ul class="side__submenu">
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_1" href="{{ route('event_backend') }}">@lang('keywords.addfrombackend')</a></li>
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_2" href="{{ route('event_mobile') }}">@lang('keywords.addfromMobile')</a></li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="{{ route('big_events') }}">Big events</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="{{ route('big_events') }}">@lang('keywords.bigevents')</a></li>
                     </ul>
                   </li>
                   <li class="side__list" id="menu_4"> <a class="side__item side__item--sub">barcode</a>
