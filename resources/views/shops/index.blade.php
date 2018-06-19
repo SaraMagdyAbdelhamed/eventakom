@@ -23,8 +23,8 @@
                 <div class="col-xs-12">
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                     <div class="full-table">
-                      <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>filters</a></div>
-                      <div class="bottomActions__btns"><a class="master-btn" href="#">Delete selected</a><a class="master-btn" href="#">Add new Shop and dine</a>
+                     {{--  <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>filters</a></div> --}}
+                      {{-- <div class="bottomActions__btns"><a class="master-btn" href="#">Delete selected</a><a class="master-btn" href="">Add new Shop and dine</a>
                       </div>
                       <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
                         <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
@@ -57,7 +57,7 @@
                         </div><br>
                         <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
                         <button class="remodal-confirm" data-remodal-action="confirm">Apply Filters</button>
-                      </div>
+                      </div> --}}
                       <form id="dataTableTriggerId_001_form">
                         <table class="data-table-trigger table-master" id="dataTableTriggerId_001">
                           <thead>
@@ -72,24 +72,287 @@
                             </tr>
                           </thead>
                           <tbody>
+                            @foreach($shops as $key=>$value)
                             <tr>
                               <td><span class="cellcontent"></span></td>
-                              <td><span class="cellcontent">5</span></td>
-                              <td><span class="cellcontent"><img src = "https://source.unsplash.com/random" , class = " img-in-table"></span></td>
-                              <td><span class="cellcontent">El batraa jordan</span></td>
-                              <td><span class="cellcontent">0123456789</span></td>
-                              <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
-                              <td><span class="cellcontent"><a href= #popupModal_1 ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= "{{route('edit_shop')}}" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                              <td><span class="cellcontent">{{$value['id']}}</span></td>
+                              <td><span class="cellcontent"><img src = "{{$value['photo']}}" , class = " img-in-table"></span></td>
+                              <td><span class="cellcontent">{{$value['name']}}</span></td>
+                              <td><span class="cellcontent">{{$value['phone']}}</span></td>
+                              @if($value['is_active'])
+                              <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i></i></span></td>
+                              @else
+                              <td><span class="cellcontent"><i class = "fa icon-in-table-false fa-times"></i></span></td>
+                              @endif
+                              <td><span class="cellcontent"><a href= "#popupModal_1" ,  class= "action-btn bgcolor--main color--white " ><i class = "fa  fa-eye"></i></a><a href= "{{route('edit_shop')}}" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+
+
+                               {{-- <a class="master-btn undefined undefined undefined undefined undefined" href="#shop_{{$value['id']}}" style="display: none;"><span></span></a> --}}
+                              {{-- <div class="remodal-bg"></div> --}}
+                              {{-- <div class="remodal" data-remodal-id="shop_{{$value['id']}}" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+                <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
+                <div>
+                  <div class="row">
+                    <div class="col-xs-12"></div>
+                    <h3>Place Name</h3>
+                    <div class="col-xs-12">
+                      <form>
+                        <div class="tabs--wrapper">
+                          <div class="clearfix"></div>
+                          <ul class="tabs">
+                            <li id="info">Info</li>
+                            <li id="media">Media</li>
+                          </ul>
+                          <ul class="tab__content">
+                            <li class="tab__content_item active" id="info-content">
+                              <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                                <div class="full-table">
+                                  <table class="verticaltable table-master">
+                                    <tr>
+                                      <th><span class="cellcontent">Place name</span></th>
+                                      <td><span class="cellcontent">El batraa jordan</span></td>
+                                    </tr>
+                                    <tr>
+                                      <th><span class="cellcontent">Place phone</span></th>
+                                      <td><span class="cellcontent">0123456789</span></td>
+                                    </tr>
+                                    <tr>
+                                      <th><span class="cellcontent">Website</span></th>
+                                      <td><span class="cellcontent">&lt;a href = &quot;#.html&quot;&gt;www.google.com&lt;/a&gt;</span></td>
+                                    </tr>
+                                    <tr>
+                                      <th><span class="cellcontent">Opening days</span></th>
+                                      <td><span class="cellcontent">sat,sun,mon,tue</span></td>
+                                    </tr>
+                                    <tr>
+                                      <th><span class="cellcontent">other info</span></th>
+                                      <td><span class="cellcontent">other info other info</span></td>
+                                    </tr>
+                                    <tr>
+                                      <th><span class="cellcontent">Branches</span></th>
+                                      <td><span class="cellcontent">egypt</span></td>
+                                    </tr>
+                                    <tr>
+                                      <th><span class="cellcontent">from</span></th>
+                                      <td><span class="cellcontent">12:00PM</span></td>
+                                    </tr>
+                                    <tr>
+                                      <th><span class="cellcontent">to</span></th>
+                                      <td><span class="cellcontent">12:00AM</span></td>
+                                    </tr>
+                                    <tr>
+                                      <th><span class="cellcontent">status</span></th>
+                                      <td><span class="cellcontent">&lt;i class = &quot;fa icon-in-table-true fa-check&quot;&gt;&lt;/i&gt;</span></td>
+                                    </tr>
+                                  </table>
+                                  <div class="remodal log-custom" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+                                    <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
+                                    <div>
+                                      <h2 class="title">title of the changing log in</h2>
+                                      <div class="log-content">
+                                        <div class="log-container">
+                                          <table class="log-table">
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <th>log title</th>
+                                              <th>user</th>
+                                              <th>time</th>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>January</td>
+                                              <td>$100</td>
+                                              <td>$100</td>
+                                            </tr>
+                                            <tr class="log-row" data-link="https://www.google.com.eg/">
+                                              <td>February</td>
+                                              <td>$80</td>
+                                              <td>$80</td>
+                                            </tr>
+                                          </table>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="clearfix"></div>
+                              </div>
+                            </li>
+                            <li class="tab__content_item" id="media-content">
+                              <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                                <div class="col-xs-12">
+                                  <h5 class="text-left">images</h5>
+                                </div>
+                                <div class="col-xs-12">
+                                  <div class="slideperview" id="slider--3">
+                                    <div class="swiper-container">
+                                      <div class="swiper-wrapper">                     
+                                        <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/350/300"></div>
+                                        <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/350/300/?random"></div>
+                                        <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/g/350/300"></div>
+                                        <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/350/300"></div>
+                                        <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/350/300/?random"></div>
+                                        <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/g/350/300"></div>
+                                      </div>
+                                      <div class="swiper-pagination"></div>
+                                      <div class="swiper-button-next swiper-button-white"></div>
+                                      <div class="swiper-button-prev swiper-button-white"> </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="clearfix"></div>
+                              </div>
+                              <div class="col-xs-12">
+                                <h5 class="text-left">video</h5>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom"><iframe width="100%" height="350" src="https://www.youtube.com/embed/tMe0vwZ13fw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom"><iframe width="100%" height="350" src="https://www.youtube.com/embed/tMe0vwZ13fw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <button class="remodal-confirm" data-remodal-action="confirm">Close</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div> --}}
+            {{-- </div>
+<div class="clearfix"></div> --}}
                             </tr>
-                            <tr>
-                              <td><span class="cellcontent"></span></td>
-                              <td><span class="cellcontent">5</span></td>
-                              <td><span class="cellcontent"><img src = "https://source.unsplash.com/random" , class = " img-in-table"></span></td>
-                              <td><span class="cellcontent">El batraa jordan</span></td>
-                              <td><span class="cellcontent">0123456789</span></td>
-                              <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
-                              <td><span class="cellcontent"><a href= #popupModal_1 ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= "{{route('edit_shop')}}" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
-                            </tr>
+                             
+                            @endforeach
                            
                           </tbody>
                         </table>
@@ -514,7 +777,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+                </div>
 
 @endsection
 
