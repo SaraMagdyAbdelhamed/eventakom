@@ -79,7 +79,7 @@
         'Countries'=>'البلاد',
         'Cities'=>'المدن',
         'Age'=>'السن',
-        'AddBackendUser'=>'اضف مستخدم موقع',
+        'AddBackendUser'=>'اضف مستخدم لوحة التحكم',
         'UserName'=>'اسم المستخدم',
         'UserEmail'=>'البريد الالكتروني للمستخدم',
         'UserPhone'=>'هاتف المستخدم',
@@ -93,7 +93,7 @@
 
         // Events
         'events'    => 'الاحداث',
-        'addfrombackend' => 'المضاف من الموقع',
+        'addfrombackend' => 'المضاف من لوحة التحكم',
         'info'      => 'المعلومات',
         'posts'     => 'المنشورات',
         'tickets'   => 'التذاكر',
@@ -105,7 +105,7 @@
         'category'  => 'التصنيف',
 		
         // Events Mobile
-        'addfromMobile' => 'المضاف من الموبايل',
+        'addfromMobile' => 'المضاف من التطبيق',
 		'Current' => 'الحالية',
 		'Pendding' => 'المعلقة',
 		'Pend' => 'تعليق',
@@ -183,6 +183,8 @@
         // Offers & Deals
         'offers'    => 'العروض والصفقات',
         'placeName' => 'اسم المكان',
+        'bigevents' => 'أهم الأحداث',
+        'choosecategory' => 'إختر تصنيف'
     ];
 
 ?>

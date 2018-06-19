@@ -13,7 +13,7 @@
               </div>
             </div>
           </div>
-          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{ route('event_backend.add') }}">Add New Event</a>
+          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{ route('event_backend.add') }}">@lang('keywords.addNew')</a>
           </div>
         </div>
       </div>
@@ -23,8 +23,8 @@
         <div class="full-table">
           <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>@lang('keywords.filter')</a></div>
           <div class="bottomActions__btns">
-            <a class="master-btn" href="#" id="deleteSelected">Delete selected</a>
-            <a class="master-btn" href="{{ route('event_backend.add') }}">Add New Event</a>
+            <a class="master-btn" href="#" id="deleteSelected">@lang('keywords.deleteSelected')</a>
+            <a class="master-btn" href="{{ route('event_backend.add') }}">@lang('keywords.addNew')</a>
           </div>
           <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
             <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
@@ -37,7 +37,7 @@
               <div class="row">
                 <div class="col-sm-6 col-xs-12">
                   <div class="master_field">
-                    <label class="master_label" for="filter_cat">Event categories </label>
+                    <label class="master_label" for="filter_cat">@lang('keywords.eventCategories')</label>
                     <select class="master_input select2" id="filter_cat" multiple="multiple" data-placeholder="choose a category..." style="width:100%;" name="categories[]">
                       @if ( isset($categories) && !empty($categories) )
                           @foreach ($categories as $category)
@@ -49,20 +49,20 @@
                 </div>
                 <div class="col-sm-6 col-xs-12">
                   <div class="master_field">
-                    <label class="master_label">Events status</label>
+                    <label class="master_label">@lang('keywords.EventsStatus')</label>
                     <div class="funkyradio">
                       <input type="checkbox" name="active" id="event_status_2" value="1">
-                      <label for="event_status_2">Active</label>
+                      <label for="event_status_2">@lang('keywords.Active')</label>
                     </div>
                     <div class="funkyradio">
                       <input type="checkbox" name="inactive" id="event_status_3" value="1">
-                      <label for="event_status_3">inActive</label>
+                      <label for="event_status_3">@lang('keywords.Inactive')</label>
                     </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-xs-12">
                   <div class="master_field">
-                    <label class="master_label" for="bootstrap_date_start_from">start date from</label>
+                    <label class="master_label" for="bootstrap_date_start_from">@lang('keywords.startDateFrom')</label>
                     <div class="bootstrap-timepicker">
                       <input class="datepicker master_input" type="text" placeholder="set start date from" id="bootstrap_date_start_from" name="start_from">
                     </div>
@@ -70,7 +70,7 @@
                 </div>
                 <div class="col-sm-6 col-xs-12">
                   <div class="master_field">
-                    <label class="master_label" for="bootstrap_date_start_to">start date to</label>
+                    <label class="master_label" for="bootstrap_date_start_to">@lang('keywords.startDateTo')</label>
                     <div class="bootstrap-timepicker">
                       <input class="datepicker master_input" type="text" placeholder="set start date to" id="bootstrap_date_start_to" name="start_to">
                     </div>
@@ -78,7 +78,7 @@
                 </div>
                 <div class="col-sm-6 col-xs-12">
                   <div class="master_field">
-                    <label class="master_label" for="bootstrap_date_End_from">End date from</label>
+                    <label class="master_label" for="bootstrap_date_End_from">@lang('keywords.endDateFrom')</label>
                     <div class="bootstrap-timepicker">
                       <input class="datepicker master_input" type="text" placeholder="set end date from" id="bootstrap_date_End_from" name="end_from">
                     </div>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="col-sm-6 col-xs-12">
                   <div class="master_field">
-                    <label class="master_label" for="bootstrap_date_End_to">End date to</label>
+                    <label class="master_label" for="bootstrap_date_End_to">@lang('keywords.endDateTo')</label>
                     <div class="bootstrap-timepicker">
                       <input class="datepicker master_input" type="text" placeholder="set end date to" id="bootstrap_date_End_to" name="end_to">
                     </div>
@@ -94,8 +94,8 @@
                 </div>
               </div>
             </div><br>
-            <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-            <button class="remodal-confirm" type="submit">Apply Filters</button>
+            <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+            <button class="remodal-confirm" type="submit">@lang('keywords.ApplyFilter')</button>
             </form>
             {{-- End form --}}
 
@@ -106,14 +106,14 @@
                 <tr class="bgcolor--gray_mm color--gray_d">
                   <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
                   <th><span class="cellcontent">@lang('keywords.serialNo') </span></th>
-                  <th><span class="cellcontent">Event name</span></th>
-                  <th><span class="cellcontent">Venue</span></th>
-                  <th><span class="cellcontent">Start date/time</span></th>
-                  <th><span class="cellcontent">End date/time/time</span></th>
-                  <th><span class="cellcontent">Added date</span></th>
-                  <th><span class="cellcontent">Added by</span></th>
-                  <th><span class="cellcontent">Event status</span></th>
-                  <th><span class="cellcontent">actions</span></th>
+                  <th><span class="cellcontent">@lang('keywords.eventName')</span></th>
+                  <th><span class="cellcontent">@lang('keywords.venue')</span></th>
+                  <th><span class="cellcontent">@lang('keywords.start') </span></th>
+                  <th><span class="cellcontent">@lang('keywords.end') </span></th>
+                  <th><span class="cellcontent">@lang('keywords.Addeddate') </span></th>
+                  <th><span class="cellcontent">@lang('keywords.addby') </span></th>
+                  <th><span class="cellcontent">@lang('keywords.EventStatus') </span></th>
+                  <th><span class="cellcontent">@lang('keywords.actions')</span></th>
                 </tr>
               </thead>
               <tbody>
@@ -144,164 +144,6 @@
               </tbody>
             </table>
           </form>
-          <div class="remodal log-custom" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-            <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-            <div>
-              <h2 class="title">title of the changing log in</h2>
-              <div class="log-content">
-                <div class="log-container">
-                  <table class="log-table">
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <th>log title</th>
-                      <th>user</th>
-                      <th>time</th>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
     </div><br>
