@@ -192,4 +192,15 @@ class Helper {
                } 
                 return $counter;
       }
+         public static function ageRange_users($rangeFrom,$rangeTo){
+               $ids = [];
+               $users = Users::where('birthdate','!=', NULL)->get();
+               foreach($users as $user){
+                if($rangeFrom <= $user->age && $user->age < $rangeTo){
+
+                  $ids[]=$user->id;  
+                }
+               } 
+                return $ids;
+      }
 }

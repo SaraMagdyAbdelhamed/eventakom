@@ -169,4 +169,12 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::post('/offers/update'    , '\Modules\Offers\Http\Controllers\OffersController@update')->name('offers.update'  );
     Route::post('/offers/delete'    , '\Modules\Offers\Http\Controllers\OffersController@destroy')->name('offers.delete' );
     Route::post('/offers/delete/selected', '\Modules\Offers\Http\Controllers\OffersController@destroySelected')->name('offers.deleteSelected');
+    // Notifications_view
+    Route::get('/notification', 'NotificationController@index')->name('notification');
+    Route::post('/add_notification', 'NotificationController@add')->name('add_notification');
+
+
+    // shops
+    Route::get('/shops', 'ShopController@index')->name('shops');
+     Route::get('/edit_shop', 'ShopController@edit')->name('edit_shop');
 });

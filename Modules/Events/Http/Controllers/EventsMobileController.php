@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 class EventsMobileController extends Controller
 {
      use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -166,7 +167,8 @@ class EventsMobileController extends Controller
         $data['currencies']    = Currency::all();
         $data['bigEventCount'] = EventMobile::BigEvent($id);
         $data['event_tickets'] = EventTicket::where('event_id','=',$id)->first();
-        $data['event_media']   = EventMedia::where('event_id','=',$id)->get();
+        $data['event_media']   = EventMedia::where('event_id','=',$id)->where('type','=',2)->get();
+        $data['images']   = EventMedia::where('event_id','=',$id)->where('type','=',1)->get();
         $event = EventMobile::find($id);
         $data['event_categories'] = $event->categories()->select('*')->where('event_id','=',$id)->get();
         $data['arabic_hashtags'] =   EntityLocalization::where('entity_id','=',4)
@@ -180,13 +182,14 @@ class EventsMobileController extends Controller
 
 
  public function update(Request $request)
-    {   
+    { 
+        //dd($request);
         // Validate incoming request inputs with the following validation rules.
         $this->validate($request, [
             'english_event_name'    => 'required|min:2|max:100',
             'english_description'   => 'required|min:2|max:250',
-            'lat'                   => 'required|min:2|max:50',
-            'lng'                   => 'required',
+            // 'lat'                   => 'required|min:2|max:50',
+            // 'lng'                   => 'required',
             'english_venu'          => 'required',
             'english_hashtags'      => 'required',
             'gender'                => 'required',
@@ -220,23 +223,60 @@ class EventsMobileController extends Controller
             // 'english_images'        => 'required',
         ]);
 
+
+        if ( $request->hasfile('test') ) {
+            //dd('test before loop');
+            foreach ( $request->file('test') as $image ) {
+                $name = $image->getClientOriginalName();
+                // dd($name);
+              try{  $image->move( public_path().'/events/arabic', $name );
+                 }catch( \Exception $ex ) {
+            dd($ex);
+            Session::flash('warning', 'UPLOADD!!');
+            return redirect()->back();
+                }
+                $data_arabic[] = '/public/arabic/'.$name;
+            }
+        }
         // Check if there is any images or files and move them to public/events
         // Arabic Event Images
         if ( $request->hasfile('arabic_images') ) {
+              $imgs_count = count($_FILES['arabic_images']['name']); 
+              if($imgs_count>5){ 
+         Session::flash('error', 'لم يتم التحديث الحد الاأقصى للصور هو 5 صور');
+        return redirect('/events/mobile');  
+               }else{
             foreach ( $request->file('arabic_images') as $image ) {
                 $name = $image->getClientOriginalName();
                 $image->move( public_path().'/events/arabic', $name );
                 $data_arabic[] = '/public/arabic/'.$name;
+                    $media = new EventMedia;
+                    $media->event_id = $request['event_id']; $media->link = '/events/arabic/'.$name;
+                     $media->type = 1;
+                    $media->save();
             }
+        }
         }
 
         // English Event Images
         if ( $request->hasfile('english_images') ) {
+             $imgs_count = count($_FILES['english_images']['name']); 
+              if($imgs_count>5){ 
+         Session::flash('error', 'لم يتم التحديث الحد الاأقصى للصور هو 5 صور');
+        return redirect('/events/mobile');  
+               }else{
             foreach ($request->file('english_images') as $image) {
                 $name = $image->getClientOriginalName();
                 $image->move( public_path().'/events/english', $name );
                 $data_english[] = '/public/english/'.$name;
+
+                 $media = new EventMedia;
+                 $media->event_id = $request['event_id'];
+                 $media->link = '/events/english/'.$name;
+                 $media->type = 1;
+                 $media->save();
             }
+          }
         }
 
         // Explode english hashtags
@@ -249,10 +289,15 @@ class EventsMobileController extends Controller
            // dd($request['event_id']);
             $event->name        = $request->english_event_name;
             $event->description = $request->english_description;
+            if(isset($request->lng) && isset($request->lat) )
+            {
             $event->longtuide   = $request->lng;
             $event->latitude    = $request->lat;
+            }else{
+            $event->longtuide   = $event->longtuide;
+            $event->latitude    = $event->latitude;   
+            }
             $event->venue       = $request->english_venu;
-
             $event->age_range_id= $request->age_range;
             $event->gender_id   = $request->gender;
 
@@ -302,6 +347,7 @@ class EventsMobileController extends Controller
 
             /**  Youtube links  **/
            // $event->media()->update(['category_id' => $newCatId]);
+            $event->media()->where('type',2)->delete();
             $event->media()->createMany([
                 [ 'link' => $request->youtube_en_1, 'type'=> 2],
                 [ 'link' => $request->youtube_en_2, 'type'=> 2],
