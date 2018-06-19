@@ -63,7 +63,10 @@ class NotificationController extends Controller
     			 $id=[];
     			foreach ($request['age'] as $key => $value) {
     				$age_range=Age_Ranges::where('id',$value)->first();
-    				$id[]=Helper::ageRange_users($age_range->from,$age_range->to);
+    				$ranges=Helper::ageRange_users($age_range->from,$age_range->to);
+    				for ($i=0; $i < count($ranges); $i++) { 
+    					$id[]=$ranges[$i];
+    				}
     				
     			}
     			$q->whereIn('id',$id);
@@ -81,14 +84,14 @@ class NotificationController extends Controller
 
     			}
     			$q->whereIn('id',$ids);
-    			// dd($ids);
+    			 
     			
     		}
 
 
     		})->get();
     		
-    		
+    		// dd($users);
     		$notification = Notification::create([
     			"msg"=>$request['msg'],
     			"msg_ar"=>$request['msg_ar'],
