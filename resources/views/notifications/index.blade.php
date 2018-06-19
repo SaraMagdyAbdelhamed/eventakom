@@ -109,7 +109,7 @@
                       </button>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                      <button class="master-btn  btn-block color--white bgcolor--fadeblue bradius--noborder bshadow--0" type="submit"><span>cancel</span>
+                      <button class="master-btn  btn-block color--white bgcolor--fadeblue bradius--noborder bshadow--0" type="button"><span>cancel</span>
                       </button>
                     </div>
                     <div class="clearfix"></div>
