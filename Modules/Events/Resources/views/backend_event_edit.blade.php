@@ -2,12 +2,6 @@
 
 @section('content')
 
-@if ($errors->any())
-  @foreach ($errors->all() as $error)
-      <div class="alert alert-danger">{{ $error }}</div>
-  @endforeach    
-@endif
-
 <style>
   /* Always set the map height explicitly to define the size of the div
    * element that contains the map. */
@@ -53,7 +47,7 @@
 
       <form id="horizontal-pill-steps" action="{{ route('event_backend.update') }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
-        <input type="hidden" name="id" value="{{ $event->id }}">\
+        <input type="hidden" name="id" value="{{ $event->id }}">
 
         <h3>Info in En</h3>
         <fieldset>
@@ -237,20 +231,21 @@
 
             {{-- Suggest as big Event --}}
             <div class="col-sm-3 col-xs-6">
-              <div class="master_field">
-                <label class="master_label" for="big_event">Suggest as big event</label>
-                <input class="make-switch" type="checkbox" checked data-on-text="yes" data-off-text="no" name="is_big_event" value="1">
-              </div>
+              <label class="container">Suggest as big event
+                <input type="checkbox" name="is_big_event" value="1" {{ $event->suggest_big_event ? 'checked' : '' }} />
+                <span class="checkmark"></span>
+              </label>
             </div>
-
-
+  
+  
             {{-- Is Event Active or Not --}}
             <div class="col-sm-3 col-xs-6">
-              <div class="master_field">
-                <label class="master_label" for="active_event">is your event active or in active</label>
-                <input class="make-switch" type="checkbox" checked data-on-text="active" data-off-text="inactive" name="is_active" value="1">
-              </div>
+              <label class="container">Is your event active
+                <input type="checkbox" name="is_active" value="1" {{ $event->is_active ? 'checked' : '' }} />
+                <span class="checkmark"></span>
+              </label>
             </div>
+
           </div>
         </fieldset>
 
@@ -300,8 +295,8 @@
                 <label class="master_label mandatory">الكلمات البحثية</label>
                 @if ( count(\Helper::get_hashtags($event->id, 2)) > 0 )
                     <?php $hashtagsAr = ""; ?>
-                    @foreach ($event->hashtags as $hash)
-                        <?php $hashtagsAr .= $hash->name.','; ?>
+                    @foreach (\Helper::get_hashtags($event->id, 2) as $hash)
+                        <?php $hashtagsAr .= $hash->value.','; ?>
                     @endforeach
                 @endif
                 
@@ -500,7 +495,7 @@
 
           </div>
 
-          <button type="submit" id="submit">Submit</button>
+          <button type="submit" id="submitButton" hidden>Submit</button>
         </fieldset>
       </form>
 
@@ -546,7 +541,57 @@ $(document).ready(function() {
     headerTag: "h3",
     bodyTag: "fieldset",
     transitionEffect: "slideLeft",
-  });
+        // onStepChanging: function (event, currentIndex, newIndex)
+        // {
+        //     // Allways allow previous action even if the current form is not valid!
+        //     if (currentIndex > newIndex)
+        //     {
+        //         return true;
+        //     }
+            
+        //     // Needed in some cases if the user went back (clean up)
+        //     if (currentIndex < newIndex)
+        //     {
+        //         // To remove error styles
+        //         form.find(".body:eq(" + newIndex + ") span.error").remove();
+        //         form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
+        //     }
+        //     form.validate().settings.ignore = ":disabled,:hidden";
+        //     return form.valid();
+        // },
+        // onStepChanged: function (event, currentIndex, priorIndex)
+        // {
+        //     // // Used to skip the "Warning" step if the user is old enough.
+        //     // if (currentIndex === 2 && Number($("#age-2").val()) >= 18)
+        //     // {
+        //     //     form.steps("next");
+        //     // }
+        //     // Used to skip the "Warning" step if the user is old enough and wants to the previous step.
+        //     if (currentIndex === 2 && priorIndex === 3)
+        //     {
+        //         form.steps("previous");
+        //     }
+        // },
+        onFinishing: function (event, currentIndex)
+        {
+          // alert("Submitted!");
+          
+            var form = $(this);
+
+            form.submit();
+        },
+        onFinished: function (event, currentIndex) {
+            // bodyTag: "fieldset"
+            // alert("Finish button was clicked");
+            }
+        }).validate({
+        errorPlacement: function errorPlacement(error, element) { element.before(error); },
+        rules: {
+            // confirm: {
+            //     equalTo: "#password-2"
+            // }
+        }
+    });
   
 
   $(function() {
@@ -584,7 +629,7 @@ $(document).ready(function() {
   
   
 
-  $('.paid-details').fadeOut();
+  // $('.paid-details').fadeOut();
   
   $('label[for="radbtn_3_paid"]').on('click' , function(){
     $('.paid-details').fadeIn(100);
@@ -600,8 +645,30 @@ $(document).ready(function() {
 
 <script>
     @if( $event->is_paid == 1 )
-      $("#event_is_paid").click();
+      $('.paid-details').fadeIn(100);
     @endif
+</script>
+
+<script>
+  $(document).ready(function() {
+    // Prevent Enter key from submitting form
+    $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
+  });
+</script>
+
+<script>
+  
+  $(document).ready(function() {
+    // Click on finish button triggers a hidden submit button
+    $("#finish1").click(function(){
+      $("#submitButton").trigger('click');
+    });
+  });
 </script>
 
 @endsection
