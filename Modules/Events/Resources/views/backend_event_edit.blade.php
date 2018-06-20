@@ -112,7 +112,7 @@
                         <?php $hashtags .= $hash->name.','; ?>
                     @endforeach
                 @endif
-                <input type="text" value="{{ $event->hashtags ? $hashtags : 'KSA,Sports' }}" data-role="tagsinput" name="english_hashtags">
+                <input type="text" value="{{ $event->hashtags ? $hashtags : '' }}" data-role="tagsinput" name="english_hashtags">
               </div>
               <div class="clearfix"></div>
             </div>
