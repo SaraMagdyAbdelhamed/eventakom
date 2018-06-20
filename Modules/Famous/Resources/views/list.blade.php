@@ -13,7 +13,8 @@
               </div>
             </div>
           </div>
-          <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="famous_attractions_edit.html">New Famous attractions</a>
+          <div class="cover--actions">
+            <a class="bradius--no border-btn master-btn" type="button" href="{{ route('fa.create') }}">New Famous attractions</a>
           </div>
         </div>
       </div>
@@ -22,7 +23,9 @@
       <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="full-table">
           <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>filters</a></div>
-          <div class="bottomActions__btns"><a class="master-btn" href="#">Delete selected</a><a class="master-btn" href="#">Add New Event</a>
+          <div class="bottomActions__btns">
+            <a class="master-btn" href="#">Delete selected</a>
+            <a class="master-btn" href="{{ route('event_backend.add') }}">Add New Event</a>
           </div>
           <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
             <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
@@ -74,36 +77,39 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><span class="cellcontent"></span></td>
-                  <td><span class="cellcontent">5</span></td>
-                  <td><span class="cellcontent">El batraa jordan</span></td>
-                  <td><span class="cellcontent">jordan</span></td>
-                  <td><span class="cellcontent">0123456789</span></td>
-                  <td><span class="cellcontent">historical</span></td>
-                  <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
-                  <td><span class="cellcontent"><a href= #popupModal_1 ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= famous_attractions_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
-                </tr>
-                <tr>
-                  <td><span class="cellcontent"></span></td>
-                  <td><span class="cellcontent">5</span></td>
-                  <td><span class="cellcontent">El batraa jordan</span></td>
-                  <td><span class="cellcontent">jordan</span></td>
-                  <td><span class="cellcontent">0123456789</span></td>
-                  <td><span class="cellcontent">historical</span></td>
-                  <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
-                  <td><span class="cellcontent"><a href= #popupModal_1 ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= famous_attractions_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
-                </tr>
-                <tr>
-                  <td><span class="cellcontent"></span></td>
-                  <td><span class="cellcontent">5</span></td>
-                  <td><span class="cellcontent">El batraa jordan</span></td>
-                  <td><span class="cellcontent">jordan</span></td>
-                  <td><span class="cellcontent">0123456789</span></td>
-                  <td><span class="cellcontent">historical</span></td>
-                  <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
-                  <td><span class="cellcontent"><a href= #popupModal_1 ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= famous_attractions_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
-                </tr>
+
+                  @if ( isset($attractions) && !empty($attractions) )
+                      @foreach ($attractions as $attraction)
+                        <tr>
+                          <td><span class="cellcontent"></span></td>
+                          <td><span class="cellcontent">{{ $loop->index +1 }}</span></td>
+                          <td><span class="cellcontent">El batraa jordan</span></td>
+                          <td><span class="cellcontent">jordan</span></td>
+                          <td><span class="cellcontent">0123456789</span></td>
+                          <td><span class="cellcontent">historical</span></td>
+                          <td>
+                            <span class="cellcontent">
+                              <i class = "fa icon-in-table-true fa-check"></i>
+                              <i class = "fa icon-in-table-false fa-times"></i>
+                            </span>
+                          </td>
+                          <td>
+                            <span class="cellcontent">
+                              <a href= #popupModal_1 ,  class= "action-btn bgcolor--main color--white ">
+                                <i class = "fa  fa-eye"></i>
+                              </a>
+                              <a href= famous_attractions_edit.html ,  class= "action-btn bgcolor--fadegreen color--white ">
+                                <i class = "fa  fa-pencil"></i>
+                              </a>
+                              <a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white ">
+                                <i class = "fa  fa-trash-o"></i>
+                              </a>
+                            </span>
+                          </td>
+                        </tr>               
+                      @endforeach
+                  @endif
+                  
               </tbody>
             </table>
           </form>
@@ -264,7 +270,6 @@
               </div>
             </div>
           </div>
-          <button id="delete-test">Delete Tests</button>
         </div>
       </div>
     </div><br>
