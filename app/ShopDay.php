@@ -14,11 +14,11 @@ class ShopDay extends Model
 
     public function shop()
     {
-    	return $this->hasMany('App\Shop','shop_id');
+    	return $this->belongsTo('App\Shop','shop_id');
     }
 
     public function day()
     {
-    	return $this->hasMany('App\Day','day_id');
+    	return $this->belongsTo('App\Day','day_id');
     }
 }

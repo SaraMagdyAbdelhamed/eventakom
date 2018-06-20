@@ -24,7 +24,7 @@
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                     <div class="full-table">
                      {{--  <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>filters</a></div> --}}
-                       <div class="bottomActions__btns"><a class="master-btn" href="">Delete selected</a><a class="master-btn" href="{{route('add_shop')}}">Add new Shop and dine</a>
+                       <div class="bottomActions__btns"><a class="master-btn btn-warning-cancel-all" >Delete selected</a><a class="master-btn" href="{{route('add_shop')}}">Add new Shop and dine</a>
                       </div>
                       {{--<div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
                         <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
@@ -84,7 +84,7 @@
                               @else
                               <td><span class="cellcontent"><i class = "fa icon-in-table-false fa-times"></i></span></td>
                               @endif
-                              <td><span class="cellcontent"><a href= "#shop_{{$value['id']}}" ,  class= "action-btn bgcolor--main color--white " ><i class = "fa  fa-eye"></i></a><a href= "{{route('edit_shop')}}" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                              <td><span class="cellcontent"><a href= "#shop_{{$value['id']}}" ,  class= "action-btn bgcolor--main color--white " ><i class = "fa  fa-eye"></i></a><a href= "{{route('edit_shop')}}" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a   class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
 
 
                             </tr>
@@ -298,7 +298,11 @@
                                     </tr>
                                     <tr>
                                       <th><span class="cellcontent">Branches</span></th>
-                                      <td><span class="cellcontent">egypt</span></td>
+                                      <td><span class="cellcontent">
+                                    @foreach($value['shop_branch'] as $branch)
+                                    {{$branch['branch']}},
+                                    @endforeach
+                                  </span></td>
                                     </tr>
                                     <tr>
                                       <th><span class="cellcontent">from</span></th>
@@ -310,7 +314,7 @@
                                     </tr>
                                     <tr>
                                       <th><span class="cellcontent">status</span></th>
-                                      @if($value['status'])
+                                      @if($value['is_active'])
                                       <td><span class="cellcontent">&lt;i class = &quot;fa icon-in-table-true fa-check&quot;&gt;&lt;/i&gt;</span></td>
                                       @else
                                       <td><span class="cellcontent">&lt;i class = &quot;fa icon-in-table-true fa-times&quot;&gt;&lt;/i&gt;</span></td>
@@ -486,13 +490,16 @@
                                 <div class="col-xs-12">
                                   <div class="slideperview" id="slider--3">
                                     <div class="swiper-container">
-                                      <div class="swiper-wrapper">                     
-                                        <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/350/300"></div>
-                                        <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/350/300/?random"></div>
+                                      <div class="swiper-wrapper">    
+                                        @foreach($value['shop_media'] as $image)           @if($image['type'] ==1)      
+                                        <div class="swiper-slide"><img class="full-size" src="{{$image['link']}}"></div>
+                                        @endif
+                                        @endforeach
+                                        {{-- <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/350/300/?random"></div>
                                         <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/g/350/300"></div>
                                         <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/350/300"></div>
                                         <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/350/300/?random"></div>
-                                        <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/g/350/300"></div>
+                                        <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/g/350/300"></div> --}}
                                       </div>
                                       <div class="swiper-pagination"></div>
                                       <div class="swiper-button-next swiper-button-white"></div>
@@ -505,12 +512,16 @@
                               <div class="col-xs-12">
                                 <h5 class="text-left">video</h5>
                               </div>
+                              @foreach($value['shop_media'] as $video)          
+                               @if($image['type'] ==2)
                               <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom"><iframe width="100%" height="350" src="https://www.youtube.com/embed/tMe0vwZ13fw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+                                <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom"><iframe width="100%" height="350" src="{{$video['link']}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
                               </div>
-                              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                              @endif
+                              @endforeach
+                              {{-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom"><iframe width="100%" height="350" src="https://www.youtube.com/embed/tMe0vwZ13fw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
-                              </div>
+                              </div> --}}
                             </li>
                           </ul>
                         </div>
@@ -561,6 +572,49 @@
           //   swal("Deleted!", "Your imaginary file has been deleted!", "success");
           // });
         });
+
+        $('.btn-warning-cancel-all').click(function(){
+      var selectedIds = $("input:checkbox:checked").map(function(){
+        return $(this).closest('tr').attr('data-shop-id');
+      }).get();
+      if(selectedIds.length == 0 )
+      {
+        swal("خطأ", "من فضلك اختر  متجر :)", "error");
+      }
+      else
+      {
+        // alert(selectedIds);
+      var _token = '{{csrf_token()}}';
+      swal({
+        title: "هل أنت متأكد؟",
+        text: "لن تستطيع إسترجاع هذه المعلومة لاحقا",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#DD6B55',
+        confirmButtonText: 'نعم متأكد!',
+        cancelButtonText: "إلغاء",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm){
+        if (isConfirm){
+         $.ajax({
+           type:'POST',
+           url:'{{url('shop_destroy_all')}}',
+           data:{ids:selectedIds,_token:_token},
+           success:function(data){
+            $.each( selectedIds, function( key, value ) {
+              $('tr[data-shop-id='+value+']').fadeOut();
+            });
+          }
+        });
+         swal("تم الحذف!", "تم الحذف بنجاح", "success");
+       } else {
+        swal("تم الإلغاء", "المعلومات مازالت موجودة :)", "error");
+      }
+    });
+    }
+    });
       });
       
       
