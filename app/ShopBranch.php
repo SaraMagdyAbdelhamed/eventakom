@@ -16,4 +16,9 @@ class ShopBranch extends Model
     {
     	return $this->belongsTo('App\Shop','shop_id');
     }
+
+     public function branch_time()
+    {
+    	return $this->hasMany('App\ShopBranchTime','branch_id');
+    }
 }

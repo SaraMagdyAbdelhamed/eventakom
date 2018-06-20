@@ -7,6 +7,10 @@ use App\Shop;
 use App\ShopBranch;
 use App\ShopDay;
 use App\ShopMedia;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\File;
+use App\Helpers\Helper;
+use App\ShopBranchTime;
 class ShopController extends Controller
 {
     public function index()
@@ -59,6 +63,82 @@ class ShopController extends Controller
 
     public function add_shop(Request $request)
     {
-    dd($request);
+        $shop=Shop::create([
+            "name"=>$request['place_name'],
+            "phone"=>$request['phone'],
+            "website"=>$request['website'],
+            "info"=>$request['info'],
+            "address"=>$request['place_address']
+        ]);
+        if(isset($request['place_name_ar']))
+        {
+            Helper::add_localization(10,'name',$shop->id,$request['place_name_ar'],2);
+        }
+        else
+        {
+            Helper::add_localization(10,'name',$shop->id,$request['place_name'],2);
+        }
+         if(isset($request['info_ar']))
+        {
+            Helper::add_localization(10,'info',$shop->id,$request['info_ar'],2);
+        }
+        else
+        {
+            Helper::add_localization(10,'info',$shop->id,$request['info'],2);
+        }
+        if(isset($request['days']))
+        {
+            foreach ($request['days'] as $key => $value) {
+                ShopDay::create([
+                    'shop_id'=>$shop->id,
+                    'day_id'=>$key
+                ]);
+            }
+        }
+        if(isset($request['video']))
+        {
+            foreach ($request['video'] as $key => $value) {
+               if($value != null)
+               {
+                ShopMedia::create([
+                    "shop_id"=>$shop->id,
+                    "link"=>$value,
+                    "type"=>2
+                ]);
+                 if($request['video_ar'][$key] != null)
+               {
+                Helper::add_localization(21,'link',$shop->id,$request['video_ar'][$key],2);
+                }
+                else
+                {
+                    Helper::add_localization(21,'link',$shop->id,$value,2);
+                }
+               }
+              
+            }
+        }
+        if(isset($request['branch_name']))
+        {
+            foreach ($request['branch_name'] as $key => $value) {
+               $branch= ShopBranch::create([
+                    "shop_id"=>$shop->id,
+                    "branch"=>$value,
+                    "address"=>$request['branch_address'][$key]
+                ]);
+               foreach ($request['days'] as $key1 => $value1) {
+                ShopBranchTime::create([
+                    'branch_id'=>$branch->id,
+                    'day_id'=>$key1,
+                    'from'=>date("H:i:s a", strtotime($request['branch_start'][$key])),
+                    'to'=>date("H:i:s a", strtotime($request['branch_end'][$key]))
+                ]);
+            }
+
+
+            Helper::add_localization(20,'branch',$branch->id,$request['branch_name_ar'][$key],2);
+            }
+        }
+    // dd($request->all());
+    return  redirect()->route('shops');
     }
 }
