@@ -33,30 +33,58 @@
                               <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
+                          <div class="col-xs-4">
+                            <div class="master_field">
+                              <label class="master_label" for="Place_name">Place name in arabic</label>
+                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name_ar"><span class="master_message color--fadegreen">validation message will be here</span>
+                            </div>
+                          </div>
                            <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Place_address">Place Address</label>
                               <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_address" name="place_address"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
-                          
+
+                          <div class="col-xs-4">
+                              <div class="master_field">
+                                <label class="master_label" for="start_time">start date time</label>
+                                <div class="bootstrap-timepicker">
+                                  <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time"name="shop_start">
+                                </div><span class="master_message inherit">message content</span>
+                              </div>
+                            </div>
+                            <div class=" col-xs-4">
+                              <div class="master_field">
+                                <label class="master_label" for="end_time">end date time</label>
+                                <div class="bootstrap-timepicker">
+                                  <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="shop_end">
+                                </div><span class="master_message inherit">message content</span>
+                              </div>
+                            </div>
                           
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Phone_number">Phone number</label>
-                              <input class="master_input" type="number" placeholder="0020123456789" Required id="Phone_number" name="phone"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="tel" placeholder="0020123456789" Required id="Phone_number" name="phone"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
-                          <div class="col-xs-6">
+                          <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Website">Website</label>
                               <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
-                          <div class="col-xs-6">
+                          <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">Other info</label>
                               <textarea class="master_input" name="info" id="Other_info" placeholder="Other info" Required></textarea><span class="master_message inherit">message content</span>
+                            </div>
+                          </div>
+                          <div class="col-xs-4">
+                            <div class="master_field">
+                              <label class="master_label" for="Other_info">Other info in arabic</label>
+                              <textarea class="master_input" name="info_ar" id="Other_info_ar" placeholder="Other info" ></textarea><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-sm-12 col-xs-12">
@@ -93,7 +121,7 @@
                             </div>
                           </div>
                           <div class="branch-container">
-                            <div class="col-sm-2 col-xs-4">
+                            {{-- <div class="col-sm-2 col-xs-4">
                               <div class="master_field">
                                 <label class="master_label" for="branches_1">branch 1 name</label>
                                 <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1" name="branch_name[1]"><span class="master_message color--fadegreen">message</span>
@@ -126,7 +154,7 @@
                                   <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="branch_end[1]">
                                 </div><span class="master_message inherit">message content</span>
                               </div>
-                            </div>
+                            </div> --}}
                           </div>
                           <div class="col-sm-12 col-xs-12">
                             <button class="add-more-branch btn-block master-btn bgcolor--gray_mm"><i class="fa fa-plus color--main"></i><span class="color--main">Add more branch</span></button>
@@ -134,7 +162,7 @@
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="active_place">is place active or in active</label>
-                              <input class="make-switch" type="checkbox" checked data-on-text="active" data-off-text="inactive">
+                              <input class="make-switch" type="checkbox" checked data-on-text="active" data-off-text="inactive" name="is_active">
                             </div>
                           </div>
                         </div>
@@ -173,25 +201,25 @@
                           <div class="col-sm-6 col-xs-12">
                             <div class="master_field">
                               <label class="master_label" for="YouTube_video_1_en">YouTube video (1) in English</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_1_en"><span class="master_message inherit">message content</span>
+                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1" name="video[1]"><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-sm-6 col-xs-12"> 
                             <div class="master_field">
                               <label class="master_label" for="YouTube_video_1_ar">YouTube video (1) in Arabic</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_1_ar"><span class="master_message inherit">message content</span>
+                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1_ar" name="video_ar[1]"><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-sm-6 col-xs-12">
                             <div class="master_field">
-                              <label class="master_label" for="YouTube_video_2_en">YouTube video (2) in English</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_2_en"><span class="master_message inherit">message content</span>
+                              <label class="master_label" for="video_2">YouTube video (2) in English</label>
+                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2" name="video[2]"><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-sm-6 col-xs-12"> 
                             <div class="master_field">
-                              <label class="master_label" for="YouTube_video_2_ar">YouTube video (2) in Arabic</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_2_ar"><span class="master_message inherit">message content</span>
+                              <label class="master_label" for="video_2_ar">YouTube video (2) in Arabic</label>
+                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2_ar" name="video_ar[2]"><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-sm-6 col-xs-12"> 
@@ -199,14 +227,14 @@
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="row">
                                 <section class="l-main" role="main">
-                                  <div class="uploader__box js-uploader__box l-center-box">
-                                    <form action="your/nonjs/fallback/" method="POST">
-                                      <div class="uploader__contents">
-                                        <label class="button button--secondary" for="fileinput">Select Files</label>
-                                        <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files">
-                                      </div>
-                                      <input class="button button--big-bottom" type="submit" value="Upload Selected Files">
-                                    </form>
+                                  <div >
+                                    
+                                      
+                                        
+                                        <input id="fileinput" type="file" multiple value="Select Files" name="images">
+                                     
+                                      
+                                    
                                   </div>
                                 </section>
                               </div>
@@ -217,15 +245,10 @@
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="row">
                                 <section class="l-main" role="main">
-                                  <div class="uploader__box js-uploader__box l-center-box">
-                                    <form action="your/nonjs/fallback/" method="POST">
-                                      <div class="uploader__contents">
-                                        <label class="button button--secondary" for="fileinput">Select Files</label>
-                                        <input class="uploader__file-input" id="fileinput" type="file" multiple value="Select Files">
+                                  <div>
+                                        <input  id="fileinput_ar" type="file" multiple value="Select Files" name="images_ar">
+
                                       </div>
-                                      <input class="button button--big-bottom" type="submit" value="Upload Selected Files">
-                                    </form>
-                                  </div>
                                 </section>
                               </div>
                             </div>
@@ -241,6 +264,7 @@
 
 
 @section('js')
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script type="text/javascript">
       $(document).ready(function(){
         "use strict";
@@ -267,9 +291,45 @@
         headerTag: "h3",
         bodyTag: "fieldset",
         transitionEffect: "slideLeft",
+            onStepChanging: function (event, currentIndex, newIndex)
+    {
+        // Allways allow previous action even if the current form is not valid!
+        if (currentIndex > newIndex)
+        {
+            return true;
+        }
+        
+        // Needed in some cases if the user went back (clean up)
+        if (currentIndex < newIndex)
+        {
+            // To remove error styles
+            form.find(".body:eq(" + newIndex + ") span.error").remove();
+            form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
+        }
+        form.validate().settings.ignore = ":disabled,:hidden";
+        return form.valid();
+    },
+     onStepChanged: function (event, currentIndex, priorIndex)
+    {
+        // // Used to skip the "Warning" step if the user is old enough.
+        // if (currentIndex === 2 && Number($("#age-2").val()) >= 18)
+        // {
+        //     form.steps("next");
+        // }
+        // Used to skip the "Warning" step if the user is old enough and wants to the previous step.
+        if (currentIndex === 2 && priorIndex === 3)
+        {
+            form.steps("previous");
+        }
+    },
         onFinishing: function (event, currentIndex)
         {
            // alert("Submitted!");
+            
+  
+        
+      
+
            
             var form = $(this);
 
