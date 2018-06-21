@@ -241,6 +241,29 @@ class ShopController extends Controller
                 }
         }
         }
+          if(isset($request['video']))
+        {
+            ShopMedia::where('shop_id',$id)->where('type',2)->delete();
+            foreach ($request['video'] as $key => $value) {
+               if($value != null)
+               {
+                $shop_media=ShopMedia::create([
+                    "shop_id"=>$shop->id,
+                    "link"=>$value,
+                    "type"=>2
+                ]);
+                 if($request['video_ar'][$key] != null)
+               {
+                Helper::add_localization(21,'link',$shop_media->id,$request['video_ar'][$key],2);
+                }
+                else
+                {
+                    Helper::add_localization(21,'link',$shop_media->id,$value,2);
+                }
+               }
+              
+            }
+        }
         ShopBranch::where('shop_id',$shop->id)->delete();
          if(isset($request['branch_name']))
         {
