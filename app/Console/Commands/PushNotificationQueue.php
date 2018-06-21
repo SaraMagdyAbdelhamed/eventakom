@@ -45,10 +45,8 @@ class PushNotificationQueue extends Command
     {
         //
         $queues = NotificationPush::all();
-        
         foreach ($queues as $queue) {
             try{
-                    
                     //check if arabic => 2 , 1 => english
                     $message = ($queue->lang_id == 2) ? $queue->notification->msg_ar : $queue->notification->msg;
                     if($queue->mobile_os == 'ios'){//  PUSH TO IOS
@@ -63,7 +61,6 @@ class PushNotificationQueue extends Command
             }catch(\Exception $e){
 
             }
-
             $queue->delete();
         }
     }
