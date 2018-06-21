@@ -64,7 +64,7 @@ class PushNotificationQueue extends Command
 
             }
 
-            //$queue->delete();
+            $queue->delete();
         }
     }
 }

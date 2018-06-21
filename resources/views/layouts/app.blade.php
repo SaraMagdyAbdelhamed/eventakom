@@ -639,10 +639,6 @@
 
   {{-- Google maps API key --}}
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&libraries=places&callback=initMap" type="text/javascript"></script>
-
-  {{-- Map script --}}
-
-
   
   {{-- Map script --}}
   <script>

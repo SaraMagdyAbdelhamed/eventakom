@@ -7,7 +7,7 @@ use App\Notification;
 use App\NotificationItem;
 use App\NotificationPush;
 use App\Age_Ranges;
-use App\interest;
+use App\Interest;
 use App\Users;
 use App\Helpers\Helper;
 use App\UsersInterest;

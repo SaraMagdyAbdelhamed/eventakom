@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\EventBackend;
 use App\Users;
+use App\NotificationPush;
+use App\Notification;
 use App\Library\Services\NotificationsService;
 
 class FavouriteEventsNotification extends Command
@@ -42,7 +44,7 @@ class FavouriteEventsNotification extends Command
     {
         //start to find all events with start times before 24 hrs
         //get events in favourite 
-        $notifcaion_service = new NotificationsService();
+        $notifcation_service = new NotificationsService();
         $events_in_favourites = EventBackend::query()
                                 ->whereHas("users_favorites")
                                 ->EventsStartAfterOneDay()
@@ -52,8 +54,18 @@ class FavouriteEventsNotification extends Command
             foreach ($events_in_favourites as $event) {
                 $message['en'] = '1 Day left for '. $event->name;
                 $message['ar'] = 'باقي يوم على  انطلاق'.' ' . $event->name;
-                $notification = $notifcaion_service->save_notification($message,7,4,$event->id);
-                $notifcaion_service->PushToManyUsers($event->users_favorites,$notification);
+                foreach ($event->users_favorites as $user) {
+                    $notification = $notifcation_service->save_notification($message,7,4,$event->id,$user->id);     
+                    $queue = new NotificationPush();
+                    $queue->notification_id = $notification->id;
+                    $queue->device_token    = $user->device_token;
+                    $queue->mobile_os       = $user->mobile_os;
+                    $queue->lang_id         = $user->lang_id;
+                    $queue->user_id         = $user->id;
+                    $queue->save();               
+                }
+
+                //$notifcaion_service->PushToManyUsers($event->users_favorites,$notification);
 
                 
             }
@@ -71,8 +83,17 @@ class FavouriteEventsNotification extends Command
             foreach ($events_in_calenders as $event) {
                 $message['en'] = '1 Day left for '. $event->name;
                 $message['ar'] = 'باقي يوم على  انطلاق'.' ' . $event->name;
-                $notification = $notifcaion_service->save_notification($message,6,4,$event->id);
-                $notifcaion_service->PushToManyUsers($event->CalenderUsers,$notification);       
+                //$notifcaion_service->PushToManyUsers($event->CalenderUsers,$notification);  
+                foreach ($event->CalenderUsers as $user) {
+                    $notification = $notifcation_service->save_notification($message,6,4,$event->id,$user->id);     
+                    $queue = new NotificationPush();
+                    $queue->notification_id = $notification->id;
+                    $queue->device_token    = $user->device_token;
+                    $queue->mobile_os       = $user->mobile_os;
+                    $queue->lang_id         = $user->lang_id;
+                    $queue->user_id         = $user->id;
+                    $queue->save();               
+                }     
             }
 
         }

@@ -269,6 +269,7 @@ class ShopController extends Controller
         ShopBranch::where('shop_id',$shop->id)->delete();
          if(isset($request['branch_name']))
         {
+            // dd($request['branch_name']);
             foreach ($request['branch_name'] as $key => $value) {
                $branch= ShopBranch::create([
                     "shop_id"=>$shop->id,

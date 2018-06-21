@@ -13,9 +13,9 @@ class Currency extends Model
 
 //localization
 
-   public static function arabic($field,$item_id){
-
-      $result = Helper::localization('currencies', $field, $item_id, 2);
-      return $result;
+    public function getSymbolAttribute($value)
+    {
+        $result = (\App::isLocale('en')) ? Helper::localization('currencies','symbol',$this->id,1) : Helper::localization('currencies','symbol',$this->id,2);
+        return ($result==null)? $value : $result;
     }
 }
