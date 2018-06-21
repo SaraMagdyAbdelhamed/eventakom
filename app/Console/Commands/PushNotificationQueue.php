@@ -48,9 +48,9 @@ class PushNotificationQueue extends Command
         
         foreach ($queues as $queue) {
             try{
-                    // push Androin Now Only
-                    //check if arabic =1 or 2 english
-                    $message = ($queue->lang_id == 2) ? $queue->message->msg_ar : $queue->message->msg;
+                    
+                    //check if arabic => 2 , 1 => english
+                    $message = ($queue->lang_id == 2) ? $queue->notification->msg_ar : $queue->notification->msg;
                     if($queue->mobile_os == 'ios'){//  PUSH TO IOS
                      $this->NotificationsService->pushIos($message,$queue->Token, false, $queue->message->item_id);
                      $this->NotificationsService->pushIos($message,$queue->Token, true , $queue->message->item_id);
