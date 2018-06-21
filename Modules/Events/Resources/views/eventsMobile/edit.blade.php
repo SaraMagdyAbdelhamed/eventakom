@@ -358,7 +358,7 @@
                     <option value="" disabled selected>-- @lang('keywords.Please Select a Currency Symbol') --</option>
                     @if ( isset($currencies) && !empty($currencies) )
                         @foreach ($currencies as $currency)
-                            <option value="{{ $currency->id }}" @if(isset($event_tickets->price) && !empty($event_tickets->price) && $event_tickets->currency_id == $currency->id) selected @endif>{{ $currency->symbol }}</option>
+                            <option value="{{ $currency->id }}" @if(isset($event_tickets->price) && !empty($event_tickets->price) && $event_tickets->currency_id == $currency->id) selected @endif>{{\App::isLocale('en') ?$currency->symbol:$currency->arabic('symbol',$currency->id)}}</option>
                         @endforeach
                     @endif
                   </select>
