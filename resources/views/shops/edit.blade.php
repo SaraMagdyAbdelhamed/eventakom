@@ -576,7 +576,7 @@
          $('.datepicker').datepicker({autoclose: true});
          $(".timepicker").timepicker({showInputs: false});
        });
-      });
+            });
       
       
       
