@@ -42,7 +42,7 @@
                            <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Place_address">Place Address</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_address" name="place_address"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="shop_address" name="place_address"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
 
@@ -85,6 +85,18 @@
                             <div class="master_field">
                               <label class="master_label" for="Other_info">Other info in arabic</label>
                               <textarea class="master_input" name="info_ar" id="Other_info_ar" placeholder="Other info" ></textarea><span class="master_message inherit">message content</span>
+                            </div>
+                          </div>
+                          <div class="col-xs-4" hidden>
+                            <div class="master_field">
+                              <label class="master_label" for="shop_long">Longtiuide</label>
+                              <input class="master_input" name="shop_long" id="shop_long" placeholder="shop_long" type="text"><span class="master_message inherit">message content</span>
+                            </div>
+                          </div>
+                          <div class="col-xs-4" hidden>
+                            <div class="master_field">
+                              <label class="master_label" for="shop_lat">Lat</label>
+                              <input class="master_input" name="shop_lat" id="shop_lat" placeholder="shop_lat" type="text"><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-sm-12 col-xs-12">
@@ -130,7 +142,7 @@
                             <div class="col-sm-3 col-xs-4">
                               <div class="master_field">
                                 <label class="master_label" for="branches_1">branch 1 name in arabic</label>
-                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1" name="branch_name_ar[1]"><span class="master_message color--fadegreen">message</span>
+                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branch_address_1" name="branch_name_ar[1]"><span class="master_message color--fadegreen">message</span>
                               </div>
                             </div>
                             <div class="col-sm-3 col-xs-4">
@@ -515,11 +527,15 @@
       $('.add-more-branch').on('click' , function(){
        currentCount +=1;
        nextCount = currentCount ;
-       $('#mbranch').append(" <div class='branch-container'>	<div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name in arabic</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" address</label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>start date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>end date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div></div> ");
+       $('#mbranch').append(" <div class='branch-container'>	<div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name in arabic</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" address</label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_address_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>start date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>end date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div></div> ");
       
-       var currentCountAr =$('.branch-container-ar').length;
-       var nextCount = currentCountAr + 1 ;
-       $('.branch-container-ar:last').after(" <div class='branch-container-ar'>	<div class='col-sm-6 col-xs-12'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch "+nextCount+" name</label><input class='master_input' type='text' placeholder='branch " + nextCount + " name' Required id='branches_"+nextCount+"'><span class='master_message color--fadegreen'>validation message will be here</span></div></div></div> ");
+
+      ////get map 
+   
+      // initMap();
+       // var currentCountAr =$('.branch-container-ar').length;
+       // var nextCount = currentCountAr + 1 ;
+       // $('.branch-container-ar:last').after(" <div class='branch-container-ar'>	<div class='col-sm-6 col-xs-12'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch "+nextCount+" name</label><input class='master_input' type='text' placeholder='branch " + nextCount + " name' Required id='branches_"+nextCount+"'><span class='master_message color--fadegreen'>validation message will be here</span></div></div></div> ");
       
       
       
@@ -527,10 +543,52 @@
          $('.datepicker').datepicker({autoclose: true});
          $(".timepicker").timepicker({showInputs: false});
        });
+        
+
       });
       
+      // alert(nextCount);
       
+      //    function initMap() {
       
+      //   // nextCount+1;
+      //   for(var i=1 ; i <= 3 ; i++)
+      // {
+      //   var input = document.getElementById("branch_address_"+i);
+      //  alert(input);
+      //   var autocomplete = new google.maps.places.Autocomplete(input);
+
+      //   autocomplete.addListener('place_changed', function() {
+ 
+      //     var place = autocomplete.getPlace();
+      //     if (!place.geometry) {
+      //       // User entered the name of a Place that was not suggested and
+      //       // pressed the Enter key, or the Place Details request failed.
+      //       window.alert("No details available for input: '" + place.name + "'");
+      //       return;
+      //     }
+
+      //     var address = '';
+      //     if (place.address_components) {
+      //       address = [
+      //         (place.address_components[0] && place.address_components[0].short_name || ''),
+      //         (place.address_components[1] && place.address_components[1].short_name || ''),
+      //         (place.address_components[2] && place.address_components[2].short_name || '')
+      //       ].join(' ');
+      //     }
+
+      //     var branch_long = place.geometry.location.lat();
+      //  var  branch_lat= place.geometry.location.lng();
+      //  alert(branch_long);
+      //    // $('#branch_address').val(branch_address);
+      //    // $('#branch_address').val(branch_address);
+      //   });
+
+
+
+      // }
+      // }
+        
       
     </script>
     <script type="text/javascript">
@@ -543,5 +601,47 @@
         $('.datepicker').datepicker({autoclose: true});
         $(".timepicker").timepicker({showInputs: false});
       });
+    </script>
+
+          <script>
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+var shop_lat;
+var shop_long;
+      function initMap() {
+        
+        var input = document.getElementById('shop_address');
+       
+        var autocomplete = new google.maps.places.Autocomplete(input);
+
+        autocomplete.addListener('place_changed', function() {
+ 
+          var place = autocomplete.getPlace();
+          if (!place.geometry) {
+            // User entered the name of a Place that was not suggested and
+            // pressed the Enter key, or the Place Details request failed.
+            window.alert("No details available for input: '" + place.name + "'");
+            return;
+          }
+
+          var address = '';
+          if (place.address_components) {
+            address = [
+              (place.address_components[0] && place.address_components[0].short_name || ''),
+              (place.address_components[1] && place.address_components[1].short_name || ''),
+              (place.address_components[2] && place.address_components[2].short_name || '')
+            ].join(' ');
+          }
+
+           shop_lat = place.geometry.location.lat();
+         shop_long= place.geometry.location.lng();
+         $('#shop_lat').val(shop_lat);
+         $('#shop_long').val(shop_long);
+        });
+
+
+
+      }
     </script>
 @endsection
