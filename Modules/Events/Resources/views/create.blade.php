@@ -55,7 +55,7 @@
             {{-- Event name --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="Event_name">Event name</label>
+                <label class="master_label" for="Event_name">@lang('keywords.eventName')</label>
                 <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="english_event_name" value="{{ old('english_event_name') }}">
                 @if ($errors->has('event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('event_name') }}</span>
@@ -67,7 +67,7 @@
             {{-- Description --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="description">Description</label>
+                <label class="master_label" for="description">@lang('keywords.eventDescription')</label>
                 <textarea class="master_input" id="description" placeholder="Description" Required name="english_description">{{ old('english_description') }}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
@@ -82,15 +82,24 @@
                 <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
                 <input type="hidden" name="lat" id="lat" value="30.047059762805294">
                 <input type="hidden" name="lng" id="lng" value="32.5693651023837">
-                <input type="hidden" name="address" id="address" value="">
+                
               </div>
             </div>
 
+            <div class="col-xs-6">
+                <div class="master_field">
+                  <label class="master_label" for="venue">@lang('keywords.address')</label>
+                  <input class="master_input" type="text" readonly placeholder="ex:CFC" Required id="address" name="address" value="{{ old('address') }}">
+                  @if ($errors->has('address'))
+                    <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
+                  @endif
+                </div>
+              </div>
 
             {{-- English Venu --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="venue">Venue</label>
+                <label class="master_label" for="venue">@lang('keywords.venue')</label>
                 <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="english_venu" value="{{ old('english_venu') }}">
                 @if ($errors->has('english_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_venu') }}</span>
@@ -102,7 +111,7 @@
             {{-- English Hashtags --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label mandatory">Hashtags</label>
+                <label class="master_label mandatory">@lang('keywords.Hashtags')</label>
                 <input type="text" value="" data-role="tagsinput" name="english_hashtags" value="{{ old('english_hashtags') }}">
               </div>
               <div class="clearfix"></div>
@@ -117,7 +126,7 @@
                   <option value="" disabled selected>-- @lang('keywords.Please select a gender') --</option>
                   @if ( isset($genders) && !empty($genders) )
                       @foreach ($genders as $gender)
-                          <option value="{{ $gender->id }}">{{ \App::isLocale('en') ? $gender->name : \Helper::localization('Genders', 'genders', $gender->id, 2, '') }}</option>
+                          <option value="{{ $gender->id }}">{{ \App::isLocale('en') ? $gender->name : \Helper::localization('Genders', 'name', $gender->id, 2, '') }}</option>
                       @endforeach
                   @endif
                 </select>
@@ -128,12 +137,12 @@
             {{-- Allowed Age ranges --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label mandatory" for="age">Allowed Age Range</label>
+                <label class="master_label mandatory" for="age">@lang('keywords.Allowed Age Range')</label>
                 <select class="master_input select2" id="age" style="width:100%;" name="age_range">
                   <option value="" disabled selected>-- Please Select Age Range</option>
                   @if ( isset($age_range) && !empty($age_range) )
                       @foreach ($age_range as $range)
-                          <option value="{{ $range->id }}">{{ \App::isLocale('en') ? $range->name : \Helper::localization('age_ranges', 'age_ranges', $range->id, 2, '') }}</option>
+                          <option value="{{ $range->id }}">{{ \App::isLocale('en') ? $range->name : \Helper::localization('age_ranges', 'name', $range->id, 2, '') }}</option>
                       @endforeach
                   @endif
                 </select>
@@ -147,7 +156,7 @@
             {{-- Start date --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="start_date">start date</label>
+                <label class="master_label" for="start_date">@lang('keywords.start date')</label>
                 <div class="bootstrap-timepicker">
                   <input class="datepicker master_input" type="text" placeholder="start date" Required id="start_date" name="start_date" value="{{ old('start_date') }}">
                 </div>
@@ -161,7 +170,7 @@
             {{-- Start time --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="start_time">start date time</label>
+                <label class="master_label" for="start_time">@lang('keywords.start date time')</label>
                 <div class="bootstrap-timepicker">
                   <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time" name="start_time" value="{{ old('start_time') }}">
                 </div>
@@ -175,7 +184,7 @@
             {{-- End date --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="end_date">end date</label>
+                <label class="master_label" for="end_date">@lang('keywords.end date')</label>
                 <div class="bootstrap-timepicker">
                   <input class="datepicker master_input" type="text" placeholder="end date" Required id="end_date" name="end_date" value="{{ old('end_date') }}">
                 </div>
@@ -189,7 +198,7 @@
             {{-- End time --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="end_time">end date time</label>
+                <label class="master_label" for="end_time">@lang('keywords.end date time')</label>
                 <div class="bootstrap-timepicker">
                   <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="end_time" value="{{ old('end_date') }}">
                 </div>
@@ -203,7 +212,7 @@
             {{-- Categories --}}
             <div class="col-sm-6 col-xs-12">
               <div class="master_field">
-                <label class="master_label mandatory" for="category">category</label>
+                <label class="master_label mandatory" for="category">@lang('keywords.category')</label>
                 <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="categories[]">
                   @if ( isset($categories) && !empty($categories) )
                       @foreach ($categories as $category)
@@ -219,20 +228,20 @@
 
             {{-- Suggest as big Event --}}
             <div class="col-sm-3 col-xs-6">
-              <label class="container">Suggest as big event
-                <input type="checkbox" name="is_big_event" value="1" checked>
-                <span class="checkmark"></span>
-              </label>
-            </div>
+                <div class="master_field">
+                  <label class="master_label" for="big_event">@lang('keywords.Suggest as big event')</label>
+                  <input class="make-switch" type="checkbox" name="is_big_event" value="1">
+                </div>
+              </div>
 
 
             {{-- Is Event Active or Not --}}
             <div class="col-sm-3 col-xs-6">
-              <label class="container">Is your event active
-                <input type="checkbox" name="is_active" value="1" checked>
-                <span class="checkmark"></span>
-              </label>
-            </div>
+                <div class="master_field">
+                  <label class="master_label" for="big_event">@lang('keywords.is your event active or in active')</label>
+                  <input class="make-switch" type="checkbox" name="is_active" value="1">
+                </div>
+              </div>
 
           </div>
         </fieldset>
@@ -298,11 +307,11 @@
           <div class="row">
             <div class="col-xs-12">
               <div class="master_field">
-                <label class="master_label mandatory">Is it free or paid ?</label>
+                <label class="master_label mandatory">@lang('keywords.Is it free or paid ?')</label>
                 <input class="icon" type="radio" name="is_paid" id="radbtn_2_free" checked="true" value="0">
-                <label for="radbtn_2_free">free</label>
+                <label for="radbtn_2_free">@lang('keywords.free')</label>
                 <input class="icon" type="radio" name="is_paid" id="radbtn_3_paid" value="1">
-                <label for="radbtn_3_paid">paid</label>
+                <label for="radbtn_3_paid">@lang('keywords.paid')</label>
               </div>
             </div>
           </div>
@@ -312,7 +321,7 @@
             <div class="row">
               <div class="col-xs-8">
                 <div class="master_field">
-                  <label class="master_label" for="Price">Price</label>
+                  <label class="master_label" for="Price">@lang('keywords.Price')</label>
                   <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price" value="{{ old('price') }}">
                   @if ($errors->has('price'))
                     <span class="master_message color--fadegreen">{{ $errors->first('price') }}</span>
@@ -324,9 +333,9 @@
               {{-- Currency Symbol --}}
               <div class="col-xs-4">
                 <div class="master_field">
-                  <label class="master_label mandatory" for="Currency">Currency</label>
+                  <label class="master_label mandatory" for="Currency">@lang('keywords.Currency')</label>
                   <select class="master_input" id="Currency" name="currency">
-                    <option value="" disabled selected>-- Please Select a Currency Symbol --</option>
+                    <option value="" disabled selected>-- @lang('keywords.Please Select a Currency Symbol') --</option>
                     @if ( isset($currencies) && !empty($currencies) )
                         @foreach ($currencies as $currency)
                             <option value="{{ $currency->id }}">{{ $currency->symbol }}</option>
@@ -343,7 +352,7 @@
               {{-- Number of Tickets --}}
               <div class="col-xs-12">
                 <div class="master_field">
-                  <label class="master_label" for="Available_tickets">Available tickets</label>
+                  <label class="master_label" for="Available_tickets">@lang('keywords.Available tickets')</label>
                   <input class="master_input" type="number" placeholder="5" min="0" Required id="Available_tickets" name="number_of_tickets" value="{{ old('number_of_tickets') }}">
                   @if ($errors->has('number_of_tickets'))
                   <span class="master_message color--fadegreen">{{ $errors->first('number_of_tickets') }}</span>
@@ -362,7 +371,7 @@
             {{-- Website URL --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="Website">Website</label>
+                <label class="master_label" for="Website">@lang('keywords.Website')</label>
                 <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website" name="website" value="{{ old('website') }}">
                 @if ($errors->has('website'))
                   <span class="master_message color--fadegreen">{{ $errors->first('website') }}</span>
@@ -374,7 +383,7 @@
             {{-- Email --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="e_email">email</label>
+                <label class="master_label" for="e_email">@lang('keywords.email')</label>
                 <input class="master_input" type="email" placeholder="email" Required id="e_email" name="email" value="{{ old('email') }}">
                 @if ($errors->has('email'))
                   <span class="master_message color--fadegreen">{{ $errors->first('email') }}</span>
@@ -386,7 +395,7 @@
             {{-- Code Number --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="Code_numbe">Code number</label>
+                <label class="master_label" for="Code_numbe">@lang('keywords.Code number')</label>
                 <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe" name="code_number" value="{{ old('code_number') }}">
                 @if ($errors->has('code_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('code_number') }}</span>
@@ -398,7 +407,7 @@
             {{-- Mobile Number --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="Mobile_number">mobile number</label>
+                <label class="master_label" for="Mobile_number">@lang('keywords.mobile number')</label>
                 <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number" name="mobile_number" value="{{ old('mobile_number') }}">
                 @if ($errors->has('mobile_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('mobile_number') }}</span>
@@ -417,7 +426,7 @@
             {{-- 1st Youtube vedio in Arabic --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_en">Add YouTube video (1) Link in Arabic</label>
+                <label class="master_label" for="YouTube_video_en">@lang('keywords.YouTube-ar-1')</label>
                 <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_1" value="{{ old('youtube_ar_1') }}">
                 @if ($errors->has('youtube_ar_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_1') }}</span>
@@ -428,7 +437,7 @@
             {{-- 1st Youtube video in English --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_ar">Add YouTube video (1) Link in English</label>
+                <label class="master_label" for="YouTube_video_ar">@lang('keywords.YouTube-en-1')</label>
                 <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_1" value="{{ old('youtube_en_1') }}">
                 @if ($errors->has('youtube_en_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_1') }}</span>
@@ -439,7 +448,7 @@
             {{-- 2nd Youtube video in Arabic --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_en">Add YouTube video (2) Link in Arabic</label>
+                <label class="master_label" for="YouTube_video_en">@lang('keywords.YouTube-ar-2')</label>
                 <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_2" value="{{ old('youtube_ar_2') }}">
                 @if ($errors->has('youtube_ar_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_2') }}</span>
@@ -450,7 +459,7 @@
             {{-- 2nd Youtube video in English --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_ar">Add YouTube video (2) Link in English</label>
+                <label class="master_label" for="YouTube_video_ar">@lang('keywords.YouTube-en-2')</label>
                 <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_2" value="{{ old('youtube_en_2') }}">
                 @if ($errors->has('youtube_en_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_2') }}</span>

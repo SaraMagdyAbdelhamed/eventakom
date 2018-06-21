@@ -37,14 +37,14 @@ class MainController extends Controller
     public function about() {
         return view('main::about_us')
                 ->with('about_us_english', Fixed::where('name', 'LIKE', 'About Us')->first()->body)
-                ->with('about_us_arabic', Helper::localization('fixed_pages', 'body', '1', '2'));
+                ->with('about_us_arabic', Helper::localization('fixed_pages', 'body', 1, '2'));
     }
 
     // view terms n conditions
     public function terms() {
         return view('main::terms')
                 ->with('about_us_english', Fixed::where('name', 'LIKE', 'Terms and Conditions')->first()->body)
-                ->with('about_us_arabic', Helper::localization('fixed_pages', 'body', '2', '2'));
+                ->with('about_us_arabic', Helper::localization('fixed_pages', 'body', 2, '2'));
     }
 
 
@@ -52,7 +52,7 @@ class MainController extends Controller
     public function privacy() {
         return view('main::privacy')
                 ->with('about_us_english', Fixed::where('name', 'LIKE', 'Privacy and Policy')->first()->body)
-                ->with('about_us_arabic', Helper::localization('fixed_pages', 'body', '3', '2'));
+                ->with('about_us_arabic', Helper::localization('fixed_pages', 'body', 3, '2'));
     }
 
     // view contact us page
@@ -89,8 +89,7 @@ class MainController extends Controller
        try {
             Helper::edit_entity_localization('fixed_pages', 'body', $id , 2, $request->arabicContent);
        } catch(\Exception $ex) {
-            Session::flash('warning', 'لا يمكن تعديل المحتوي باللغة العربية');
-            return redirect()->back();
+            
        }
 
         // update english
