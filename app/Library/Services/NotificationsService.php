@@ -10,7 +10,7 @@ class NotificationsService
 
 	
     
-    public function save_notification($message, $type,$entity_id, $item_id){
+    public function save_notification($message, $type,$entity_id, $item_id,$user_id){
         $notification = new Notification();
         $notification->msg = $message['en'];
         $notification->msg_ar = $message['ar'];
@@ -18,9 +18,9 @@ class NotificationsService
         $notification->item_id = $item_id;
         $notification->notification_type_id = $type;
         $notification->is_read = 0;
+        $notification->user_id = $user_id;
         $notification->save();
         return $notification;
-
     }
 
     /**
@@ -90,8 +90,8 @@ class NotificationsService
         ////////////////////////////////////////////////////////////////////////////////
 
         $ctx = stream_context_create();
-        stream_context_set_option($ctx, 'ssl', 'local_cert',  base_path() . "/public/medawy/Dawa2y.pem");
-        stream_context_set_option($ctx, 'ssl', 'passphrase', $passphrase);
+        stream_context_set_option($ctx, 'ssl', 'local_cert',  public_path() . "EventokomPushCert.pem");
+        //stream_context_set_option($ctx, 'ssl', 'passphrase', $passphrase);
 
         // Open a connection to the APNS server
         if($production){
@@ -173,12 +173,15 @@ class NotificationsService
 	    	foreach ($categories as $category) {
 	    		$message['en'] = 'New event added to '.$category->name;
 	    		$message['ar'] = 'تم إضافة حدث جديد متعلق ب'.' ' .$category->name;
-                $notification = $this->save_notification(
+                foreach ($category->users as $user) {
+                    $notification = $this->save_notification(
                     $message,
-                    5,//notificaion_type
+                    5,//notification_type
                     4,//Entity_id refer to "events"
-                    $event->id
-                );
+                    $event->id,
+                    $user->id
+                    );
+                }
                 //Push to many users
                 $this->PushToManyUsers($category->users , $notification);
 	    	}    		

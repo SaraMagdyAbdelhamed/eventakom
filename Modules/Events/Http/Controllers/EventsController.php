@@ -10,7 +10,6 @@ namespace Modules\Events\Http\Controllers;
 
 use Helper;
 use Session;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -640,6 +639,7 @@ class EventsController extends Controller
             $bigevent->event_id = $id;
             $bigevent->sort_order = $order + 1;
             $bigevent->save();
+            //Notify all users about the big Event 
         }
         return response()->json($ids);
             // ->with('categories', EventCategory::all());

@@ -44,6 +44,7 @@ class EventsMobileController extends Controller
 
      public function index()
     {
+        
         $current_events = EventMobile::CurrentEvents()->get();
         $pending_events = EventMobile::PendingEvents()->get();
         $rejected_events= EventMobile::EventsRejected()->get();
@@ -401,10 +402,21 @@ class EventsMobileController extends Controller
 
         //tickets
         $tickets = EventTicket::where('event_id','=',$request['event_id'])->first();
+        if(!empty($tickets)){
         $tickets->price = $request->price;
         $tickets->currency_id = $request->currency;
         $tickets->available_tickets = $request->number_of_tickets;                           
         $tickets->save();
+         }else{
+                $ticket = new EventTicket;
+                $ticket->event_id = $event->id;
+                $ticket->name = $request->english_event_name;
+                $ticket->price = $request->price;
+                $ticket->available_tickets = $request->number_of_tickets;
+                $ticket->current_available_tickets = $request->number_of_tickets;
+                $ticket->currency_id = $request->currency;
+                $ticket->save(); 
+         }
 
         // flash success message & redirect to list backend events
         Session::flash('success', 'Event updated Successfully! تم تحديث الحدث بنجاح');
@@ -467,17 +479,12 @@ class EventsMobileController extends Controller
       if($event_owner){
           $notification_message['en'] = 'YOUR EVENT IS APPROVED';
           $notification_message['ar'] = 'تم الموافقة على الحدث';
-          $notifcation = $this->NotifcationService->save_notification($notification_message,3,4,$accepted->id);
+          $notifcation = $this->NotifcationService->save_notification($notification_message,3,4,$accepted->id,$event_owner->id);
           $this->NotifcationService->PushToSingleUser($event_owner,$notifcation);
       }
       //get users have this event in their interests
       $this->NotifcationService->EventInterestsPush($accepted);
       
-
-
-
-
-
     }
 
     /**
@@ -497,8 +504,8 @@ class EventsMobileController extends Controller
           if($event_owner){
               $notification_message['en'] = 'YOUR EVENT IS APPROVED';
               $notification_message['ar'] = 'تم الموافقة على الحدث';
-              $notifcation = $this->NotifcationService->save_notification($notification_message,3,4,$accepted->id);
-              $this->NotifcationService->PushToSingleUser($event_owner,$notifcation);
+              $notification = $this->NotifcationService->save_notification($notification_message,3,4,$accepted->id,$event_owner->id);
+              $this->NotifcationService->PushToSingleUser($event_owner,$notification);
           }
           //get users have this event in their interests
           $this->NotifcationService->EventInterestsPush($accepted);
