@@ -580,7 +580,9 @@ $(document).ready(function(){
   $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
   });
 
-  $(".select2").select2();
+  $(function(){
+    $(".select2").select2();
+  });
 
   var form = $("#horizontal-pill-steps").show();
   form.steps({
