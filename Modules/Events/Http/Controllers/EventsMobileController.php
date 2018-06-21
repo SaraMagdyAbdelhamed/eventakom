@@ -229,10 +229,10 @@ class EventsMobileController extends Controller
             'code_number'           => 'required',
             'mobile_number'         => 'required',
 
-            'youtube_ar_1'          => 'required|',
-            'youtube_en_1'          => 'required|',
-            'youtube_ar_2'          => 'required|',
-            'youtube_en_2'          => 'required|',
+            // 'youtube_ar_1'          => 'required|',
+            // 'youtube_en_1'          => 'required|',
+            // 'youtube_ar_2'          => 'required|',
+            // 'youtube_en_2'          => 'required|',
             // 'arabic_images'         => 'required|',
             // 'english_images'        => 'required',
         ]);
