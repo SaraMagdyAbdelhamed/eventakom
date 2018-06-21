@@ -64,7 +64,7 @@
                   <div class="master_field">
                     <label class="master_label" for="bootstrap_date_start_from">@lang('keywords.startDateFrom')</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="set start date from" id="bootstrap_date_start_from" name="start_from">
+                      <input class="datepicker master_input" type="text" placeholder="start date from" id="bootstrap_date_start_from" name="start_from" />
                     </div>
                   </div>
                 </div>
@@ -72,7 +72,7 @@
                   <div class="master_field">
                     <label class="master_label" for="bootstrap_date_start_to">@lang('keywords.startDateTo')</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="set start date to" id="bootstrap_date_start_to" name="start_to">
+                      <input class="datepicker master_input" type="text" placeholder="start date from" id="bootstrap_date_start_from" name="start_to">
                     </div>
                   </div>
                 </div>
@@ -265,6 +265,31 @@
               swal("تم الإلغاء", "المعلومات مازالت موجودة :)", "error");
           }
       });
+
+      
+  });
+</script>
+
+<script>
+  $(document).ready(function(){
+    $(function () {
+        $('.datepicker').datepicker({autoclose: true});
+      });
+
+    var swiper = new Swiper('.slideperview .swiper-container', {
+      pagination: '.swiper-pagination',
+      slidesPerView: 3,
+      paginationClickable: true,
+      spaceBetween: 5,
+      nextButton: '.swiper-button-next',
+      prevButton: '.swiper-button-prev',
+      autoplay: 2500,
+      keyboardControl: true,
+      loop: true,
+      autoplayDisableOnInteraction: false,
+      mousewheelControl: false,
+    });
+    
   });
 </script>
 

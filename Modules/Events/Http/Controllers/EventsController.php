@@ -221,8 +221,8 @@ class EventsController extends Controller
             try {
                 $ticket = new EventTicket;
                 $ticket->event_id = $event->id;
-                $ticket->name = $event->name;
-                $ticket->price = $event->price;
+                $ticket->name = $request->english_event_name;
+                $ticket->price = $request->price;
                 $ticket->available_tickets = $request->number_of_tickets;
                 $ticket->current_available_tickets = $request->number_of_tickets;
                 $ticket->currency_id = $request->currency;

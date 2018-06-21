@@ -724,7 +724,8 @@
 
         map = new google.maps.Map(document.getElementById('map'), {
           center: new google.maps.LatLng(myLatlng),
-          zoom: 8
+          zoom: 8,
+          mapTypeId: 'roadmap'
         });
 
         var marker = new google.maps.Marker({

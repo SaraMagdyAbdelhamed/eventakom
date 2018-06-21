@@ -300,7 +300,7 @@
                     @endforeach
                 @endif
                 
-                <input type="text" data-role="tagsinput" name="arabic_hashtags" value="{{ \Helper::get_hashtags($event->id, 2) ? $hashtagsAr : '' }}">
+                <input type="text" data-role="tagsinput" name="arabic_hashtags" value="{{ \Helper::get_hashtags($event->id, 2) ? (isset($hashtagsAr) ? $hashtagsAr : '') : '' }}">
               </div>
               @if ($errors->has('arabic_hashtags'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_hashtags') }}</span>
@@ -488,10 +488,32 @@
             </div>
               
             {{-- Arabic images --}}
-            <input type="file" name="arabic_images[]" multiple>
+          <div class="col-sm-6 col-xs-12 text-center">
+            <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
+            <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+              <div class="main-section">
+                <div id="fileList"></div>
+                <div class="form-group">
+                  <input class="inputfile inputfile-1" id="file-1" type="file" name="arabic_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList()">
+                  <label for="file-1"><span>Choose a file</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
 
-            {{-- English images --}}
-            <input type="file" name="english_images[]" multiple>
+          {{-- English images --}}
+          <div class="col-sm-6 col-xs-12 text-center">
+            <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
+            <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+              <div class="main-section">
+                <div id="fileList2"></div>
+                <div class="form-group">
+                  <input class="inputfile inputfile-1" id="file-2" type="file" name="english_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList2()">
+                  <label for="file-2"><span>Choose a file</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
 
           </div>
 
@@ -506,62 +528,232 @@
 
 
 <script type="text/javascript">
-$(document).ready(function() {
-  $(function () {
-    $(".select2").select2();
-  });
-
-  $("#finish").click(function(){
-    var form = $("#horizontal-pill-steps").serializeArray();
-    var form_data = {};
-    console.log(form);
-    $.each(form,function(index,element){
-      form_data[element.name] = element.value;
-    })
-    if(form_data.active_event == undefined && form_data.big_event == undefined){
-      //big_event & active event =false (API)
-      console.log("2 undefined")
-    }
-    else if(form_data.active_event == undefined){
-      // active_event = false (API)
-      console.log("active undefined")
-    }
-    else if(form_data.big_event == undefined){
-      //big_event = false (API)
-      console.log("big undefined")
-    }
-    else{
-      // 2= true
-      console.log("2 ~undefined")
-    }
-  });
-
-  var form = $("#horizontal-pill-steps").show();
-  form.steps({
-    headerTag: "h3",
-    bodyTag: "fieldset",
-    transitionEffect: "slideLeft"
+  $(document).ready(function(){
+    $(function () {
+      $(".select2").select2();
     });
-  
 
-  $(function() {
-    $('input, select').on('change', function(event) {
-      var $element = $(event.target),
-        $container = $element.closest('.example');
-  
-      if (!$element.data('tagsinput'))
+    var listAr = [];
+    var listEn = [];
+    var check = false;
+    var img;
+    var reader=new FileReader();
+    function updateIndexList(){
+    
+    }
+
+    function closebtn(index,value) {
+      if(value==1){
+        listAr.splice(index,1);
+        $.each(listAr,function(id,value){
+          value.index = id;
+        });
+        check = true;
+        $("#file-1").prop('disabled', false);
+        updateList();
+      }
+      if(value==2){
+        listEn.splice(index,1);
+        $.each(listEn,function(id,value){
+          value.index = id;
+        });
+        check = true;
+        $("#file-2").prop('disabled', false);
+        updateList2();
+      }
+    }
+
+    updateList = function() {
+      let input = document.getElementById('file-1');
+      let output = document.getElementById('fileList');
+      let files1 = input.files; 
+      if(check==true){
+        
+        output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+        for (var i = 0; i < listAr.length; i++) {
+        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
+                            '<span class="uploader__file-list__thumbnail">'+
+                            '<img class="thumbnail" id="img_" src="+list.img+">'+
+                            '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                            '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
+                            '<span class="uploader__file-list__button">'+'</span>'+
+                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                            '</button>'+'</span>'+'</li>';
+                      
+                      
+      }
+      output.innerHTML += '</ul>';
+      check = false;
+      }
+      else{
+        if(files1.length > 5){
+        alert("max no. 5 images");
         return;
-  
-      var val = $element.val();
-      if (val === null)
-        val = "null";
-      $('code', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
-      $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
-    }).trigger('change');
+      }
+      for (var i = 0; i < files1.length; i++) {
+        var file = files1[i];
+        
+            listAr.push({'name':file.name,'size':file.size,'index':listAr.length});
+    
+        }
+    
+      output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+      for (var i = 0; i < listAr.length; i++) {
+        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
+                            '<span class="uploader__file-list__thumbnail">'+
+                            '<img class="thumbnail" id="img_" src="+list.img+">'+
+                            '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                            '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
+                            '<span class="uploader__file-list__button">'+'</span>'+
+                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                            '</button>'+'</span>'+'</li>';
+      }
+      output.innerHTML += '</ul>';
+      }
+    
+      if(listAr.length == 5){
+          $("#file-1").prop('disabled', true);
+        }
+      
+      }
+    
+    updateList2 = function(){
+      let input = document.getElementById('file-2');
+      let output = document.getElementById('fileList2');
+      let files2 = input.files; 
+      if(check==true){
+        output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+      for (var i = 0; i < listEn.length; i++) {
+        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
+        '<span class="uploader__file-list__thumbnail">'+
+        '<img class="thumbnail" id="img_" src="+list.img+">'+'</span>'+
+        '<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
+        '<span class="uploader__file-list__size">' +(listEn[i].size)/1000 +'KB'+
+        '</span>'+'<span class="uploader__file-list__button">'+'</span>'+
+        '<span class="uploader__file-list__button" id="delete" >'+''
+        +'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+'</span>'+'</li>';
+      }
+      output.innerHTML += '</ul>';
+      check=false;
+    
+      }
+      else{
+        if(files2.length > 5){
+          alert("max no. 5 images");
+          return;
+        }
+        for (var j = 0; j < files2.length; j++) {
+        var file = files2[j];
+        listEn.push({'name':file.name,'size':file.size,'index':listEn.length});
+        if(listEn.length == 5){
+          $("#file-2").prop("disabled",true);
+        }
+        }  
+      output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+      for (var i = 0; i < listEn.length; i++) {
+        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
+        '<span class="uploader__file-list__thumbnail">'+
+        '<img class="thumbnail" id="img_" src="+list.img+">'+'</span>'+
+        '<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
+        '<span class="uploader__file-list__size">' +(listEn[i].size)/1000 +'KB'+
+        '</span>'+'<span class="uploader__file-list__button">'+'</span>'+
+        '<span class="uploader__file-list__button" id="delete" >'+''
+        +'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+'</span>'+'</li>';
+      }
+      output.innerHTML += '</ul>';
+      }
+      if(listEn.length == 5){
+          $("#file-2").prop("disabled",true);
+        }
+        
+      }
+    
+    
+    $(document).ready(function(){
+      $("#finish1").click(function(){
+        var filesDraged0 = document.getElementById('fileinput0');
+        var filesMore0 = document.getElementById('secondaryfileinput0');
+        var filesDraged1 = document.getElementById("fileinput1");
+        var filesMore1 = document.getElementById("secondaryfileinput1");
+          var filesDragedAr = filesDraged0.files; 
+          var filesDragedEn = filesDraged1.files;
+          var filesMoreAr = filesMore0.files;
+          var filesMoreEn = filesMore1.files;
+    
+          var filesListAr=[];
+          var filesListEn=[];
+          //Arabic Files
+        $.each(filesDragedAr,function(index,element){
+          filesListAr.push(element.name);
+        });
+        if(filesMoreAr.length > 0){
+          $.each(filesMoreAr,function(index,element){
+            filesListAr.push(element.name);
+          })
+        }
+        console.log(filesListAr);
+        //English Files /*****/
+        $.each(filesDragedEn,function(index,element){
+          filesListEn.push(element.name);
+        });
+        console.log("engish");
+        console.log(filesDragedEn)
+        if(filesMoreEn.length>0){
+          $.each(filesMoreEn,function(index,element){
+            filesListEn.push(element.name);
+          })
+        }
+        console.log(filesListEn)
+        var form = $("#horizontal-pill-steps").serializeArray();
+        var form_data = {};
+        console.log(form);
+        $.each(form,function(index,element){
+          form_data[element.name] = element.value;
+        })
+        if(form_data.active_event == undefined && form_data.big_event == undefined){
+          //big_event & active event =false (API)
+          console.log("2 undefined")
+        }
+      else if(form_data.active_event == undefined){
+          // active_event = false (API)
+          console.log("active undefined")
+        }
+      else if(form_data.big_event == undefined){
+          //big_event = false (API)
+          console.log("big undefined")
+        }
+        else{
+          // 2= true
+          console.log("2 ~undefined")
+        }
+      });
+    })
+    
+    var form = $("#horizontal-pill-steps").show();
+    form.steps({
+      headerTag: "h3",
+      bodyTag: "fieldset",
+      transitionEffect: "slideLeft",
+    });
+
+    $(function() {
+      $('input, select').on('change', function(event) {
+        var $element = $(event.target),
+          $container = $element.closest('.example');
+    
+        if (!$element.data('tagsinput'))
+          return;
+    
+        var val = $element.val();
+        if (val === null)
+          val = "null";
+        $('code', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
+        $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+      }).trigger('change');
+    });
+
   });
   
-  
-
   $(function () {
     $('.datepicker').datepicker({autoclose: true});
     $(".timepicker").timepicker({showInputs: false});
@@ -571,26 +763,12 @@ $(document).ready(function() {
     var options = {};
     $('.js-uploader__box').uploader(options);
   }());
-  
 
   $(function () {
     $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
   });
-  
-  
 
-  // $('.paid-details').fadeOut();
   
-  $('label[for="radbtn_3_paid"]').on('click' , function(){
-    $('.paid-details').fadeIn(100);
-  });
-  
-  $('label[for="radbtn_2_free"]').on('click' , function(){
-    $('.paid-details').fadeOut();
-  });
-  
-});
-
 </script>
 
 <script>
@@ -599,9 +777,9 @@ $(document).ready(function() {
     @endif
 </script>
 
+{{-- Prevent Enter key from submitting form --}}
 <script>
   $(document).ready(function() {
-    // Prevent Enter key from submitting form
     $(window).keydown(function(event){
       if(event.keyCode == 13) {
         event.preventDefault();
@@ -611,10 +789,11 @@ $(document).ready(function() {
   });
 </script>
 
+
+{{-- Click on finish button triggers a hidden submit button --}}
 <script>
   
   $(document).ready(function() {
-    // Click on finish button triggers a hidden submit button
     $("#finish1").click(function(){
       $("#submitButton").trigger('click');
     });
