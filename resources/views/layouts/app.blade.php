@@ -706,9 +706,9 @@
     
 
   {{-- Google maps API key --}}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDk9wS-7eUWZ0_EEM3DQ2FftQIU8AvpMYs&libraries=places&callback=initMap"
-        async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&libraries=places&callback=initMap" async defer></script>
+  {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDk9wS-7eUWZ0_EEM3DQ2FftQIU8AvpMYs&libraries=places&callback=initMap" --}}
+        {{-- async defer></script> --}}
  {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDk9wS-7eUWZ0_EEM3DQ2FftQIU8AvpMYs&libraries=places&callback=initMap"
         async defer></script> --}}
 
