@@ -249,14 +249,14 @@ class EventsController extends Controller
         // Insert Arabic localizations
         try {
             Helper::add_localization(4, 'name', $event->id, $request->arabic_event_name, 2);             // arabic_event_name
-            Helper::add_localization(4, 'description', $event->id, $request->arabic_description, 2);             // arabic_description
-            Helper::add_localization(4, 'venue', $event->id, $request->arabic_venu, 2);             // arabic_venu
+            Helper::add_localization(4, 'description', $event->id, $request->arabic_description, 2);     // arabic_description
+            Helper::add_localization(4, 'venue', $event->id, $request->arabic_venu, 2);                  // arabic_venu
 
             // Explode hashtags into an array
             $arabic_hashtags = explode(',', $request->arabic_hashtags);
             for ($i = 0; $i < count($arabic_hashtags); $i++) {
                 // Add arabic hashtags in entity_localization table
-                Helper::add_localization(4, 'hashtag', $event->id, $arabic_hashtags[$i], 2);                        // arabic_hashtags
+                Helper::add_localization(17, 'hash_tags', $event->id, $arabic_hashtags[$i], 2);                        // arabic_hashtags
             }
         } catch (\Exception $ex) {
             dd($ex);
@@ -488,13 +488,13 @@ class EventsController extends Controller
             Helper::edit_entity_localization('events', 'venue', $event->id, 2, $request->arabic_venu);             // arabic_venu
 
             // remove old hashtags localizations
-            Helper::remove_localization(4, 'hashtag', $event->id, 2);
+            Helper::remove_localization(17, 'hash_tags', $event->id, 2);
 
             // Explode hashtags into an array
             $arabic_hashtags = explode(',', $request->arabic_hashtags);
             for ($i = 0; $i < count($arabic_hashtags); $i++) {
                 // Add arabic hashtags in entity_localization table
-                Helper::add_localization(4, 'hashtag', $event->id, $arabic_hashtags[$i], 2);                        // arabic_hashtags
+                Helper::add_localization(17, 'hash_tags', $event->id, $arabic_hashtags[$i], 2);                        // arabic_hashtags
             }
         } catch (\Exception $ex) {
             dd($ex);
