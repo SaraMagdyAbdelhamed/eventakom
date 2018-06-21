@@ -16,18 +16,21 @@ use App\Notifications;
 use App\NotificationsPush;
 use Illuminate\Database\Eloquent\Model;
 
-class Helper {
+class Helper
+{
 
     // helps binding locale prefix [en, ar] to view url
     // example: /en/about   
     // @param   $routeName      url 2nd segment []
-    public static function route($routeName) {
+    public static function route($routeName)
+    {
         $prefix = \App::isLocale('en') ? 'en' : 'ar';
-        return url( $prefix.'/'.$routeName );
+        return url($prefix . '/' . $routeName);
     }
 
     // convert lang_id [1, 2] to ['en', 'ar']
-    public static function getUserLocale() {
+    public static function getUserLocale()
+    {
         $lang_id = Auth::user()->lang_id;
         $locale = ($lang_id == 1) ? 'en' : 'ar';
         Session::put('locale', $locale);
@@ -35,20 +38,23 @@ class Helper {
     }
 
     // get user's last login time in UTC
-    public static function getUserLastLogin() {
+    public static function getUserLastLogin()
+    {
         return Users::where('id', Auth::user()->id)->first()->last_login;
     }
 
     // get user's current timezone from DB
-    public static function getUserTimezone() {
+    public static function getUserTimezone()
+    {
         return Users::where('id', Auth::user()->id)->first()->timezone;
     }
 
     // convert UTC to user's local timezone
     // @param   $timestamp      UTC timestamp
     // @param   $format         timestamp format    ex: d/m/y   or  H:m:i 
-    public static function getUserLocalTimezone($timestamp=NULL, $format='h:m A - M d Y') {
-        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$timestamp , 'GMT')->setTimeZone(Helper::getUserTimezone())->format($format);
+    public static function getUserLocalTimezone($timestamp = null, $format = 'h:m A - M d Y')
+    {
+        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $timestamp, 'GMT')->setTimeZone(Helper::getUserTimezone())->format($format);
     }
 
     /**
@@ -60,12 +66,13 @@ class Helper {
      * 
      *  Example:    Helper::localization('fixed_pages', 'name', '1', '2')
      *  expected result     'عن الشركة'
-    */
-    public static function localization($table_name, $field_name, $item_id, $lang_id, $default=null) {
-        $localization = Entity::where('table_name', $table_name)->with(['localizations' => function($q) use ($field_name, $item_id, $lang_id){ 
-            $q->where('field', $field_name)->where('item_id', $item_id)->where('lang_id', $lang_id); }
-        ])->first();
-        
+     */
+    public static function localization($table_name, $field_name, $item_id, $lang_id, $default = null)
+    {
+        $localization = Entity::where('table_name', $table_name)->with(['localizations' => function ($q) use ($field_name, $item_id, $lang_id) {
+            $q->where('field', $field_name)->where('item_id', $item_id)->where('lang_id', $lang_id);
+        }])->first();
+
 
         $result = isset($localization->localizations[0]) ? $localization->localizations[0]->value : $default;
         return $result;
@@ -80,8 +87,9 @@ class Helper {
      * 
      *  Example:    Helper::localization('fixed_pages', 'name', '1', '2')
      *  expected result     'عن الشركة'
-    */
-    public static function get_hashtags($item_id, $lang_id) {
+     */
+    public static function get_hashtags($item_id, $lang_id)
+    {
         $localization = EntityLocalization::where('field', 'hashtag')->where('item_id', $item_id)->where('lang_id', $lang_id)->get();
         return $localization;
     }
@@ -96,11 +104,12 @@ class Helper {
      * 
      *  Example:    Helper::localization('fixed_pages', 'name', '1', '2', 'محتوي جديد')
      *  expected result     save 'محتوي جديد' in this record as a new value.
-    */
-    public static function edit_entity_localization($table_name, $field_name, $item_id, $lang_id, $new_value) {
-        $localization = Entity::where('table_name', $table_name)->with(['localizations' => function($q) use ($table_name, $field_name, $item_id, $lang_id){ 
-            $q->where('field', $field_name)->where('item_id', $item_id)->where('lang_id', $lang_id); }
-        ])->first()->localizations[0];
+     */
+    public static function edit_entity_localization($table_name, $field_name, $item_id, $lang_id, $new_value)
+    {
+        $localization = Entity::where('table_name', $table_name)->with(['localizations' => function ($q) use ($table_name, $field_name, $item_id, $lang_id) {
+            $q->where('field', $field_name)->where('item_id', $item_id)->where('lang_id', $lang_id);
+        }])->first()->localizations[0];
 
         $localization->value = $new_value;
         $localization->save();
@@ -115,7 +124,8 @@ class Helper {
      *  @param  $lang_id
      *  All parameters are the same in `entity_localization` with same order
      */
-    public static function add_localization($entity_id, $field, $item_id, $value, $lang_id) {
+    public static function add_localization($entity_id, $field, $item_id, $value, $lang_id)
+    {
         $localization = new EntityLocalization;
         $localization->entity_id = $entity_id;
         $localization->field = $field;
@@ -125,24 +135,28 @@ class Helper {
         $localization->save();
     }
 
-       public static function remove_localization($entity_id, $field, $item_id,$lang_id) {
-         EntityLocalization::where('entity_id','=',$entity_id)
-        ->where('field', '=', $field )
-        ->where('item_id', '=', $item_id )
-        ->where('lang_id', '=', $lang_id )
-        ->delete(); 
+    public static function remove_localization($entity_id, $field, $item_id, $lang_id)
+    {
+        EntityLocalization::where('entity_id', '=', $entity_id)
+            ->where('field', '=', $field)
+            ->where('item_id', '=', $item_id)
+            ->where('lang_id', '=', $lang_id)
+            ->delete();
     }
 
-       public static function multi_localization($entity_id, $field, $item_id, $lang_id) {
-          EntityLocalization::where('entity_id','=',$entity_id)
-        ->where('field', '=', $field )
-        ->where('item_id', '=', $item_id )
-        ->where('lang_id', '=', $lang_id )
-        ->get(); 
+    public static function multi_localization($entity_id, $field, $item_id, $lang_id)
+    {
+        EntityLocalization::where('entity_id', '=', $entity_id)
+            ->where('field', '=', $field)
+            ->where('item_id', '=', $item_id)
+            ->where('lang_id', '=', $lang_id)
+            ->get();
     }
 
-     public static function CleanText($text){
-        $arr = ['أ' => 'ا',
+    public static function CleanText($text)
+    {
+        $arr = [
+            'أ' => 'ا',
             'إ' => 'ا',
             'آ' => 'ا',
             "ة" => 'ه',
@@ -173,26 +187,39 @@ class Helper {
 
     }
 
-      public static function CleanStriptagText($text){
-                $text = html_entity_decode($text);
-                $text = strip_tags($text);
-                $text = str_replace('&nbsp;', '', $text);
-                $text = trim(preg_replace('/\s+/', ' ', $text));
-                $text = Helper::CleanText($text);
-                return $text;
-      }
 
-      public static function ageRange_count($rangeFrom,$rangeTo){
-               $counter = 0;
-               $users = Users::where('birthdate','!=', NULL)->get();
-               foreach($users as $user){
-                if($rangeFrom <= $user->age && $user->age < $rangeTo){
+    public static function CleanStriptagText($text)
+    {
+        $text = html_entity_decode($text);
+        $text = strip_tags($text);
+        $text = str_replace('&nbsp;', '', $text);
+        $text = trim(preg_replace('/\s+/', ' ', $text));
+        $text = Helper::CleanText($text);
+        return $text;
+    }
 
-                  $counter++;  
-                }
-               } 
-                return $counter;
-      }
+    public static function ageRange_count($rangeFrom, $rangeTo)
+    {
+        $counter = 0;
+        $users = Users::where('birthdate', '!=', null)->get();
+        foreach ($users as $user) {
+            if ($rangeFrom <= $user->age && $user->age < $rangeTo) {
+                $counter++;
+            }
+        }
+        return $counter;
+    }
 
- 
+    public static function ageRange_users($rangeFrom, $rangeTo)
+    {
+        $ids = [];
+        $users = Users::where('birthdate', '!=', null)->get();
+        foreach ($users as $user) {
+            if ($rangeFrom <= $user->age && $user->age < $rangeTo) {
+
+                $ids[] = $user->id;
+            }
+        }
+        return $ids;
+    }
 }

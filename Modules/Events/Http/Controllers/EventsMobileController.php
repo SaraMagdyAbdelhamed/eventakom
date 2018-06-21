@@ -180,7 +180,8 @@ class EventsMobileController extends Controller
         $data['currencies']    = Currency::all();
         $data['bigEventCount'] = EventMobile::BigEvent($id);
         $data['event_tickets'] = EventTicket::where('event_id','=',$id)->first();
-        $data['event_media']   = EventMedia::where('event_id','=',$id)->get();
+        $data['event_media']   = EventMedia::where('event_id','=',$id)->where('type','=',2)->get();
+        $data['images']   = EventMedia::where('event_id','=',$id)->where('type','=',1)->get();
         $event = EventMobile::find($id);
         $data['event_categories'] = $event->categories()->select('*')->where('event_id','=',$id)->get();
         $data['arabic_hashtags'] =   EntityLocalization::where('entity_id','=',4)
@@ -263,7 +264,7 @@ class EventsMobileController extends Controller
                 $image->move( public_path().'/events/arabic', $name );
                 $data_arabic[] = '/public/arabic/'.$name;
                     $media = new EventMedia;
-                    $media->event_id = $request['event_id']; $media->link = '/public/arabic/'.$name;
+                    $media->event_id = $request['event_id']; $media->link = '/events/arabic/'.$name;
                      $media->type = 1;
                     $media->save();
             }
@@ -281,10 +282,12 @@ class EventsMobileController extends Controller
                 $name = $image->getClientOriginalName();
                 $image->move( public_path().'/events/english', $name );
                 $data_english[] = '/public/english/'.$name;
+
                  $media = new EventMedia;
-                    $media->event_id = $request['event_id']; $media->link = '/public/english/'.$name;
-                     $media->type = 1;
-                    $media->save();
+                 $media->event_id = $request['event_id'];
+                 $media->link = '/events/english/'.$name;
+                 $media->type = 1;
+                 $media->save();
             }
           }
         }
@@ -303,9 +306,11 @@ class EventsMobileController extends Controller
             {
             $event->longtuide   = $request->lng;
             $event->latitude    = $request->lat;
+            $event->address = $request->address;
             }else{
             $event->longtuide   = $event->longtuide;
-            $event->latitude    = $event->latitude;   
+            $event->latitude    = $event->latitude;
+            $event->address     = $event->address;   
             }
             $event->venue       = $request->english_venu;
             $event->age_range_id= $request->age_range;
@@ -357,7 +362,7 @@ class EventsMobileController extends Controller
 
             /**  Youtube links  **/
            // $event->media()->update(['category_id' => $newCatId]);
-            $event->media()->delete();
+            $event->media()->where('type',2)->delete();
             $event->media()->createMany([
                 [ 'link' => $request->youtube_en_1, 'type'=> 2],
                 [ 'link' => $request->youtube_en_2, 'type'=> 2],

@@ -14,6 +14,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon/favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('img/favicon/manifest.json') }}">
     <link rel="mask-icon" href="{{ asset('img/favicon/safari-pinned-tab.svg') }}" color="#ee4a7e">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
     <meta name="msapplication-TileColor" content="#ee4a7e">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
     <meta name="theme-color" content="#281160">
@@ -25,16 +26,82 @@
     <!-- =============== APP TITLE ===============-->
     <title>@lang('keywords.website_name')</title>
     <!-- =============== APP STYLES ===============-->
-    <link rel="stylesheet" href="{{ asset( App::isLocale('ar') ? 'css/style__0__rtl.min.css' : 'css/style__0__ltr.min.css') }}">
+{{--     <link rel="stylesheet" href="{{ asset( App::isLocale('ar') ? 'css/style__0__rtl.min.css' : 'css/style__0__ltr.min.css') }}">
+ --}}     <link rel="stylesheet" href="{{ asset( App::isLocale('ar') ? 'css/style__0__rtl.css' : 'css/style__0__ltr.css') }}">
     <!-- =============== APP SCRIPT ===============-->
     <script src="{{ asset('js/modernizr.js') }}"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-    {{-- File input --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/js/fileinput.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/themes/fa/theme.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" type="text/javascript"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" type="text/javascript"></script>
+    {{-- Custom CSS --}}
+    <style>
+      /* Styling Checkboxes */
+      /* Customize the label (the container) */
+      label.container {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 18px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      /* Hide the browser's default checkbox */
+      label.container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      /* Create a custom checkbox */
+      .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #ccc;
+      }
+
+      /* On mouse-over, add a grey background color */
+      label.container:hover input ~ .checkmark {
+        background-color: #2196F3;
+      }
+
+      /* When the checkbox is checked, add a blue background */
+      label.container input:checked ~ .checkmark {
+        background-color: #2196F3;
+      }
+
+      /* Create the checkmark/indicator (hidden when not checked) */
+      .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+
+      /* Show the checkmark when checked */
+      label.container input:checked ~ .checkmark:after {
+        display: block;
+      }
+
+      /* Style the checkmark/indicator */
+      label.container .checkmark:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+    </style>
+
   </head>
   <body>
     <div class="toggled" id="wrapper">
@@ -78,12 +145,12 @@
                 <div class="collapse navbar-collapse nav pull-right  " id="navbarSupportedContent">
                   <ul class="navbar-nav">
 
-                  <li class="nav-item">
+                  <li class="nav-item" style="font-size: 14px important; padding: 0px;">
                     <form action="{{ route('changeLang') }}" method="POST">
                       {{ csrf_field() }}
                       <input type="hidden" name="url" value="{{ Request::url() }}">
                       <input type="hidden" name="locale" value="{{ \Helper::getUserLocale() }}">
-                        <button type="submit" class="nav-link English" style="background-color: inherit; border: 0px; color: white;">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</button>
+                        <button type="submit" class="nav-link English" style="background-color: inherit; border: 0px; color: white; ">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</button>
                     </form>
                     
                   </li>
@@ -155,7 +222,7 @@
             <!-- Sidebar-->
             <nav class="navbar navbar-fixed-top   bshadow--0 bradius--noborder " id="sidebar-wrapper" role="navigation">
               <ul class="sidebar-navigation">
-                <li class="brand   bshadow--0"><a href="{{ Helper::route('about') }}"> <img src="{{ asset('img/logo/logo__light.svg') }}" alt="ايفنتكوم"></a></li>
+                <li class="brand   bshadow--0"><a href="{{ route('about') }}"> <img src="{{ asset('img/logo/logo__light.svg') }}" alt="ايفنتكوم"></a></li>
               </ul>
               <div class="coverglobal text-center bshadow--2" style="background:undefined url( '{{ asset('img/covers/dummy.jpg') }}') no-repeat center center; background-size:cover;">
                 <button class="hamburger is-closed" type="button" data-toggle="offcanvas"><span class="hamb-top"></span><span class="hamb-middle"></span><span class="hamb-bottom"></span></button>
@@ -207,7 +274,7 @@
                     <ul class="side__submenu">
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_1" href="{{ route('event_backend') }}">@lang('keywords.addfrombackend')</a></li>
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_2" href="{{ route('event_mobile') }}">@lang('keywords.addfromMobile')</a></li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="{{ route('big_events') }}">Big events</a></li>
+                      <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="{{ route('big_events') }}">@lang('keywords.bigevents')</a></li>
                     </ul>
                   </li>
                   <li class="side__list" id="menu_4"> <a class="side__item side__item--sub">barcode</a>
@@ -217,13 +284,13 @@
                       <li class="side__sublist"><a class="side__subitem" id="sub_4_3"  href="barcode_failed.html">barcode failed</a></li>
                     </ul>
                   </li>
-                  <li class="side__list" id="menu_5"> <a class="side__item" id="sub_5_1" href="famous_attractions.html">Famous attractions</a>
+                  <li class="side__list" id="menu_5"> <a class="side__item" id="sub_5_1" href="{{ route('fa.list') }}">Famous attractions</a>
                   </li>
                   <li class="side__list" id="menu_6"> <a class="side__item" id="sub_6_1" href="{{ route('offers.list') }}">@lang('keywords.offers')</a>
                   </li>
-                  <li class="side__list" id="menu_7"> <a class="side__item" id="sub_7_1" href="shop_and_dine.html">Shop and dine</a>
+                  <li class="side__list" id="menu_7"> <a class="side__item" id="sub_7_1" href="{{route('shops')}}">Shop and dine</a>
                   </li>
-                  <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="notifications.html">Notifications</a>
+                  <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="{{route('notification')}}">Notifications</a>
                   </li>
 
                   <li class="side__list" id="menu_9"> <a class="side__item" href="{{ route('statistics') }}">@lang('keywords.statistics')</a>
@@ -238,20 +305,34 @@
               {{-- Start alert messages --}}
               <div class="col-lg-12 text-center">
                 @if (Session::has('success'))
-                  <div class="alert text-center" style="background-color: #2ecc71; color: white; padding: 10px;">{{ Session::get('success') }}</div>
+                  <div class="alert text-center" style="background-color: #2ecc71; color: white; padding: 10px; margin-top: 40px;">
+                    <b>{{ Session::get('success') }}</b>
+                  </div>
                 @endif
 
                 @if (Session::has('warning'))
-                  <div class="alert text-center" style="background-color: #f39c12; color: white; padding: 10px;">{{ Session::get('warning') }}</div>
+                  <div class="alert text-center" style="background-color: #f39c12; color: white; padding: 10px; margin-top: 40px;">
+                    <b>{{ Session::get('warning') }}</b>
+                  </div>
                 @endif
 
                 @if (Session::has('error'))
-                  <div class="alert text-center" style="background-color: #c0392b; color: white; padding: 10px;">{{ Session::get('error') }}</div>
+                  <div class="alert text-center" style="background-color: #c0392b; color: white; padding: 10px; margin-top: 40px;">
+                    <b>{{ Session::get('error') }}</b>
+                  </div>
                 @endif
 
                 @foreach ($errors->all() as $error)
-                    <div class="alert alert-danger text-center" style="background-color: #c0392b; color: white; padding: 10px;">{{ $error }}</div>
+                    <div class="alert alert-danger text-center" style="background-color: #c0392b; color: white; padding: 10px; margin-top: 40px;">
+                      <b>{{ $error }}</b>
+                    </div>
                 @endforeach
+
+                @if ($errors->any())
+                  @foreach ($errors->all() as $error)
+                      <div class="alert alert-danger">{{ $error }}</div>
+                  @endforeach    
+                @endif
               </div>
               {{-- End alert --}}
 
@@ -627,7 +708,7 @@
   </script> 
   {{-- Google maps API key --}}
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
-
+  
   {{-- Map script --}}
   <script>
 
@@ -640,6 +721,7 @@
           var myLatlng = {lat: 30.042701, lng: 31.432662};
         @endif
         
+        var geocoder = new google.maps.Geocoder;
 
         map = new google.maps.Map(document.getElementById('map'), {
           center: new google.maps.LatLng(myLatlng),
@@ -658,6 +740,13 @@
               document.getElementById("lat").value = event.latLng.lat();
               document.getElementById("lng").value = event.latLng.lng();
 
+              geocoder.geocode({'latLng': event.latLng}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                  if (results[0]) {
+                    document.getElementById("address").value = results[0].formatted_address;
+                  }
+                }
+              });
           });
 
           function placeMarker(location) {
@@ -676,11 +765,6 @@
 
       }
   </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/js/fileinput.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/themes/fa/theme.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" type="text/javascript"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" type="text/javascript"></script>
 
 
 <script type="text/javascript">

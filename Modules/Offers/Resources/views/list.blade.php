@@ -337,7 +337,7 @@
                     {{-- Submit & Cancel Buttons --}}
                     <div class="col-xs-12">
                         <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                        <button class="remodal-confirm" type="submit">Save</button>
+                        <button class="remodal-confirm" type="submit" id="addSubmit">Save</button>
                     </div>
                     {{-- End Submit & Cancel Buttons --}}
 
@@ -484,6 +484,7 @@
         $('#addForm').submit(function(e){
             // prevent form from actual submit
             e.preventDefault();
+            $("#addSubmit").attr('disabled', true);
 
             var image_ar = document.getElementById("image_ar");
             var image_en = document.getElementById("image_en");

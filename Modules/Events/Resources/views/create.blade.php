@@ -21,18 +21,6 @@
     border: 0px;
     padding: 12px 36px;
   }
-
-  .main-section{
-      margin:0 auto;
-      padding: 20px;
-      margin-top: 100px;
-      background-color: #fff;
-      box-shadow: 0px 0px 20px #c1c1c1;
-  }
-  .fileinput-remove,
-  .fileinput-upload{
-      display: none;
-  }
 </style>
 
 
@@ -94,6 +82,7 @@
                 <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
                 <input type="hidden" name="lat" id="lat" value="1.234">
                 <input type="hidden" name="lng" id="lng" value="2.345">
+                <input type="hidden" name="address" id="address" value="">
               </div>
             </div>
 
@@ -114,7 +103,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">Hashtags</label>
-                <input type="text" value="KSA,Sports" data-role="tagsinput" name="english_hashtags" value="{{ old('english_hashtags') }}">
+                <input type="text" value="" data-role="tagsinput" name="english_hashtags" value="{{ old('english_hashtags') }}">
               </div>
               <div class="clearfix"></div>
             </div>
@@ -123,12 +112,12 @@
             {{-- Allowed Genders --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label mandatory" for="gender">gender</label>
+                <label class="master_label mandatory" for="gender">@lang('keywords.Gender')</label>
                 <select class="master_input select2" id="gender" style="width:100%;" name="gender">
-                  <option value="" disabled selected>-- Please select a gender --</option>
+                  <option value="" disabled selected>-- @lang('keywords.Please select a gender') --</option>
                   @if ( isset($genders) && !empty($genders) )
                       @foreach ($genders as $gender)
-                          <option value="{{ $gender->id }}">{{ $gender->name }}</option>
+                          <option value="{{ $gender->id }}">{{ \App::isLocale('en') ? $gender->name : \Helper::localization('Genders', 'genders', $gender->id, 2, '') }}</option>
                       @endforeach
                   @endif
                 </select>
@@ -144,7 +133,7 @@
                   <option value="" disabled selected>-- Please Select Age Range</option>
                   @if ( isset($age_range) && !empty($age_range) )
                       @foreach ($age_range as $range)
-                          <option value="{{ $range->id }}">{{ $range->name }}</option>
+                          <option value="{{ $range->id }}">{{ \App::isLocale('en') ? $range->name : \Helper::localization('age_ranges', 'age_ranges', $range->id, 2, '') }}</option>
                       @endforeach
                   @endif
                 </select>
@@ -218,7 +207,7 @@
                 <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="categories[]">
                   @if ( isset($categories) && !empty($categories) )
                       @foreach ($categories as $category)
-                          <option value="{{ $category->id }}">{{ $category->name }}</option>
+                          <option value="{{ $category->id }}">{{ \App::isLocale('en') ? $category->name : \Helper::localization('interests', 'name', $category->id, 2, '') }}</option>
                       @endforeach
                   @endif
                 </select>
@@ -230,20 +219,21 @@
 
             {{-- Suggest as big Event --}}
             <div class="col-sm-3 col-xs-6">
-              <div class="master_field">
-                <label class="master_label" for="big_event">Suggest as big event</label>
-                <input class="make-switch" type="checkbox" checked data-on-text="yes" data-off-text="no" name="is_big_event" value="1">
-              </div>
+              <label class="container">Suggest as big event
+                <input type="checkbox" name="is_big_event" value="1" checked>
+                <span class="checkmark"></span>
+              </label>
             </div>
 
 
             {{-- Is Event Active or Not --}}
             <div class="col-sm-3 col-xs-6">
-              <div class="master_field">
-                <label class="master_label" for="active_event">is your event active or in active</label>
-                <input class="make-switch" type="checkbox" checked data-on-text="active" data-off-text="inactive" name="is_active" value="1">
-              </div>
+              <label class="container">Is your event active
+                <input type="checkbox" name="is_active" value="1" checked>
+                <span class="checkmark"></span>
+              </label>
             </div>
+
           </div>
         </fieldset>
 
@@ -291,7 +281,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">الكلمات البحثية</label>
-                <input type="text" value="المملكة,الرياضة" data-role="tagsinput" name="arabic_hashtags" value="{{ old('arabic_hashtags') }}">
+                <input type="text" value="" data-role="tagsinput" name="arabic_hashtags" value="{{ old('arabic_hashtags') }}">
               </div>
               @if ($errors->has('arabic_hashtags'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_hashtags') }}</span>
@@ -472,22 +462,11 @@
             </div>
               
           {{-- Arabic images --}}
-          <div class="col-sm-6 col-xs-12 text-center">
-              <div class="form-group">
-                  <div class="file-loading">
-                      <input id="file-1" type="file" name="file[]" multiple class="file" data-overwrite-initial="false">
-                  </div>
-              </div>
-          </div>
+          <input type="file" name="arabic_images[]" multiple>
 
           {{-- English images --}}
-          <div class="col-sm-6 col-xs-12 text-center">
-              <div class="form-group">
-                  <div class="file-loading">
-                      <input id="file-1" type="file" name="file1[]" multiple class="file" data-overwrite-initial="false">
-                  </div>
-              </div>
-          </div>
+          <input type="file" name="english_images[]" multiple>
+
 
           </div>
 
@@ -523,7 +502,7 @@ $(document).ready(function() {
     form.steps({
       headerTag: "h3",
       bodyTag: "fieldset",
-      transitionEffect: "slideLeft",
+      transitionEffect: "slideLeft"
   });
 
   $(function() {
