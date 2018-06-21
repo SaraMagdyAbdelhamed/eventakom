@@ -63,6 +63,7 @@ class ShopController extends Controller
 
     public function add_shop(Request $request)
     {
+        
         $shop=Shop::create([
             "name"=>$request['place_name'],
             "phone"=>$request['phone'],
@@ -70,6 +71,35 @@ class ShopController extends Controller
             "info"=>$request['info'],
             "address"=>$request['place_address']
         ]);
+        if(isset($request['images']))
+        {
+            foreach ($request->images as $key => $file) {
+            
+            $destinationPath='shops_images';
+            $fileNameToStore=$destinationPath.'/'.time().rand(111,999).'.'.$file->getClientOriginalExtension();
+            // dd($fileNameToStore);
+            Input::file('images')[$key]->move($destinationPath,$fileNameToStore);
+            $shop->update(["photo"=>$fileNameToStore]);
+            $shop_media=ShopMedia::create([
+                    "shop_id"=>$shop->id,
+                    "link"=>$fileNameToStore,
+                    "type"=>1
+                ]);
+                 if($request['images_ar'][$key] != null)
+               {
+                $destinationPath='shops_images';
+            $fileNameToStore=$destinationPath.'/'.time().rand(111,999).'.'.$file->getClientOriginalExtension();
+            // dd($fileNameToStore);
+            Input::file('images_ar')[$key]->move($destinationPath,$fileNameToStore);
+                Helper::add_localization(21,'link',$shop_media->id,$fileNameToStore,2);
+                }
+                else
+                {
+                    Helper::add_localization(21,'link',$shop_media->id,$fileNameToStore,2);
+                }
+        }
+        }
+        // dd($request->all());
         if(isset($request['place_name_ar']))
         {
             Helper::add_localization(10,'name',$shop->id,$request['place_name_ar'],2);
@@ -100,18 +130,18 @@ class ShopController extends Controller
             foreach ($request['video'] as $key => $value) {
                if($value != null)
                {
-                ShopMedia::create([
+                $shop_media=ShopMedia::create([
                     "shop_id"=>$shop->id,
                     "link"=>$value,
                     "type"=>2
                 ]);
                  if($request['video_ar'][$key] != null)
                {
-                Helper::add_localization(21,'link',$shop->id,$request['video_ar'][$key],2);
+                Helper::add_localization(21,'link',$shop_media->id,$request['video_ar'][$key],2);
                 }
                 else
                 {
-                    Helper::add_localization(21,'link',$shop->id,$value,2);
+                    Helper::add_localization(21,'link',$shop_media->id,$value,2);
                 }
                }
               
@@ -140,5 +170,10 @@ class ShopController extends Controller
         }
     // dd($request->all());
     return  redirect()->route('shops');
+    }
+
+    public function edit_shop(Request $request)
+    {
+        
     }
 }
