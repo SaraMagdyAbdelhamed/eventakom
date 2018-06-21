@@ -225,7 +225,7 @@
                               <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2_ar" name="video_ar[2]"><span class="master_message inherit">message content</span>
                             </div>
                           </div>
-                          <div class="col-sm-6 col-xs-12"> 
+                          <div class="col-sm-6 col-xs-12 text-center"> 
                             <h4>upload event images (max no. 5 images) in English</h4>
                              <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="main-section">
@@ -237,7 +237,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-sm-6 col-xs-12"> 
+                          <div class="col-sm-6 col-xs-12 text-center"> 
                             <h4>upload event images (max no. 5 images) in Arabic</h4>
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="main-section">
