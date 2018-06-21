@@ -30,7 +30,7 @@
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Place_name">Place name</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name" value="{{$shop['name']}}"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
                           <div class="col-xs-4">
@@ -42,11 +42,11 @@
                            <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Place_address">Place Address</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_address" name="place_address"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_address" name="place_address" value="{{$shop['address']}}"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
 
-                          <div class="col-xs-4">
+                         {{--  <div class="col-xs-4">
                               <div class="master_field">
                                 <label class="master_label" for="start_time">start date time</label>
                                 <div class="bootstrap-timepicker">
@@ -61,24 +61,24 @@
                                   <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="shop_end">
                                 </div><span class="master_message inherit">message content</span>
                               </div>
-                            </div>
+                            </div> --}}
                           
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Phone_number">Phone number</label>
-                              <input class="master_input" type="tel" placeholder="0020123456789" Required id="Phone_number" name="phone"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="tel" placeholder="0020123456789" Required id="Phone_number" name="phone" value="{{$shop['phone']}}"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Website">Website</label>
-                              <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website" value="{{$shop['website']}}"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">Other info</label>
-                              <textarea class="master_input" name="info" id="Other_info" placeholder="Other info" Required></textarea><span class="master_message inherit">message content</span>
+                              <textarea class="master_input" name="info" id="Other_info" placeholder="Other info" Required value="{{$shop['info']}}"></textarea><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-xs-4">

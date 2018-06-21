@@ -33,10 +33,11 @@ class ShopController extends Controller
         return view('shops.add');
     }
 
-    public function edit()
+    public function edit($id)
     {
+        $data['shop']=Shop::find($id);
     	
-    	return view('shops.edit');
+    	return view('shops.edit',$data);
     }
 
     public function destroy($id)
@@ -174,6 +175,6 @@ class ShopController extends Controller
 
     public function edit_shop(Request $request)
     {
-        
+
     }
 }

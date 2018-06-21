@@ -46,7 +46,7 @@
                             </div>
                           </div>
 
-                          <div class="col-xs-4">
+                         {{--  <div class="col-xs-4">
                               <div class="master_field">
                                 <label class="master_label" for="start_time">start date time</label>
                                 <div class="bootstrap-timepicker">
@@ -61,7 +61,7 @@
                                   <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="shop_end">
                                 </div><span class="master_message inherit">message content</span>
                               </div>
-                            </div>
+                            </div> --}}
                           
                           <div class="col-xs-4">
                             <div class="master_field">
