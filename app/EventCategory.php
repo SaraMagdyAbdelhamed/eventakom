@@ -24,4 +24,8 @@ class EventCategory extends Model
     public function eventsmobile() {
         return $this->belongsToMany('App\EventMobile', 'event_categories', 'event_id', 'interest_id');
     }
+    public  function users()
+    {
+        return $this->belongsToMany('App\Users', 'user_interests','interest_id','user_id');
+    }
 }

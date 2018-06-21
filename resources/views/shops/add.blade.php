@@ -162,10 +162,10 @@
                           <div class="col-sm-12 col-xs-12">
                             <button class="add-more-branch btn-block master-btn bgcolor--gray_mm"><i class="fa fa-plus color--main"></i><span class="color--main">Add more branch</span></button>
                           </div>
-                          <div class="col-xs-6">
-                            <div class="master_field">
-                              <label class="master_label" for="active_place">is place active or in active</label>
-                              <input class="make-switch" type="checkbox" checked data-on-text="active" data-off-text="inactive" name="is_active">
+                          <div class="col-xs-12">
+                            <div class="master_field" style="display:flex;">
+                              <input type="checkbox" checked data-on-text="yes" data-off-text="no" name="big_event">
+                              <label class="master_label" for="big_event" style="padding-right: 1%;padding-top: 0.2%;">is place active or in active</label>
                             </div>
                           </div>
                         </div>
