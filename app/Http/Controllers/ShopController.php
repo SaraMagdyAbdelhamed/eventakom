@@ -156,7 +156,9 @@ class ShopController extends Controller
                $branch= ShopBranch::create([
                     "shop_id"=>$shop->id,
                     "branch"=>$value,
-                    "address"=>$request['branch_address'][$key]
+                    "address"=>$request['branch_address'][$key],
+                     "longitude"=>$request['branch_long'][$key],
+                    "latitude"=>$request['branch_lat'][$key]
                 ]);
                foreach ($request['days'] as $key1 => $value1) {
                 ShopBranchTime::create([
@@ -271,7 +273,9 @@ class ShopController extends Controller
                $branch= ShopBranch::create([
                     "shop_id"=>$shop->id,
                     "branch"=>$value,
-                    "address"=>$request['branch_address'][$key]
+                    "address"=>$request['branch_address'][$key],
+                    "longitude"=>$request['branch_long'][$key],
+                    "latitude"=>$request['branch_lat'][$key]
                 ]);
                foreach ($request['days'] as $key1 => $value1) {
                 ShopBranchTime::create([
