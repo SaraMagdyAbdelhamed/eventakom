@@ -6,17 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
-     protected $primaryKey = 'id';
-    protected $table = 'notifications';
-   public $timestamps = true;
-    protected $fillable = ['msg','msg_ar','description','description_ar', 'entity_id', 'item_id', 'user_id', 'notification_type_id', 'is_read', 'is_sent','created_at','schedule'];
 
-	protected $dates = ['schedule'];
+   
+      protected $primaryKey = 'id';
+  	  protected $table = 'notifications';
+  	  protected $fillable = [
+        'msg','msg_ar','description',
+        'description_ar','user_id','entity_id',
+        'item_id','notification_type_id','is_read','is_sent',
+        'schedule'
+    ];
+  	  protected $dates = ['created_at', 'updated_at','schedule'];
+      public $timestamps = true;
 
-	    public function type()
-    {
-        return $this->belongsTo('App\NotificationTypes','notification_type_id');
-    }
+
+      /*Relations*/
+      public function type()
+      {
+      	return $this->belongsTo('App\NotificationType','notification_type_id');
+      }
+
+      // public function queue()
+      // {
+      // 	return $this->hasOne('App\NotificationPush');
+      // }
 
     	public function items()
     {
@@ -25,7 +38,7 @@ class Notification extends Model
 
         public function push()
     {
-        return $this->hasMany('App\NotificationsPush','notification_id');
+        return $this->hasMany('App\NotificationPush','notification_id');
     }
 
 

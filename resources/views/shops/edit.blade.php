@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-xs-12">
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                    <form id="horizontal-pill-steps" action="{{route('add_shop_data')}}" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+                    <form id="horizontal-pill-steps" action="{{route('edit_shop_data')}}" method="post" enctype="multipart/form-data" accept-charset="utf-8">
                       {{ csrf_field() }}
                       <h3>Info in English</h3>
                       <fieldset>
@@ -30,7 +30,7 @@
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Place_name">Place name</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name" value="{{$shop['name']}}"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
                           <div class="col-xs-4">
@@ -42,11 +42,11 @@
                            <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Place_address">Place Address</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_address" name="place_address"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_address" name="place_address" value="{{$shop['address']}}"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
 
-                          <div class="col-xs-4">
+                         {{--  <div class="col-xs-4">
                               <div class="master_field">
                                 <label class="master_label" for="start_time">start date time</label>
                                 <div class="bootstrap-timepicker">
@@ -61,24 +61,24 @@
                                   <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="shop_end">
                                 </div><span class="master_message inherit">message content</span>
                               </div>
-                            </div>
+                            </div> --}}
                           
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Phone_number">Phone number</label>
-                              <input class="master_input" type="tel" placeholder="0020123456789" Required id="Phone_number" name="phone"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="tel" placeholder="0020123456789" Required id="Phone_number" name="phone" value="{{$shop['phone']}}"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Website">Website</label>
-                              <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website" value="{{$shop['website']}}"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">Other info</label>
-                              <textarea class="master_input" name="info" id="Other_info" placeholder="Other info" Required></textarea><span class="master_message inherit">message content</span>
+                              <textarea class="master_input" name="info" id="Other_info" placeholder="Other info" Required value="{{$shop['info']}}"></textarea><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-xs-4">
@@ -156,6 +156,9 @@
                               </div>
                             </div> --}}
                           </div>
+                          <div id="mbranch">
+                            
+                          </div>
                           <div class="col-sm-12 col-xs-12">
                             <button class="add-more-branch btn-block master-btn bgcolor--gray_mm"><i class="fa fa-plus color--main"></i><span class="color--main">Add more branch</span></button>
                           </div>
@@ -222,34 +225,27 @@
                               <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2_ar" name="video_ar[2]"><span class="master_message inherit">message content</span>
                             </div>
                           </div>
-                          <div class="col-sm-6 col-xs-12"> 
+                          <div class="col-sm-6 col-xs-12 text-center"> 
                             <h4>upload event images (max no. 5 images) in English</h4>
-                            <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                              <div class="row">
-                                <section class="l-main" role="main">
-                                  <div >
-                                    
-                                      
-                                        
-                                        <input id="fileinput" type="file" multiple value="Select Files" name="images">
-                                     
-                                      
-                                    
-                                  </div>
-                                </section>
+                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                              <div class="main-section">
+                                <div id="fileList"></div>
+                                <div class="form-group">
+                                  <input class="inputfile inputfile-1" id="file-1" type="file" name="images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList()">
+                                  <label for="file-1"><span >Choose a file</span></label>
+                                </div>
                               </div>
                             </div>
                           </div>
-                          <div class="col-sm-6 col-xs-12"> 
+                          <div class="col-sm-6 col-xs-12 text-center"> 
                             <h4>upload event images (max no. 5 images) in Arabic</h4>
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                              <div class="row">
-                                <section class="l-main" role="main">
-                                  <div>
-                                        <input  id="fileinput_ar" type="file" multiple value="Select Files" name="images_ar">
-
-                                      </div>
-                                </section>
+                              <div class="main-section">
+                                <div id="fileList2"></div>
+                                <div class="form-group">
+                                  <input class="inputfile inputfile-1" id="file-2" type="file" name="images_ar[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList2()">
+                                  <label for="file-2"><span>Choose a file</span></label>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -264,6 +260,143 @@
 
 
 @section('js')
+<script type="text/javascript">
+      var listAr = [];
+      var listEn = [];
+      var check = false;
+      var img;
+      var reader=new FileReader();
+      function updateIndexList(){
+      
+      }
+      function closebtn(index,value){
+        if(value==1){
+          listAr.splice(index,1);
+          $.each(listAr,function(id,value){
+            value.index = id;
+          });
+          check = true;
+          $("#file-1").prop('disabled', false);
+          updateList();
+        }
+        if(value==2){
+          listEn.splice(index,1);
+          $.each(listEn,function(id,value){
+            value.index = id;
+          });
+          check = true;
+          $("#file-2").prop('disabled', false);
+          updateList2();
+        }
+          
+        }
+       updateList = function() {
+        let input = document.getElementById('file-1');
+        let output = document.getElementById('fileList');
+        let files1 = input.files; 
+        if(check==true){
+          
+          output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+          for (var i = 0; i < listAr.length; i++) {
+          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
+                              '<span class="uploader__file-list__thumbnail">'+
+                              '<img class="thumbnail" id="img_" src="+list.img+">'+
+                              '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                              '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
+                              '<span class="uploader__file-list__button">'+'</span>'+
+                              '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                              '</button>'+'</span>'+'</li>';
+                        
+                        
+        }
+        output.innerHTML += '</ul>';
+        check = false;
+        }
+        else{
+          if(files1.length > 5){
+          alert("max no. 5 images");
+          return;
+         }
+        for (var i = 0; i < files1.length; i++) {
+          var file = files1[i];
+           
+              listAr.push({'name':file.name,'size':file.size,'index':listAr.length});
+      
+          }
+      
+        output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+        for (var i = 0; i < listAr.length; i++) {
+          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
+                              '<span class="uploader__file-list__thumbnail">'+
+                              '<img class="thumbnail" id="img_" src="+list.img+">'+
+                              '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                              '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
+                              '<span class="uploader__file-list__button">'+'</span>'+
+                              '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                              '</button>'+'</span>'+'</li>';
+        }
+        output.innerHTML += '</ul>';
+        }
+      
+        if(listAr.length == 5){
+            $("#file-1").prop('disabled', true);
+          }
+         
+        }
+      
+        updateList2 = function(){
+        let input = document.getElementById('file-2');
+        let output = document.getElementById('fileList2');
+        let files2 = input.files; 
+        if(check==true){
+           output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+        for (var i = 0; i < listEn.length; i++) {
+          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
+          '<span class="uploader__file-list__thumbnail">'+
+          '<img class="thumbnail" id="img_" src="+list.img+">'+'</span>'+
+          '<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
+          '<span class="uploader__file-list__size">' +(listEn[i].size)/1000 +'KB'+
+          '</span>'+'<span class="uploader__file-list__button">'+'</span>'+
+          '<span class="uploader__file-list__button" id="delete" >'+''
+          +'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+'</span>'+'</li>';
+        }
+        output.innerHTML += '</ul>';
+        check=false;
+      
+        }
+        else{
+          if(files2.length > 5){
+             alert("max no. 5 images");
+            return;
+          }
+          for (var j = 0; j < files2.length; j++) {
+          var file = files2[j];
+          listEn.push({'name':file.name,'size':file.size,'index':listEn.length});
+          if(listEn.length == 5){
+            $("#file-2").prop("disabled",true);
+          }
+          }  
+        output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+        for (var i = 0; i < listEn.length; i++) {
+          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
+          '<span class="uploader__file-list__thumbnail">'+
+          '<img class="thumbnail" id="img_" src="+list.img+">'+'</span>'+
+          '<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
+          '<span class="uploader__file-list__size">' +(listEn[i].size)/1000 +'KB'+
+          '</span>'+'<span class="uploader__file-list__button">'+'</span>'+
+          '<span class="uploader__file-list__button" id="delete" >'+''
+          +'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+'</span>'+'</li>';
+        }
+        output.innerHTML += '</ul>';
+        }
+        if(listEn.length == 5){
+            $("#file-2").prop("disabled",true);
+          }
+          
+        }
+      
+      
+    </script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script type="text/javascript">
       $(document).ready(function(){
@@ -359,6 +492,11 @@
       
       
     </script>
+     <script type="text/javascript">
+      $(function () {
+        $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
+      });
+    </script>
     <script type="text/javascript">
       (function(){
         var options = {};
@@ -372,10 +510,12 @@
       });
     </script>
     <script type="text/javascript">
+      var currentCount =0;
+       var nextCount = 0 ;
       $('.add-more-branch').on('click' , function(){
-       var currentCount =$('.branch-container').length;
-       var nextCount = currentCount + 1 ;
-       $('.branch-container:last').after(" <div class='branch-container'> <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name in arabic</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" address</label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>start date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>end date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div></div> ");
+       currentCount +=1;
+       nextCount = currentCount ;
+       $('#mbranch').append(" <div class='branch-container'>  <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name in arabic</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" address</label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>start date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>end date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div></div> ");
       
        var currentCountAr =$('.branch-container-ar').length;
        var nextCount = currentCountAr + 1 ;

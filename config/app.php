@@ -184,6 +184,8 @@ return [
         Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
 
         // App\Helper\Helper::class,
+        //Notification service provider
+        App\Providers\NotificationServiceProvider::class,
 
     ],
 

@@ -83,6 +83,7 @@
                 <input type="hidden" name="event_id" value="{{$event->id}}">
                 <input type="hidden" name="lat" id="lat" >
                 <input type="hidden" name="lng" id="lng" >
+                <input type="hidden" name="address" id="address" value="">
               </div>
             </div>
 
@@ -560,7 +561,7 @@
 
           </div>
 
-          <button type="submit" id="submit">@lang('keywords.submit')</button>
+          <button type="submit" id="submitButton" hidden>@lang('keywords.submit')</button>
         </fieldset>
       </form>
 
@@ -579,7 +580,9 @@ $(document).ready(function(){
   $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
   });
 
-  $(".select2").select2();
+  $(function(){
+    $(".select2").select2();
+  });
 
   var form = $("#horizontal-pill-steps").show();
   form.steps({
@@ -674,5 +677,25 @@ $(document).ready(function(){
     });    
 });
 </script>  -->
+<script>
+  $(document).ready(function() {
+    // Prevent Enter key from submitting form
+    $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
+  });
+</script>
 
+<script>
+  
+  $(document).ready(function() {
+    // Click on finish button triggers a hidden submit button
+    $("#finish1").click(function(){
+      $("#submitButton").trigger('click');
+    });
+  });
+</script>
 @endsection

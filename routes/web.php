@@ -118,7 +118,7 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
 
 
 
- // Events: Mobile
+    // Events: Mobile
     Route::get('/events/mobile', '\Modules\Events\Http\Controllers\EventsMobileController@index')->name('event_mobile');
     Route::get('/events/mobile/add', '\Modules\Events\Http\Controllers\EventsMobileController@create')->name('event_mobile.add');
     Route::post('/events/mobile/store', '\Modules\Events\Http\Controllers\EventsMobileController@store')->name('event_mobile.store');
@@ -144,11 +144,11 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     //Statistics
     Route::get('/statistics', '\Modules\Statistics\Http\Controllers\StatisticsController@index')->name('statistics');
 
-//analytics
-//     Route::get('/analytics', function() {
-//    // App::setlocale('en');
-//     return view('analytics');
-// });
+    //analytics
+    //     Route::get('/analytics', function() {
+    //    // App::setlocale('en');
+    //     return view('analytics');
+    // });
 
 
     // Famous Attractions
@@ -177,9 +177,15 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     // shops
     Route::get('/shops', 'ShopController@index')->name('shops');
     Route::get('/add_shop', 'ShopController@add')->name('add_shop');
-    Route::get('/edit_shop', 'ShopController@edit')->name('edit_shop');
+    Route::get('/edit_shop/{id}', 'ShopController@edit')->name('edit_shop');
     Route::get('/shop_destroy/{id}', 'ShopController@destroy')->name('shop_destroy');
     Route::post('/shop_destroy_all', 'ShopController@destroy_all')->name('shop_destroy_all');
 
     Route::post('/add_shop_data', 'ShopController@add_shop')->name('add_shop_data');
+    Route::post('/edit_shop_data', 'ShopController@edit_shop')->name('edit_shop_data');
 });
+
+
+
+//AHmed ALaa Test Routes 
+Route::get("/test_not","HomeController@test_not");

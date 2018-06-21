@@ -26,7 +26,8 @@
     <!-- =============== APP TITLE ===============-->
     <title>@lang('keywords.website_name')</title>
     <!-- =============== APP STYLES ===============-->
-    <link rel="stylesheet" href="{{ asset( App::isLocale('ar') ? 'css/style__0__rtl.min.css' : 'css/style__0__ltr.min.css') }}">
+{{--     <link rel="stylesheet" href="{{ asset( App::isLocale('ar') ? 'css/style__0__rtl.min.css' : 'css/style__0__ltr.min.css') }}">
+ --}}     <link rel="stylesheet" href="{{ asset( App::isLocale('ar') ? 'css/style__0__rtl.css' : 'css/style__0__ltr.css') }}">
     <!-- =============== APP SCRIPT ===============-->
     <script src="{{ asset('js/modernizr.js') }}"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
