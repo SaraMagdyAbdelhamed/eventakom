@@ -124,8 +124,8 @@
                                   <tr data-event-id={{$event->id}}>
                                     <td><span class="cellcontent"></span></td>
                                     <td><span class="cellcontent" ><?=$i?></span></td>
-                                    <td><span class="cellcontent">{{\App::isLocale('en') ?$event->name:$event->arabic('name',$event->id)}}</span></td>
-                                    <td><span class="cellcontent">{{\App::isLocale('en') ?$event->venue:$event->arabic('venue',$event->id)}}</span></td>
+                                    <td><span class="cellcontent">{{\App::isLocale('en') ?$event->name:$event->arabic('name',$event->id)?$event->arabic('name',$event->id):$event->name}}</span></td>
+                                    <td><span class="cellcontent">{{\App::isLocale('en') ?$event->venue:$event->arabic('venue',$event->id)?$event->arabic('venue',$event->id):$event->venue}}</span></td>
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
@@ -330,8 +330,8 @@
                                     <tr data-event-id={{$event->id}}>
                                     <td><span class="cellcontent"></span></td>
                                     <td><span class="cellcontent"><?=$i?></span></td>
-                                     <td><span class="cellcontent">{{\App::isLocale('en') ?$event->name:$event->arabic('name',$event->id)}}</span></td>
-                                    <td><span class="cellcontent">{{\App::isLocale('en') ?$event->venue:$event->arabic('venue',$event->id)}}</span></td>
+                                      <td><span class="cellcontent">{{\App::isLocale('en') ?$event->name:$event->arabic('name',$event->id)?$event->arabic('name',$event->id):$event->name}}</span></td>
+                                    <td><span class="cellcontent">{{\App::isLocale('en') ?$event->venue:$event->arabic('venue',$event->id)?$event->arabic('venue',$event->id):$event->venue}}</span></td>
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
@@ -600,8 +600,8 @@
                                   <tr data-event-id={{$event->id}}>
                                     <td><span class="cellcontent"></span></td>
                                     <td><span class="cellcontent" ><?=$i?></span></td>
-                                     <td><span class="cellcontent">{{\App::isLocale('en') ?$event->name:$event->arabic('name',$event->id)}}</span></td>
-                                    <td><span class="cellcontent">{{\App::isLocale('en') ?$event->venue:$event->arabic('venue',$event->id)}}</span></td>
+                                     <td><span class="cellcontent">{{\App::isLocale('en') ?$event->name:$event->arabic('name',$event->id)?$event->arabic('name',$event->id):$event->name}}</span></td>
+                                    <td><span class="cellcontent">{{\App::isLocale('en') ?$event->venue:$event->arabic('venue',$event->id)?$event->arabic('venue',$event->id):$event->venue}}</span></td>
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
