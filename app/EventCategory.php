@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use App\Helpers\Helper;
 use Illuminate\Database\Eloquent\Model;
 
 class EventCategory extends Model
@@ -27,5 +27,12 @@ class EventCategory extends Model
     public  function users()
     {
         return $this->belongsToMany('App\Users', 'user_interests','interest_id','user_id');
+    }
+
+     //localization
+    public function getNameAttribute($value)
+    {
+        $result = (\App::isLocale('en')) ? Helper::localization('interests','name',$this->id,1) : Helper::localization('interests','name',$this->id,2);
+        return ($result==null)? $value : $result;
     }
 }
