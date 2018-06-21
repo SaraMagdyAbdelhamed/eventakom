@@ -17,6 +17,6 @@ class NotificationType extends Model
       /*Relations*/
 
       public function  notification(){
-      	return $this->hasOne("App\Notification");
+       return $this->belongsTo('App\Notification','notification_id');
       }
 }
