@@ -82,6 +82,21 @@ class EventMobile extends Model
     }
 
     //localizations
+
+    public function getNameAttribute($value)
+    {
+        $result = (\App::isLocale('en')) ? Helper::localization('events','name',$this->id,1) : Helper::localization('events','name',$this->id,2);
+        return ($result==null)? $value : $result;
+    }
+  
+  public function getVenueAttribute($value)
+    {
+        $result = (\App::isLocale('en')) ? Helper::localization('events','venue',$this->id,1) : Helper::localization('events','venue',$this->id,2);
+        return ($result==null)? $value : $result;
+    }
+    
+
+
    public static function arabic($field,$item_id){
 
       $result = Helper::localization('events', $field, $item_id, 2);
@@ -89,7 +104,7 @@ class EventMobile extends Model
     }
     public static function arabicHashtags($item_id){
 
-      $result = Helper::multi_localization(4, 'hashtag', $item_id, 2);
+      $result = Helper::multi_localization(17, 'hashtag', $item_id, 2);
       return $result;
     }
 }

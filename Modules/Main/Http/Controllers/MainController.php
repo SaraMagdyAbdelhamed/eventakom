@@ -87,7 +87,7 @@ class MainController extends Controller
 
         // update arabic 
        try {
-            Helper::edit_entity_localization('fixed_pages', 'body', $id , '2', $request->arabicContent);
+            Helper::edit_entity_localization('fixed_pages', 'body', $id , 2, $request->arabicContent);
        } catch(\Exception $ex) {
             Session::flash('warning', 'لا يمكن تعديل المحتوي باللغة العربية');
             return redirect()->back();
@@ -172,7 +172,7 @@ class MainController extends Controller
 
         // arabic version
         try {
-            Helper::add_localization(15, 'name', $event->id, $request->arabicContent, 2);
+            Helper::add_localization(19, 'name', $event->id, $request->arabicContent, 2);
         } catch(\Exception $ex) {
             $event->delete();
             Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
@@ -225,7 +225,7 @@ class MainController extends Controller
 
         // delete from localization - Arabic version
         try {
-            EntityLocalization::where('entity_id', 15)->where('item_id', $id)->delete();
+            EntityLocalization::where('entity_id', 19)->where('item_id', $id)->delete();
         } catch(\Exception $ex) {
             return response()->json(['error', 'error deleting arabic']);
         }
@@ -248,7 +248,7 @@ class MainController extends Controller
 
         // delete from localization - Arabic version
         try {
-            EntityLocalization::whereIn('item_id', $ids)->where('entity_id', 15)->delete();
+            EntityLocalization::whereIn('item_id', $ids)->where('entity_id', 19)->delete();
         } catch(\Exception $ex) {
             return response()->json(['error', 'error deleting arabic']);
         }
@@ -296,7 +296,7 @@ class MainController extends Controller
 
         // arabic version
         try {
-            Helper::add_localization(12, 'name', $event->id, $request->arabicContent, 2);
+            Helper::add_localization(19, 'name', $event->id, $request->arabicContent, 2);
         } catch(\Exception $ex) {
             $event->delete();
             Session::flash('warning', 'حدث خطا ما عند ادخال الحدث');
@@ -349,7 +349,7 @@ class MainController extends Controller
 
         // delete from localization - Arabic version
         try {
-            EntityLocalization::where('entity_id', 12)->where('item_id', $id)->delete();
+            EntityLocalization::where('entity_id', 19)->where('item_id', $id)->delete();
         } catch(\Exception $ex) {
             return response()->json(['error', 'error deleting arabic']);
         }

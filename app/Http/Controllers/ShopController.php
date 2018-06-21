@@ -157,7 +157,7 @@ class ShopController extends Controller
                     "shop_id"=>$shop->id,
                     "branch"=>$value,
                     "address"=>$request['branch_address'][$key],
-                     "longitude"=>$request['branch_long'][$key],
+                     "longtuide"=>$request['branch_long'][$key],
                     "latitude"=>$request['branch_lat'][$key]
                 ]);
                foreach ($request['days'] as $key1 => $value1) {
@@ -269,12 +269,13 @@ class ShopController extends Controller
         ShopBranch::where('shop_id',$shop->id)->delete();
          if(isset($request['branch_name']))
         {
+            // dd($request['branch_name']);
             foreach ($request['branch_name'] as $key => $value) {
                $branch= ShopBranch::create([
                     "shop_id"=>$shop->id,
                     "branch"=>$value,
                     "address"=>$request['branch_address'][$key],
-                    "longitude"=>$request['branch_long'][$key],
+                    "longtuide"=>$request['branch_long'][$key],
                     "latitude"=>$request['branch_lat'][$key]
                 ]);
                foreach ($request['days'] as $key1 => $value1) {
