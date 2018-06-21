@@ -8,7 +8,7 @@ class Shop extends Model
 {
    protected $id = 'id';
     protected $table = 'shops';
-    protected $fillable = ['name', 'photo', 'phone', 'website', 'is_active', 'info'];
+    protected $fillable = ['name', 'photo', 'phone', 'website', 'is_active', 'info','address','latitude','longitude'];
     public $timestamps = false;
 
     public function shop_branch()
