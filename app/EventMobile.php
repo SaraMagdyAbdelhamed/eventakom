@@ -89,7 +89,7 @@ class EventMobile extends Model
     }
     public static function arabicHashtags($item_id){
 
-      $result = Helper::multi_localization(4, 'hashtag', $item_id, 2);
+      $result = Helper::multi_localization(17, 'hashtag', $item_id, 2);
       return $result;
     }
 }

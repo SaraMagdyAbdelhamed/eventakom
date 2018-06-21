@@ -80,7 +80,7 @@
                 <div class="col-xs-6">
                 <div class="master_field" >
                     <label class="master_label" for="Address_name">Address</label>
-                    <input class="master_input" type="text" placeholder="ex:52 Ahmed Salh st .city stars" Required id="address" name="address" value="Cairo, Egypt">
+                    <input class="master_input" type="text" placeholder="ex:52 Ahmed Salh st .city stars" readonly Required id="address" name="address" value="Cairo, Egypt">
                 </div>
                 </div>
 

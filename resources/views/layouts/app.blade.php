@@ -26,8 +26,7 @@
     <!-- =============== APP TITLE ===============-->
     <title>@lang('keywords.website_name')</title>
     <!-- =============== APP STYLES ===============-->
-{{--     <link rel="stylesheet" href="{{ asset( App::isLocale('ar') ? 'css/style__0__rtl.min.css' : 'css/style__0__ltr.min.css') }}">
- --}}     <link rel="stylesheet" href="{{ asset( App::isLocale('ar') ? 'css/style__0__rtl.css' : 'css/style__0__ltr.css') }}">
+    <link rel="stylesheet" href="{{ asset( App::isLocale('ar') ? 'css/style__0__rtl.min.css' : 'css/style__0__ltr.min.css') }}">
     <!-- =============== APP SCRIPT ===============-->
     <script src="{{ asset('js/modernizr.js') }}"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -707,9 +706,8 @@
 
   </script> 
   {{-- Google maps API key --}}
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&callback=initMap" async defer></script>
-  
-  {{-- Map script --}}
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&libararies=places&callback=initMap" type="text/javascript"></script>
+    {{-- Map script --}}
   <script>
 
       var map;
@@ -725,7 +723,7 @@
 
         map = new google.maps.Map(document.getElementById('map'), {
           center: new google.maps.LatLng(myLatlng),
-          zoom: 8,
+          zoom: 14,
           mapTypeId: 'roadmap'
         });
 
@@ -743,8 +741,10 @@
 
               geocoder.geocode({'latLng': event.latLng}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
+                  
                   if (results[0]) {
                     document.getElementById("address").value = results[0].formatted_address;
+                    
                   }
                 }
               });
