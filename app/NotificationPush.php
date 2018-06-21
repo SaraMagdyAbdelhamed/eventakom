@@ -16,10 +16,7 @@ class NotificationPush extends Model
 
     /* Relations */
 
-    public function message()
-    {
-    	return $this->belongsTo("App\Notification","notification_id");
-    }
+   
 
 
     public function notification()
