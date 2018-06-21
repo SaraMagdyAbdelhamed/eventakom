@@ -166,7 +166,7 @@
         'submit'=>'submit',
         'next'=>'Next',
         'prev'=>'Prev',
-        
+        'address'   => 'Address',
         
         // Offers & Deals
         'offers'    => 'Offers and Deals',

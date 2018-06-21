@@ -27,6 +27,7 @@
         'delete' => 'مسح',
         'pleaseSelect' => 'اختر احدى القيم',
         'actions'   => 'الإجرائات',
+        'address'   => 'العنوان',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
