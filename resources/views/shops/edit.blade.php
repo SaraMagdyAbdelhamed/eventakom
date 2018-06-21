@@ -202,6 +202,18 @@
                                 </div><span class="master_message inherit">message content</span>
                               </div>
                             </div>
+                            <div class="col-xs-4" hidden>
+                            <div class="master_field">
+                              <label class="master_label" for="branch_long">Longtiuide</label>
+                              <input class="master_input" name="branch_long[{{$i}}]" id="branch_long_{{$i}}" placeholder="shop_long" type="text"><span class="master_message inherit">message content</span>
+                            </div>
+                          </div>
+                          <div class="col-xs-4" hidden>
+                            <div class="master_field">
+                              <label class="master_label" for="branch_lat">Lat</label>
+                              <input class="master_input" name="branch_lat[{{$i}}]" id="branch_lat_{{$i}}" placeholder="branch_lat" type="text"><span class="master_message inherit">message content</span>
+                            </div>
+                          </div>
                             <?php $i++; ?>
                             @endforeach
                           </div>
@@ -559,11 +571,11 @@
       });
     </script>
     <script type="text/javascript">
-      var currentCount =0;
-       var nextCount = 0 ;
+      // var currentCount =0;
+      //  var nextCount = 0 ;
       $('.add-more-branch').on('click' , function(){
-       currentCount +=1;
-       nextCount = currentCount +1;
+       var currentCount =$('.branch-container').length;
+      var nextCount = currentCount +1;
        $('#mbranch').append("<div class='branch-container'>  <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name in arabic</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" address</label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_address_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>start date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>end date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" long</label><input class='master_input' type='text' placeholder='branch "+nextCount+" long'  id='branch_long_"+nextCount+"' name='branch_long["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" lat</label><input class='master_input' type='text' placeholder='branch "+nextCount+" lat'  id='branch_lat_"+nextCount+"' name='branch_lat["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div></div> ");
       
 
@@ -635,7 +647,7 @@ var shop_long;
 
 
       }
-       function assignAutoCompl(_id , long , lat)
+        function assignAutoCompl(_id , long , lat)
       {
           // document.getElementById(_id).hidden = false;
           var _autocomplete = new google.maps.places.Autocomplete(document.getElementById(_id));
