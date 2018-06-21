@@ -293,9 +293,11 @@ class EventsMobileController extends Controller
             {
             $event->longtuide   = $request->lng;
             $event->latitude    = $request->lat;
+            $event->address = $request->address;
             }else{
             $event->longtuide   = $event->longtuide;
-            $event->latitude    = $event->latitude;   
+            $event->latitude    = $event->latitude;
+            $event->address     = $event->address;   
             }
             $event->venue       = $request->english_venu;
             $event->age_range_id= $request->age_range;

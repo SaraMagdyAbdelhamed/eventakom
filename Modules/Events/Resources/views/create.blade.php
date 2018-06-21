@@ -103,7 +103,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">Hashtags</label>
-                <input type="text" value="KSA,Sports" data-role="tagsinput" name="english_hashtags" value="{{ old('english_hashtags') }}">
+                <input type="text" value="" data-role="tagsinput" name="english_hashtags" value="{{ old('english_hashtags') }}">
               </div>
               <div class="clearfix"></div>
             </div>
@@ -112,12 +112,12 @@
             {{-- Allowed Genders --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label mandatory" for="gender">gender</label>
+                <label class="master_label mandatory" for="gender">@lang('keywords.Gender')</label>
                 <select class="master_input select2" id="gender" style="width:100%;" name="gender">
-                  <option value="" disabled selected>-- Please select a gender --</option>
+                  <option value="" disabled selected>-- @lang('keywords.Please select a gender') --</option>
                   @if ( isset($genders) && !empty($genders) )
                       @foreach ($genders as $gender)
-                          <option value="{{ $gender->id }}">{{ $gender->name }}</option>
+                          <option value="{{ $gender->id }}">{{ \App::isLocale('en') ? $gender->name : \Helper::localization('Genders', 'genders', $gender->id, 2, '') }}</option>
                       @endforeach
                   @endif
                 </select>
@@ -133,7 +133,7 @@
                   <option value="" disabled selected>-- Please Select Age Range</option>
                   @if ( isset($age_range) && !empty($age_range) )
                       @foreach ($age_range as $range)
-                          <option value="{{ $range->id }}">{{ $range->name }}</option>
+                          <option value="{{ $range->id }}">{{ \App::isLocale('en') ? $range->name : \Helper::localization('age_ranges', 'age_ranges', $range->id, 2, '') }}</option>
                       @endforeach
                   @endif
                 </select>
@@ -207,7 +207,7 @@
                 <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="categories[]">
                   @if ( isset($categories) && !empty($categories) )
                       @foreach ($categories as $category)
-                          <option value="{{ $category->id }}">{{ $category->name }}</option>
+                          <option value="{{ $category->id }}">{{ \App::isLocale('en') ? $category->name : \Helper::localization('interests', 'name', $category->id, 2, '') }}</option>
                       @endforeach
                   @endif
                 </select>
@@ -281,7 +281,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">الكلمات البحثية</label>
-                <input type="text" value="المملكة,الرياضة" data-role="tagsinput" name="arabic_hashtags" value="{{ old('arabic_hashtags') }}">
+                <input type="text" value="" data-role="tagsinput" name="arabic_hashtags" value="{{ old('arabic_hashtags') }}">
               </div>
               @if ($errors->has('arabic_hashtags'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_hashtags') }}</span>
@@ -502,57 +502,7 @@ $(document).ready(function() {
     form.steps({
       headerTag: "h3",
       bodyTag: "fieldset",
-      transitionEffect: "slideLeft",
-        onStepChanging: function (event, currentIndex, newIndex)
-        {
-            // Allways allow previous action even if the current form is not valid!
-            if (currentIndex > newIndex)
-            {
-                return true;
-            }
-            
-            // Needed in some cases if the user went back (clean up)
-            if (currentIndex < newIndex)
-            {
-                // To remove error styles
-                form.find(".body:eq(" + newIndex + ") span.error").remove();
-                form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
-            }
-            form.validate().settings.ignore = ":disabled,:hidden";
-            return form.valid();
-        },
-        onStepChanged: function (event, currentIndex, priorIndex)
-        {
-            // // Used to skip the "Warning" step if the user is old enough.
-            // if (currentIndex === 2 && Number($("#age-2").val()) >= 18)
-            // {
-            //     form.steps("next");
-            // }
-            // Used to skip the "Warning" step if the user is old enough and wants to the previous step.
-            if (currentIndex === 2 && priorIndex === 3)
-            {
-                form.steps("previous");
-            }
-        },
-        onFinishing: function (event, currentIndex)
-        {
-          // alert("Submitted!");
-          
-            var form = $(this);
-
-            form.submit();
-        },
-        onFinished: function (event, currentIndex) {
-            // bodyTag: "fieldset"
-            // alert("Finish button was clicked");
-            }
-        }).validate({
-        errorPlacement: function errorPlacement(error, element) { element.before(error); },
-        rules: {
-            // confirm: {
-            //     equalTo: "#password-2"
-            // }
-        }
+      transitionEffect: "slideLeft"
   });
 
   $(function() {

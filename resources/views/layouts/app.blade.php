@@ -36,7 +36,7 @@
     <style>
       /* Styling Checkboxes */
       /* Customize the label (the container) */
-      .container {
+      label.container {
         display: block;
         position: relative;
         padding-left: 35px;
@@ -50,7 +50,7 @@
       }
 
       /* Hide the browser's default checkbox */
-      .container input {
+      label.container input {
         position: absolute;
         opacity: 0;
         cursor: pointer;
@@ -67,12 +67,12 @@
       }
 
       /* On mouse-over, add a grey background color */
-      .container:hover input ~ .checkmark {
+      label.container:hover input ~ .checkmark {
         background-color: #2196F3;
       }
 
       /* When the checkbox is checked, add a blue background */
-      .container input:checked ~ .checkmark {
+      label.container input:checked ~ .checkmark {
         background-color: #2196F3;
       }
 
@@ -84,12 +84,12 @@
       }
 
       /* Show the checkmark when checked */
-      .container input:checked ~ .checkmark:after {
+      label.container input:checked ~ .checkmark:after {
         display: block;
       }
 
       /* Style the checkmark/indicator */
-      .container .checkmark:after {
+      label.container .checkmark:after {
         left: 9px;
         top: 5px;
         width: 5px;
@@ -145,12 +145,12 @@
                 <div class="collapse navbar-collapse nav pull-right  " id="navbarSupportedContent">
                   <ul class="navbar-nav">
 
-                  <li class="nav-item">
+                  <li class="nav-item" style="font-size: 14px important; padding: 0px;">
                     <form action="{{ route('changeLang') }}" method="POST">
                       {{ csrf_field() }}
                       <input type="hidden" name="url" value="{{ Request::url() }}">
                       <input type="hidden" name="locale" value="{{ \Helper::getUserLocale() }}">
-                        <button type="submit" class="nav-link English" style="background-color: inherit; border: 0px; color: white;">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</button>
+                        <button type="submit" class="nav-link English" style="background-color: inherit; border: 0px; color: white; ">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</button>
                     </form>
                     
                   </li>

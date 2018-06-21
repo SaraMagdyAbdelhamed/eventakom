@@ -88,7 +88,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label" for="Phone_number">Phone number</label>
-                    <input class="master_input" type="number" placeholder="0020123456789" Required id="Phone_number" name="phone_number">
+                    <input class="master_input" type="number" placeholder="0020123456789" Required id="Phone_number" name="phone_number" value="{{ old('phone_number') }}">
                     @if ($errors->has('phone_number'))
                         <span class="master_message color--fadegreen">{{ $errors->first('phone_number') }}</span>
                     @endif
@@ -99,7 +99,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label" for="Website">Website</label>
-                    <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website">
+                    <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website" value="{{ old('website') }}">
                     @if ($errors->has('website'))
                         <span class="master_message color--fadegreen">{{ $errors->first('website') }}</span>
                     @endif
@@ -108,7 +108,7 @@
 
                 <div class="col-xs-6">
                     <label class="container">Is this place active?!
-                        <input type="checkbox" name="is_big_event" value="1" checked>
+                        <input type="checkbox" name="is_active" value="1" checked>
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -120,7 +120,7 @@
                 <div class="master_field">
                     <label class="master_label">Opening days</label>
                     <div class="funkyradio">
-                    <input type="checkbox" name="radio" id="Opening_days_1">
+                        <input type="checkbox" name="sat" value="1" id="Opening_days_1">
                     <label for="Opening_days_1">saturday</label>
                     </div>
                 </div>
@@ -130,8 +130,8 @@
                     <div class="master_field">
                     <label class="master_label" for="start_time">start date time</label>
                     <div class="bootstrap-timepicker">
-                        <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time">
-                    </div><span class="master_message inherit">message content</span>
+                        <input class="timepicker master_input" type="text" name="sat_start" placeholder="start time" Required id="start_time">
+                    </div>
                     </div>
                 </div>
                 </div>
@@ -140,8 +140,8 @@
                     <div class="master_field">
                     <label class="master_label" for="end_time">end date time</label>
                     <div class="bootstrap-timepicker">
-                        <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time">
-                    </div><span class="master_message inherit">message content</span>
+                        <input class="timepicker master_input" type="text" name="sat_end" placeholder="end time" Required id="end_time">
+                    </div>
                     </div>
                 </div>
                 </div>
@@ -149,7 +149,7 @@
                 <div class="master_field">
                     <label class="master_label">Opening days</label>
                     <div class="funkyradio">
-                    <input type="checkbox" name="radio" id="Opening_days_2">
+                    <input type="checkbox" name="sun" id="Opening_days_2">
                     <label for="Opening_days_2">sunday</label>
                     </div>
                 </div>
