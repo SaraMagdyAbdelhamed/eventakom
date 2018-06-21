@@ -6,7 +6,7 @@
               <div class="row">
                 <div class="col-xs-12">
                   <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( '../img/covers/dummy2.jpg ' )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
-                    <div class="add-mode">Adding mode</div>
+                    <div class="add-mode">Editing mode</div>
                     <div class="row">
                       <div class="col-xs-12">
                         <div class="text-xs-center">         
@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-xs-12">
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                    <form id="horizontal-pill-steps" action="{{route('add_shop_data')}}" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+                    <form id="horizontal-pill-steps" action="{{route('edit_shop_data')}}" method="post" enctype="multipart/form-data" accept-charset="utf-8">
                       {{ csrf_field() }}
                       <h3>Info in English</h3>
                       <fieldset>
@@ -225,25 +225,25 @@
                               <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2_ar" name="video_ar[2]"><span class="master_message inherit">message content</span>
                             </div>
                           </div>
-                          <div class="col-sm-6 col-xs-12"> 
+                          <div class="col-sm-6 col-xs-12 text-center"> 
                             <h4>upload event images (max no. 5 images) in English</h4>
                              <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="main-section">
                                 <div id="fileList"></div>
                                 <div class="form-group">
-                                  <input class="inputfile inputfile-1" id="file-1" type="file" name="file-1[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList()">
+                                  <input class="inputfile inputfile-1" id="file-1" type="file" name="images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList()">
                                   <label for="file-1"><span >Choose a file</span></label>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div class="col-sm-6 col-xs-12"> 
+                          <div class="col-sm-6 col-xs-12 text-center"> 
                             <h4>upload event images (max no. 5 images) in Arabic</h4>
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="main-section">
                                 <div id="fileList2"></div>
                                 <div class="form-group">
-                                  <input class="inputfile inputfile-1" id="file-2" type="file" name="file-2[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList2()">
+                                  <input class="inputfile inputfile-1" id="file-2" type="file" name="images_ar[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList2()">
                                   <label for="file-2"><span>Choose a file</span></label>
                                 </div>
                               </div>

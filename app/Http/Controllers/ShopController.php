@@ -171,4 +171,9 @@ class ShopController extends Controller
     // dd($request->all());
     return  redirect()->route('shops');
     }
+
+    public function edit_shop(Request $request)
+    {
+        
+    }
 }

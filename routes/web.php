@@ -182,4 +182,5 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::post('/shop_destroy_all', 'ShopController@destroy_all')->name('shop_destroy_all');
 
     Route::post('/add_shop_data', 'ShopController@add_shop')->name('add_shop_data');
+    Route::post('/edit_shop_data', 'ShopController@edit_shop')->name('edit_shop_data');
 });
