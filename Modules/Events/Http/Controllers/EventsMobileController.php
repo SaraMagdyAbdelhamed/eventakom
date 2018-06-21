@@ -17,11 +17,14 @@ use App\Currency;
 use App\EventHashtags;
 use App\Helpers\Helper;
 use App\EventMedia;
+use App\Users;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Library\Services\NotificationsService;
+
 class EventsMobileController extends Controller
 {
      use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -29,6 +32,16 @@ class EventsMobileController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
+
+    private $NotifcationService;
+
+     public function __construct()
+    {
+        //blockio init
+        $this->NotifcationService = new NotificationsService();
+  
+    }
+
      public function index()
     {
         $current_events = EventMobile::CurrentEvents()->get();
@@ -443,6 +456,23 @@ class EventsMobileController extends Controller
       $accepted = EventMobile::find($id);
       $accepted->update(['event_status_id' =>2 , 'is_active' =>1]);
       $accepted->save();
+      //Notify Event Owner about Acceptance
+         //get Event Owner
+      $event_owner = $accepted->user;
+      if($event_owner){
+          $notification_message['en'] = 'YOUR EVENT IS APPROVED';
+          $notification_message['ar'] = 'تم الموافقة على الحدث';
+          $notifcation = $this->NotifcationService->save_notification($notification_message,3,4,$accepted->id);
+          $this->NotifcationService->PushToSingleUser($event_owner,$notifcation);
+      }
+      //get users have this event in their interests
+      $this->NotifcationService->EventInterestsPush($accepted);
+      
+
+
+
+
+
     }
 
     /**
@@ -457,6 +487,16 @@ class EventsMobileController extends Controller
           $accepted = EventMobile::find($id);
           $accepted->update(['event_status_id' =>2]);
           $accepted->save();
+          //Notify Each event owner
+          $event_owner = $accepted->user;
+          if($event_owner){
+              $notification_message['en'] = 'YOUR EVENT IS APPROVED';
+              $notification_message['ar'] = 'تم الموافقة على الحدث';
+              $notifcation = $this->NotifcationService->save_notification($notification_message,3,4,$accepted->id);
+              $this->NotifcationService->PushToSingleUser($event_owner,$notifcation);
+          }
+          //get users have this event in their interests
+          $this->NotifcationService->EventInterestsPush($accepted);
         }
 
     }
@@ -477,6 +517,15 @@ class EventsMobileController extends Controller
             'status' => 'success',
             'msg' => 'Event rejected successfully',
         );
+       //send Notification to Event Owner
+       $event_owner = $rejected->user;
+          if($event_owner){
+              $notification_message['en'] = 'YOUR EVENT IS Rejected';
+              $notification_message['ar'] = 'لم يتم الموافقة على الحدث';
+              $notifcation = $this->NotifcationService->save_notification($notification_message,4,4,$rejected->id);
+              $this->NotifcationService->PushToSingleUser($event_owner,$notifcation);
+          }
+
       //  return Response::json($response);
         return response()->json($response);  // <<<<<<<<< see this line
     }else{

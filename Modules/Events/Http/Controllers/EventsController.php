@@ -26,11 +26,21 @@ use App\EventCategory;
 use App\Currency;
 use App\EventHashtags;
 use App\BigEvent;
+use App\Library\Services\NotificationsService;
 
 
 class EventsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+     private $NotifcationService;
+
+     public function __construct()
+        {
+            //blockio init
+            $this->NotifcationService = new NotificationsService();
+      
+        }
 
     /**
      * Display a listing of the resource.
@@ -213,6 +223,9 @@ class EventsController extends Controller
             Session::flash('warning', 'Error 2');
             return redirect()->back();
         }
+
+        //Push Notifcations to users about this event
+        $this->NotifcationService->EventInterestsPush($event);
 
         // flash success message & redirect to list backend events
         Session::flash('success', 'Event Added Successfully! تم إضافة الحدث بنجاح');

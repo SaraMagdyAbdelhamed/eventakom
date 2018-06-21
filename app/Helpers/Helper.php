@@ -12,7 +12,8 @@ use Auth;
 use App\Users;
 use App\Entity;
 use App\EntityLocalization;
-
+use App\Notifications;
+use App\NotificationsPush;
 use Illuminate\Database\Eloquent\Model;
 
 class Helper {
@@ -192,4 +193,6 @@ class Helper {
                } 
                 return $counter;
       }
+
+ 
 }

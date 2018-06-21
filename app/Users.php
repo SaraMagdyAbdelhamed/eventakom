@@ -58,6 +58,17 @@ class Users extends Authenticatable
     public function eventPost() {
         return $this->hasMany('App\EventPost','user_id');
     }
+    public  function categories()
+    {
+        return $this->belongsToMany('App\EventCategory', 'user_interests','user_id','interest_id');
+    }
+    public function favoureite_events() {
+        return $this->belongsToMany('App\EventBackend', 'user_favorites', 'user_id', 'item_id')->withPivot('name','entity_id');
+    }
+    public function CalenderEvents(){
+        return $this->belongsToMany('App\EventBackend', 'user_calendars','user_id','event_id')->withPivot('from_date','to_date');
+
+    }
 
     public  function CurrentRule(){
         foreach($this->rules as $rule){

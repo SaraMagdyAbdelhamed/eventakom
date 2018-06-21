@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use App\Library\Services\NotificationsService;
+
 class HomeController extends Controller
 {
+
+    private $NotifcationsService;
+
     public function test_connection() {
        //Test Database Connection 
         try {
@@ -23,6 +28,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->NotifcationsService = new NotificationsService();
     }
 
     /**
@@ -33,5 +39,13 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+
+    public function test_not(){
+        $x = new NotificationsService();
+        $message['en'] = 'aaa';$message['ar']='rtrt';
+        $user = \App\Users::find(1);
+       echo  $this->NotifcationsService->save_notification($message,2,2,2,$user);
     }
 }

@@ -118,7 +118,7 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
 
 
 
- // Events: Mobile
+    // Events: Mobile
     Route::get('/events/mobile', '\Modules\Events\Http\Controllers\EventsMobileController@index')->name('event_mobile');
     Route::get('/events/mobile/add', '\Modules\Events\Http\Controllers\EventsMobileController@create')->name('event_mobile.add');
     Route::post('/events/mobile/store', '\Modules\Events\Http\Controllers\EventsMobileController@store')->name('event_mobile.store');
@@ -144,11 +144,11 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     //Statistics
     Route::get('/statistics', '\Modules\Statistics\Http\Controllers\StatisticsController@index')->name('statistics');
 
-//analytics
-//     Route::get('/analytics', function() {
-//    // App::setlocale('en');
-//     return view('analytics');
-// });
+    //analytics
+    //     Route::get('/analytics', function() {
+    //    // App::setlocale('en');
+    //     return view('analytics');
+    // });
 
 
     // Famous Attractions
@@ -170,3 +170,8 @@ Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
     Route::post('/offers/delete'    , '\Modules\Offers\Http\Controllers\OffersController@destroy')->name('offers.delete' );
     Route::post('/offers/delete/selected', '\Modules\Offers\Http\Controllers\OffersController@destroySelected')->name('offers.deleteSelected');
 });
+
+
+
+//AHmed ALaa Test Routes 
+Route::get("/test_not","HomeController@test_not");
