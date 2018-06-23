@@ -631,13 +631,26 @@ class EventsController extends Controller
     public function bigevents_post(Request $request)
     {
         $ids = $request['big_events'];
-        BigEvent::truncate();
+        $ids_array = array();
+        //BigEvent::truncate();
         foreach ($ids as $order => $id) {
+            if(Helper::exist_bigevent($id)){
+            $bigevent = BigEvent::find($id);
+            // dd($id);
+            $bigevent->sort_order = $order + 1;
+            $bigevent->save();   
+            }else{
+            dd($id);    
             $bigevent = new BigEvent;
             $bigevent->event_id = $id;
             $bigevent->sort_order = $order + 1;
             $bigevent->save();
+            }
+            array_push($ids_array,$id);
+         
         }
+        //delete old events which are not found in new selected ones
+        BigEvent::whereNotIn('event_id',$ids_array)->delete();
         return response()->json($ids);
     }
 
