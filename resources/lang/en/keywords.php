@@ -40,9 +40,11 @@
         'famous'    => 'Famous attractions categories',
         'sponsors'  => 'sponsors',
         'trends'    => 'Trending searches control',
+        'trendWords' => 'Trending Search Words',
         'notifications' => 'Notification distance',
         'famousCat' => 'Famous attractions category',
         'sponsorLogo'   => 'Sponsor Logo',
+        'sponsorName'   => 'Sponosr Name',
 
 
         'EditAbout' => 'Edit About Us',

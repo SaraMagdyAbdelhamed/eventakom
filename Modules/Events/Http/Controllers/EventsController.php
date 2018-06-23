@@ -296,6 +296,9 @@ class EventsController extends Controller
         $data['currencies'] = Currency::all();
         $data['ticket'] = EventTicket::where('event_id', $id)->first();
 
+        $data['arabic_images'] = $data['event']->media()->where('type', 1)->where('link', 'like', '%arabic%')->get();
+        $data['english_images'] = $data['event']->media()->where('type', 1)->where('link', 'like', '%english%')->get();
+
         return view('events::backend_event_edit', $data);
     }
 

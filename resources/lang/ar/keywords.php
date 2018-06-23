@@ -40,9 +40,11 @@
         'famous'    => 'تصنيفات الاحداث الشهيرة',
         'sponsors'  => 'الرعاه',
         'trends'    => 'التحكم في البحث المتداول',
+        'trendWord' => 'الكلمات البحثية',
         'notifications' => 'التنبيهات',
         'famousCat' => 'اسم التصنيف',
-        'sponsorLogo'   => 'الشعار',
+        'sponsorLogo'   => 'الشعار الراعي',
+        'sponsorName'   => 'اسم الراعي',
 
         // Edit fixed pages
         'EditAbout' => 'تعديل قسم عن الشركة',
