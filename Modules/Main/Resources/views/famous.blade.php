@@ -39,10 +39,10 @@
                         <tr data-id="{{ $att->id }}">
                             <td><span class="cellcontent" data-id="{{ $att->id }}"></span></td>
                             <td><span class="cellcontent">{{ $loop->index + 1 }}</span></td>                      
-                            <td><span class="cellcontent">{{ $att->name ? (App::isLocale('en') ? $att->name : Helper::localization('famous_attractions', 'name', $att->id, 2) ) : __('keywords.not') }}</span></td> 
+                            <td><span class="cellcontent">{{ \App::isLocale('en') ? $att->name : Helper::localization('fa_categories', 'name', $att->id, 2) }}</span></td> 
                             <td>
                                 <span class="cellcontent">
-                                    <a href="#Edit" data-id="{{ $att->id }}" data-english="{{ $att->name }}" data-arabic="{{ Helper::localization('famous_attractions', 'name', $att->id, 2) }}"  class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
+                                    <a href="#Edit" data-id="{{ $att->id }}" data-english="{{ $att->name }}" data-arabic="{{ Helper::localization('fa_categories', 'name', $att->id, 2) }}"  class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
                                     <a data-id="{{ $att->id }}" href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white deleteRecord"><i class = "fa  fa-trash-o"></i></a>
                                 </span>
                             </td>

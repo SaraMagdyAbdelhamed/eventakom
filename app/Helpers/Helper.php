@@ -90,7 +90,7 @@ class Helper
      */
     public static function get_hashtags($item_id, $lang_id)
     {
-        $localization = EntityLocalization::where('field', 'hashtag')->where('item_id', $item_id)->where('lang_id', $lang_id)->get();
+        $localization = EntityLocalization::where('field', 'hash_tags')->where('item_id', $item_id)->where('lang_id', $lang_id)->get();
         return $localization;
     }
 

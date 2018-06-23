@@ -42,11 +42,11 @@
                             <td><span class="cellcontent" id="chbox" data-id="{{ $event->id }}"></span></td>
                             <td><span class="cellcontent">{{ $loop->index + 1 }}</span></td>
                             <td><span class="cellcontent">
-                                {{ $event->name ? (App::isLocale('en') ? $event->name : Helper::localization('interests', 'name', $event->id, 2) ) : __('keywords.not') }}
+                                {{ \App::isLocale('en') ? $event->name : Helper::localization('interests', 'name', $event->id, 2)  }}
                             </span></td>
                             <td>
                                 <span class="cellcontent">
-                                    <a href="#Edit" data-id="{{ $event->id }}" data-english="{{ $event->name }}" data-arabic="{{ Helper::localization('interests', 'name', $event->id, 2) }}" class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
+                                    <a href="#Edit" data-id="{{ $event->id }}" data-english="{{ $event->name }}" data-arabic="{{ \Helper::localization('interests', 'name', $event->id, 2) }}" class= "action-btn bgcolor--fadegreen color--white editRow"><i class = "fa  fa-pencil"></i></a>
                                     <a data-id="{{ $event->id }}" href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white deleteRecord"><i class = "fa  fa-trash-o"></i></a>
                                 </span>
                             </td>
@@ -277,7 +277,7 @@
             var id      = $(this).data("id");
             var english = $(this).data("english");
             var arabic  = $(this).data("arabic");
-
+console.log(english);
             $('#hiddenID').val(id);
             $('#edit_id_ar').val(arabic);
             $('#edit_id_en').val(english);

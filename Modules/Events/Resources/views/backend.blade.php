@@ -122,9 +122,9 @@
                     @foreach ($events as $event)
                         <tr data-id="{{ $event->id }}">
                             <td><span class="cellcontent" data-id="{{ $event->id }}"></span></td>
-                            <td><span class="cellcontent">{{ $event->id }}</span></td>
-                            <td><span class="cellcontent">{{ $event->name ? $event->name : '' }}</span></td>
-                            <td><span class="cellcontent">{{ $event->venue ? $event->venue : '' }}</span></td>
+                            <td><span class="cellcontent">{{ $loop->index +1 }}</span></td>
+                            <td><span class="cellcontent">{{ \App::isLocale('en') ? $event->name : \Helper::localization('events', 'name', $event->id, 2, '') }}</span></td>
+                            <td><span class="cellcontent">{{ \App::isLocale('en') ? $event->venue : \Helper::localization('events', 'venue', $event->id, 2, '') }}</span></td>
                             <td><span class="cellcontent">{{ $event->start_datetime ? $event->start_datetime->format('Y-m-d h:i A') : '' }}</span></td>
                             <td><span class="cellcontent">{{ $event->end_datetime ? $event->end_datetime->format('Y-m-d h:i A') : '' }}</span></td>
                             <td><span class="cellcontent">{{ $event->created_at ? $event->created_at->format('Y-m-d h:i A') : '' }}</span></td>
