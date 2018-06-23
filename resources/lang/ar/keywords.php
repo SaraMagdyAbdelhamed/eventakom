@@ -185,7 +185,10 @@
         'offers'    => 'العروض والصفقات',
         'placeName' => 'اسم المكان',
         'bigevents' => 'أهم الأحداث',
-        'choosecategory' => 'إختر تصنيف'
+        'choosecategory' => 'إختر تصنيف'  ,
+       // big events
+        'orderSaved'    => 'تم حفظ الترتيب بنجاح'
     ];
+
 
 ?>

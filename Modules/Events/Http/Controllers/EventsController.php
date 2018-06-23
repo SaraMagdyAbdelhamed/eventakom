@@ -624,7 +624,7 @@ class EventsController extends Controller
     public function big_events()
     {
         return view('events::big_events')
-            ->with('events', EventBackend::all())->with('big_events', BigEvent::all());
+            ->with('events', EventBackend::all())->with('big_events', BigEvent::orderBy('sort_order', 'asc')->get());
 
     }
 
@@ -632,15 +632,13 @@ class EventsController extends Controller
     {
         $ids = $request['big_events'];
         $ids_array = array();
-        //BigEvent::truncate();
+    
         foreach ($ids as $order => $id) {
-            if(Helper::exist_bigevent($id)){
-            $bigevent = BigEvent::find($id);
-            // dd($id);
+            $bigevent = BigEvent::where('event_id',$id)->first();
+            if($bigevent){
             $bigevent->sort_order = $order + 1;
             $bigevent->save();   
             }else{
-            dd($id);    
             $bigevent = new BigEvent;
             $bigevent->event_id = $id;
             $bigevent->sort_order = $order + 1;
@@ -651,7 +649,8 @@ class EventsController extends Controller
         }
         //delete old events which are not found in new selected ones
         BigEvent::whereNotIn('event_id',$ids_array)->delete();
-        return response()->json($ids);
+        //return response()->json(lang('keywords.orderSaved'));
+         return response()->json('Big events order saved successfully!');
     }
 
     public function bigevents_select($value, Request $request)

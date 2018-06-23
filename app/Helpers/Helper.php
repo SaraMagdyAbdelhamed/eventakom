@@ -14,7 +14,6 @@ use App\Entity;
 use App\EntityLocalization;
 use App\Notifications;
 use App\NotificationsPush;
-use App\BigEvent;
 use Illuminate\Database\Eloquent\Model;
 
 class Helper
@@ -222,15 +221,5 @@ class Helper
             }
         }
         return $ids;
-    }
-
-     public static function exist_bigevent($id)
-    {    
-        $exist = BigEvent::where('event_id',$id)->get();
-       
-      if ($exist) {
-        return true;
-            }   
-        return false;
     }
 }
