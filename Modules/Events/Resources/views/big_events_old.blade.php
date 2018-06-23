@@ -48,12 +48,7 @@
             <button class="btn btn-block" id="multiselect_leftSelected" type="button"><i class="fa fa-chevron-left"></i></button>
           </div>
           <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
-            <select class="select_big_event" id="multiselect_to" name="to[]" size="8" multiple="multiple">
-             @foreach($big_events as $bevent)
-              <option value="{{$bevent->event_id}}">{{$bevent->event->name}}</option>
-
-              @endforeach 
-            </select>
+            <select class="select_big_event" id="multiselect_to" name="to[]" size="8" multiple="multiple"></select>
             <div class="row">
               <div class="col-sm-6">
                 <button class="btn btn-block" id="multiselect_move_up" type="button"><i class="fa fa-arrow-up"></i></button>
@@ -65,9 +60,7 @@
           </div>
         </div>
       </div>
-        <button class="remodal-confirm col-sm-4" id="submit" type="submit">@lang('keywords.submit')</button>
       <div class="clearfix"></div>
-
     </div>
   </div>
 </div>
@@ -85,7 +78,8 @@ var _token = '{{csrf_token()}}';
       url: '{{url('bigevents_select')}}'+ '/' + valueSelected,
       data: { _token: _token},
       success: function (data) {
-
+      //  $('tr[data-event-id=' + event_id + ']').fadeOut();
+           //$(".two-divs-select").append("<div>"+data+"</div>");
            // .each loops through the array
 $.each(data, function(i){
    $("#multiselect").append(data[i]);
@@ -97,6 +91,11 @@ $.each(data, function(i){
   </script>
 
 <script type="text/javascript">
+     /* jQuery(document).ready(function($) {
+       $('#multiselect').multiselect();
+     }); */
+
+
 
      $('#multiselect').multiselect({
       search: {
@@ -105,17 +104,21 @@ $.each(data, function(i){
       },
       fireSearch: function(value) {
        return value.length > 3;
-      },
-      keepRenderingSort: true
+      }
      });
-     
    </script>
 
    <script>
-var values_post = new Array();
-function validate(e) { 
+   //get all options from multiselect_to
+  // $('#multiselect_rightSelected').click(function(e){
+function saveSort(e) { 
 
+var select1 = document.getElementById('multiselect_to');
 var values = new Array();
+
+// for(var i=0; i < select1.options.length; i++){
+//     values.push(select1.options[i].value);
+// }
 $('#multiselect_to option').each(function(){
    if($.inArray(this.value, values) >-1){
       $(this).remove()
@@ -130,29 +133,37 @@ $('#multiselect_to option').each(function(){
     
    }
 });
- values_post = values;
-}   
+// if(values.length>5){
+//   alert('Sorry you have exceeded your 5 big events limit!');
 
-function saveSort(e) { 
+//   // remove last one in to
+//    var selectFrom = document.getElementById("multiselect");
+//   var select = document.getElementById("multiselect_to");
+//   //selectFrom.options[select.options.length-6] = select.options[select.options.length-1];
+//   select.options[select.options.length-1] = null;
+// }else{
+// e.preventDefault();
 var _token = '{{csrf_token()}}';
     $.ajax({
       type: 'POST',
       url: '{{url('bigevents_post')}}',
-      data: { _token: _token  , big_events: values_post },
+      data: { _token: _token  , big_events: values },
       success: function (data) {
+           //$(".two-divs-select").append("<div>"+data+"</div>");
       }
     });
-
+  // });
+// }
 }
-
-$('#multiselect_rightSelected').click(validate);
-$('#multiselect_move_up').click(validate);
-$('#multiselect_move_down').click(validate);
-$('#multiselect_leftSelected').click(validate);
+$('#multiselect_rightSelected').click(saveSort);
+$('#multiselect_move_up').click(saveSort);
+$('#multiselect_move_down').click(saveSort);
+$('#multiselect_leftSelected').click(saveSort);
+//$('#multiselect').ondblclick(saveSort);
 document.getElementById('multiselect').ondblclick = function(){
-    validate();
-
+    saveSort();
+    // or alert(this.options[this.selectedIndex].value);
 };
-$('#submit').click(saveSort);
+
    </script>
 @endsection @endsection

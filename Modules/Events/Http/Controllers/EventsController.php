@@ -627,25 +627,34 @@ class EventsController extends Controller
     public function big_events()
     {
         return view('events::big_events')
-            ->with('events', EventBackend::all());
+            ->with('events', EventBackend::all())->with('big_events', BigEvent::all());
 
     }
 
     public function bigevents_post(Request $request)
     {
         $ids = $request['big_events'];
-        // $big_events =   explode( ',', $ids );
-        BigEvent::truncate();
-        // $bigevent_delete->delete();
+        $ids_array = array();
+        //BigEvent::truncate();
         foreach ($ids as $order => $id) {
+            if(Helper::exist_bigevent($id)){
+            $bigevent = BigEvent::find($id);
+            // dd($id);
+            $bigevent->sort_order = $order + 1;
+            $bigevent->save();   
+            }else{
+            dd($id);    
             $bigevent = new BigEvent;
             $bigevent->event_id = $id;
             $bigevent->sort_order = $order + 1;
             $bigevent->save();
-            //Notify all users about the big Event 
+            }
+            array_push($ids_array,$id);
+         
         }
+        //delete old events which are not found in new selected ones
+        BigEvent::whereNotIn('event_id',$ids_array)->delete();
         return response()->json($ids);
-            // ->with('categories', EventCategory::all());
     }
 
     public function bigevents_select($value, Request $request)
@@ -663,6 +672,19 @@ class EventsController extends Controller
         //dd(response()->json($options));
         return response()->json($options);
             // ->with('categories', EventCategory::all());
+    }
+
+      public function bigevents_post_old(Request $request)
+    {
+        $ids = $request['big_events'];
+        BigEvent::truncate();
+        foreach ($ids as $order => $id) {
+            $bigevent = new BigEvent;
+            $bigevent->event_id = $id;
+            $bigevent->sort_order = $order + 1;
+            $bigevent->save();
+        }
+        return response()->json($ids);
     }
 
 
