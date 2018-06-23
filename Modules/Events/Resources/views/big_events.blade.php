@@ -50,7 +50,7 @@
           <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
             <select class="select_big_event" id="multiselect_to" name="to[]" size="8" multiple="multiple">
              @foreach($big_events as $bevent)
-              <option value="{{$bevent->id}}">{{$bevent->event->name}}</option>
+              <option value="{{$bevent->event_id}}">{{$bevent->event->name}}</option>
 
               @endforeach 
             </select>
@@ -65,7 +65,9 @@
           </div>
         </div>
       </div>
+        <button class="remodal-confirm col-sm-4" id="submit" type="submit">@lang('keywords.submit')</button>
       <div class="clearfix"></div>
+
     </div>
   </div>
 </div>
@@ -103,17 +105,17 @@ $.each(data, function(i){
       },
       fireSearch: function(value) {
        return value.length > 3;
-      }
+      },
+      keepRenderingSort: true
      });
+     
    </script>
 
    <script>
+var values_post = new Array();
+function validate(e) { 
 
-function saveSort(e) { 
-
-var select1 = document.getElementById('multiselect_to');
 var values = new Array();
-
 $('#multiselect_to option').each(function(){
    if($.inArray(this.value, values) >-1){
       $(this).remove()
@@ -128,25 +130,29 @@ $('#multiselect_to option').each(function(){
     
    }
 });
+ values_post = values;
+}   
 
+function saveSort(e) { 
 var _token = '{{csrf_token()}}';
     $.ajax({
       type: 'POST',
       url: '{{url('bigevents_post')}}',
-      data: { _token: _token  , big_events: values },
+      data: { _token: _token  , big_events: values_post },
       success: function (data) {
       }
     });
 
 }
-$('#multiselect_rightSelected').click(saveSort);
-$('#multiselect_move_up').click(saveSort);
-$('#multiselect_move_down').click(saveSort);
-$('#multiselect_leftSelected').click(saveSort);
+
+$('#multiselect_rightSelected').click(validate);
+$('#multiselect_move_up').click(validate);
+$('#multiselect_move_down').click(validate);
+$('#multiselect_leftSelected').click(validate);
 document.getElementById('multiselect').ondblclick = function(){
-    saveSort();
+    validate();
 
 };
-
+$('#submit').click(saveSort);
    </script>
 @endsection @endsection
