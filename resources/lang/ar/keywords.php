@@ -42,9 +42,11 @@
         'trends'    => 'التحكم في البحث المتداول',
         'trendWord' => 'الكلمات البحثية',
         'notifications' => 'التنبيهات',
+        'famousAtt'     => 'الاحداث الشهيرة',
         'famousCat' => 'اسم التصنيف',
         'sponsorLogo'   => 'الشعار الراعي',
         'sponsorName'   => 'اسم الراعي',
+        'shopndine'     => 'متجرك',
 
         // Edit fixed pages
         'EditAbout' => 'تعديل قسم عن الشركة',

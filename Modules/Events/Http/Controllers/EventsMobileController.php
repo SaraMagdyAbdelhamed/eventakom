@@ -24,7 +24,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Library\Services\NotificationsService;
-
+use Illuminate\Support\Facades\Validator;
 class EventsMobileController extends Controller
 {
      use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -233,25 +233,14 @@ class EventsMobileController extends Controller
             // 'youtube_en_1'          => 'required|',
             // 'youtube_ar_2'          => 'required|',
             // 'youtube_en_2'          => 'required|',
-            // 'arabic_images'         => 'required|',
-            // 'english_images'        => 'required',
+            // 'arabic_images'         => 'mimes:png,jpg|max:1024',
+            // 'english_images'        => 'mimes:png,jpg|max:1024',
         ]);
 
-
-        if ( $request->hasfile('test') ) {
-            //dd('test before loop');
-            foreach ( $request->file('test') as $image ) {
-                $name = $image->getClientOriginalName();
-                // dd($name);
-              try{  $image->move( public_path().'/events/arabic', $name );
-                 }catch( \Exception $ex ) {
-            dd($ex);
-            Session::flash('warning', 'UPLOADD!!');
-            return redirect()->back();
-                }
-                $data_arabic[] = '/public/arabic/'.$name;
-            }
-        }
+        $imageRules = array(
+        'image' => 'image|mimes:png,jpg|max:1024',
+         );
+ 
         // Check if there is any images or files and move them to public/events
         // Arabic Event Images
         if ( $request->hasfile('arabic_images') ) {
@@ -260,7 +249,14 @@ class EventsMobileController extends Controller
          Session::flash('error', 'لم يتم التحديث الحد الاأقصى للصور هو 5 صور');
         return redirect('/events/mobile');  
                }else{
-            foreach ( $request->file('arabic_images') as $image ) {
+            foreach ( $request->file('arabic_images') as $image ) { 
+                $imagev = array('image' => $image);
+                $imageValidator = Validator::make($imagev, $imageRules);
+                if ($imageValidator->fails()) {
+                $messages = $imageValidator->messages();
+                return redirect('/events/mobile')
+               ->withErrors($messages);
+               }
                 $name = $image->getClientOriginalName();
                 $image->move( public_path().'/events/arabic', $name );
                 $data_arabic[] = '/public/arabic/'.$name;
@@ -280,6 +276,13 @@ class EventsMobileController extends Controller
         return redirect('/events/mobile');  
                }else{
             foreach ($request->file('english_images') as $image) {
+                 $imagev = array('image' => $image);
+                $imageValidator = Validator::make($imagev, $imageRules);
+                if ($imageValidator->fails()) {
+                $messages = $imageValidator->messages();
+                return redirect('/events/mobile')
+               ->withErrors($messages);
+               }
                 $name = $image->getClientOriginalName();
                 $image->move( public_path().'/events/english', $name );
                 $data_english[] = '/public/english/'.$name;
@@ -363,6 +366,14 @@ class EventsMobileController extends Controller
 
             /**  Youtube links  **/
            // $event->media()->update(['category_id' => $newCatId]);
+            if(!isset($request->youtube_ar_1) && isset($request->youtube_ar_2)){
+              $request->youtube_ar_1 =  $request->youtube_en_1 ; 
+            }elseif(!isset($request->youtube_ar_2) && isset($request->youtube_ar_1)){
+              $request->youtube_ar_2 =  $request->youtube_en_2 ;   
+            }elseif(!isset($request->youtube_ar_1) && !isset($request->youtube_ar_2) ){
+              $request->youtube_ar_1 =  $request->youtube_en_1 ; 
+              $request->youtube_ar_2 =  $request->youtube_en_2 ;     
+            }
             $event->media()->where('type',2)->delete();
             $event->media()->createMany([
                 [ 'link' => $request->youtube_en_1, 'type'=> 2],

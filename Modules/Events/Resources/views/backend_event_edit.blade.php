@@ -317,11 +317,11 @@
           <div class="row">
             <div class="col-xs-12">
               <div class="master_field">
-                <label class="master_label mandatory">Is it free or paid ?</label>
+                <label class="master_label mandatory">@lang('keywords.Is it free or paid ?')</label>
               <input class="icon" type="radio" name="is_paid" id="radbtn_2_free" checked="{{ $event->is_paid ? false : true }}" value="0">
-                <label for="radbtn_2_free">free</label>
+                <label for="radbtn_2_free">@lang('keywords.free')</label>
                 <input class="icon" type="radio" name="is_paid" checked="{{ $event->is_paid ? true : false }}" value="1" id="event_is_paid">
-                <label for="radbtn_3_paid">paid</label>
+                <label for="radbtn_3_paid">@lang('keywords.paid')</label>
               </div>
             </div>
           </div>
@@ -331,7 +331,7 @@
             <div class="row">
               <div class="col-xs-8">
                 <div class="master_field">
-                  <label class="master_label" for="Price">Price</label>
+                  <label class="master_label" for="Price">@lang('keywords.Price')</label>
                   <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price" value="{{ $ticket->price ? : 0 }}">
                   @if ($errors->has('price'))
                     <span class="master_message color--fadegreen">{{ $errors->first('price') }}</span>

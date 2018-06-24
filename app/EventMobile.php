@@ -96,6 +96,14 @@ class EventMobile extends Model
     }
     
 
+     public function English_name(){
+    
+      $result = static::query()->where('id','=',$this->id)->select('name');
+      return $result;
+
+    }
+
+
 
    public static function arabic($field,$item_id){
 
@@ -123,7 +131,7 @@ class EventMobile extends Model
 
     public static function arabicHashtags($item_id){
 
-      $result = Helper::multi_localization(17, 'hashtag', $item_id, 2);
+      $result = Helper::multi_localization(4, 'hashtag', $item_id, 2);
       return $result;
     }
 }
