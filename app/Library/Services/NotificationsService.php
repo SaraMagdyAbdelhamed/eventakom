@@ -181,9 +181,19 @@ class NotificationsService
                     $event->id,
                     $user->id
                     );
+                    foreach ($category->users as $user) {
+                        $queue = new NotificationPush();
+                        $queue->notification_id = $notification->id;
+                        $queue->device_token    = $user->device_token;
+                        $queue->mobile_os       = $user->mobile_os;
+                        $queue->lang_id         = $user->lang_id;
+                        $queue->user_id         = $user->id;
+                        $queue->save();                        
+                    }
+
                 }
                 //Push to many users
-                $this->PushToManyUsers($category->users , $notification);
+                // $this->PushToManyUsers($category->users , $notification);
 	    	}    		
     	}
     }
