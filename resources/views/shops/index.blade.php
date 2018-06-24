@@ -1,31 +1,28 @@
 @extends('layouts.app')
-
-
 @section('content')
-
-              <!-- =============== Custom Content ===========-==========-->
-              <div class="row">
-                <div class="col-xs-12">
-                  <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
-                    <div class="row">
-                      <div class="col-xs-12">
-                        <div class="text-xs-center">         
-                          <div class="text-wraper">
-                            <h3 class="cover-inside-title  ">Shop and dine</h3>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{route('add_shop')}}">Add new Shop and dine</a>
-                      </div>
-                    </div>
-                  </div>
+    <!-- =============== Custom Content ===========-==========-->
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="text-xs-center">         
+                <div class="text-wraper">
+                  <h3 class="cover-inside-title  ">Shop and dine</h3>
                 </div>
               </div>
+            </div>
+            <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{route('add_shop')}}">Add new Shop and dine</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
             </div>
           </div><br>
           <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
           <button class="remodal-confirm" data-remodal-action="confirm">Apply Filters</button>
-        </div> --}}
+        </div> 
         <form id="dataTableTriggerId_001_form">
           <table class="data-table-trigger table-master" id="dataTableTriggerId_001">
             <thead>
