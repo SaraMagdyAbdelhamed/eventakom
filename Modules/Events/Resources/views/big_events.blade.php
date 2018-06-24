@@ -51,7 +51,7 @@
             <select class="select_big_event" id="multiselect_to" name="to[]" size="8" multiple="multiple">
             @if ( !empty($big_events) )
              @foreach($big_events as $bevent)
-              @if ( isset( $bevent) && !empty($bevent) )
+              @if ( isset( $bevent) && !empty($bevent) && !empty($bevent->event))
               <option value="{{$bevent->event_id}}">{{$bevent->event->name}}</option>
               @endif
               @endforeach 
