@@ -209,20 +209,14 @@
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="{{ route('big_events') }}">@lang('keywords.bigevents')</a></li>
                     </ul>
                   </li>
-                  <li class="side__list" id="menu_4"> <a class="side__item side__item--sub">barcode</a>
-                    <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" id="sub_4_1"  href="barcode_scaning.html">barcode scaning</a></li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_4_2"  href="barcode_success.html">barcode success</a></li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_4_3"  href="barcode_failed.html">barcode failed</a></li>
-                    </ul>
-                  </li>
-                  <li class="side__list" id="menu_5"> <a class="side__item" id="sub_5_1" href="{{ route('fa.list') }}">Famous attractions</a>
+
+                  <li class="side__list" id="menu_5"> <a class="side__item" id="sub_5_1" href="{{ route('fa.list') }}">@lang('keywords.famousAtt')</a>
                   </li>
                   <li class="side__list" id="menu_6"> <a class="side__item" id="sub_6_1" href="{{ route('offers.list') }}">@lang('keywords.offers')</a>
                   </li>
-                  <li class="side__list" id="menu_7"> <a class="side__item" id="sub_7_1" href="{{route('shops')}}">Shop and dine</a>
+                  <li class="side__list" id="menu_7"> <a class="side__item" id="sub_7_1" href="{{route('shops')}}">@lang('keywords.shopndine')</a>
                   </li>
-                  <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="{{route('notification')}}">Notifications</a>
+                  <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="{{route('notification')}}">@lang('keywords.notifications')</a>
                   </li>
 
                   <li class="side__list" id="menu_9"> <a class="side__item" href="{{ route('statistics') }}">@lang('keywords.statistics')</a>
@@ -260,11 +254,6 @@
                     </div>
                 @endforeach
 
-                @if ($errors->any())
-                  @foreach ($errors->all() as $error)
-                      <div class="alert alert-danger">{{ $error }}</div>
-                  @endforeach    
-                @endif
               </div>
               {{-- End alert --}}
 

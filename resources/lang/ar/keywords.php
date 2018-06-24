@@ -42,9 +42,11 @@
         'trends'    => 'التحكم في البحث المتداول',
         'trendWord' => 'الكلمات البحثية',
         'notifications' => 'التنبيهات',
+        'famousAtt'     => 'الاحداث الشهيرة',
         'famousCat' => 'اسم التصنيف',
         'sponsorLogo'   => 'الشعار الراعي',
         'sponsorName'   => 'اسم الراعي',
+        'shopndine'     => 'متجرك',
 
         // Edit fixed pages
         'EditAbout' => 'تعديل قسم عن الشركة',
@@ -97,6 +99,7 @@
         // Events
         'events'    => 'الاحداث',
         'addfrombackend' => 'المضاف من لوحة التحكم',
+        'editfrombackend'=> 'تعديل المضاف من لوحة التحكم',
         'info'      => 'المعلومات',
         'posts'     => 'المنشورات',
         'tickets'   => 'التذاكر',

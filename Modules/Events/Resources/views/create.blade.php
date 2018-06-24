@@ -32,8 +32,8 @@
         <div class="col-xs-12">
           <div class="text-xs-center">         
             <div class="text-wraper">
-              <h4 class="cover-inside-title">Events</h4><i class="fa fa-chevron-circle-right"></i>
-              <h4 class="cover-inside-title sub-lvl-2">Added from backend</h4>
+              <h4 class="cover-inside-title">@lang('keywords.events')</h4><i class="fa fa-chevron-circle-right"></i>
+              <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.addfrombackend')</h4>
             </div>
           </div>
         </div>
@@ -216,7 +216,7 @@
                 <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="categories[]">
                   @if ( isset($categories) && !empty($categories) )
                       @foreach ($categories as $category)
-                          <option value="{{ $category->id }}">{{ \App::isLocale('en') ? $category->name : \Helper::localization('interests', 'name', $category->id, 2, '') }}</option>
+                          <option value="{{ $category->id }}">{{ \App::isLocale('en') ? $category->name : \Helper::localization('interests', 'name', $category->id, 2, $category->name) }}</option>
                       @endforeach
                   @endif
                 </select>
