@@ -662,7 +662,7 @@ class EventsController extends Controller
         //delete old events which are not found in new selected ones
         BigEvent::whereNotIn('event_id',$ids_array)->delete();
         //return response()->json(lang('keywords.orderSaved'));
-         return response()->json('Big events order saved successfully!');
+         return response()->json(trans('keywords.orderSaved'));
     }
 
     public function bigevents_select($value, Request $request)
