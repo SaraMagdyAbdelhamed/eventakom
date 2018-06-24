@@ -537,6 +537,18 @@
                                 </div>
                               </div>
                             </div>
+                             <div id="old_imgs-ar">
+                              <?php $imgar_count=0 ;   ?>
+                     @foreach($images as $image)
+                     @if (strpos($image->link, 'arabic') !== false)
+                      <?php $imgar_count++ ;   ?>
+                      <img src="{{url('/')}}{{$image->link}}" width="75" height="75">
+                      @endif
+                      @endforeach
+                      @if($imgar_count < 1 )
+                      <img src="{{url('/')}}{{'/events/arabic/home.jpg'}}" width="75" height="75">
+                      @endif
+                    </div>
                           </div>
 
             {{-- English images --}}
@@ -585,6 +597,18 @@
                                 </div>
                               </div>
                             </div>
+                              <div id="old_imgs-ar">
+                              <?php $imgen_count=0 ;   ?>
+                     @foreach($images as $image)
+                     @if (strpos($image->link, 'english') !== false)
+                      <?php $imgen_count++ ;   ?>
+                      <img src="{{url('/')}}{{$image->link}}" width="75" height="75">
+                      @endif
+                      @endforeach
+                      @if($imgen_count < 1 )
+                      <img src="{{url('/')}}{{'/events/english/home.jpg'}}" width="75" height="75">
+                      @endif
+                    </div>
                           </div>       
 
           </div>
