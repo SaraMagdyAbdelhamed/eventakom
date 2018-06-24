@@ -366,6 +366,14 @@ class EventsMobileController extends Controller
 
             /**  Youtube links  **/
            // $event->media()->update(['category_id' => $newCatId]);
+            if(!isset($request->youtube_ar_1) && isset($request->youtube_ar_2)){
+              $request->youtube_ar_1 =  $request->youtube_en_1 ; 
+            }elseif(!isset($request->youtube_ar_2) && isset($request->youtube_ar_1)){
+              $request->youtube_ar_2 =  $request->youtube_en_2 ;   
+            }elseif(!isset($request->youtube_ar_1) && !isset($request->youtube_ar_2) ){
+              $request->youtube_ar_1 =  $request->youtube_en_1 ; 
+              $request->youtube_ar_2 =  $request->youtube_en_2 ;     
+            }
             $event->media()->where('type',2)->delete();
             $event->media()->createMany([
                 [ 'link' => $request->youtube_en_1, 'type'=> 2],
