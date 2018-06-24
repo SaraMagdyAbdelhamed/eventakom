@@ -113,28 +113,12 @@ class EventsController extends Controller
             'youtube_en_1' => 'required|',
             'youtube_ar_2' => 'required|',
             'youtube_en_2' => 'required|',
-            // 'arabic_images'         => 'required|',
-            // 'english_images'        => 'required',
+            'arabic_images'         => 'max:5',
+            'arabic_images.*'       => 'max:5',
+            'english_images'        => 'max:5',
+            'english_images.*'      => 'max:5'
         ]);
 
-        // Check if there is any images or files and move them to public/events
-        // Arabic Event Images
-        if ($request->hasfile('arabic_images')) {
-            foreach ($request->file('arabic_images') as $image) {
-                $name = time() . '_' . $image->getClientOriginalName();
-                $image->move('events/arabic', $name);
-                $data_arabic[] = 'events/arabic/' . $name;
-            }
-        }
-        
-        // English Event Images
-        if ($request->hasfile('english_images')) {
-            foreach ($request->file('english_images') as $image) {
-                $name = time() . '_' . $image->getClientOriginalName();
-                $image->move('events/english', $name);
-                $data_english[] = 'events/english/' . $name;
-            }
-        }
 
         // Explode english hashtags
         $hashtags = explode(',', $request->english_hashtags);
@@ -201,29 +185,54 @@ class EventsController extends Controller
                 ['link' => $request->youtube_ar_2, 'type' => 2],
             ]);
 
-            /** Arabic Images **/
-            if (isset($data_arabic) && !empty($data_arabic)) {
-                foreach ($data_arabic as $img_ar) {
-                    $media = new EventMedia;
+            // Check if there is any images or files and move them to public/events
+            // Arabic Event Images
+            if ($request->hasfile('arabic_images')) {
 
-                    $media->event_id = $event->id;
-                    $media->link = $img_ar;
-                    $media->type = 1;
-                    $media->save();
+                // Setup every image
+                foreach ($request->file('arabic_images') as $image) {
+                    $name = time() . '_' . $image->getClientOriginalName();
+                    $image->move('events/arabic', $name);
+                    $data_arabic[] = 'events/arabic/' . $name;
                 }
+
+                /** Arabic Images **/
+                if (isset($data_arabic) && !empty($data_arabic)) {
+                    foreach ($data_arabic as $img_ar) {
+                        $media = new EventMedia;
+
+                        $media->event_id = $event->id;
+                        $media->link = $img_ar;
+                        $media->type = 1;
+                        $media->save();
+                    }
+                }                
             }
+            
+            // English Event Images
+            if ($request->hasfile('english_images')) {
 
-            /** English Images **/
-            if (isset($data_english) && !empty($data_english)) {
-                foreach ($data_english as $img_en) {
-                    $media = new EventMedia;
-
-                    $media->event_id = $event->id;
-                    $media->link = $img_en;
-                    $media->type = 1;
-                    $media->save();
+                // Setup every image
+                foreach ($request->file('english_images') as $image) {
+                    $name = time() . '_' . $image->getClientOriginalName();
+                    $image->move('events/english', $name);
+                    $data_english[] = 'events/english/' . $name;
                 }
+
+                /** English Images **/
+                if (isset($data_english) && !empty($data_english)) {
+                    foreach ($data_english as $img_en) {
+                        $media = new EventMedia;
+
+                        $media->event_id = $event->id;
+                        $media->link = $img_en;
+                        $media->type = 1;
+                        $media->save();
+                    }
+                }
+
             }
+            
 
             /** Ticket price **/
             try {
