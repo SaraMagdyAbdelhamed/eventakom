@@ -134,15 +134,20 @@ $('#multiselect_to option').each(function(){
 }   
 
 function saveSort(e) { 
+  if (typeof values_post !== 'undefined' && values_post.length > 0) {
+
+  
 var _token = '{{csrf_token()}}';
     $.ajax({
       type: 'POST',
       url: '{{url('bigevents_post')}}',
       data: { _token: _token  , big_events: values_post },
       success: function (data) {
+        $(".master_field").append(data);
       }
     });
-
+  }
+ else{alert('you did not set new Big Events order!');}
 }
 
 $('#multiselect_rightSelected').click(validate);

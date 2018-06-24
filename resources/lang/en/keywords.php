@@ -188,7 +188,8 @@
         'Number of users 15-18 years'=>'Number of users 15-18 years',
         'Number of users 18-25 years'=>'Number of users 18-25 years',
         'Number of users more than 25 years'=>'Number of users more than 25 years',
-        
+        // big events
+        'orderSaved'    => 'Big events order saved successfully'
 		
     ];
 
