@@ -29,8 +29,8 @@
                 <tr class="bgcolor--gray_mm color--gray_d">
                   <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
                   <th><span class="cellcontent">@lang('keywords.serialNo') </span></th>
-                  <th><span class="cellcontent">Trending searches words</span></th>
-                  <th><span class="cellcontent">actions</span></th>
+                  <th><span class="cellcontent">@lang('keywords.trendWord')</span></th>
+                  <th><span class="cellcontent">@lang('keywords.Actions')</span></th>
                 </tr>
               </thead>
 

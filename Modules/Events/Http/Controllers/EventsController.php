@@ -296,6 +296,9 @@ class EventsController extends Controller
         $data['currencies'] = Currency::all();
         $data['ticket'] = EventTicket::where('event_id', $id)->first();
 
+        $data['arabic_images'] = $data['event']->media()->where('type', 1)->where('link', 'like', '%arabic%')->get();
+        $data['english_images'] = $data['event']->media()->where('type', 1)->where('link', 'like', '%english%')->get();
+
         return view('events::backend_event_edit', $data);
     }
 
@@ -624,25 +627,33 @@ class EventsController extends Controller
     public function big_events()
     {
         return view('events::big_events')
-            ->with('events', EventBackend::all());
+            ->with('events', EventBackend::all())->with('big_events', BigEvent::orderBy('sort_order', 'asc')->get());
 
     }
 
     public function bigevents_post(Request $request)
     {
         $ids = $request['big_events'];
-        // $big_events =   explode( ',', $ids );
-        BigEvent::truncate();
-        // $bigevent_delete->delete();
+        $ids_array = array();
+    
         foreach ($ids as $order => $id) {
+            $bigevent = BigEvent::where('event_id',$id)->first();
+            if($bigevent){
+            $bigevent->sort_order = $order + 1;
+            $bigevent->save();   
+            }else{
             $bigevent = new BigEvent;
             $bigevent->event_id = $id;
             $bigevent->sort_order = $order + 1;
             $bigevent->save();
-            //Notify all users about the big Event 
+            }
+            array_push($ids_array,$id);
+         
         }
-        return response()->json($ids);
-            // ->with('categories', EventCategory::all());
+        //delete old events which are not found in new selected ones
+        BigEvent::whereNotIn('event_id',$ids_array)->delete();
+        //return response()->json(lang('keywords.orderSaved'));
+         return response()->json('Big events order saved successfully!');
     }
 
     public function bigevents_select($value, Request $request)
@@ -660,6 +671,19 @@ class EventsController extends Controller
         //dd(response()->json($options));
         return response()->json($options);
             // ->with('categories', EventCategory::all());
+    }
+
+      public function bigevents_post_old(Request $request)
+    {
+        $ids = $request['big_events'];
+        BigEvent::truncate();
+        foreach ($ids as $order => $id) {
+            $bigevent = new BigEvent;
+            $bigevent->event_id = $id;
+            $bigevent->sort_order = $order + 1;
+            $bigevent->save();
+        }
+        return response()->json($ids);
     }
 
 

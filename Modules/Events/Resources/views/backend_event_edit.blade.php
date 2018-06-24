@@ -489,6 +489,14 @@
               
             {{-- Arabic images --}}
           <div class="col-sm-6 col-xs-12 text-center">
+
+            {{-- Arabic Images --}}
+            @if ( isset($arabic_images) && !empty($arabic_images) )
+                @foreach ($arabic_images as $img)
+                    <img src="{{ asset($img->link) }}" alt="image" width="75" height="75">
+                @endforeach
+            @endif
+
             <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
               <div class="main-section">
@@ -503,6 +511,14 @@
 
           {{-- English images --}}
           <div class="col-sm-6 col-xs-12 text-center">
+
+            {{-- Arabic Images --}}
+            @if ( isset($english_images) && !empty($english_images) )
+                @foreach ($english_images as $img)
+                    <img src="{{ asset($img->link) }}" alt="image" width="75" height="75">
+                @endforeach
+            @endif
+
             <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
               <div class="main-section">

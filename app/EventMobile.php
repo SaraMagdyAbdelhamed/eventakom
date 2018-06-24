@@ -110,6 +110,25 @@ class EventMobile extends Model
       $result = Helper::localization('events', $field, $item_id, 2);
       return $result;
     }
+
+    public function getEnglishNameAttribute(){
+
+      return $this->name;
+    
+    }
+
+     public function getEnglishDescriptionAttribute(){
+
+      return $this->description;
+    
+    }
+
+     public function getEnglishVenueAttribute(){
+
+      return $this->venue;
+    
+    }
+
     public static function arabicHashtags($item_id){
 
       $result = Helper::multi_localization(4, 'hashtag', $item_id, 2);
