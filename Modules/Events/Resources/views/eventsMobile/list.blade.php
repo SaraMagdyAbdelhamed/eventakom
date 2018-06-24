@@ -124,8 +124,8 @@
                                   <tr data-event-id={{$event->id}}>
                                     <td><span class="cellcontent"></span></td>
                                     <td><span class="cellcontent" ><?=$i?></span></td>
-                                    <td><span class="cellcontent">{{$event->name}}</span></td>
-                                    <td><span class="cellcontent">{{$event->venue}}</span></td>
+                                    <td><span class="cellcontent">{{$event->nameMultilang}}</span></td>
+                                    <td><span class="cellcontent">{{$event->venueMultilang}}</span></td>
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
@@ -330,8 +330,8 @@
                                     <tr data-event-id={{$event->id}}>
                                     <td><span class="cellcontent"></span></td>
                                     <td><span class="cellcontent"><?=$i?></span></td>
-                                        <td><span class="cellcontent">{{$event->name}}</span></td>
-                                    <td><span class="cellcontent">{{$event->venue}}</span></td>
+                                    <td><span class="cellcontent">{{$event->nameMultilang}}</span></td>
+                                    <td><span class="cellcontent">{{$event->venueMultilang}}</span></td>
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>
@@ -600,8 +600,8 @@
                                   <tr data-event-id={{$event->id}}>
                                     <td><span class="cellcontent"></span></td>
                                     <td><span class="cellcontent" ><?=$i?></span></td>
-                                       <td><span class="cellcontent">{{$event->name}}</span></td>
-                                    <td><span class="cellcontent">{{$event->venue}}</span></td>
+                                    <td><span class="cellcontent">{{$event->nameMultilang}}</span></td>
+                                    <td><span class="cellcontent">{{$event->venueMultilang}}</span></td>
                                     <td><span class="cellcontent">{{$event->start_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->end_datetime}}</span></td>
                                     <td><span class="cellcontent">{{$event->created_at}}</span></td>

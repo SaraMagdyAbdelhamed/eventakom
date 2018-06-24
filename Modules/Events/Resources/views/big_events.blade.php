@@ -38,7 +38,7 @@
           <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
             <select class="select_big_event" id="multiselect" name="from[]" size="8" multiple="multiple">
               @foreach($events as $event)
-              <option value="{{$event->id}}">{{$event->name}}</option>
+              <option value="{{$event->id}}">{{$event->nameMultilang}}</option>
 
               @endforeach
             </select>
@@ -52,7 +52,7 @@
             @if ( !empty($big_events) )
              @foreach($big_events as $bevent)
               @if ( isset( $bevent) && !empty($bevent) && !empty($bevent->event))
-              <option value="{{$bevent->event_id}}">{{$bevent->event->name}}</option>
+              <option value="{{$bevent->event_id}}">{{$bevent->event->nameMultilang}}</option>
               @endif
               @endforeach 
               @endif
