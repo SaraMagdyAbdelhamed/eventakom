@@ -8,7 +8,7 @@ use App\Entity;
 use App\Helpers\Helper;
 class EventMobile extends Model
 {
-    protected $id = 'id';
+    protected $primaryKey = 'id';
     protected $table = 'events';
     protected $fillable = ['name', 'description', 'website', 'mobile', 'email', 'code', 'address', 'longtuide', 'latitude', 'venue', 'start_datetime', 'end_datetime', 'suggest_big_event', 'gender_id', 'age_range_id', 'is_paid', 'use_ticketing_system', 'is_active', 'event_status_id', 'rejection_reason'];
     public $timestamp = true;
@@ -82,17 +82,17 @@ class EventMobile extends Model
     }
 
     //localizations
-
-    public function getNameAttribute($value)
+    
+    public function getNameMultilangAttribute($value)
     {
         $result = (\App::isLocale('en')) ? Helper::localization('events','name',$this->id,1) : Helper::localization('events','name',$this->id,2);
-        return ($result==null)? $value : $result;
+        return ($result==null)? $this->name : $result;
     }
   
-  public function getVenueAttribute($value)
+  public function getVenueMultilangAttribute($value)
     {
         $result = (\App::isLocale('en')) ? Helper::localization('events','venue',$this->id,1) : Helper::localization('events','venue',$this->id,2);
-        return ($result==null)? $value : $result;
+        return ($result==null)? $this->venue : $result;
     }
     
 
@@ -102,9 +102,13 @@ class EventMobile extends Model
       $result = Helper::localization('events', $field, $item_id, 2);
       return $result;
     }
+
+
+
+    
     public static function arabicHashtags($item_id){
 
-      $result = Helper::multi_localization(17, 'hashtag', $item_id, 2);
+      $result = Helper::multi_localization(4, 'hashtag', $item_id, 2);
       return $result;
     }
 }

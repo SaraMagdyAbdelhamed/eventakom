@@ -58,6 +58,12 @@ class EventBackend extends Model
     public function scopeShowInMobile($query){
         return $query->where('show_in_mobile',1);
     }
+    //localization
+     public function getNameMultilangAttribute($value)
+    {
+        $result = (\App::isLocale('en')) ? \App\helpers\Helper::localization('events','name',$this->id,1) : \App\helpers\Helper::localization('events','name',$this->id,2);
+        return ($result==null)? $this->name : $result;
+    }
 
 
 

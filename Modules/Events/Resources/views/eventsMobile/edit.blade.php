@@ -68,7 +68,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">@lang('keywords.eventDescription')</label>
-                <textarea class="master_input" id="description" placeholder="Description"  name="english_description">{{$event->description}}</textarea>
+                <textarea class="master_input" id="description" placeholder="Description"  name="english_description">{{$event->venue}}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
                 @endif
@@ -83,9 +83,19 @@
                 <input type="hidden" name="event_id" value="{{$event->id}}">
                 <input type="hidden" name="lat" id="lat" >
                 <input type="hidden" name="lng" id="lng" >
-                <input type="hidden" name="address" id="address" value="">
+                <!-- <input type="hidden" name="address" id="address" value=""> -->
               </div>
             </div>
+
+             <div class="col-xs-6">
+                <div class="master_field">
+                  <label class="master_label" for="venue">@lang('keywords.address')</label>
+                  <input class="master_input" type="text" readonly placeholder="ex:CFC" Required id="address" name="address" value="{{$event->address}}">
+                  @if ($errors->has('address'))
+                    <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
+                  @endif
+                </div>
+              </div>
 
 
             {{-- English Venu --}}
@@ -492,12 +502,13 @@
               
             {{-- Arabic images --}}
             <!--  <input type="file" name="test[]" accept="image/*" multiple> -->
-             <div class="col-sm-6 col-xs-12 text-center">
+            <!-- omar -->
+           <!--  <div class="col-sm-6 col-xs-12 text-center">
                             <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="row">
                                 <section class="l-main" role="main">
-                                  <!--  -->
+                                 
                      <input type="file" name="arabic_images[]" accept="image/*" multiple id="gallery-photo-add-ar">
                      <div class="gallery-ar"></div>
                      <div id="old_imgs-ar">
@@ -508,8 +519,9 @@
                       @endif
                       @endforeach
                     </div>
-                                  <!--  -->
-                                 <!--  <div class="uploader__box js-uploader__box l-center-box">
+                    <!-- omar 
+                               
+                                  <div class="uploader__box js-uploader__box l-center-box">
                                     <div action="your/nonjs/fallback/" method="POST">
                                       <div class="uploader__contents">
                                         <label class="button button--secondary" for="fileinput">Select Files</label>
@@ -519,19 +531,44 @@
                                       </div>
                                       <input class="button button--big-bottom" type="submit" value="Upload Selected Files">
                                     </div>
-                                  </div> -->
-                                </section>
+                                  </div>
+                                </section> 
                               </div>
                             </div>
+                          </div> -->
+                           <div class="col-sm-6 col-xs-12 text-center">
+                            <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
+                            <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                              <div class="main-section">
+                                <div id="fileList"></div>
+                                <div class="form-group">
+                                  <input class="inputfile inputfile-1" id="file-1" type="file" name="arabic_images[]" data-multiple-caption="{count} files selected" multiple onchange="updateList()">
+                                  <label for="file-1"><span>Choose a file</span></label>
+                                </div>
+                              </div>
+                            </div>
+                             <div id="old_imgs-ar">
+                              <?php $imgar_count=0 ;   ?>
+                     @foreach($images as $image)
+                     @if (strpos($image->link, 'arabic') !== false)
+                      <?php $imgar_count++ ;   ?>
+                      <img src="{{url('/')}}{{$image->link}}" width="75" height="75">
+                      @endif
+                      @endforeach
+                      @if($imgar_count < 1 )
+                      <img src="{{url('/')}}{{'/events/arabic/home.jpg'}}" width="75" height="75">
+                      @endif
+                    </div>
                           </div>
 
             {{-- English images --}}
-                    <div class="col-sm-6 col-xs-12 text-center">
+            <!-- omar -->
+                 <!--   <div class="col-sm-6 col-xs-12 text-center">
                             <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="row">
                                 <section class="l-main" role="main">
-                                  <!--  -->
+                                 
                                    <input type="file" name="english_images[]" accept="image/*" multiple id="gallery-photo-add-en">
                                      <div class="gallery-en"></div>
                                        <div id="old_imgs-en">
@@ -542,8 +579,9 @@
                       @endif
                       @endforeach
                     </div>
-                                   <!--  -->
-                               <!--    <div class="uploader__box js-uploader__box l-center-box">
+                    <!-- omar 
+                                 
+                               <div class="uploader__box js-uploader__box l-center-box">
                                     <div action="your/nonjs/fallback/" method="POST">
                                       <div class="uploader__contents">
                                         <label class="button button--secondary" for="fileinput">Select Files</label>
@@ -553,11 +591,35 @@
                                       </div>
                                       <input class="button button--big-bottom" type="submit" value="Upload Selected Files">
                                     </div>
-                                  </div> -->
+                                  </div> 
                                 </section>
                               </div>
                             </div>
-                          </div>
+                          </div>-->
+                    <div class="col-sm-6 col-xs-12 text-center">
+                            <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
+                            <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                              <div class="main-section">
+                                <div id="fileList2"></div>
+                                <div class="form-group">
+                                  <input class="inputfile inputfile-1" id="file-2" type="file" name="english_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList2()">
+                                  <label for="file-2"><span>Choose a file</span></label>
+                                </div>
+                              </div>
+                            </div>
+                              <div id="old_imgs-ar">
+                              <?php $imgen_count=0 ;   ?>
+                     @foreach($images as $image)
+                     @if (strpos($image->link, 'english') !== false)
+                      <?php $imgen_count++ ;   ?>
+                      <img src="{{url('/')}}{{$image->link}}" width="75" height="75">
+                      @endif
+                      @endforeach
+                      @if($imgen_count < 1 )
+                      <img src="{{url('/')}}{{'/events/english/home.jpg'}}" width="75" height="75">
+                      @endif
+                    </div>
+                          </div>       
 
           </div>
 
@@ -698,4 +760,142 @@ $(document).ready(function(){
     });
   });
 </script>
+
+   <script type="text/javascript">
+        var listAr = [];
+      var listEn = [];
+      var check = false;
+      var img;
+      var reader=new FileReader();
+      function updateIndexList(){
+      
+      }
+      function closebtn(index,value){
+        if(value==1){
+          listAr.splice(index,1);
+          $.each(listAr,function(id,value){
+            value.index = id;
+          });
+          check = true;
+          $("#file-1").prop('disabled', false);
+          updateList();
+        }
+        if(value==2){
+          listEn.splice(index,1);
+          $.each(listEn,function(id,value){
+            value.index = id;
+          });
+          check = true;
+          $("#file-2").prop('disabled', false);
+          updateList2();
+        }
+          
+        }
+       updateList = function() {
+        let input = document.getElementById('file-1');
+        let output = document.getElementById('fileList');
+        let files1 = input.files; 
+        if(check==true){
+          
+          output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+          for (var i = 0; i < listAr.length; i++) {
+          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
+                              '<span class="uploader__file-list__thumbnail">'+
+                              '<img class="thumbnail" id="img_" src="+list.img+">'+
+                              '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                              '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
+                              '<span class="uploader__file-list__button">'+'</span>'+
+                              '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                              '</button>'+'</span>'+'</li>';
+                        
+                        
+        }
+        output.innerHTML += '</ul>';
+        check = false;
+        }
+        else{
+          if(files1.length > 5){
+          alert("max no. 5 images");
+          return;
+         }
+        for (var i = 0; i < files1.length; i++) {
+          var file = files1[i];
+           
+              listAr.push({'name':file.name,'size':file.size,'index':listAr.length});
+      
+          }
+      
+        output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+        for (var i = 0; i < listAr.length; i++) {
+          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
+                              '<span class="uploader__file-list__thumbnail">'+
+                              '<img class="thumbnail" id="img_" src="+list.img+">'+
+                              '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                              '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
+                              '<span class="uploader__file-list__button">'+'</span>'+
+                              '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                              '</button>'+'</span>'+'</li>';
+        }
+        output.innerHTML += '</ul>';
+        }
+      
+        if(listAr.length == 5){
+            $("#file-1").prop('disabled', true);
+          }
+         
+        }
+      
+        updateList2 = function(){
+        let input = document.getElementById('file-2');
+        let output = document.getElementById('fileList2');
+        let files2 = input.files; 
+        if(check==true){
+           output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+        for (var i = 0; i < listEn.length; i++) {
+          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
+          '<span class="uploader__file-list__thumbnail">'+
+          '<img class="thumbnail" id="img_" src="+list.img+">'+'</span>'+
+          '<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
+          '<span class="uploader__file-list__size">' +(listEn[i].size)/1000 +'KB'+
+          '</span>'+'<span class="uploader__file-list__button">'+'</span>'+
+          '<span class="uploader__file-list__button" id="delete" >'+''
+          +'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+'</span>'+'</li>';
+        }
+        output.innerHTML += '</ul>';
+        check=false;
+      
+        }
+        else{
+          if(files2.length > 5){
+             alert("max no. 5 images");
+            return;
+          }
+          for (var j = 0; j < files2.length; j++) {
+          var file = files2[j];
+          listEn.push({'name':file.name,'size':file.size,'index':listEn.length});
+          if(listEn.length == 5){
+            $("#file-2").prop("disabled",true);
+          }
+          }  
+        output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+        for (var i = 0; i < listEn.length; i++) {
+          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
+          '<span class="uploader__file-list__thumbnail">'+
+          '<img class="thumbnail" id="img_" src="+list.img+">'+'</span>'+
+          '<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
+          '<span class="uploader__file-list__size">' +(listEn[i].size)/1000 +'KB'+
+          '</span>'+'<span class="uploader__file-list__button">'+'</span>'+
+          '<span class="uploader__file-list__button" id="delete" >'+''
+          +'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+'</span>'+'</li>';
+        }
+        output.innerHTML += '</ul>';
+        }
+        if(listEn.length == 5){
+            $("#file-2").prop("disabled",true);
+          }
+          
+        }
+      
+      
+    </script>
 @endsection

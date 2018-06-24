@@ -38,7 +38,7 @@
           <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
             <select class="select_big_event" id="multiselect" name="from[]" size="8" multiple="multiple">
               @foreach($events as $event)
-              <option value="{{$event->id}}">{{$event->name}}</option>
+              <option value="{{$event->id}}">{{$event->nameMultilang}}</option>
 
               @endforeach
             </select>
@@ -48,7 +48,15 @@
             <button class="btn btn-block" id="multiselect_leftSelected" type="button"><i class="fa fa-chevron-left"></i></button>
           </div>
           <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
-            <select class="select_big_event" id="multiselect_to" name="to[]" size="8" multiple="multiple"></select>
+            <select class="select_big_event" id="multiselect_to" name="to[]" size="8" multiple="multiple">
+            @if ( !empty($big_events) )
+             @foreach($big_events as $bevent)
+              @if ( isset( $bevent) && !empty($bevent) && !empty($bevent->event))
+              <option value="{{$bevent->event_id}}">{{$bevent->event->nameMultilang}}</option>
+              @endif
+              @endforeach 
+              @endif
+            </select>
             <div class="row">
               <div class="col-sm-6">
                 <button class="btn btn-block" id="multiselect_move_up" type="button"><i class="fa fa-arrow-up"></i></button>
@@ -60,7 +68,9 @@
           </div>
         </div>
       </div>
+        <button class="remodal-confirm col-sm-4" id="submitOrder" type="submit">@lang('keywords.submit')</button>
       <div class="clearfix"></div>
+
     </div>
   </div>
 </div>
@@ -78,8 +88,7 @@ var _token = '{{csrf_token()}}';
       url: '{{url('bigevents_select')}}'+ '/' + valueSelected,
       data: { _token: _token},
       success: function (data) {
-      //  $('tr[data-event-id=' + event_id + ']').fadeOut();
-           //$(".two-divs-select").append("<div>"+data+"</div>");
+
            // .each loops through the array
 $.each(data, function(i){
    $("#multiselect").append(data[i]);
@@ -91,11 +100,6 @@ $.each(data, function(i){
   </script>
 
 <script type="text/javascript">
-     /* jQuery(document).ready(function($) {
-       $('#multiselect').multiselect();
-     }); */
-
-
 
      $('#multiselect').multiselect({
       search: {
@@ -104,21 +108,17 @@ $.each(data, function(i){
       },
       fireSearch: function(value) {
        return value.length > 3;
-      }
+      },
+      keepRenderingSort: true
      });
+     
    </script>
 
    <script>
-   //get all options from multiselect_to
-  // $('#multiselect_rightSelected').click(function(e){
-function saveSort(e) { 
+var values_post = new Array();
+function validate(e) { 
 
-var select1 = document.getElementById('multiselect_to');
 var values = new Array();
-
-// for(var i=0; i < select1.options.length; i++){
-//     values.push(select1.options[i].value);
-// }
 $('#multiselect_to option').each(function(){
    if($.inArray(this.value, values) >-1){
       $(this).remove()
@@ -133,37 +133,34 @@ $('#multiselect_to option').each(function(){
     
    }
 });
-// if(values.length>5){
-//   alert('Sorry you have exceeded your 5 big events limit!');
+ values_post = values;
+}   
 
-//   // remove last one in to
-//    var selectFrom = document.getElementById("multiselect");
-//   var select = document.getElementById("multiselect_to");
-//   //selectFrom.options[select.options.length-6] = select.options[select.options.length-1];
-//   select.options[select.options.length-1] = null;
-// }else{
-// e.preventDefault();
+function saveSort(e) { 
+  if (typeof values_post !== 'undefined' && values_post.length > 0) {
+
+  
 var _token = '{{csrf_token()}}';
     $.ajax({
       type: 'POST',
       url: '{{url('bigevents_post')}}',
-      data: { _token: _token  , big_events: values },
+      data: { _token: _token  , big_events: values_post },
       success: function (data) {
-           //$(".two-divs-select").append("<div>"+data+"</div>");
+        $(".master_field").append(data);
       }
     });
-  // });
-// }
+  }
+ else{validate();}
 }
-$('#multiselect_rightSelected').click(saveSort);
-$('#multiselect_move_up').click(saveSort);
-$('#multiselect_move_down').click(saveSort);
-$('#multiselect_leftSelected').click(saveSort);
-//$('#multiselect').ondblclick(saveSort);
-document.getElementById('multiselect').ondblclick = function(){
-    saveSort();
-    // or alert(this.options[this.selectedIndex].value);
-};
 
+$('#multiselect_rightSelected').click(validate);
+$('#multiselect_move_up').click(validate);
+$('#multiselect_move_down').click(validate);
+$('#multiselect_leftSelected').click(validate);
+document.getElementById('multiselect').ondblclick = function(){
+    validate();
+
+};
+$('#submitOrder').click(saveSort);
    </script>
 @endsection @endsection

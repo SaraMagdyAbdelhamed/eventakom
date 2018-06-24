@@ -40,9 +40,13 @@
         'famous'    => 'Famous attractions categories',
         'sponsors'  => 'sponsors',
         'trends'    => 'Trending searches control',
+        'trendWords'    => 'Trending Search Words',
         'notifications' => 'Notification distance',
-        'famousCat' => 'Famous attractions category',
+        'famousAtt'     => 'Famous Attractions',
+        'famousCat'     => 'Famous attractions category',
         'sponsorLogo'   => 'Sponsor Logo',
+        'sponsorName'   => 'Sponosr Name',
+        'shopndine'     => 'Shop and dine',
 
 
         'EditAbout' => 'Edit About Us',
@@ -94,6 +98,7 @@
         // Events
         'events'    => 'Events',
         'addfrombackend' => 'Added From Backend',
+        'editfrombackend'=> 'Edit From Backend',
         'info'      => 'Info',
         'posts'     => 'Posts',
         'tickets'   => 'Tickets',
@@ -166,7 +171,7 @@
         'submit'=>'submit',
         'next'=>'Next',
         'prev'=>'Prev',
-        
+        'address'   => 'Address',
         
         // Offers & Deals
         'offers'    => 'Offers and Deals',
@@ -184,7 +189,8 @@
         'Number of users 15-18 years'=>'Number of users 15-18 years',
         'Number of users 18-25 years'=>'Number of users 18-25 years',
         'Number of users more than 25 years'=>'Number of users more than 25 years',
-        
+        // big events
+        'orderSaved'    => 'Big events order saved successfully'
 		
     ];
 

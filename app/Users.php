@@ -70,6 +70,12 @@ class Users extends Authenticatable
 
     }
 
+    public static function UsersMobile(){
+       return  static::whereHas('rules', function ($q) {
+            $q->where('rule_id', 2);
+        })->UserWithDeviceTokens()->get();
+    }
+
     public  function CurrentRule(){
         foreach($this->rules as $rule){
             if($rule->pivot->rule_id != 1){
@@ -94,8 +100,13 @@ class Users extends Authenticatable
 
     //Attributes
     public function getAgeAttribute()
-{
-    return Carbon::parse($this->attributes['birthdate'])->age;
-}
+    {
+        return Carbon::parse($this->attributes['birthdate'])->age;
+    }
+
+    //Query Scopes
+    public function scopeUserWithDeviceTokens($query){
+        return $query->whereNotNull("device_token");
+    }
 
 }

@@ -32,74 +32,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     {{-- Custom CSS --}}
-    <style>
-      /* Styling Checkboxes */
-      /* Customize the label (the container) */
-      label.container {
-        display: block;
-        position: relative;
-        padding-left: 35px;
-        margin-bottom: 12px;
-        cursor: pointer;
-        font-size: 18px;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      /* Hide the browser's default checkbox */
-      label.container input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-      }
-
-      /* Create a custom checkbox */
-      .checkmark {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 25px;
-        width: 25px;
-        background-color: #ccc;
-      }
-
-      /* On mouse-over, add a grey background color */
-      label.container:hover input ~ .checkmark {
-        background-color: #2196F3;
-      }
-
-      /* When the checkbox is checked, add a blue background */
-      label.container input:checked ~ .checkmark {
-        background-color: #2196F3;
-      }
-
-      /* Create the checkmark/indicator (hidden when not checked) */
-      .checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
-      }
-
-      /* Show the checkmark when checked */
-      label.container input:checked ~ .checkmark:after {
-        display: block;
-      }
-
-      /* Style the checkmark/indicator */
-      label.container .checkmark:after {
-        left: 9px;
-        top: 5px;
-        width: 5px;
-        height: 10px;
-        border: solid white;
-        border-width: 0 3px 3px 0;
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
-      }
-    </style>
+ 
 
   </head>
   <body>
@@ -276,20 +209,14 @@
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="{{ route('big_events') }}">@lang('keywords.bigevents')</a></li>
                     </ul>
                   </li>
-                  <li class="side__list" id="menu_4"> <a class="side__item side__item--sub">barcode</a>
-                    <ul class="side__submenu">
-                      <li class="side__sublist"><a class="side__subitem" id="sub_4_1"  href="barcode_scaning.html">barcode scaning</a></li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_4_2"  href="barcode_success.html">barcode success</a></li>
-                      <li class="side__sublist"><a class="side__subitem" id="sub_4_3"  href="barcode_failed.html">barcode failed</a></li>
-                    </ul>
-                  </li>
-                  <li class="side__list" id="menu_5"> <a class="side__item" id="sub_5_1" href="{{ route('fa.list') }}">Famous attractions</a>
+
+                  <li class="side__list" id="menu_5"> <a class="side__item" id="sub_5_1" href="{{ route('fa.list') }}">@lang('keywords.famousAtt')</a>
                   </li>
                   <li class="side__list" id="menu_6"> <a class="side__item" id="sub_6_1" href="{{ route('offers.list') }}">@lang('keywords.offers')</a>
                   </li>
-                  <li class="side__list" id="menu_7"> <a class="side__item" id="sub_7_1" href="{{route('shops')}}">Shop and dine</a>
+                  <li class="side__list" id="menu_7"> <a class="side__item" id="sub_7_1" href="{{route('shops')}}">@lang('keywords.shopndine')</a>
                   </li>
-                  <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="{{route('notification')}}">Notifications</a>
+                  <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="{{route('notification')}}">@lang('keywords.notifications')</a>
                   </li>
 
                   <li class="side__list" id="menu_9"> <a class="side__item" href="{{ route('statistics') }}">@lang('keywords.statistics')</a>
@@ -327,11 +254,6 @@
                     </div>
                 @endforeach
 
-                @if ($errors->any())
-                  @foreach ($errors->all() as $error)
-                      <div class="alert alert-danger">{{ $error }}</div>
-                  @endforeach    
-                @endif
               </div>
               {{-- End alert --}}
 
@@ -706,9 +628,6 @@
 
   {{-- Google maps API key --}}
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&libraries=places&callback=initMap" type="text/javascript"></script>
-    
-
-
   
   {{-- Map script --}}
   <script>

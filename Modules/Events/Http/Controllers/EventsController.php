@@ -113,28 +113,12 @@ class EventsController extends Controller
             'youtube_en_1' => 'required|',
             'youtube_ar_2' => 'required|',
             'youtube_en_2' => 'required|',
-            // 'arabic_images'         => 'required|',
-            // 'english_images'        => 'required',
+            // 'arabic_images'         => 'max:5',
+            // 'arabic_images.*'       => 'max:5',
+            // 'english_images'        => 'max:5',
+            // 'english_images.*'      => 'max:5'
         ]);
 
-        // Check if there is any images or files and move them to public/events
-        // Arabic Event Images
-        if ($request->hasfile('arabic_images')) {
-            foreach ($request->file('arabic_images') as $image) {
-                $name = time() . '_' . $image->getClientOriginalName();
-                $image->move('events/arabic', $name);
-                $data_arabic[] = 'events/arabic/' . $name;
-            }
-        }
-        
-        // English Event Images
-        if ($request->hasfile('english_images')) {
-            foreach ($request->file('english_images') as $image) {
-                $name = time() . '_' . $image->getClientOriginalName();
-                $image->move('events/english', $name);
-                $data_english[] = 'events/english/' . $name;
-            }
-        }
 
         // Explode english hashtags
         $hashtags = explode(',', $request->english_hashtags);
@@ -201,29 +185,54 @@ class EventsController extends Controller
                 ['link' => $request->youtube_ar_2, 'type' => 2],
             ]);
 
-            /** Arabic Images **/
-            if (isset($data_arabic) && !empty($data_arabic)) {
-                foreach ($data_arabic as $img_ar) {
-                    $media = new EventMedia;
+            // Check if there is any images or files and move them to public/events
+            // Arabic Event Images
+            if ($request->hasfile('arabic_images')) {
 
-                    $media->event_id = $event->id;
-                    $media->link = $img_ar;
-                    $media->type = 1;
-                    $media->save();
+                // Setup every image
+                foreach ($request->file('arabic_images') as $image) {
+                    $name = time() . '_' . $image->getClientOriginalName();
+                    $image->move('events/arabic', $name);
+                    $data_arabic[] = 'events/arabic/' . $name;
                 }
+
+                /** Arabic Images **/
+                if (isset($data_arabic) && !empty($data_arabic)) {
+                    foreach ($data_arabic as $img_ar) {
+                        $media = new EventMedia;
+
+                        $media->event_id = $event->id;
+                        $media->link = $img_ar;
+                        $media->type = 1;
+                        $media->save();
+                    }
+                }                
             }
+            
+            // English Event Images
+            if ($request->hasfile('english_images')) {
 
-            /** English Images **/
-            if (isset($data_english) && !empty($data_english)) {
-                foreach ($data_english as $img_en) {
-                    $media = new EventMedia;
-
-                    $media->event_id = $event->id;
-                    $media->link = $img_en;
-                    $media->type = 1;
-                    $media->save();
+                // Setup every image
+                foreach ($request->file('english_images') as $image) {
+                    $name = time() . '_' . $image->getClientOriginalName();
+                    $image->move('events/english', $name);
+                    $data_english[] = 'events/english/' . $name;
                 }
+
+                /** English Images **/
+                if (isset($data_english) && !empty($data_english)) {
+                    foreach ($data_english as $img_en) {
+                        $media = new EventMedia;
+
+                        $media->event_id = $event->id;
+                        $media->link = $img_en;
+                        $media->type = 1;
+                        $media->save();
+                    }
+                }
+
             }
+            
 
             /** Ticket price **/
             try {
@@ -295,6 +304,9 @@ class EventsController extends Controller
         $data['categories'] = EventCategory::all();
         $data['currencies'] = Currency::all();
         $data['ticket'] = EventTicket::where('event_id', $id)->first();
+
+        $data['arabic_images'] = $data['event']->media()->where('type', 1)->where('link', 'like', '%arabic%')->get();
+        $data['english_images'] = $data['event']->media()->where('type', 1)->where('link', 'like', '%english%')->get();
 
         return view('events::backend_event_edit', $data);
     }
@@ -624,25 +636,33 @@ class EventsController extends Controller
     public function big_events()
     {
         return view('events::big_events')
-            ->with('events', EventBackend::all());
+            ->with('events', EventBackend::all())->with('big_events', BigEvent::orderBy('sort_order', 'asc')->get());
 
     }
 
     public function bigevents_post(Request $request)
     {
         $ids = $request['big_events'];
-        // $big_events =   explode( ',', $ids );
-        BigEvent::truncate();
-        // $bigevent_delete->delete();
+        $ids_array = array();
+    
         foreach ($ids as $order => $id) {
+            $bigevent = BigEvent::where('event_id',$id)->first();
+            if($bigevent){
+            $bigevent->sort_order = $order + 1;
+            $bigevent->save();   
+            }else{
             $bigevent = new BigEvent;
             $bigevent->event_id = $id;
             $bigevent->sort_order = $order + 1;
             $bigevent->save();
-            //Notify all users about the big Event 
+            }
+            array_push($ids_array,$id);
+         
         }
-        return response()->json($ids);
-            // ->with('categories', EventCategory::all());
+        //delete old events which are not found in new selected ones
+        BigEvent::whereNotIn('event_id',$ids_array)->delete();
+        //return response()->json(lang('keywords.orderSaved'));
+         return response()->json('Big events order saved successfully!');
     }
 
     public function bigevents_select($value, Request $request)
@@ -655,11 +675,24 @@ class EventsController extends Controller
         }
         $options = array();
         foreach ($events as $k => $v) {
-            $options[$k] = '<option value="' . $v->id . '" onclick="saveSort()">' . $v->name . '</option>';
+            $options[$k] = '<option value="' . $v->id . '" onclick="saveSort()">' . $v->nameMultilang . '</option>';
         }
         //dd(response()->json($options));
         return response()->json($options);
             // ->with('categories', EventCategory::all());
+    }
+
+      public function bigevents_post_old(Request $request)
+    {
+        $ids = $request['big_events'];
+        BigEvent::truncate();
+        foreach ($ids as $order => $id) {
+            $bigevent = new BigEvent;
+            $bigevent->event_id = $id;
+            $bigevent->sort_order = $order + 1;
+            $bigevent->save();
+        }
+        return response()->json($ids);
     }
 
 

@@ -27,6 +27,7 @@
         'delete' => 'مسح',
         'pleaseSelect' => 'اختر احدى القيم',
         'actions'   => 'الإجرائات',
+        'address'   => 'العنوان',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
@@ -39,9 +40,13 @@
         'famous'    => 'تصنيفات الاحداث الشهيرة',
         'sponsors'  => 'الرعاه',
         'trends'    => 'التحكم في البحث المتداول',
+        'trendWord' => 'الكلمات البحثية',
         'notifications' => 'التنبيهات',
+        'famousAtt'     => 'الاحداث الشهيرة',
         'famousCat' => 'اسم التصنيف',
-        'sponsorLogo'   => 'الشعار',
+        'sponsorLogo'   => 'الشعار الراعي',
+        'sponsorName'   => 'اسم الراعي',
+        'shopndine'     => 'متجرك',
 
         // Edit fixed pages
         'EditAbout' => 'تعديل قسم عن الشركة',
@@ -94,6 +99,7 @@
         // Events
         'events'    => 'الاحداث',
         'addfrombackend' => 'المضاف من لوحة التحكم',
+        'editfrombackend'=> 'تعديل المضاف من لوحة التحكم',
         'info'      => 'المعلومات',
         'posts'     => 'المنشورات',
         'tickets'   => 'التذاكر',
@@ -184,7 +190,10 @@
         'offers'    => 'العروض والصفقات',
         'placeName' => 'اسم المكان',
         'bigevents' => 'أهم الأحداث',
-        'choosecategory' => 'إختر تصنيف'
+        'choosecategory' => 'إختر تصنيف'  ,
+       // big events
+        'orderSaved'    => 'تم حفظ الترتيب بنجاح'
     ];
+
 
 ?>
