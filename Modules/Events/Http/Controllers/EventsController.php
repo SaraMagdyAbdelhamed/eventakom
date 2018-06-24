@@ -113,10 +113,10 @@ class EventsController extends Controller
             'youtube_en_1' => 'required|',
             'youtube_ar_2' => 'required|',
             'youtube_en_2' => 'required|',
-            'arabic_images'         => 'max:5',
-            'arabic_images.*'       => 'max:5',
-            'english_images'        => 'max:5',
-            'english_images.*'      => 'max:5'
+            // 'arabic_images'         => 'max:5',
+            // 'arabic_images.*'       => 'max:5',
+            // 'english_images'        => 'max:5',
+            // 'english_images.*'      => 'max:5'
         ]);
 
 

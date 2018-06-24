@@ -49,10 +49,13 @@
           </div>
           <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
             <select class="select_big_event" id="multiselect_to" name="to[]" size="8" multiple="multiple">
+            @if ( !empty($big_events) )
              @foreach($big_events as $bevent)
+              @if ( isset( $bevent) && !empty($bevent) && !empty($bevent->event))
               <option value="{{$bevent->event_id}}">{{$bevent->event->name}}</option>
-
+              @endif
               @endforeach 
+              @endif
             </select>
             <div class="row">
               <div class="col-sm-6">
@@ -65,7 +68,7 @@
           </div>
         </div>
       </div>
-        <button class="remodal-confirm col-sm-4" id="submit" type="submit">@lang('keywords.submit')</button>
+        <button class="remodal-confirm col-sm-4" id="submitOrder" type="submit">@lang('keywords.submit')</button>
       <div class="clearfix"></div>
 
     </div>
@@ -147,7 +150,7 @@ var _token = '{{csrf_token()}}';
       }
     });
   }
- else{alert('you did not set new Big Events order!');}
+ else{validate();}
 }
 
 $('#multiselect_rightSelected').click(validate);
@@ -158,6 +161,6 @@ document.getElementById('multiselect').ondblclick = function(){
     validate();
 
 };
-$('#submit').click(saveSort);
+$('#submitOrder').click(saveSort);
    </script>
 @endsection @endsection

@@ -98,6 +98,7 @@
         // Events
         'events'    => 'Events',
         'addfrombackend' => 'Added From Backend',
+        'editfrombackend'=> 'Edit From Backend',
         'info'      => 'Info',
         'posts'     => 'Posts',
         'tickets'   => 'Tickets',
