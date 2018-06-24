@@ -69,33 +69,21 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><span class="cellcontent"></span></td>
-                  <td><span class="cellcontent">5</span></td>
-                  <td><span class="cellcontent"><img src = "https://source.unsplash.com/random" , class = " img-in-table"></span></td>
-                  <td><span class="cellcontent">El batraa jordan</span></td>
-                  <td><span class="cellcontent">0123456789</span></td>
-                  <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
-                  <td><span class="cellcontent"><a href= #popupModal_1 ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= shop_and_dine_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                @foreach($shops as $key=>$value)
+                <tr data-shop-id={{$value['id']}}>
+                    <td><span class="cellcontent"></span></td>
+                    <td><span class="cellcontent">{{$value['id']}}</span></td>
+                    <td><span class="cellcontent"><img src = "{{$value['photo']}}" , class = " img-in-table"></span></td>
+                    <td><span class="cellcontent">{{$value['name']}}</span></td>
+                    <td><span class="cellcontent">{{$value['phone']}}</span></td>
+                    @if($value['is_active'])
+                    <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i></i></span></td>
+                    @else
+                    <td><span class="cellcontent"><i class = "fa icon-in-table-false fa-times"></i></span></td>
+                    @endif
+                    <td><span class="cellcontent"><a href= "#shop_{{$value['id']}}" ,  class= "action-btn bgcolor--main color--white " ><i class = "fa  fa-eye"></i></a><a href= "{{route('edit_shop',$value['id'])}}" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a   class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
                 </tr>
-                <tr>
-                  <td><span class="cellcontent"></span></td>
-                  <td><span class="cellcontent">5</span></td>
-                  <td><span class="cellcontent"><img src = "https://source.unsplash.com/random" , class = " img-in-table"></span></td>
-                  <td><span class="cellcontent">El batraa jordan</span></td>
-                  <td><span class="cellcontent">0123456789</span></td>
-                  <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
-                  <td><span class="cellcontent"><a href= #popupModal_1 ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= shop_and_dine_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
-                </tr>
-                <tr>
-                  <td><span class="cellcontent"></span></td>
-                  <td><span class="cellcontent">5</span></td>
-                  <td><span class="cellcontent"><img src = "https://source.unsplash.com/random" , class = " img-in-table"></span></td>
-                  <td><span class="cellcontent">El batraa jordan</span></td>
-                  <td><span class="cellcontent">0123456789</span></td>
-                  <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
-                  <td><span class="cellcontent"><a href= #popupModal_1 ,  class= "action-btn bgcolor--main color--white "><i class = "fa  fa-eye"></i></a><a href= shop_and_dine_edit.html ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
-                </tr>
+                @endforeach
               </tbody>
             </table>
           </form>
