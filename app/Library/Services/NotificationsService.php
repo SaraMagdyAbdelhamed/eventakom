@@ -10,7 +10,7 @@ class NotificationsService
 
 	
     
-    public function save_notification($message, $type,$entity_id, $item_id,$user_id){
+    public function save_notification($message,$type,$entity_id, $item_id,$user_id){
         $notification = new Notification();
         $notification->msg = $message['en'];
         $notification->msg_ar = $message['ar'];
