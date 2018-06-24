@@ -8,7 +8,7 @@ use App\Entity;
 use App\Helpers\Helper;
 class EventMobile extends Model
 {
-    protected $id = 'id';
+    protected $primaryKey = 'id';
     protected $table = 'events';
     protected $fillable = ['name', 'description', 'website', 'mobile', 'email', 'code', 'address', 'longtuide', 'latitude', 'venue', 'start_datetime', 'end_datetime', 'suggest_big_event', 'gender_id', 'age_range_id', 'is_paid', 'use_ticketing_system', 'is_active', 'event_status_id', 'rejection_reason'];
     public $timestamp = true;
@@ -102,6 +102,25 @@ class EventMobile extends Model
       $result = Helper::localization('events', $field, $item_id, 2);
       return $result;
     }
+
+    public function getEnglishNameAttribute(){
+
+      return $this->name;
+    
+    }
+
+     public function getEnglishDescriptionAttribute(){
+
+      return $this->description;
+    
+    }
+
+     public function getEnglishVenueAttribute(){
+
+      return $this->venue;
+    
+    }
+
     public static function arabicHashtags($item_id){
 
       $result = Helper::multi_localization(17, 'hashtag', $item_id, 2);

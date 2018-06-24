@@ -40,9 +40,11 @@
         'famous'    => 'تصنيفات الاحداث الشهيرة',
         'sponsors'  => 'الرعاه',
         'trends'    => 'التحكم في البحث المتداول',
+        'trendWord' => 'الكلمات البحثية',
         'notifications' => 'التنبيهات',
         'famousCat' => 'اسم التصنيف',
-        'sponsorLogo'   => 'الشعار',
+        'sponsorLogo'   => 'الشعار الراعي',
+        'sponsorName'   => 'اسم الراعي',
 
         // Edit fixed pages
         'EditAbout' => 'تعديل قسم عن الشركة',
@@ -185,7 +187,10 @@
         'offers'    => 'العروض والصفقات',
         'placeName' => 'اسم المكان',
         'bigevents' => 'أهم الأحداث',
-        'choosecategory' => 'إختر تصنيف'
+        'choosecategory' => 'إختر تصنيف'  ,
+       // big events
+        'orderSaved'    => 'تم حفظ الترتيب بنجاح'
     ];
+
 
 ?>

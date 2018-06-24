@@ -29,9 +29,9 @@
                 <tr class="bgcolor--gray_mm color--gray_d">
                   <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
                   <th><span class="cellcontent">@lang('keywords.serialNo') </span></th>
-                  <th><span class="cellcontent">Sponsors logo</span></th>
-                  <th><span class="cellcontent">Sponsors name</span></th>
-                  <th><span class="cellcontent">Actions</span></th>
+                  <th><span class="cellcontent">@lang('keywords.sponsorLogo')</span></th>
+                  <th><span class="cellcontent">@lang('keywords.sponsorName')</span></th>
+                  <th><span class="cellcontent">@lang('keywords.Actions')</span></th>
                 </tr>
               </thead>
               <tbody>

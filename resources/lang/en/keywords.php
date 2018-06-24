@@ -40,9 +40,11 @@
         'famous'    => 'Famous attractions categories',
         'sponsors'  => 'sponsors',
         'trends'    => 'Trending searches control',
+        'trendWords' => 'Trending Search Words',
         'notifications' => 'Notification distance',
         'famousCat' => 'Famous attractions category',
         'sponsorLogo'   => 'Sponsor Logo',
+        'sponsorName'   => 'Sponosr Name',
 
 
         'EditAbout' => 'Edit About Us',
@@ -184,7 +186,8 @@
         'Number of users 15-18 years'=>'Number of users 15-18 years',
         'Number of users 18-25 years'=>'Number of users 18-25 years',
         'Number of users more than 25 years'=>'Number of users more than 25 years',
-        
+        // big events
+        'orderSaved'    => 'Big events order saved successfully'
 		
     ];
 
