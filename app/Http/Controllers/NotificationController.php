@@ -24,16 +24,17 @@ class NotificationController extends Controller
     	// dd($request);
     	if(!isset($request['gender_m']) && !isset($request['gender_f']) && !isset($request['age']) && !isset($request['category']))
     	{
-    		$notification = Notification::create([
-    			"msg"=>$request['msg'],
-    			"msg_ar"=>$request['msg_ar'],
-    			"notification_type_id"=>1,
-    			"is_sent"=>0,
-    			"is_read"=>0,
-    			"user_id"=>\Auth::user()->id
-    		]);
+    		
     		$users= Users::all();
     		foreach ($users as $key => $value) {
+                $notification = Notification::create([
+                "msg"=>$request['msg'],
+                "msg_ar"=>$request['msg_ar'],
+                "notification_type_id"=>1,
+                "is_sent"=>0,
+                "is_read"=>0,
+                "user_id"=>$value['id']
+            ]);
     			NotificationPush::create([
     				"notification_id"=>$notification->id,
     				"user_id"=>$value['id'],
@@ -92,16 +93,24 @@ class NotificationController extends Controller
     		})->get();
     		
     		// dd($users);
-    		$notification = Notification::create([
-    			"msg"=>$request['msg'],
-    			"msg_ar"=>$request['msg_ar'],
-    			"notification_type_id"=>1,
-    			"is_sent"=>0,
-    			"is_read"=>0,
-    			"user_id"=>\Auth::user()->id
-    		]);
+    		// $notification = Notification::create([
+    		// 	"msg"=>$request['msg'],
+    		// 	"msg_ar"=>$request['msg_ar'],
+    		// 	"notification_type_id"=>1,
+    		// 	"is_sent"=>0,
+    		// 	"is_read"=>0,
+    		// 	"user_id"=>\Auth::user()->id
+    		// ]);
     		// $users= Users::all();
     		foreach ($users as $key => $value) {
+                 $notification = Notification::create([
+                "msg"=>$request['msg'],
+                "msg_ar"=>$request['msg_ar'],
+                "notification_type_id"=>1,
+                "is_sent"=>0,
+                "is_read"=>0,
+                "user_id"=>$value['id']
+            ]);
     			NotificationPush::create([
     				"notification_id"=>$notification->id,
     				"user_id"=>$value['id'],

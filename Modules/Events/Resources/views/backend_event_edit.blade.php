@@ -32,7 +32,7 @@
         <div class="col-xs-12">
           <div class="text-xs-center">         
             <div class="text-wraper">
-              <h4 class="cover-inside-title">Events</h4><i class="fa fa-chevron-circle-right"></i>
+              <h4 class="cover-inside-title">@lang('keywords.events')</h4><i class="fa fa-chevron-circle-right"></i>
               <h4 class="cover-inside-title sub-lvl-2">Edit a backend event</h4>
             </div>
           </div>

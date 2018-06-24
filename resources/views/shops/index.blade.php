@@ -3,53 +3,21 @@
 
 @section('content')
 
-<!-- =============== Custom Content ===========-==========-->
-<div class="row">
-  <div class="col-xs-12">
-    <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="text-xs-center">         
-            <div class="text-wraper">
-              <h3 class="cover-inside-title  ">Shop and dine</h3>
-            </div>
-          </div>
-        </div>
-        <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{route('add_shop')}}">Add new Shop and dine</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-xs-12">
-    <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-      <div class="full-table">
-       {{--  <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>filters</a></div> --}}
-         <div class="bottomActions__btns"><a class="master-btn btn-warning-cancel-all" >Delete selected</a><a class="master-btn" href="{{route('add_shop')}}">Add new Shop and dine</a>
-        </div>
-        {{--<div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-          <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-          <div>
-            <div class="row">
-              <div class="col-sm-6 col-xs-12">
-                <div class="master_field">
-                  <label class="master_label" for="filter_cat">place categories </label>
-                  <select class="master_input select2" id="filter_cat" multiple="multiple" data-placeholder="place categories" style="width:100%;" ,>
-                    <option>historical</option>
-                    <option>meditations</option>
-                    <option>Etc</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-sm-6 col-xs-12">
-                <div class="master_field">
-                  <label class="master_label">place status</label>
-                  <div class="funkyradio">
-                    <input type="checkbox" name="radio" id="event_status_2">
-                    <label for="event_status_2">Active</label>
-                  </div>
-                  <div class="funkyradio">
-                    <input type="checkbox" name="radio" id="event_status_3">
-                    <label for="event_status_3">inActive</label>
+              <!-- =============== Custom Content ===========-==========-->
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  {{asset( 'img/covers/dummy2.jpg ' )}}  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <div class="text-xs-center">         
+                          <div class="text-wraper">
+                            <h3 class="cover-inside-title  ">Shop and dine</h3>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{route('add_shop')}}">Add new Shop and dine</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
