@@ -83,9 +83,19 @@
                 <input type="hidden" name="event_id" value="{{$event->id}}">
                 <input type="hidden" name="lat" id="lat" >
                 <input type="hidden" name="lng" id="lng" >
-                <input type="hidden" name="address" id="address" value="">
+                <!-- <input type="hidden" name="address" id="address" value=""> -->
               </div>
             </div>
+
+             <div class="col-xs-6">
+                <div class="master_field">
+                  <label class="master_label" for="venue">@lang('keywords.address')</label>
+                  <input class="master_input" type="text" readonly placeholder="ex:CFC" Required id="address" name="address" value="{{$event->address}}">
+                  @if ($errors->has('address'))
+                    <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
+                  @endif
+                </div>
+              </div>
 
 
             {{-- English Venu --}}

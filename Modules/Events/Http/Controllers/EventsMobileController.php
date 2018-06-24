@@ -335,7 +335,7 @@ class EventsMobileController extends Controller
             $event->email       = $request->email;
             $event->code        = $request->code_number;
             $event->mobile      = $request->mobile_number;
-            $event->created_by  = Auth::id();
+            // $event->created_by  = Auth::id();
             // TODO: youtube links & images
 
             $event->Update();
