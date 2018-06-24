@@ -1,23 +1,23 @@
 @extends('layouts.app')
 @section('content')
-              <!-- =============== Custom Content ===========-==========-->
-              <div class="row">
-                <div class="col-xs-12">
-                  <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  {{asset( 'img/covers/dummy2.jpg ' )}}  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
-                    <div class="row">
-                      <div class="col-xs-12">
-                        <div class="text-xs-center">         
-                          <div class="text-wraper">
-                            <h3 class="cover-inside-title  ">Shop and dine</h3>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{route('add_shop')}}">Add new Shop and dine</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+<!-- =============== Custom Content ===========-==========-->
+<div class="row">
+  <div class="col-xs-12">
+    <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="text-xs-center">         
+            <div class="text-wraper">
+              <h3 class="cover-inside-title  ">Shop and dine</h3>
+            </div>
+          </div>
+        </div>
+        <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{route('add_shop')}}">Add new Shop and dine</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
            
 
 @endsection
