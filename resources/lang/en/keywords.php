@@ -281,7 +281,11 @@
         'delete_cancel'=>'Delete Canceled',
         'delete_cancel_message'=>'Informations still exist',
         'wrong'=>'Wrong',
-        'wrong_message'=>'Please Choose Place'
+        'wrong_message'=>'Please Choose Place',
+        'branch_name'=>'Branch Name ',
+        'branch_address'=>'Branch Address',
+        'branch_start'=>'Start Time',
+        'branch_end'=>'مEnd Time'
 		
     ];
 

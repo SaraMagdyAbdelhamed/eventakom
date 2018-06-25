@@ -284,7 +284,11 @@
         'delete_cancel'=>'تم الالغاء',
         'delete_cancel_message'=>'المعلومات مازالت موجوده ',
         'wrong'=>'خطأ',
-        'wrong_message'=>'من فضلك اختر متجر '
+        'wrong_message'=>'من فضلك اختر متجر ',
+        'branch_name'=>'اسم الفرع ',
+        'branch_address'=>'عنوان الفرع ',
+        'branch_start'=>'بدأ عمل الفرع ',
+        'branch_end'=>'معاد اغلاق الفرع '
 
 
 	
