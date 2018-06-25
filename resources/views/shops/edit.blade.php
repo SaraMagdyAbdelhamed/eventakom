@@ -309,7 +309,7 @@
                                 <div id="fileList2"></div>
                                 <div class="form-group">
                                   <input class="inputfile inputfile-1" id="file-2" type="file" name="images_ar[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList2()">
-                                  <label for="file-2"><span>Choose a file</span></label>
+                                  <label for="file-2"><span> Choose a file</span></label>
                                 </div>
                               </div>
                             </div>
