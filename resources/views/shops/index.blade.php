@@ -128,7 +128,7 @@
                         <th><span class="cellcontent">@lang('keywords.opening_days')</span></th>
                         <td><span class="cellcontent">
                           @foreach($value['shop_day'] as $day)
-                          {{$day['day_id']['name']}},
+                          {{$day['name']}},
                           @endforeach
                         </span></td>
                       </tr>
@@ -153,7 +153,7 @@
                         <td><span class="cellcontent">12:00AM</span></td>
                       </tr> --}}
                       <tr>
-                        <th><span class="cellcontent">status</span></th>
+                        <th><span class="cellcontent">@lang('keywords.shop_status')</span></th>
                         @if($value['is_active'])
                         <td><span class="cellcontent">&lt;i class = &quot;fa icon-in-table-true fa-check&quot;&gt;&lt;/i&gt;</span></td>
                         @else
@@ -169,7 +169,7 @@
               <li class="tab__content_item" id="media_{{$value['id']}}-content">
                 <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                   <div class="col-xs-12">
-                    <h5 class="text-left">images</h5>
+                    <h5 class="text-left">@lang('keywords.images')</h5>
                   </div>
                   <div class="col-xs-12">
                     <div class="slideperview" id="slider--3">
@@ -194,7 +194,7 @@
                   <div class="clearfix"></div>
                 </div>
                 <div class="col-xs-12">
-                  <h5 class="text-left">video</h5>
+                  <h5 class="text-left">@lang('keywords.videos')</h5>
                 </div>
                 @foreach($value['shop_media'] as $video)          
                  @if($image['type'] ==2)
@@ -209,7 +209,7 @@
               </li>
             </ul>
           </div>
-          <button class="remodal-confirm" data-remodal-action="confirm">Close</button>
+          <button class="remodal-confirm" data-remodal-action="confirm">@lang('keywords.cancel')</button>
         </form>
       </div>
     </div>
@@ -228,12 +228,13 @@
            var shop_id = $(this).closest('tr').attr('data-shop-id');
           var _token = '{{csrf_token()}}';
           swal({
-            title: "Are you sure?",
-            text: "You will not be able to recover this imaginary file!",
+            title: "@lang('keywords.question')",
+            text: "@lang('keywords.information_message')",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#281160',
-            confirmButtonText: 'Yes, delete it!',
+            confirmButtonText: '@lang('keywords.confirm_delete')',
+            cancelButtonText: "@lang('keywords.cancel')",
             closeOnConfirm: false
           },
            function(isConfirm){
@@ -247,9 +248,9 @@
             $('tr[data-shop-id='+shop_id+']').fadeOut();
           }
         });
-         swal("تم الحذف!", "تم الحذف بنجاح", "success");
+         swal("@lang('keywords.delete')", "@lang('keywords.delete_message')", "success");
        } else {
-        swal("تم الإلغاء", "المعلومات مازالت موجودة :)", "error");
+        swal("@lang('keywords.delete_cancel')", "@lang('keywords.delete_cancel_message') :)", "error");
       }
     });
           // function(){
@@ -263,20 +264,20 @@
       }).get();
       if(selectedIds.length == 0 )
       {
-        swal("خطأ", "من فضلك اختر  متجر :)", "error");
+        swal("@lang('keywords.wrong')", "@lang('keywords.wrong_message'):)", "error");
       }
       else
       {
         // alert(selectedIds);
       var _token = '{{csrf_token()}}';
       swal({
-        title: "هل أنت متأكد؟",
-        text: "لن تستطيع إسترجاع هذه المعلومة لاحقا",
+        title: "@lang('keywords.question')",
+        text: "@lang('keywords.information_message')",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: '#DD6B55',
-        confirmButtonText: 'نعم متأكد!',
-        cancelButtonText: "إلغاء",
+        confirmButtonText: '@lang('keywords.confirm_delete')',
+        cancelButtonText: "@lang('keywords.cancel')",
         closeOnConfirm: false,
         closeOnCancel: false
       },
@@ -292,9 +293,9 @@
             });
           }
         });
-         swal("تم الحذف!", "تم الحذف بنجاح", "success");
+         swal("@lang('keywords.delete')", "@lang('keywords.delete_message')", "success");
        } else {
-        swal("تم الإلغاء", "المعلومات مازالت موجودة :)", "error");
+        swal("@lang('keywords.delete_cancel')", "@lang('keywords.delete_cancel_message') :)", "error");
       }
     });
     }

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
 use App\Helpers\Helper;
 use App\ShopBranchTime;
+use App\Day;
 class ShopController extends Controller
 {
     public function index()
@@ -22,8 +23,14 @@ class ShopController extends Controller
                 if($value1['type'] == 1)
                $value1['link']=url('/').'\/'.$value1['link'];
             }
+            // foreach ($value['shop_day'] as $key1 => $value1) {
+            //    $day=Day::find($value1['day_id']);
+            //    // dd($day);
+            //    $value1['name']=$day->name;
+            // }
         }
-         // dd($data['shops']);
+
+          // dd($data['shops']);
     	
     	return view('shops.index',$data);
     }
