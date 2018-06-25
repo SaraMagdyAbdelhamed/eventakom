@@ -19,6 +19,6 @@ class ShopDay extends Model
 
     public function day()
     {
-    	return $this->belongsTo('App\Day','day_id');
+    	return $this->hasMany('App\Day','day_id');
     }
 }

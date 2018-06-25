@@ -270,7 +270,22 @@
         'gender'=>'Gender ',
         
         'male'=>'Male ',
-        'female'=>'Female'
+        'female'=>'Female',
+        'images'=>'Images',
+        'videos'=>'Videos',
+        'confirm_delete'=>'Yes,delete it ',
+        'question'=>'Are You Sure? ',
+        'information_message'=>'You will not be able to recover this imaginary file!',
+        'delete'=>'Delete Done',
+        'delete_message'=>'Deleted Done successfully ',
+        'delete_cancel'=>'Delete Canceled',
+        'delete_cancel_message'=>'Informations still exist',
+        'wrong'=>'Wrong',
+        'wrong_message'=>'Please Choose Place',
+        'branch_name'=>'Branch Name ',
+        'branch_address'=>'Branch Address',
+        'branch_start'=>'Start Time',
+        'branch_end'=>'End Time'
 		
     ];
 

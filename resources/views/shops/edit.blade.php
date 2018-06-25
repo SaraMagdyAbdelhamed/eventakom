@@ -170,25 +170,25 @@
 
                             <div class="col-sm-2 col-xs-4">
                               <div class="master_field">
-                                <label class="master_label" for="branches_1">branch 1 name</label>
+                                <label class="master_label" for="branches_1">@lang('keywords.branch_name') {{$i}} </label>
                                 <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1" name="branch_name[{{$i}}]" value="{{$branch['branch']}}"><span class="master_message color--fadegreen">message</span>
                               </div>
                             </div>
                             <div class="col-sm-3 col-xs-4">
                               <div class="master_field">
-                                <label class="master_label" for="branches_1">branch 1 name in arabic</label>
+                                <label class="master_label" for="branches_1">@lang('keywords.branch_name'){{$i}} @lang('keywords.in_ar')</label>
                                 <input class="master_input" type="text" placeholder="branch 1 name"  id="branches_1" name="branch_name_ar[{{$i}}]" value="{{Helper::localization('shop_branches', 'branch', $branch['id'], 2)}}"><span class="master_message color--fadegreen">message</span>
                               </div>
                             </div>
                             <div class="col-sm-3 col-xs-4">
                               <div class="master_field">
-                                <label class="master_label" for="branches_1">branch 1 address</label>
+                                <label class="master_label" for="branches_1">@lang('keywords.branch_address') {{$i}}</label>
                                 <input class="master_input" type="text" placeholder="branch 1 address" Required id="branches_1" name="branch_address[{{$i}}]" value="{{$branch['address']}}"><span class="master_message color--fadegreen">message</span>
                               </div>
                             </div>
                             <div class="col-sm-2 col-xs-6">
                               <div class="master_field">
-                                <label class="master_label" for="start_time">start date time</label>
+                                <label class="master_label" for="start_time">@lang('keywords.branch_start') {{$i}}</label>
                                 <div class="bootstrap-timepicker">
                                   <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time"name="branch_start[{{$i}}]">
                                 </div><span class="master_message inherit">message content</span>
@@ -196,7 +196,7 @@
                             </div>
                             <div class="col-sm-2 col-xs-6">
                               <div class="master_field">
-                                <label class="master_label" for="end_time">end date time</label>
+                                <label class="master_label" for="end_time">@lang('keywords.branch_end') {{$i}}</label>
                                 <div class="bootstrap-timepicker">
                                   <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="branch_end[{{$i}}]">
                                 </div><span class="master_message inherit">message content</span>
@@ -227,7 +227,7 @@
                             <div class="master_field">
                               <label class="master_label" for="active_place">@lang('keywords.shop_active')</label>
                               @if($shop->is_active)
-                              <input class="make-switch" type="checkbox" checked data-on-text="active" data-off-text="inactive" name="is_active">
+                              <input  type="checkbox" checked  name="is_active">
                               @else
                               <input class="make-switch" type="checkbox"  data-on-text="active" data-off-text="inactive" name="is_active">
                               @endif
@@ -309,7 +309,7 @@
                                 <div id="fileList2"></div>
                                 <div class="form-group">
                                   <input class="inputfile inputfile-1" id="file-2" type="file" name="images_ar[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList2()">
-                                  <label for="file-2"><span>Choose a file</span></label>
+                                  <label for="file-2"><span> Choose a file</span></label>
                                 </div>
                               </div>
                             </div>
@@ -580,7 +580,7 @@
       $('.add-more-branch').on('click' , function(){
        var currentCount =$('.branch-container').length;
       var nextCount = currentCount +1;
-       $('#mbranch').append("<div class='branch-container'>  <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name in arabic</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name'  id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" address</label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_address_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>start date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>end date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" long</label><input class='master_input' type='text' placeholder='branch "+nextCount+" long'  id='branch_long_"+nextCount+"' name='branch_long["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" lat</label><input class='master_input' type='text' placeholder='branch "+nextCount+" lat'  id='branch_lat_"+nextCount+"' name='branch_lat["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div></div> ");
+       $('#mbranch').append("<div class='branch-container'>  <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+"@lang('keywords.in_ar')</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name'  id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_address')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_address_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>@lang('keywords.branch_start') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>@lang('keywords.branch_end') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" long</label><input class='master_input' type='text' placeholder='branch "+nextCount+" long'  id='branch_long_"+nextCount+"' name='branch_long["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" lat</label><input class='master_input' type='text' placeholder='branch "+nextCount+" lat'  id='branch_lat_"+nextCount+"' name='branch_lat["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div></div> ");
       
 
       assignAutoCompl("branch_address_"+nextCount,"#branch_long_"+nextCount,"#branch_lat_"+nextCount);
