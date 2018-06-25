@@ -28,19 +28,19 @@
         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="full-table">
             <div class="bottomActions__btns">
-                <a class="master-btn" href="#" id="deleteSelected">Delete selected</a>
+                <a class="master-btn" href="#" id="deleteSelected">@lang('keywords.deleteSelected')</a>
             </div>
             <form id="dataTableTriggerId_001_form">
             <table class="data-table-trigger table-master" id="dataTableTriggerId_001">
                 <thead>
                 <tr class="bgcolor--gray_mm color--gray_d">
                     <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
-                    <th><span class="cellcontent">serial No</span></th>
-                    <th><span class="cellcontent">img</span></th>
-                    <th><span class="cellcontent">Title</span></th>
-                    <th><span class="cellcontent">Description</span></th>
-                    <th><span class="cellcontent">status</span></th>
-                    <th><span class="cellcontent">actions</span></th>
+                    <th><span class="cellcontent">@lang('keywords.serialNo')</span></th>
+                    <th><span class="cellcontent">@lang('keywords.image')</span></th>
+                    <th><span class="cellcontent">@lang('keywords.title')</span></th>
+                    <th><span class="cellcontent">@lang('keywords.description')</span></th>
+                    <th><span class="cellcontent">@lang('keywords.status')</span></th>
+                    <th><span class="cellcontent">@lang('keywords.actions')</span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -328,7 +328,7 @@
                     {{-- Checkbox --}}
                     <div class="col-sm-12 col-xs-12">
                         <div class="master_field">
-                            <label class="master_label" for="Offers_and_deals_status">Offers and deals status</label>
+                            <label class="master_label" for="Offers_and_deals_status">@lang('keywords.Active')</label>
                             <input class="make-switch" type="checkbox" name="offer_status" value="1" checked data-on-text="Active" data-off-text="inActive">
                         </div>
                     </div>
@@ -336,8 +336,8 @@
 
                     {{-- Submit & Cancel Buttons --}}
                     <div class="col-xs-12">
-                        <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                        <button class="remodal-confirm" type="submit" id="addSubmit">Save</button>
+                        <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+                        <button class="remodal-confirm" type="submit" id="addSubmit">@lang('keywords.save')</button>
                     </div>
                     {{-- End Submit & Cancel Buttons --}}
 
@@ -450,7 +450,7 @@
                     {{-- Checkbox --}}
                     <div class="col-sm-12 col-xs-12">
                         <div class="master_field">
-                            <label class="master_label" for="Offers_and_deals_status">Offers and deals status</label>
+                            <label class="master_label" for="Offers_and_deals_status">@lang('keywords.Active')</label>
                             <input class="make-switch" type="checkbox" name="offer_status_1" checked data-on-text="Active" data-off-text="inActive">
                         </div>
                     </div>

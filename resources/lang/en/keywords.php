@@ -13,7 +13,9 @@
         'not'               => '',
         'addNew'            => 'Add new',
         'edit'              => 'Edit',
+        'image'             => 'Image',
         'noImage'           => 'No image provided',
+        'title'             => 'Title',
         'edit'              => 'Edit',
         'distance'          => 'Distance',
         'unit'              => 'Unit',
@@ -28,6 +30,13 @@
         'delete'    => 'Delete',
         'pleaseSelect'  => 'Please Select',
         'actions'   => 'Actions',
+        'saturday'  => 'Saturday',
+        'sunday'    => 'Sunday',
+        'monday'    => 'Monday',
+        'tuesday'   => 'Tuesday',
+        'wednesday' => 'Wedensday',
+        'thursday'  => 'Thursday',
+        'friday'    => 'Friday',
 
         // fixed pages
         'registered'=> 'Registered',
@@ -98,6 +107,7 @@
         // Events
         'events'    => 'Events',
         'addfrombackend' => 'Added From Backend',
+        'addNewBackend'  => 'Add new Backend event',
         'editfrombackend'=> 'Edit From Backend',
         'info'      => 'Info',
         'posts'     => 'Posts',
@@ -108,6 +118,11 @@
         'end'       => 'Ends',
         'addby'     => 'Add By',
         'category'  => 'Category',
+        'infoEn'   => 'English Info',
+        'infoAr'    => 'Arabic Info',
+        'tickets'   => 'Tickets',
+        'contactInfo'   => 'Contact Info',
+        'media'     => 'Media',
 		
         // Events Mobile
         'addfromMobile' => 'Added from mobile application',
@@ -139,9 +154,10 @@
         'Price'=>'Price',
         'This event is free no tickets'=>'This event is free no tickets',
         'Info in En'=>'Info in En',
-        'eventDescription'=>'Description',
+        'description'=>'Description',
         'Hashtags'=>'Hashtags',
         'Please select a gender'=>'Please select a gender',
+        'Please select age range' => 'Please select age range',
         'Allowed Age Range'=>'Allowed Age Range',
         'Please Select Age Range'=>'Please Select Age Rang',
         'start date time'=>'start date time',
@@ -173,12 +189,19 @@
         'prev'=>'Prev',
         'address'   => 'Address',
         
-        // Offers & Deals
+        // Offers & Deals AND Famous Attractions
         'offers'    => 'Offers and Deals',
         'placeName' => 'Place Name',
-        'rejected'=>'Rejected',
+        'placeAddress'      => 'Place Address',
+        'placePhone'        => 'Place Phone',
+        'placeCategories'   => 'Place Categories',
+        'status'    => 'Status',
+        'rejected'  =>'Rejected',
         'bigevents' => 'Big Events',
-        'choosecategory' => 'Choose a category',
+        'choosecategory'    => 'Choose a category',
+        'isThisPlaceActive' => 'Is this place active?',
+        'openday'   => 'Opening Days',
+        'otherInfo' => 'Other Info',
 		
         //Statistics
         'statistics'=>'Statistics',

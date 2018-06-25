@@ -82,9 +82,9 @@ class EventsController extends Controller
         $this->validate($request, [
             'english_event_name' => 'required|min:2|max:100',
             'english_description' => 'required|min:2|max:250',
-            'lat' => 'required|min:2|max:50',
+            'lat' => 'required',
             'lng' => 'required',
-            'english_venu' => 'required',
+            'english_venu' => 'required|min:2|max:50',
             'english_hashtags' => 'required',
             'gender' => 'required',
             'age_range' => 'required',
@@ -94,34 +94,31 @@ class EventsController extends Controller
             'end_time' => 'required',
             'categories' => 'required',
 
-            'arabic_event_name' => 'required|min:2|max:100',
-            'arabic_description' => 'required|min:2|max:250',
-            'arabic_venu' => 'required|',
-            'arabic_hashtags' => 'required|',
+            'arabic_event_name' => ($request->arabic_event_name ? 'min:2|max:100' : ''),
+            'arabic_description' => ($request->arabic_description ? 'sometimes|min:2|max:250' : ''),
+            // 'arabic_venu' => 'required|',
+            // 'arabic_hashtags' => 'required|',
 
-            'is_paid' => 'required',
-            'price' => 'numeric',
-            'currency' => 'numeric',
-            'number_of_tickets' => 'numeric',
+            'is_paid'   => 'required',
+            'price'     => ($request->price ? 'sometimes|numeric' : ''),
+            'currency'  => ($request->currency ? 'sometimes|numeric' : ''),
+            'number_of_tickets' => ($request->number_of_tickets ? 'numeric' : ''),
 
             'website' => 'required',
             'email' => 'required',
             'code_number' => 'required',
             'mobile_number' => 'required',
 
-            'youtube_ar_1' => 'required|',
-            'youtube_en_1' => 'required|',
-            'youtube_ar_2' => 'required|',
-            'youtube_en_2' => 'required|',
+            // 'youtube_ar_1' => 'required|',
+            // 'youtube_en_1' => 'required|',
+            // 'youtube_ar_2' => 'required|',
+            // 'youtube_en_2' => 'required|',
             // 'arabic_images'         => 'max:5',
             // 'arabic_images.*'       => 'max:5',
             // 'english_images'        => 'max:5',
             // 'english_images.*'      => 'max:5'
         ]);
 
-
-        // Explode english hashtags
-        $hashtags = explode(',', $request->english_hashtags);
 
         // Insert Event in events table
         try {
@@ -157,6 +154,9 @@ class EventsController extends Controller
             $event->save();
 
             /**  INSERT English Hashtags **/
+            // Explode english hashtags
+            $hashtags = explode(',', $request->english_hashtags);
+
             // search if the hashtag is already exists, if exists get its ID, if not exists insert the hashtag into `hash_tags` table and get its id.
             for ($i = 0; $i < count($hashtags); $i++) {
                 // insert hashtag into `hash_tag` table only if it isn't exists.
@@ -179,10 +179,10 @@ class EventsController extends Controller
 
             /**  Youtube links  **/
             $event->media()->createMany([
-                ['link' => $request->youtube_en_1, 'type' => 2],
-                ['link' => $request->youtube_en_2, 'type' => 2],
-                ['link' => $request->youtube_ar_1, 'type' => 2],
-                ['link' => $request->youtube_ar_2, 'type' => 2],
+                ['link' => ($request->youtube_en_1 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_en_2 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_1 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_2 ? : ''), 'type' => 2],
             ]);
 
             // Check if there is any images or files and move them to public/events
@@ -233,21 +233,31 @@ class EventsController extends Controller
 
             }
             
+            if( !$request->hasfile('arabic_images') || !$request->hasfile('english_images') ) {
+                $default = new EventMedia;
+                $default->event_id = $event->id;
+                $default->link = 'events/default/events.png';
+                $default->type = 1;
+                $default->save();
+            }
 
             /** Ticket price **/
-            try {
-                $ticket = new EventTicket;
-                $ticket->event_id = $event->id;
-                $ticket->name = $request->english_event_name;
-                $ticket->price = $request->price;
-                $ticket->available_tickets = $request->number_of_tickets;
-                $ticket->current_available_tickets = $request->number_of_tickets;
-                $ticket->currency_id = $request->currency;
-                $ticket->save();
-            } catch (\Exception $ex) {
-                Session::flash('warning', 'price error!');
-                return redirect()->back();
+            if($request->is_paid == 1) {
+                try {
+                    $ticket = new EventTicket;
+                    $ticket->event_id = $event->id;
+                    $ticket->name = 'default';
+                    $ticket->price = $request->price;
+                    $ticket->available_tickets = $request->number_of_tickets;
+                    $ticket->current_available_tickets = $request->number_of_tickets;
+                    $ticket->currency_id = $request->currency;
+                    $ticket->save();
+                } catch (\Exception $ex) {
+                    Session::flash('warning', 'price error!');
+                    return redirect()->back();
+                }
             }
+            
 
         } catch (\Exception $ex) {
             dd($ex);
@@ -257,16 +267,19 @@ class EventsController extends Controller
 
         // Insert Arabic localizations
         try {
-            Helper::add_localization(4, 'name', $event->id, $request->arabic_event_name, 2);             // arabic_event_name
-            Helper::add_localization(4, 'description', $event->id, $request->arabic_description, 2);     // arabic_description
-            Helper::add_localization(4, 'venue', $event->id, $request->arabic_venu, 2);                  // arabic_venu
+            Helper::add_localization(4, 'name', $event->id, ($request->arabic_event_name ? : 'بدون اسم'), 2);             // arabic_event_name
+            Helper::add_localization(4, 'description', $event->id, ($request->arabic_description ? : 'بدون وصف'), 2);     // arabic_description
+            Helper::add_localization(4, 'venue', $event->id, ($request->arabic_venu ? : 'بدون عنوان'), 2);                  // arabic_venu
 
             // Explode hashtags into an array
-            $arabic_hashtags = explode(',', $request->arabic_hashtags);
-            for ($i = 0; $i < count($arabic_hashtags); $i++) {
-                // Add arabic hashtags in entity_localization table
-                Helper::add_localization(17, 'hash_tags', $event->id, $arabic_hashtags[$i], 2);                        // arabic_hashtags
+            if( isset($request->arabic_hashtags) && !empty($request->arabic_hashtags) ){
+                $arabic_hashtags = explode(',', $request->arabic_hashtags);
+                for ($i = 0; $i < count($arabic_hashtags); $i++) {
+                    // Add arabic hashtags in entity_localization table
+                    Helper::add_localization(17, 'hash_tags', $event->id, $arabic_hashtags[$i], 2);                        // arabic_hashtags
+                }
             }
+            
         } catch (\Exception $ex) {
             dd($ex);
             Session::flash('warning', 'Error 2');
@@ -298,15 +311,16 @@ class EventsController extends Controller
      */
     public function edit($id)
     {
-        $data['event'] = EventBackend::find($id);
-        $data['genders'] = Genders::all();
-        $data['age_range'] = Age_Ranges::all();
+        $data['event']      = EventBackend::find($id);
+        $data['genders']    = Genders::all();
+        $data['age_range']  = Age_Ranges::all();
         $data['categories'] = EventCategory::all();
         $data['currencies'] = Currency::all();
-        $data['ticket'] = EventTicket::where('event_id', $id)->first();
+        $data['ticket']     = EventTicket::where('event_id', $id)->first();
 
-        $data['arabic_images'] = $data['event']->media()->where('type', 1)->where('link', 'like', '%arabic%')->get();
-        $data['english_images'] = $data['event']->media()->where('type', 1)->where('link', 'like', '%english%')->get();
+        $data['arabic_images']  = isset($data['event']->media) ? $data['event']->media()->where('type', 1)->where('link', 'like', '%arabic%')->get() : '';
+        $data['english_images'] = isset($data['event']->media) ? $data['event']->media()->where('type', 1)->where('link', 'like', '%english%')->get() : '';
+        $data['default_image']  = 'events/default/events.png';
 
         return view('events::backend_event_edit', $data);
     }
@@ -326,9 +340,9 @@ class EventsController extends Controller
         $this->validate($request, [
             'english_event_name' => 'required|min:2|max:100',
             'english_description' => 'required|min:2|max:250',
-            'lat' => 'required|min:2|max:50',
+            'lat' => 'required',
             'lng' => 'required',
-            'english_venu' => 'required',
+            'english_venu' => 'required|min:2|max:50',
             'english_hashtags' => 'required',
             'gender' => 'required',
             'age_range' => 'required',
@@ -338,32 +352,31 @@ class EventsController extends Controller
             'end_time' => 'required',
             'categories' => 'required',
 
-            'arabic_event_name' => 'required|min:2|max:100',
-            'arabic_description' => 'required|min:2|max:250',
-            'arabic_venu' => 'required|',
-            'arabic_hashtags' => 'required|',
+            'arabic_event_name' => ($request->arabic_event_name ? 'min:2|max:100' : ''),
+            'arabic_description' => ($request->arabic_description ? 'sometimes|min:2|max:250' : ''),
+            // 'arabic_venu' => 'required|',
+            // 'arabic_hashtags' => 'required|',
 
-            'is_paid' => 'required',
-            'price' => 'numeric',
-            'currency' => 'numeric',
-            'number_of_tickets' => 'numeric',
+            'is_paid'   => 'required',
+            'price'     => ($request->price ? 'sometimes|numeric' : ''),
+            'currency'  => ($request->currency ? 'sometimes|numeric' : ''),
+            'number_of_tickets' => ($request->number_of_tickets ? 'numeric' : ''),
 
             'website' => 'required',
             'email' => 'required',
             'code_number' => 'required',
             'mobile_number' => 'required',
 
-            'youtube_ar_1' => 'required|',
-            'youtube_en_1' => 'required|',
-            'youtube_ar_2' => 'required|',
-            'youtube_en_2' => 'required|',
-            // 'arabic_images'         => 'required|',
-            // 'english_images'        => 'required',
+            // 'youtube_ar_1' => 'required|',
+            // 'youtube_en_1' => 'required|',
+            // 'youtube_ar_2' => 'required|',
+            // 'youtube_en_2' => 'required|',
+            // 'arabic_images'         => 'max:5',
+            // 'arabic_images.*'       => 'max:5',
+            // 'english_images'        => 'max:5',
+            // 'english_images.*'      => 'max:5'
         ]);
 
-
-        // Explode english hashtags
-        $hashtags = explode(',', $request->english_hashtags);
 
         // Insert Event in events table
         try {
@@ -398,9 +411,15 @@ class EventsController extends Controller
 
             $event->save();
 
+
             /**  INSERT English Hashtags **/
-            // search if the hashtag is already exists, if exists get its ID, if not exists insert the hashtag into `hash_tags` table and get its id.
+            // remove old hashtags
             $event->hashtags()->detach();
+
+            // Explode english hashtags
+            $hashtags = explode(',', $request->english_hashtags);
+
+            // search if the hashtag is already exists, if exists get its ID, if not exists insert the hashtag into `hash_tags` table and get its id.
             for ($i = 0; $i < count($hashtags); $i++) {
                 // insert hashtag into `hash_tag` table only if it isn't exists.
                 if (EventHashtags::where('name', '=', $hashtags[$i])->first() == null) {
@@ -416,7 +435,10 @@ class EventsController extends Controller
             }
 
             /**  INSERT Categories **/
+            // remove old categories
             $event->categories()->detach();
+
+            // add new categories
             for ($i = 0; $i < count($request->categories); $i++) {
                 $event->categories()->attach($request->categories[$i]);
             }
@@ -473,18 +495,20 @@ class EventsController extends Controller
             }
 
             /** Ticket price **/
-            try {
-                $ticket = EventTicket::where('event_id', $event->id)->first();
-                $ticket->event_id = $request->id;
-                $ticket->name = $request->english_event_name;
-                $ticket->price = $request->price;
-                $ticket->available_tickets = $request->number_of_tickets;
-                $ticket->current_available_tickets = $request->number_of_tickets;
-                $ticket->currency_id = $request->currency;
-                $ticket->save();
-            } catch (\Exception $ex) {
-                Session::flash('warning', 'price error!');
-                return redirect()->back();
+            if($request->is_paid == 1) {
+                try {
+                    $ticket = EventTicket::where('event_id', $event->id)->first();
+                    $ticket->event_id = $request->id;
+                    $ticket->name = $request->english_event_name;
+                    $ticket->price = $request->price;
+                    $ticket->available_tickets = $request->number_of_tickets;
+                    $ticket->current_available_tickets = $request->number_of_tickets;
+                    $ticket->currency_id = $request->currency;
+                    $ticket->save();
+                } catch (\Exception $ex) {
+                    Session::flash('warning', 'price error!');
+                    return redirect()->back();
+                }
             }
 
         } catch (\Exception $ex) {

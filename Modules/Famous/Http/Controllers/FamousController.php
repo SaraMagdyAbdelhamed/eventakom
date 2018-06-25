@@ -40,6 +40,13 @@ class FamousController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'place_name'  => '',
+            'place_category'  => '',
+            'address'  => '',
+            'phone_number'  => '',
+            'website'  => '',
+        ]);
     }
 
     /**

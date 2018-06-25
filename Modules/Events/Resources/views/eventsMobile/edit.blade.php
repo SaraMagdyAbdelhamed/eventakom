@@ -67,7 +67,7 @@
             {{-- Description --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="description">@lang('keywords.eventDescription')</label>
+                <label class="master_label" for="description">@lang('keywords.description')</label>
                 <textarea class="master_input" id="description" placeholder="Description"  name="english_description">{{$event->englishVenue}}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
@@ -272,7 +272,7 @@
             {{-- Arabic Description --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="description">@lang('keywords.eventDescription')</label>
+                <label class="master_label" for="description">@lang('keywords.description')</label>
                 <textarea class="master_input" id="description" placeholder="Description"  name="arabic_description">{{$event->arabic('description',$event->id)}}{{ old('arabic_description') }}</textarea>
                 @if ($errors->has('arabic_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_description') }}</span>

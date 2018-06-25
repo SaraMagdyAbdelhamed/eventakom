@@ -9,12 +9,12 @@
           <div class="col-xs-12">
             <div class="text-xs-center">         
               <div class="text-wraper">
-                <h3 class="cover-inside-title  ">Famous attractions</h3>
+                <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.famousAtt')</h4>
               </div>
             </div>
           </div>
           <div class="cover--actions">
-            <a class="bradius--no border-btn master-btn" type="button" href="{{ route('fa.create') }}">New Famous attractions</a>
+            <a class="bradius--no border-btn master-btn" type="button" href="{{ route('fa.create') }}">@lang('keywords.addNew')</a>
           </div>
         </div>
       </div>
@@ -22,10 +22,10 @@
     <div class="col-xs-12">
       <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
         <div class="full-table">
-          <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>filters</a></div>
+          <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>@lang('keywords.filter')</a></div>
           <div class="bottomActions__btns">
-            <a class="master-btn" href="#">Delete selected</a>
-            <a class="master-btn" href="{{ route('event_backend.add') }}">Add New Event</a>
+            <a class="master-btn" href="#">@lang('keywords.deleteSelected')</a>
+            <a class="master-btn" href="{{ route('event_backend.add') }}">@lang('keywords.addNewBackend')</a>
           </div>
           <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
             <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
@@ -67,13 +67,13 @@
               <thead>
                 <tr class="bgcolor--gray_mm color--gray_d">
                   <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
-                  <th><span class="cellcontent">serial No</span></th>
-                  <th><span class="cellcontent">Place name</span></th>
-                  <th><span class="cellcontent">Place address</span></th>
-                  <th><span class="cellcontent">Place phone</span></th>
-                  <th><span class="cellcontent">Place categories</span></th>
-                  <th><span class="cellcontent">status</span></th>
-                  <th><span class="cellcontent">actions</span></th>
+                  <th><span class="cellcontent">@lang('keywords.serialNo')</span></th>
+                  <th><span class="cellcontent">@lang('keywords.placeName')</span></th>
+                  <th><span class="cellcontent">@lang('keywords.placeAddress')</span></th>
+                  <th><span class="cellcontent">@lang('keywords.placePhone')</span></th>
+                  <th><span class="cellcontent">@lang('keywords.placeCategories')</span></th>
+                  <th><span class="cellcontent">@lang('keywords.status')</span></th>
+                  <th><span class="cellcontent">@lang('keywords.actions')</span></th>
                 </tr>
               </thead>
               <tbody>

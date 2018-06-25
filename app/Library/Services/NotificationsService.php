@@ -193,7 +193,7 @@ class NotificationsService
 
                 }
                 //Push to many users
-                // $this->PushToManyUsers($category->users , $notification);
+                $this->PushToManyUsers($category->users , $notification);
 	    	}    		
     	}
     }
