@@ -19,4 +19,11 @@ class Interest extends Model
     {
     	return $this->belongsTo('App\UsersInterest','interest_id');
     }
+
+    //localization
+    public function  getNameMultilangAttribute($value)
+    {
+        $result = (\App::isLocale('en')) ? \App\Helpers\Helper::localization('interests','name',$this->id,1) : \App\Helpers\Helper::localization('interests','name',$this->id,2);
+        return ($result==null)? $this->name : $result;
+    }
 }

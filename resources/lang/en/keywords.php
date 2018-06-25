@@ -221,6 +221,10 @@
         'All Events'    => 'All Events',
 		'Suggested Events'    => 'Suggested Events',
 		'sort_list' => 'Sort List',
+		'sortThenSave' => 'Please update big events order then click save!',
+		'limit5Bevents'=>'Sorry you have exceeded your 5 big events limit!',
+		'duplicatedBevents'=>'You have already selected this Event!',
+		//shop and dine
         'shop_and_dine'=>'Shop And Dine',
         'serial_no'=>'SerialNo ',
         'shop_photo'=>'PlacePhoto',
@@ -229,7 +233,44 @@
         'shop_status'=>'Status',
         'shop_actions'=>'Actions',
         'add_new_shop'=>'Add new Shop and dine',
-        'delete_selected_shops'=>'Delete selected'
+        'delete_selected_shops'=>'Delete selected',
+        'adding_mode'=>'Adding Mode',
+        'info'=>'Info',
+        'media'=>'Media',
+        'editing_mode'=>'Editing Mode',
+        'shop_name_arabic'=>'Place Name In Arabic',
+        'shop_address'=>'Place Address',
+        'other_info'=>'Other Info',
+        'other_info_arabic'=>'Other Info In Arabic',
+        'website'=>'Website',
+        'opening_days'=>'Opening Days',
+        'saturday'=>'Saturday',
+        'sunday'=>'Sunday',
+        'monday'=>'Monday',
+        'tuesday'=>'Tuesday',
+        'wednesday'=>'Wednesday',
+        'thursday'=>'Thursday',
+        'friday'=>'Friday',
+        'shop_active'=>'Is Place Active or In_active ',
+        'add_branch'=>'Add More Branch',
+        'you_tube'=>'YouTube Video',
+        'in_en'=>'In English',
+        'in_ar'=>'In Arabic',
+        'upload_image'=>'Upload Place Images',
+        'max_img'=>'Max no. 5 images',
+
+        ///Notification
+        'send'=>'Send',
+        'sending_noti'=>'Sending Notification',
+        'all_users'=>'All Users ',
+        'custom_users'=>'Custom Users',
+        'noti_en'=>'Notification Content In English',
+        'noti_ar'=>'Notification Content In Arabic',
+        'age'=>'Age ',
+        'gender'=>'Gender ',
+        
+        'male'=>'Male ',
+        'female'=>'Female'
 		
     ];
 

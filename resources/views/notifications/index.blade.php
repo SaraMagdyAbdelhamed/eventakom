@@ -5,12 +5,12 @@
               <!-- =============== Custom Content ===========-->
               <div class="row">
                 <div class="col-xs-12">
-                  <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( '../img/covers/dummy2.jpg ' )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
+                  <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  {{asset( 'img/covers/dummy2.jpg ' )}}  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
                     <div class="row">
                       <div class="col-xs-12">
                         <div class="text-xs-center">         
                           <div class="text-wraper">
-                            <h3 class="cover-inside-title  ">Notifications</h3>
+                            <h3 class="cover-inside-title  ">@lang('keywords.notifications')</h3>
                           </div>
                         </div>
                       </div>
@@ -26,11 +26,11 @@
                     <div class="row">
                       <div class="col-xs-12">
                         <div class="master_field">
-                          <label class="master_label mandatory">sending notifications</label>
+                          <label class="master_label mandatory">@lang('keywords.sending_noti')</label>
                           <input class="icon" type="radio" name="icon" id="radbtn_2_free" checked="true">
-                          <label for="radbtn_2_free">All users</label>
+                          <label for="radbtn_2_free">@lang('keywords.all_users')</label>
                           <input class="icon" type="radio" name="icon" id="radbtn_3_paid">
-                          <label for="radbtn_3_paid">Custom Users</label>
+                          <label for="radbtn_3_paid">@lang('keywords.custom_users')</label>
                         </div>
                       </div>
                     </div>
@@ -40,20 +40,20 @@
                       <div class="row">
                         <div class="col-sm-3 col-xs-12">
                           <div class="master_field">
-                            <label class="master_label mandatory">Gender</label>
+                            <label class="master_label mandatory">@lang('keywords.gender')</label>
                             <div class="funkyradio">
                               <input type="checkbox" name="gender_m" id="radbtn_2" >
-                              <label for="radbtn_2">male</label>
+                              <label for="radbtn_2">@lang('keywords.male')</label>
                             </div>
                             <div class="funkyradio">
                               <input type="checkbox" name="gender_f" id="radbtn_3">
-                              <label for="radbtn_3">female</label>
+                              <label for="radbtn_3">@lang('keywords.female')</label>
                             </div>
                           </div>
                         </div>
                         <div class="col-sm-4 col-xs-12">
                           <div class="master_field">
-                            <label class="master_label" for="filter_age">Age</label>
+                            <label class="master_label" for="filter_age">@lang('keywords.age')</label>
                             <select class="master_input select2" id="filter_age" multiple="multiple" data-placeholder="Age " style="width:100%;" name="age[]">
                              {{--  <option>Kids</option>
                               <option>15-18 Y</option>
@@ -67,7 +67,7 @@
                         </div>
                         <div class="col-sm-5 col-xs-12">
                           <div class="master_field">
-                            <label class="master_label mandatory" for="category">category</label>
+                            <label class="master_label mandatory" for="category">@lang('keywords.category')</label>
                             <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="category[]">
                               {{-- <option>Category 1</option>
                               <option>Category 2s</option>
@@ -84,13 +84,13 @@
                     <div class="row">
                         <div class="col-sm-6 col-xs-12">
                           <div class="master_field">
-                            <label class="master_label" for="ID_No-12">notification content in English</label>
+                            <label class="master_label" for="ID_No-12">@lang('keywords.noti_en')</label>
                             <textarea class="master_input" name="msg" id="ID_No-12" placeholder="notification content in English" Required></textarea><span class="master_message inherit">message content</span>
                           </div>
                         </div>
                         <div class="col-sm-6 col-xs-12">
                           <div class="master_field">
-                            <label class="master_label" for="ID_No-13">notification content in Arabic</label>
+                            <label class="master_label" for="ID_No-13">@lang('keywords.noti_ar')</label>
                             <textarea class="master_input" name="msg_ar" id="ID_No-13" placeholder="notification content in Arabic" Required></textarea><span class="master_message inherit">message content</span>
                           </div>
                         </div>
@@ -105,11 +105,11 @@
                 <div class="col-xs-12">
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                     <div class="col-lg-3 col-lg-offset-3 col-md-3 col-sm-6 col-xs-6">
-                      <button class="master-btn  btn-block color--white  bradius--noborder bshadow--0" type="submit"><span>send</span>
+                      <button class="master-btn  btn-block color--white  bradius--noborder bshadow--0" type="submit"><span>@lang('keywords.send')</span>
                       </button>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                      <button class="master-btn  btn-block color--white bgcolor--fadeblue bradius--noborder bshadow--0" type="button"><span>cancel</span>
+                      <button class="master-btn  btn-block color--white bgcolor--fadeblue bradius--noborder bshadow--0" type="button"><span>@lang('keywords.cancel')</span>
                       </button>
                     </div>
                     <div class="clearfix"></div>

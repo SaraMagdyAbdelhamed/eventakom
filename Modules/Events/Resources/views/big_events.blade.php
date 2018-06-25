@@ -123,11 +123,11 @@ var values = new Array();
 $('#multiselect_to option').each(function(){
    if($.inArray(this.value, values) >-1){
       $(this).remove()
-      alert('You have already selected this Event!');
+      alert("@lang('keywords.duplicatedBevents')");
    }else{
     if(values.length>=5){
       $(this).remove()
-    alert('Sorry you have exceeded your 5 big events limit!');
+    alert("@lang('keywords.limit5Bevents')");
     }else{
       values.push(this.value);
     }
@@ -147,14 +147,18 @@ var _token = '{{csrf_token()}}';
       url: '{{url('bigevents_post')}}',
       data: { _token: _token  , big_events: values_post },
       success: function (data) {
-       $( "#form_message" ).remove();
+        $( "#form_message" ).remove();
         $(".form-message").append(data);
-        $( "#form_message" ).fadeToggle( "slow", "linear" );
-
+        $( "#form_message" ).delay(1000).fadeToggle( "slow", "linear" );
+        //values_post = new Array();
+        
       }
     });
   }
- else{validate();}
+ else{
+ alert("@lang('keywords.sortThenSave')");
+  //validate();
+     }
 }
 
 $('#multiselect_rightSelected').click(validate);
@@ -162,6 +166,10 @@ $('#multiselect_move_up').click(validate);
 $('#multiselect_move_down').click(validate);
 $('#multiselect_leftSelected').click(validate);
 document.getElementById('multiselect').ondblclick = function(){
+    validate();
+
+};
+document.getElementById('multiselect_to').ondblclick = function(){
     validate();
 
 };

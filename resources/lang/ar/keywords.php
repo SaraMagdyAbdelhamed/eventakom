@@ -216,12 +216,18 @@
         'otherInfo' => 'معلومات اضافية',
 
        // big events
-        'orderSaved'    => 'تم حفظ الترتيب بنجاح',
+         'orderSaved'    => ' <div class="alert text-center" id="form_message" style="background-color: #2ecc71; color: white; padding: 10px; margin-top: 40px;">
+                    <b>تم حفظ الترتيب بنجاح</b>
+                  </div>',
 		'bigevents_description'    => 'يتم من خلال هذه الشاشة تحديد الاحداث الهامة و التي ستعرض على تطبيق الهاتف كما يتم ترتيبها ، يتم اختيار بحد أقصى 5 أحداث هامة ',
     
 	     'All Events'    => 'كل الاحداث',
 		'Suggested Events' => 'احداث  مقترحة كأحداث هامة',
 		'sort_list' => 'قائمة ترتيب الأحداث',
+		'sortThenSave' => 'من فضلك قم بتغيير ترتيب الأحداث الهامة أولا ثم اضغط حفظ',
+		'limit5Bevents'=>'الرجاء اختيار بحد أقصى 5 أحداث هامة فقط',
+		'duplicatedBevents'=>'لقد قمت باختيار هذا الحدث كحدث هام مسبقا!',
+	   //shop and dine
         'shop_and_dine'=>'محلات ومطاعم',
         'serial_no'=>'رقم سرى ',
         'shop_photo'=>'صوره المحل',
@@ -230,7 +236,46 @@
         'shop_status'=>'الحاله',
         'shop_actions'=>'اكشنز',
         'add_new_shop'=>'أضافه محل او مطعم جديد',
-        'delete_selected_shops'=>'حذف المحلات المحدده'
+        'delete_selected_shops'=>'حذف المحلات المحدده',
+        'adding_mode'=>'مود الاضافه',
+        'info'=>'معلومات',
+        'media'=>'ميديا',
+        'editing_mode'=>'مود التعديل',
+        'shop_name_arabic'=>'اسم المحل بالعربى',
+        'shop_address'=>'عنونا المحل ',
+        'other_info'=>'معلومات اخرى',
+        'other_info_arabic'=>'معلومات اخرى بالعربى',
+        'website'=>'الموقع',
+        'opening_days'=>'الايام  المتاح فيها المحل',
+        'saturday'=>'السبت',
+        'sunday'=>'الاحد',
+        'monday'=>'الاثنين',
+        'tuesday'=>'الثلاثاء',
+        'wednesday'=>'الاربعاء',
+        'thursday'=>'الخميس',
+        'friday'=>'الجمعه',
+        'shop_active'=>'هل المحل اكتيف ام لا ',
+        'add_branch'=>'إضافه فرع',
+        'you_tube'=>'فيديو يوتيوب',
+        'in_en'=>'بالانجليزي',
+        'in_ar'=>'بالعربى',
+        'upload_image'=>'ارفع صور للمحل ',
+        'max_img'=>'اقصي عدد صور 5',
+
+        ///Notification
+        'send'=>'ارسال',
+        'sending_noti'=>'ارسال تنبيه ',
+        'all_users'=>'كل المستخدمين ',
+        'custom_users'=>'تحديد مستخدمين ',
+        'noti_en'=>'محتوي التنبيه بالانجليزيه ',
+        'noti_ar'=>'محتوي التنبيه بالعربيه ',
+        'age'=>'السن ',
+        'gender'=>'النوع ',
+        
+        'male'=>'ذكر ',
+        'female'=>'انثي'
+
+
 	
 	];
 
