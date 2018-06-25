@@ -200,6 +200,10 @@
 	     'All Events'    => 'كل الاحداث',
 		'Suggested Events' => 'احداث  مقترحة كأحداث هامة',
 		'sort_list' => 'قائمة ترتيب الأحداث',
+		'sortThenSave' => 'من فضلك قم بتغيير ترتيب الأحداث الهامة أولا ثم اضغط حفظ',
+		'limit5Bevents'=>'الرجاء اختيار بحد أقصى 5 أحداث هامة فقط',
+		'duplicatedBevents'=>'لقد قمت باختيار هذا الحدث كحدث هام مسبقا!',
+	   //shop and dine
         'shop_and_dine'=>'محلات ومطاعم',
         'serial_no'=>'رقم سرى ',
         'shop_photo'=>'صوره المحل',
@@ -208,7 +212,7 @@
         'shop_status'=>'الحاله',
         'shop_actions'=>'اكشنز',
         'add_new_shop'=>'أضافه محل او مطعم جديد',
-        'delete_selected_shops'=>'حذف المحلات المحدده'
+        'delete_selected_shops'=>'حذف المحلات المحدده',
 	
 	];
 

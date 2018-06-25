@@ -198,6 +198,10 @@
         'All Events'    => 'All Events',
 		'Suggested Events'    => 'Suggested Events',
 		'sort_list' => 'Sort List',
+		'sortThenSave' => 'Please update big events order then click save!',
+		'limit5Bevents'=>'Sorry you have exceeded your 5 big events limit!',
+		'duplicatedBevents'=>'You have already selected this Event!',
+		//shop and dine
         'shop_and_dine'=>'Shop And Dine',
         'serial_no'=>'SerialNo ',
         'shop_photo'=>'PlacePhoto',
@@ -206,7 +210,7 @@
         'shop_status'=>'Status',
         'shop_actions'=>'Actions',
         'add_new_shop'=>'Add new Shop and dine',
-        'delete_selected_shops'=>'Delete selected'
+        'delete_selected_shops'=>'Delete selected',
 		
     ];
 
