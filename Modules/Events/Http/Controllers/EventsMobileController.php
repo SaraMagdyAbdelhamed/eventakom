@@ -215,7 +215,7 @@ class EventsMobileController extends Controller
             'categories'            => 'required',
 
             'arabic_event_name' => ($request->arabic_event_name ? 'min:2|max:100' : ''),
-            'arabic_description' => ($request->arabic_description ? 'require|dmin:2|max:250' : ''),
+            'arabic_description' => ($request->arabic_description ? 'required|min:2|max:250' : ''),
             // 'arabic_venu' => 'required|',
             // 'arabic_hashtags' => 'required|',
             'is_paid'   => 'required',
