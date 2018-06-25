@@ -36,10 +36,10 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('logout');   // for t
 
 // App URLs
 Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
-
+Route::get('/about', '\Modules\Main\Http\Controllers\MainController@about')->name('about');
 Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = null) {
     // about us
-    Route::get('/about', '\Modules\Main\Http\Controllers\MainController@about')->name('about');
+    
     Route::post('/main/about/edit/{id}', '\Modules\Main\Http\Controllers\MainController@update_fixed')->name('about.edit');
 
     // terms & conditions
