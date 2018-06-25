@@ -198,6 +198,15 @@
         'All Events'    => 'All Events',
 		'Suggested Events'    => 'Suggested Events',
 		'sort_list' => 'Sort List',
+        'shop_and_dine'=>'Shop And Dine',
+        'serial_no'=>'SerialNo ',
+        'shop_photo'=>'PlacePhoto',
+        'shop_name'=>'PlaceName ',
+        'shop_phone'=>'Phone ',
+        'shop_status'=>'Status',
+        'shop_actions'=>'Actions',
+        'add_new_shop'=>'Add new Shop and dine',
+        'delete_selected_shops'=>'Delete selected'
 		
     ];
 

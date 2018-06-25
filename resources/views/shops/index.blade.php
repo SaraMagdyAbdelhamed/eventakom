@@ -8,11 +8,11 @@
             <div class="col-xs-12">
               <div class="text-xs-center">         
                 <div class="text-wraper">
-                  <h3 class="cover-inside-title  ">Shop and dine</h3>
+                  <h3 class="cover-inside-title  ">@lang('keywords.shop_and_dine')</h3>
                 </div>
               </div>
             </div>
-            <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{route('add_shop')}}">Add new Shop and dine</a>
+            <div class="cover--actions"><a class="bradius--no border-btn master-btn" type="button" href="{{route('add_shop')}}">@lang('keywords.add_new_shop')</a>
             </div>
           </div>
         </div>
@@ -20,10 +20,10 @@
     <div class="col-xs-12">
         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
             <div class="full-table">
-              <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>filters</a></div>
-              <div class="bottomActions__btns"><a class="master-btn" href="#">Delete selected</a><a class="master-btn" href="#">Add new Shop and dine</a>
+              {{-- <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>filters</a></div> --}}
+              <div class="bottomActions__btns"><a class="master-btn btn-warning-cancel-all" >@lang('keywords.delete_selected_shops')</a><a class="master-btn" href="{{route('add_shop')}}">@lang('keywords.add_new_shop')</a>
               </div>
-              <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+              {{-- <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
                 <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
                 <div>
                   <div class="row">
@@ -54,18 +54,18 @@
                 </div><br>
                 <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
                 <button class="remodal-confirm" data-remodal-action="confirm">Apply Filters</button>
-              </div>
+              </div> --}}
               <form id="dataTableTriggerId_001_form">
                 <table class="data-table-trigger table-master" id="dataTableTriggerId_001">
                   <thead>
                     <tr class="bgcolor--gray_mm color--gray_d">
                       <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
-                      <th><span class="cellcontent">serial No</span></th>
-                      <th><span class="cellcontent">Shop photo</span></th>
-                      <th><span class="cellcontent">Place name</span></th>
-                      <th><span class="cellcontent">Place phone</span></th>
-                      <th><span class="cellcontent">status</span></th>
-                      <th><span class="cellcontent">actions</span></th>
+                      <th><span class="cellcontent">@lang('keywords.serial_no')</span></th>
+                      <th><span class="cellcontent">@lang('keywords.shop_photo')</span></th>
+                      <th><span class="cellcontent">@lang('keywords.shop_name')</span></th>
+                      <th><span class="cellcontent">@lang('keywords.shop_phone')</span></th>
+                      <th><span class="cellcontent">@lang('keywords.shop_status')</span></th>
+                      <th><span class="cellcontent">@lang('keywords.shop_actions')</span></th>
                     </tr>
                   </thead>
                   <tbody>

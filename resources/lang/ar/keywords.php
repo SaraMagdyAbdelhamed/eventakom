@@ -198,6 +198,15 @@
 	     'All Events'    => 'كل الاحداث',
 		'Suggested Events' => 'احداث  مقترحة كأحداث هامة',
 		'sort_list' => 'قائمة ترتيب الأحداث',
+        'shop_and_dine'=>'محلات ومطاعم',
+        'serial_no'=>'رقم سرى ',
+        'shop_photo'=>'صوره المحل',
+        'shop_name'=>'اسم المحل ',
+        'shop_phone'=>'تليفون ',
+        'shop_status'=>'الحاله',
+        'shop_actions'=>'اكشنز',
+        'add_new_shop'=>'أضافه محل او مطعم جديد',
+        'delete_selected_shops'=>'حذف المحلات المحدده'
 	
 	];
 
