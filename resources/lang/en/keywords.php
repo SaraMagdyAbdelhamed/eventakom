@@ -257,8 +257,20 @@
         'in_en'=>'In English',
         'in_ar'=>'In Arabic',
         'upload_image'=>'Upload Place Images',
-        'max_img'=>'Max no. 5 images'
+        'max_img'=>'Max no. 5 images',
 
+        ///Notification
+        'send'=>'Send',
+        'sending_noti'=>'Sending Notification',
+        'all_users'=>'All Users ',
+        'custom_users'=>'Custom Users',
+        'noti_en'=>'Notification Content In English',
+        'noti_ar'=>'Notification Content In Arabic',
+        'age'=>'Age ',
+        'gender'=>'Gender ',
+        
+        'male'=>'Male ',
+        'female'=>'Female'
 		
     ];
 
