@@ -562,10 +562,6 @@ class EventsController extends Controller
         // find that record
         $event = EventBackend::find($request->id);
 
-        // delete english images or files
-
-        // delete arabic images or files
-
         $event->media()->delete();          // delete english & arabic youtube links
         $event->hashtags()->detach();       // delete hashtags
         $event->categories()->detach();     // delete categories

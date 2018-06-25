@@ -158,13 +158,13 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
 
     // Famous Attractions
     Route::get('/attractions'           , '\Modules\Famous\Http\Controllers\FamousController@index' )->name('fa.list'   );
-    Route::get('/attractions/view/{id}' , '\Modules\Famous\Http\Controllers\FamousController@show'  )->name('fa.show'   );
+    Route::get('/attractions/view'      , '\Modules\Famous\Http\Controllers\FamousController@show'  )->name('fa.show'   );
     Route::get('/attractions/add'       , '\Modules\Famous\Http\Controllers\FamousController@create')->name('fa.create' );
     Route::get('/attractions/edit/{id}' , '\Modules\Famous\Http\Controllers\FamousController@edit'  )->name('fa.edit'   );
-    Route::post('/attractions/store'    , '\Modules\Famous\Http\Controllers\FamousController@index' )->name('fa.store'  );
+    Route::post('/attractions/store'    , '\Modules\Famous\Http\Controllers\FamousController@store' )->name('fa.store'  );
     Route::post('/attractions/update'   , '\Modules\Famous\Http\Controllers\FamousController@update')->name('fa.update' );
-    Route::post('/attractions/delete'   , '\Modules\Famous\Http\Controllers\FamousController@delete')->name('fa.delete' );
-    Route::post('/attractions/delete/selected', '\Modules\Famous\Http\Controllers\FamousController@deleteSelected')->name('fa.deleteSelected');
+    Route::post('/attractions/delete'   , '\Modules\Famous\Http\Controllers\FamousController@destroy')->name('fa.delete' );
+    Route::post('/attractions/delete/selected', '\Modules\Famous\Http\Controllers\FamousController@destroySelected')->name('fa.deleteSelected');
 
 
     // Offers and deals

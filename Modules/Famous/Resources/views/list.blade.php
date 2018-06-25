@@ -24,7 +24,7 @@
         <div class="full-table">
           <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>@lang('keywords.filter')</a></div>
           <div class="bottomActions__btns">
-            <a class="master-btn" href="#">@lang('keywords.deleteSelected')</a>
+            <a class="master-btn" href="#" id="deleteSelected">@lang('keywords.deleteSelected')</a>
             <a class="master-btn" href="{{ route('event_backend.add') }}">@lang('keywords.addNewBackend')</a>
           </div>
           <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
@@ -80,28 +80,33 @@
 
                   @if ( isset($attractions) && !empty($attractions) )
                       @foreach ($attractions as $attraction)
-                        <tr>
-                          <td><span class="cellcontent"></span></td>
-                          <td><span class="cellcontent">{{ $loop->index +1 }}</span></td>
-                          <td><span class="cellcontent">El batraa jordan</span></td>
-                          <td><span class="cellcontent">jordan</span></td>
-                          <td><span class="cellcontent">0123456789</span></td>
-                          <td><span class="cellcontent">historical</span></td>
+                        <tr data-id="{{ $attraction->id }}">
+                          <td><span class="cellcontent" data-id="{{ $attraction->id }}"></span></td>
+                          <td><span class="cellcontent">{{ $attraction->id }}</span></td>
+                          <td><span class="cellcontent">{{ $attraction->name ? : '' }}</span></td>
+                          <td><span class="cellcontent">{{ $attraction->address ? : '' }}</span></td>
+                          <td><span class="cellcontent">{{ $attraction->phone ? : '' }}</span></td>
                           <td>
                             <span class="cellcontent">
-                              <i class = "fa icon-in-table-true fa-check"></i>
-                              <i class = "fa icon-in-table-false fa-times"></i>
+                              @foreach ($attraction->categories as $cat)
+                                  {{ $cat->name }}
+                              @endforeach
                             </span>
                           </td>
                           <td>
                             <span class="cellcontent">
-                              <a href= #popupModal_1 ,  class= "action-btn bgcolor--main color--white ">
+                              <i class = "{{ $attraction->is_active ? 'fa icon-in-table-true fa-check' : 'fa icon-in-table-false fa-times' }}"></i>
+                            </span>
+                          </td>
+                          <td>
+                            <span class="cellcontent">
+                              <a href= #popupModal_1 ,  class= "action-btn bgcolor--main color--white showRow" data-id="{{ $attraction->id }}">
                                 <i class = "fa  fa-eye"></i>
                               </a>
-                              <a href= famous_attractions_edit.html ,  class= "action-btn bgcolor--fadegreen color--white ">
+                              <a  href= famous_attractions_edit.html ,  class= " action-btn bgcolor--fadegreen color--white ">
                                 <i class = "fa  fa-pencil"></i>
                               </a>
-                              <a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white ">
+                              <a href="#" data-id="{{ $attraction->id }}"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white deleteRecord">
                                 <i class = "fa  fa-trash-o"></i>
                               </a>
                             </span>
@@ -546,6 +551,149 @@
         // Sidebar Active Class
         $('#menu_5').addClass('openedmenu');
         $('#sub_5_1').addClass('pure-active');
+    });
+
+    // delete single row
+    $('.deleteRecord').click(function(){
+
+      var id = $(this).data("id");
+      var token = '{{ csrf_token() }}';
+
+      var title = "{{ \App::isLocale('en') ? 'Are you sure?' : 'هل أنت متأكد؟' }}";
+      var text  = "{{ \App::isLocale('en') ? 'You wont be able to fetch this information later!' : 'لن تستطيع إسترجاع هذه المعلومة لاحقا' }}";
+
+      swal({
+      title: title,
+      text: text,
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#281160',
+      confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
+      cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
+      closeOnConfirm: false
+      },
+      function(isConfirm){
+          if (isConfirm){
+
+          $.ajax(
+          {
+              url: "{{ route('fa.delete') }}",
+              type: 'POST',
+              dataType: "JSON",
+              data: {
+                  "id": id,
+                  "_method": 'POST',
+                  "_token": token,
+              },
+              success: function ()
+              {
+                  swal("تم الحذف!", "تم الحذف بنجاح", "success");
+                  $('tr[data-id='+id+']').fadeOut();
+              },
+                  error: function(response) {
+                  console.log(response);
+              }
+          });
+
+          } else {
+              swal("تم الإلغاء", "المعلومات مازالت موجودة :)", "error");
+          }
+      });
+
+      
+    });
+
+    $('#deleteSelected').click(function(){
+      var allVals = [];                   // selected IDs
+      var token = '{{ csrf_token() }}';
+
+      // push cities IDs selected by user
+      $('input.input-in-table:checked').each(function() {
+          allVals.push( $(this).data("id") );
+      });
+
+      // check if user selected nothing
+      if(allVals.length <= 0) {
+      confirm('إختر عميل علي الاقل لتستطيع حذفه');
+      } else {
+      var ids = allVals;    // join array of IDs into a single variable to explode in controller
+
+      var title = "{{ \App::isLocale('en') ? 'Are you sure?' : 'هل أنت متأكد؟' }}";
+      var text  = "{{ \App::isLocale('en') ? 'You wont be able to fetch this information later!' : 'لن تستطيع إسترجاع هذه المعلومة لاحقا' }}";
+
+      swal({
+      title: title,
+      text: text,
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#281160',
+      confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
+      cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
+      closeOnConfirm: false
+      },
+      function(isConfirm){
+          if (isConfirm){
+
+          $.ajax(
+          {
+              url: "{{ route('event_backend.destroySelected') }}",
+              type: 'POST',
+              dataType: "JSON",
+              data: {
+                  "ids": ids,
+                  "_method": 'POST',
+                  "_token": token,
+              },
+              success: function ()
+              {
+                  swal("تم الحذف!", "تم الحذف بنجاح", "success");
+
+                  // fade out selected checkboxes after deletion
+                  $.each(allVals, function( index, value ) {
+                      $('tr[data-id='+value+']').fadeOut();
+                  });
+              },
+              error: function(response) {
+                  console.log(response);
+              }
+          });
+          } else {
+          swal("تم الإلغاء", "المعلومات مازالت موجودة :)", "error");
+          }
+      });
+      }
+    });
+
+    // AJAX: get record info
+    $('.showRow').click(function(){
+        // Get ID of that record
+        var id = $(this).data("id");    
+
+        // AJAX call to get record data
+        $.ajax({
+            url: "{{ route('fa.show') }}",
+            type: 'GET',
+            data: {id: id},
+
+            // On success, set retrieved data to edit input fields
+            success: function (data)
+            { console.log(data);
+                $("#name").val(data.name);  
+                $("#address").val(data.address);
+                $("#").val(data.name_en);
+                $("textarea[name=image_en_description1]").val(data.desc_en);
+                if(data.is_active) {
+                    $("input[name=offer_status_1]").prop('checked', true);
+                } else {
+                    $("input[name=offer_status_1]").prop('checked', false);
+                }
+            },
+                error: function(response) {
+                console.log( response.responseJSON );
+            }
+        });
+
+
     });
 </script>
 {{-- End Scripts --}}
