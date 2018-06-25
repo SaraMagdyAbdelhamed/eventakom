@@ -37,16 +37,16 @@
         'privacy'   => 'الخصوصية وسياسة الشركة',
         'contactUs' => ' تواصل معنا',
         'eventCategories'   => 'انواع الاحداث',
-        'famous'    => 'تصنيفات الاحداث الشهيرة',
+        'famous'    => 'تصنيفات  المزارات',
         'sponsors'  => 'الرعاه',
         'trends'    => 'التحكم في البحث المتداول',
         'trendWord' => 'الكلمات البحثية',
         'notifications' => 'التنبيهات',
-        'famousAtt'     => 'الاحداث الشهيرة',
+        'famousAtt'     => 'مزارات عامة',
         'famousCat' => 'اسم التصنيف',
         'sponsorLogo'   => 'الشعار الراعي',
         'sponsorName'   => 'اسم الراعي',
-        'shopndine'     => 'متجرك',
+        'shopndine'     => 'محلات و مطاعم',
 
         // Edit fixed pages
         'EditAbout' => 'تعديل قسم عن الشركة',
@@ -200,6 +200,15 @@
 	     'All Events'    => 'كل الاحداث',
 		'Suggested Events' => 'احداث  مقترحة كأحداث هامة',
 		'sort_list' => 'قائمة ترتيب الأحداث',
+        'shop_and_dine'=>'محلات ومطاعم',
+        'serial_no'=>'رقم سرى ',
+        'shop_photo'=>'صوره المحل',
+        'shop_name'=>'اسم المحل ',
+        'shop_phone'=>'تليفون ',
+        'shop_status'=>'الحاله',
+        'shop_actions'=>'اكشنز',
+        'add_new_shop'=>'أضافه محل او مطعم جديد',
+        'delete_selected_shops'=>'حذف المحلات المحدده'
 	
 	];
 
