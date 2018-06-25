@@ -234,6 +234,31 @@
         'shop_actions'=>'Actions',
         'add_new_shop'=>'Add new Shop and dine',
         'delete_selected_shops'=>'Delete selected',
+        'adding_mode'=>'Adding Mode',
+        'info'=>'Info',
+        'media'=>'Media',
+        'editing_mode'=>'Editing Mode',
+        'shop_name_arabic'=>'Place Name In Arabic',
+        'shop_address'=>'Place Address',
+        'other_info'=>'Other Info',
+        'other_info_arabic'=>'Other Info In Arabic',
+        'website'=>'Website',
+        'opening_days'=>'Opening Days',
+        'saturday'=>'Saturday',
+        'sunday'=>'Sunday',
+        'monday'=>'Monday',
+        'tuesday'=>'Tuesday',
+        'wednesday'=>'Wednesday',
+        'thursday'=>'Thursday',
+        'friday'=>'Friday',
+        'shop_active'=>'Is Place Active or In_active ',
+        'add_branch'=>'Add More Branch',
+        'you_tube'=>'YouTube Video',
+        'in_en'=>'In English',
+        'in_ar'=>'In Arabic',
+        'upload_image'=>'Upload Place Images',
+        'max_img'=>'Max no. 5 images'
+
 		
     ];
 
