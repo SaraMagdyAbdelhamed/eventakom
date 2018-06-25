@@ -121,12 +121,9 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
     Route::get('/events/backend/filter', '\Modules\Events\Http\Controllers\EventsController@filter')->name('event_backend.filter');
 
 
-
     // Events: Mobile
     // Route::group( ['middleware' => ['auth', 'Rule:Mobile User,Admin'] ], function($lang = null) {
-    Route::middleware(['auth', 'Rule:Mobile User,Admin,Post'])->group( function($lang = null) {
     Route::get('/events/mobile', '\Modules\Events\Http\Controllers\EventsMobileController@index')->name('event_mobile');
-    });
     Route::get('/events/mobile/add', '\Modules\Events\Http\Controllers\EventsMobileController@create')->name('event_mobile.add');
     Route::post('/events/mobile/store', '\Modules\Events\Http\Controllers\EventsMobileController@store')->name('event_mobile.store');
     Route::post('/event_filter', '\Modules\Events\Http\Controllers\EventsMobileController@event_filter')->name('event_filter');
