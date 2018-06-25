@@ -234,10 +234,14 @@ class Helper
     {    
         $user = Auth::user();
         foreach ($rule_array as $key => $rule_name) {
-        $user_rule = $user->rules()->first();
-         if ($user_rule->name == $rule_name ) {
+        $user_rule = $user->rules()->get();
+        
+        foreach ($user_rule as $v) {
+           if ($v->name == $rule_name ) {
                return true;
             }
+        }
+         
         }
     
         return false;
