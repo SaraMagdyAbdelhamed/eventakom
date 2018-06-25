@@ -147,14 +147,17 @@ var _token = '{{csrf_token()}}';
       url: '{{url('bigevents_post')}}',
       data: { _token: _token  , big_events: values_post },
       success: function (data) {
-       $( "#form_message" ).remove();
+        $( "#form_message" ).remove();
         $(".form-message").append(data);
-        $( "#form_message" ).fadeToggle( "slow", "linear" );
+        $( "#form_message" ).delay(1000).fadeToggle( "slow", "linear" );
 
       }
     });
   }
- else{validate();}
+ else{
+ alert('Please update big events order then click save!');
+  //validate();
+     }
 }
 
 $('#multiselect_rightSelected').click(validate);
