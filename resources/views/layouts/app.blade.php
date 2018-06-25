@@ -174,7 +174,9 @@
               </div>
               <div class="side">
                 <ul class="side-menu">
+                  @if(\App\Helpers\Helper::hasRule(['Super Admin','Admin']) )
                   <li class="side__list" id="menu_1"><a class="side__item side__item--sub">@lang('keywords.mainData')</a>
+                  
                     <ul class="side__submenu">
                       <li class="side__sublist"><a class="side__subitem" id="sub_1_1" href="{{ route('about') }}">@lang('keywords.aboutUs')</a>
                       </li>
@@ -196,17 +198,22 @@
                       </li>
                     </ul>
                   </li>
+                  @endif
+                  @if(\App\Helpers\Helper::hasRule(['Super Admin']) )
                   <li class="side__list" id="menu_2"> <a class="side__item side__item--sub">@lang('keywords.Users')</a>
                     <ul class="side__submenu">
                       <li class="side__sublist"><a class="side__subitem" id="sub_2_1" href="{{ route('users_mobile')  }}">@lang('keywords.MobileAppUsers')</a></li>
                       <li class="side__sublist"><a class="side__subitem" id="sub_2_2" href="{{ route('users_backend')  }}">@lang('keywords.BackendUsers')</a></li>
                     </ul>
                   </li>
+                  @endif
                   <li class="side__list" id="menu_3"> <a class="side__item side__item--sub">@lang('keywords.events')</a>
                     <ul class="side__submenu">
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_1" href="{{ route('event_backend') }}">@lang('keywords.addfrombackend')</a></li>
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_2" href="{{ route('event_mobile') }}">@lang('keywords.addfromMobile')</a></li>
+                       @if(\App\Helpers\Helper::hasRule(['Super Admin']) )
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="{{ route('big_events') }}">@lang('keywords.bigevents')</a></li>
+                      @endif
                     </ul>
                   </li>
 
@@ -216,12 +223,15 @@
                   </li>
                   <li class="side__list" id="menu_7"> <a class="side__item" id="sub_7_1" href="{{route('shops')}}">@lang('keywords.shopndine')</a>
                   </li>
+                  @if(\App\Helpers\Helper::hasRule(['Super Admin','Admin']) )
                   <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="{{route('notification')}}">@lang('keywords.notifications')</a>
                   </li>
-
+                  @endif
+                  @if(\App\Helpers\Helper::hasRule(['Super Admin']) )
                   <li class="side__list" id="menu_9"> <a class="side__item" href="{{ route('statistics') }}">@lang('keywords.statistics')</a>
 
                   </li>
+                  @endif
                 </ul>
               </div>
             </nav>

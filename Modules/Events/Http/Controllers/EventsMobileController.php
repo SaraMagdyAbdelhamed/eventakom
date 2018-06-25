@@ -44,7 +44,7 @@ class EventsMobileController extends Controller
 
      public function index()
     {
-        
+       //dd(Helper::hasRule('Mobile User'));
         $current_events = EventMobile::CurrentEvents()->get();
         $pending_events = EventMobile::PendingEvents()->get();
         $rejected_events= EventMobile::EventsRejected()->get();
