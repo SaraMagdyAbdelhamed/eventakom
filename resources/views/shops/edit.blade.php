@@ -227,7 +227,7 @@
                             <div class="master_field">
                               <label class="master_label" for="active_place">@lang('keywords.shop_active')</label>
                               @if($shop->is_active)
-                              <input class="make-switch" type="checkbox" checked data-on-text="active" data-off-text="inactive" name="is_active">
+                              <input  type="checkbox" checked  name="is_active">
                               @else
                               <input class="make-switch" type="checkbox"  data-on-text="active" data-off-text="inactive" name="is_active">
                               @endif

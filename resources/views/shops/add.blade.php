@@ -176,7 +176,7 @@
                           </div>
                           <div class="col-xs-12">
                             <div class="master_field" style="display:flex;">
-                              <input type="checkbox" checked data-on-text="yes" data-off-text="no" name="is_active">
+                              <input type="checkbox" checked  name="is_active">
                               <label class="master_label" for="big_event" style="padding-right: 1%;padding-top: 0.2%;">@lang('keywords.shop_active')</label>
                             </div>
                           </div>
