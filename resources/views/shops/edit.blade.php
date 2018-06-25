@@ -5,7 +5,7 @@
               <!-- =============== Custom Content ===========-==========-->
               <div class="row">
                 <div class="col-xs-12">
-                  <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( '../img/covers/dummy2.jpg ' )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
+                  <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
                     <div class="add-mode">Editing mode</div>
                     <div class="row">
                       <div class="col-xs-12">
@@ -24,7 +24,7 @@
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                     <form id="horizontal-pill-steps" action="{{URL('edit_shop_data/'.$shop['id'])}}" method="post" enctype="multipart/form-data" accept-charset="utf-8">
                       {{ csrf_field() }}
-                      <h3>Info in English</h3>
+                      <h3>Info </h3>
                       <fieldset>
                         <div class="row">
                           <div class="col-xs-4">
@@ -36,7 +36,7 @@
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Place_name">Place name in arabic</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name_ar" value="{{Helper::localization('shops', 'name', $shop['id'], 2)}}"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" value="{{Helper::localization('shops', 'name', $shop['id'], 2)}}"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
                            <div class="col-xs-4">
@@ -177,7 +177,7 @@
                             <div class="col-sm-3 col-xs-4">
                               <div class="master_field">
                                 <label class="master_label" for="branches_1">branch 1 name in arabic</label>
-                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1" name="branch_name_ar[{{$i}}]" value="{{Helper::localization('shop_branches', 'branch', $branch['id'], 2)}}"><span class="master_message color--fadegreen">message</span>
+                                <input class="master_input" type="text" placeholder="branch 1 name"  id="branches_1" name="branch_name_ar[{{$i}}]" value="{{Helper::localization('shop_branches', 'branch', $branch['id'], 2)}}"><span class="master_message color--fadegreen">message</span>
                               </div>
                             </div>
                             <div class="col-sm-3 col-xs-4">
@@ -226,7 +226,11 @@
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="active_place">is place active or in active</label>
+                              @if($shop->is_active)
                               <input class="make-switch" type="checkbox" checked data-on-text="active" data-off-text="inactive" name="is_active">
+                              @else
+                              <input class="make-switch" type="checkbox"  data-on-text="active" data-off-text="inactive" name="is_active">
+                              @endif
                             </div>
                           </div>
                         </div>
@@ -576,7 +580,7 @@
       $('.add-more-branch').on('click' , function(){
        var currentCount =$('.branch-container').length;
       var nextCount = currentCount +1;
-       $('#mbranch').append("<div class='branch-container'>  <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name in arabic</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" address</label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_address_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>start date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>end date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" long</label><input class='master_input' type='text' placeholder='branch "+nextCount+" long'  id='branch_long_"+nextCount+"' name='branch_long["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" lat</label><input class='master_input' type='text' placeholder='branch "+nextCount+" lat'  id='branch_lat_"+nextCount+"' name='branch_lat["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div></div> ");
+       $('#mbranch').append("<div class='branch-container'>  <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" name in arabic</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name'  id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" address</label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_address_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>start date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>end date time for "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" long</label><input class='master_input' type='text' placeholder='branch "+nextCount+" long'  id='branch_long_"+nextCount+"' name='branch_long["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" lat</label><input class='master_input' type='text' placeholder='branch "+nextCount+" lat'  id='branch_lat_"+nextCount+"' name='branch_lat["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div></div> ");
       
 
       assignAutoCompl("branch_address_"+nextCount,"#branch_long_"+nextCount,"#branch_lat_"+nextCount);

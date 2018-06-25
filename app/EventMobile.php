@@ -82,27 +82,19 @@ class EventMobile extends Model
     }
 
     //localizations
-
-    public function getNameAttribute($value)
+    
+    public function getNameMultilangAttribute($value)
     {
         $result = (\App::isLocale('en')) ? Helper::localization('events','name',$this->id,1) : Helper::localization('events','name',$this->id,2);
-        return ($result==null)? $value : $result;
+        return ($result==null)? $this->name : $result;
     }
   
-  public function getVenueAttribute($value)
+  public function getVenueMultilangAttribute($value)
     {
         $result = (\App::isLocale('en')) ? Helper::localization('events','venue',$this->id,1) : Helper::localization('events','venue',$this->id,2);
-        return ($result==null)? $value : $result;
+        return ($result==null)? $this->venue : $result;
     }
     
-
-     public function English_name(){
-    
-      $result = static::query()->where('id','=',$this->id)->select('name');
-      return $result;
-
-    }
-
 
 
    public static function arabic($field,$item_id){
@@ -111,24 +103,9 @@ class EventMobile extends Model
       return $result;
     }
 
-    public function getEnglishNameAttribute(){
 
-      return $this->name;
+
     
-    }
-
-     public function getEnglishDescriptionAttribute(){
-
-      return $this->description;
-    
-    }
-
-     public function getEnglishVenueAttribute(){
-
-      return $this->venue;
-    
-    }
-
     public static function arabicHashtags($item_id){
 
       $result = Helper::multi_localization(4, 'hashtag', $item_id, 2);

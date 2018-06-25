@@ -8,8 +8,8 @@
         <div class="col-xs-12">
           <div class="text-xs-center">
             <div class="text-wraper">
-              <h4 class="cover-inside-title">Events </h4><i class="fa fa-chevron-circle-right"></i>
-              <h4 class="cover-inside-title sub-lvl-2">Big events </h4>
+              <h4 class="cover-inside-title">@lang('keywords.events')</h4><i class="fa fa-chevron-circle-right"></i>
+              <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.bigevents')</h4>
             </div>
           </div>
         </div>
@@ -20,7 +20,7 @@
   </div>
   <div class="clearfix"></div>
   <div class="col-xs-12">
-    <h5>Through this screen backend user determine big events appears on mobile application. Backend user select maximum 5 big events and he can arrange their ranks.</h5>
+    <h5 style="text-align:center;">@lang('keywords.bigevents_description')</h5>
   </div><br>
   <div class="col-xs-12">
     <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
@@ -28,17 +28,18 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="master_field">
-              <label class="master_label mandatory" for="sort_list">sort_list </label>
+              <div class="form-message"></div>
+              <label class="master_label mandatory" for="sort_list">@lang('keywords.sort_list')</label>
               <select class="master_input" id="sort_list">
-                <option value="1">All Events </option>
-                <option value="2">Suggested Events</option>
+                <option value="1">@lang('keywords.All Events')</option>
+                <option value="2">@lang('keywords.Suggested Events')</option>
               </select>
             </div>
           </div>
           <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
             <select class="select_big_event" id="multiselect" name="from[]" size="8" multiple="multiple">
               @foreach($events as $event)
-              <option value="{{$event->id}}">{{$event->name}}</option>
+              <option value="{{$event->id}}">{{$event->nameMultilang}}</option>
 
               @endforeach
             </select>
@@ -49,10 +50,13 @@
           </div>
           <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
             <select class="select_big_event" id="multiselect_to" name="to[]" size="8" multiple="multiple">
+            @if ( !empty($big_events) )
              @foreach($big_events as $bevent)
-              <option value="{{$bevent->event_id}}">{{$bevent->event->name}}</option>
-
+              @if ( isset( $bevent) && !empty($bevent) && !empty($bevent->event))
+              <option value="{{$bevent->event_id}}">{{$bevent->event->nameMultilang}}</option>
+              @endif
               @endforeach 
+              @endif
             </select>
             <div class="row">
               <div class="col-sm-6">
@@ -65,7 +69,7 @@
           </div>
         </div>
       </div>
-        <button class="remodal-confirm col-sm-4" id="submit" type="submit">@lang('keywords.submit')</button>
+        <button class="remodal-confirm col-sm-4" id="submitOrder" type="submit">@lang('keywords.save')</button>
       <div class="clearfix"></div>
 
     </div>
@@ -143,11 +147,14 @@ var _token = '{{csrf_token()}}';
       url: '{{url('bigevents_post')}}',
       data: { _token: _token  , big_events: values_post },
       success: function (data) {
-        $(".master_field").append(data);
+       $( "#form_message" ).remove();
+        $(".form-message").append(data);
+        $( "#form_message" ).fadeToggle( "slow", "linear" );
+
       }
     });
   }
- else{alert('you did not set new Big Events order!');}
+ else{validate();}
 }
 
 $('#multiselect_rightSelected').click(validate);
@@ -158,6 +165,6 @@ document.getElementById('multiselect').ondblclick = function(){
     validate();
 
 };
-$('#submit').click(saveSort);
+$('#submitOrder').click(saveSort);
    </script>
 @endsection @endsection

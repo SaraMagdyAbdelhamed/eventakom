@@ -686,7 +686,7 @@ class EventsController extends Controller
         //delete old events which are not found in new selected ones
         BigEvent::whereNotIn('event_id',$ids_array)->delete();
         //return response()->json(lang('keywords.orderSaved'));
-         return response()->json('Big events order saved successfully!');
+         return response()->json(trans('keywords.orderSaved'));
     }
 
     public function bigevents_select($value, Request $request)
@@ -699,7 +699,7 @@ class EventsController extends Controller
         }
         $options = array();
         foreach ($events as $k => $v) {
-            $options[$k] = '<option value="' . $v->id . '" onclick="saveSort()">' . $v->name . '</option>';
+            $options[$k] = '<option value="' . $v->id . '" onclick="saveSort()">' . $v->nameMultilang . '</option>';
         }
         //dd(response()->json($options));
         return response()->json($options);

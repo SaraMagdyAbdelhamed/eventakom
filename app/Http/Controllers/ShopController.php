@@ -64,7 +64,15 @@ class ShopController extends Controller
 
     public function add_shop(Request $request)
     {
-        // dd($request->all());
+         // dd($request->all());
+         if(isset($request['is_active']))
+         {
+            $is_active=1;
+         }
+         else
+         {
+            $is_active=0;
+         }
         $shop=Shop::create([
             "name"=>$request['place_name'],
             "phone"=>$request['phone'],
@@ -72,7 +80,8 @@ class ShopController extends Controller
             "info"=>$request['info'],
             "address"=>$request['place_address'],
             "longitude"=>$request['shop_long'],
-            "latitude"=>$request['shop_lat']
+            "latitude"=>$request['shop_lat'],
+            "is_active"=>$is_active
         ]);
         if(isset($request['images']))
         {
@@ -179,6 +188,14 @@ class ShopController extends Controller
 
     public function edit_shop(Request $request,$id)
     {
+        if(isset($request['is_active']))
+         {
+            $is_active=1;
+         }
+         else
+         {
+            $is_active=0;
+         }
  $shop=Shop::find($id);
  $shop->update([
             "name"=>$request['place_name'],
@@ -187,7 +204,8 @@ class ShopController extends Controller
             "info"=>$request['info'],
             "address"=>$request['place_address'],
             "longitude"=>$request['shop_long'],
-            "latitude"=>$request['shop_lat']
+            "latitude"=>$request['shop_lat'],
+            "is_active"=>$is_active
  ]);
   if(isset($request['place_name_ar']))
         {

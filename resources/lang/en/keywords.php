@@ -213,7 +213,23 @@
         'Number of users 18-25 years'=>'Number of users 18-25 years',
         'Number of users more than 25 years'=>'Number of users more than 25 years',
         // big events
-        'orderSaved'    => 'Big events order saved successfully'
+        'orderSaved'    => ' <div class="alert text-center" id="form_message" style="background-color: #2ecc71; color: white; padding: 10px; margin-top: 40px;">
+                    <b>Big events order saved successfully</b>
+                  </div>',
+		'bigevents_description'    => 'Through this screen backend user determine big events appears on mobile application. Backend user select maximum 5 big events and he can arrange their ranks.
+',
+        'All Events'    => 'All Events',
+		'Suggested Events'    => 'Suggested Events',
+		'sort_list' => 'Sort List',
+        'shop_and_dine'=>'Shop And Dine',
+        'serial_no'=>'SerialNo ',
+        'shop_photo'=>'PlacePhoto',
+        'shop_name'=>'PlaceName ',
+        'shop_phone'=>'Phone ',
+        'shop_status'=>'Status',
+        'shop_actions'=>'Actions',
+        'add_new_shop'=>'Add new Shop and dine',
+        'delete_selected_shops'=>'Delete selected'
 		
     ];
 

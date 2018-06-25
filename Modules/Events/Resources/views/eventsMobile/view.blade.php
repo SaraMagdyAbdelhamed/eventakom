@@ -34,11 +34,11 @@
                             <table class="verticaltable table-master">
                               <tr>
                                 <th><span class="cellcontent">@lang('keywords.eventName')</span></th>
-                                <td><span class="cellcontent">{{$event->name}}</span></td>
+                                <td><span class="cellcontent">{{$event->nameMultilang}}</span></td>
                               </tr>
                               <tr>
                                 <th><span class="cellcontent">@lang('keywords.venue')</span></th>
-                                <td><span class="cellcontent">{{$event->venue}}</span></td>
+                                <td><span class="cellcontent">{{$event->venueMultilang}}</span></td>
                               </tr>
                               <tr>
                                 <th><span class="cellcontent">@lang('keywords.start')</span></th>

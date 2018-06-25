@@ -56,7 +56,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">@lang('keywords.eventName')</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3"  id="Event_name" name="english_event_name" value="{{$event->englishName}}" >
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3"  id="Event_name" name="english_event_name" value="{{$event->name}}" >
                 @if ($errors->has('event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('event_name') }}</span>
                 @endif
@@ -67,8 +67,8 @@
             {{-- Description --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="description">@lang('keywords.description')</label>
-                <textarea class="master_input" id="description" placeholder="Description"  name="english_description">{{$event->englishVenue}}</textarea>
+                <label class="master_label" for="description">@lang('keywords.eventDescription')</label>
+                <textarea class="master_input" id="description" placeholder="Description"  name="english_description">{{$event->venue}}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
                 @endif
@@ -83,16 +83,26 @@
                 <input type="hidden" name="event_id" value="{{$event->id}}">
                 <input type="hidden" name="lat" id="lat" >
                 <input type="hidden" name="lng" id="lng" >
-                <input type="hidden" name="address" id="address" value="">
+                <!-- <input type="hidden" name="address" id="address" value=""> -->
               </div>
             </div>
+
+             <div class="col-xs-6">
+                <div class="master_field">
+                  <label class="master_label" for="venue">@lang('keywords.address')</label>
+                  <input class="master_input" type="text" readonly placeholder="ex:CFC" Required id="address" name="address" value="{{$event->address}}">
+                  @if ($errors->has('address'))
+                    <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
+                  @endif
+                </div>
+              </div>
 
 
             {{-- English Venu --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">@lang('keywords.venue')</label>
-                <input class="master_input" type="text" placeholder="ex:CFC"  id="venue" name="english_venu" value="{{$event->englishVenue}}" >
+                <input class="master_input" type="text" placeholder="ex:CFC"  id="venue" name="english_venu" value="{{$event->venue}}" >
                 @if ($errors->has('english_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_venu') }}</span>
                 @endif
