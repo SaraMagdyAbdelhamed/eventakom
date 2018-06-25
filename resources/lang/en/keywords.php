@@ -285,7 +285,7 @@
         'branch_name'=>'Branch Name ',
         'branch_address'=>'Branch Address',
         'branch_start'=>'Start Time',
-        'branch_end'=>'مEnd Time'
+        'branch_end'=>'End Time'
 		
     ];
 
