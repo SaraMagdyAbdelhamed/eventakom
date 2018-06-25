@@ -254,7 +254,7 @@
         'wednesday'=>'الاربعاء',
         'thursday'=>'الخميس',
         'friday'=>'الجمعه',
-        'shop_active'=>'هل المحل اكتيف ام لا ',
+        'shop_active'=>'فعال ',
         'add_branch'=>'إضافه فرع',
         'you_tube'=>'فيديو يوتيوب',
         'in_en'=>'بالانجليزي',
@@ -273,7 +273,22 @@
         'gender'=>'النوع ',
         
         'male'=>'ذكر ',
-        'female'=>'انثي'
+        'female'=>'انثي',
+        'images'=>'صور ',
+        'videos'=>'فيديوهات',
+        'confirm_delete'=>'نعم ,قم بالحذف ',
+        'question'=>' هل انت متأكد ؟',
+        'information_message'=>'لن تستطيع استرجاع هذه المعلومات لاحقا ',
+        'delete'=>'تم الحذف  ',
+        'delete_message'=>'تم الحذف بنجاح ',
+        'delete_cancel'=>'تم الالغاء',
+        'delete_cancel_message'=>'المعلومات مازالت موجوده ',
+        'wrong'=>'خطأ',
+        'wrong_message'=>'من فضلك اختر متجر ',
+        'branch_name'=>'اسم الفرع ',
+        'branch_address'=>'عنوان الفرع ',
+        'branch_start'=>'بدأ عمل الفرع ',
+        'branch_end'=>'معاد اغلاق الفرع '
 
 
 	

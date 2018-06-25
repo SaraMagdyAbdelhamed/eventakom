@@ -241,25 +241,25 @@
               {{-- Start alert messages --}}
               <div class="col-lg-12 text-center">
                 @if (Session::has('success'))
-                  <div class="alert text-center" style="background-color: #2ecc71; color: white; padding: 10px; margin-top: 40px;">
+                  <div class="alert text-center" style="background-color: #2ecc71; color: white; padding: 10px; margin-top: 20px;">
                     <b>{{ Session::get('success') }}</b>
                   </div>
                 @endif
 
                 @if (Session::has('warning'))
-                  <div class="alert text-center" style="background-color: #f39c12; color: white; padding: 10px; margin-top: 40px;">
+                  <div class="alert text-center" style="background-color: #f39c12; color: white; padding: 10px; margin-top: 20px;">
                     <b>{{ Session::get('warning') }}</b>
                   </div>
                 @endif
 
                 @if (Session::has('error'))
-                  <div class="alert text-center" style="background-color: #c0392b; color: white; padding: 10px; margin-top: 40px;">
+                  <div class="alert text-center" style="background-color: #c0392b; color: white; padding: 10px; margin-top: 20px;">
                     <b>{{ Session::get('error') }}</b>
                   </div>
                 @endif
 
                 @foreach ($errors->all() as $error)
-                    <div class="alert alert-danger text-center" style="background-color: #c0392b; color: white; padding: 10px; margin-top: 40px;">
+                    <div class="alert alert-danger text-center" style="background-color: #c0392b; color: white; padding: 10px; margin-top: 20px;">
                       <b>{{ $error }}</b>
                     </div>
                 @endforeach
@@ -627,6 +627,14 @@
       //-============================================================
     </script>
     <script type="text/javascript">
+      $(document).ready(function() {
+  $(window).keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+});
       $(function () {
         $(".select2").select2();
       });

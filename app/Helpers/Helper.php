@@ -15,6 +15,7 @@ use App\EntityLocalization;
 use App\Notifications;
 use App\NotificationsPush;
 use Illuminate\Database\Eloquent\Model;
+use PHPUnit\Framework\Constraint\Exception;
 
 class Helper
 {
@@ -107,12 +108,18 @@ class Helper
      */
     public static function edit_entity_localization($table_name, $field_name, $item_id, $lang_id, $new_value)
     {
-        $localization = Entity::where('table_name', $table_name)->with(['localizations' => function ($q) use ($table_name, $field_name, $item_id, $lang_id) {
-            $q->where('field', $field_name)->where('item_id', $item_id)->where('lang_id', $lang_id);
-        }])->first()->localizations[0];
+        $entity_id = Entity::where('table_name', $table_name)->first()->id; // get entity_id
+        $localization = EntityLocalization::where('entity_id', $entity_id)
+                                            ->where('field', $field_name)
+                                            ->where('item_id', $item_id)
+                                            ->where('lang_id', $lang_id)->first();
 
-        $localization->value = $new_value;
-        $localization->save();
+        if($localization != NULL) {
+            $localization->value = $new_value;
+            $localization->save();
+        } else {
+            Helper::add_localization($entity_id, $field_name, $item_id, $new_value, $lang_id);
+        }
     }
 
     /**
