@@ -12,6 +12,8 @@
         'email'             => 'البريد الالكتروني',
         'not'               => 'لا يوجد',
         'addNew'            => 'اضافة',
+        'image'             => 'الصورة',
+        'title'             => 'العنوان',
         'noImage'           => 'لا يوجد صورة',
         'edit'              => 'تعديل',
         'distance'          => 'المسافة',
@@ -28,6 +30,13 @@
         'pleaseSelect' => 'اختر احدى القيم',
         'actions'   => 'الإجرائات',
         'address'   => 'العنوان',
+        'saturday'  => 'السبت',
+        'sunday'    => 'الاحد',
+        'monday'    => 'الاثنين',
+        'tuesday'   => 'الثلاثاء',
+        'wednesday' => 'الاربعاء',
+        'thursday'  => 'الخميس',
+        'friday'    => 'الجمعة',
 
         // fixed pages
         'registered'=> 'تسجيل الدخول',
@@ -100,6 +109,7 @@
         'events'    => 'الاحداث',
         'addfrombackend' => 'المضاف من لوحة التحكم',
         'editfrombackend'=> 'تعديل المضاف من لوحة التحكم',
+        'addNewBackend'  => 'اضف حدثا جديدا',
         'info'      => 'المعلومات',
         'posts'     => 'المنشورات',
         'tickets'   => 'التذاكر',
@@ -109,6 +119,11 @@
         'end'       => 'ينتهي في',
         'addby'     => 'اضيف بواسطة',
         'category'  => 'التصنيف',
+        'infoEn'   => 'المعلومات بالانجليزية',
+        'infoAr'    => 'المعلومات بالعربية',
+        'tickets'   => 'التذاكر',
+        'contactInfo'   => 'معلومات التواصل',
+        'media'     => 'الوسائط',
 		
         // Events Mobile
         'addfromMobile' => 'المضاف من التطبيق',
@@ -142,9 +157,10 @@
 		'Price'=>'السعر',
 		'This event is free no tickets'=>'هذا الحدث مجاني ، لا يوجد تذاكر.',
 		'Info in En'=>'المعلومات بالانجليزية',
-		'eventDescription'=>'الوصف',
+		'description'=>'الوصف',
 		'Hashtags'=>'الكلمات الدلالية',
-		'Please select a gender'=>'الرجاء اختيار النوع',
+        'Please select a gender'=>'الرجاء اختيار النوع',
+        'Please select age range' => 'من فضلك اختر المستوي العمري',
 		'Allowed Age Range'=>'الفئة العمرية المشاركة',
 		'Please Select Age Range'=>'الرجاء اختيار الفئة العمرية',
 		'start date time'=>'وقت البدء',
@@ -186,18 +202,32 @@
 		'Number of users more than 25 years'=>'عدد المستخدمين للأعمار أكثر من 25 عام',
 
 
-        // Offers & Deals
+        // Offers & Deals AND Famous Attractions
         'offers'    => 'العروض والصفقات',
         'placeName' => 'اسم المكان',
+        'placeAddress'  => 'عنوان المكان',
+        'placePhone'    => 'رقم الهاتف',
+        'placeCategories'  => 'التصنيفات',
+        'status'    => 'الحالة',
         'bigevents' => 'أهم الأحداث',
         'choosecategory' => 'إختر تصنيف'  ,
+        'isThisPlaceActive' => 'هل هذا المكان مفعل؟',
+        'openday'   => 'الايام المتاحة',
+        'otherInfo' => 'معلومات اضافية',
+
        // big events
-        'orderSaved'    => 'تم حفظ الترتيب بنجاح',
+         'orderSaved'    => ' <div class="alert text-center" id="form_message" style="background-color: #2ecc71; color: white; padding: 10px; margin-top: 40px;">
+                    <b>تم حفظ الترتيب بنجاح</b>
+                  </div>',
 		'bigevents_description'    => 'يتم من خلال هذه الشاشة تحديد الاحداث الهامة و التي ستعرض على تطبيق الهاتف كما يتم ترتيبها ، يتم اختيار بحد أقصى 5 أحداث هامة ',
     
 	     'All Events'    => 'كل الاحداث',
 		'Suggested Events' => 'احداث  مقترحة كأحداث هامة',
 		'sort_list' => 'قائمة ترتيب الأحداث',
+		'sortThenSave' => 'من فضلك قم بتغيير ترتيب الأحداث الهامة أولا ثم اضغط حفظ',
+		'limit5Bevents'=>'الرجاء اختيار بحد أقصى 5 أحداث هامة فقط',
+		'duplicatedBevents'=>'لقد قمت باختيار هذا الحدث كحدث هام مسبقا!',
+	   //shop and dine
         'shop_and_dine'=>'محلات ومطاعم',
         'serial_no'=>'رقم سرى ',
         'shop_photo'=>'صوره المحل',
@@ -231,6 +261,7 @@
         'in_ar'=>'بالعربى',
         'upload_image'=>'ارفع صور للمحل ',
         'max_img'=>'اقصي عدد صور 5'
+
 	
 	];
 

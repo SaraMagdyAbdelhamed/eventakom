@@ -88,6 +88,17 @@
               </div>
             </div>
 
+            {{-- Address --}}
+            <div class="col-xs-6">
+              <div class="master_field">
+                <label class="master_label" for="venue">@lang('keywords.address')</label>
+                <input class="master_input" type="text" readonly placeholder="ex:CFC"  id="address" name="address" value="{{ old('address') }}">
+                @if ($errors->has('address'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
+                @endif
+              </div>
+            </div>
+
 
             {{-- English Venu --}}
             <div class="col-xs-6">
@@ -332,7 +343,7 @@
               <div class="col-xs-8">
                 <div class="master_field">
                   <label class="master_label" for="Price">@lang('keywords.Price')</label>
-                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price" value="{{ $ticket->price ? : 0 }}">
+                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price" value="{{ isset($ticket->price) ? $ticket->price : 0 }}">
                   @if ($errors->has('price'))
                     <span class="master_message color--fadegreen">{{ $errors->first('price') }}</span>
                   @endif
@@ -348,7 +359,7 @@
                     <option value="" disabled selected>-- Please Select a Currency Symbol --</option>
                     @if ( isset($currencies) && !empty($currencies) )
                         @foreach ($currencies as $currency)
-                            <option value="{{ $currency->id }}" {{ $currency->id == $ticket->currency_id ? 'selected' : '' }}>{{ $currency->symbol }}</option>
+                            <option value="{{ $currency->id }}" {{ isset($ticket->currency_id) ? ($currency->id == $ticket->currency_id ? 'selected' : '') : '' }}>{{ $currency->symbol }}</option>
                         @endforeach
                     @endif
                   </select>
@@ -363,9 +374,9 @@
               <div class="col-xs-12">
                 <div class="master_field">
                   <label class="master_label" for="Available_tickets">Available tickets</label>
-                  <input class="master_input" type="number" placeholder="5" min="0" Required 
-                    id="Available_tickets" name="number_of_tickets" value="{{ $ticket->available_tickets ? : 0 }}">
-                  @if ($errors->has('number_of_tickets'))
+                  <input class="master_input" type="number" placeholder="5" min="0"  
+                    id="Available_tickets" name="number_of_tickets" value="{{ isset($ticket->available_tickets) ? $ticket->available_tickets : 0 }}">
+                  @if ($errors->has('number_of_tickets')) 
                   <span class="master_message color--fadegreen">{{ $errors->first('number_of_tickets') }}</span>
                 @endif
                 </div>
@@ -441,7 +452,7 @@
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">Add YouTube video (1) Link in Arabic</label>
                 <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" 
-                    name="youtube_ar_1" value="{{ $event->media[2]->link }}">
+                    name="youtube_ar_1" value="{{ count($event->media) > 0 ? $event->media[2]->link : '' }}">
                 @if ($errors->has('youtube_ar_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_1') }}</span>
                 @endif
@@ -453,7 +464,7 @@
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">Add YouTube video (1) Link in English</label>
                 <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" 
-                    name="youtube_en_1" value="{{  $event->media[0]->link }}">
+                    name="youtube_en_1" value="{{ count($event->media) > 0 ? $event->media[0]->link : '' }}">
                 @if ($errors->has('youtube_en_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_1') }}</span>
                 @endif
@@ -465,7 +476,7 @@
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en">Add YouTube video (2) Link in Arabic</label>
                 <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" 
-                    name="youtube_ar_2" value="{{  $event->media[3]->link }}">
+                    name="youtube_ar_2" value="{{ count($event->media) > 0 ? $event->media[3]->link : '' }}">
                 @if ($errors->has('youtube_ar_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_2') }}</span>
                 @endif
@@ -477,7 +488,7 @@
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar">Add YouTube video (2) Link in English</label>
                 <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" 
-                    name="youtube_en_2" value="{{  $event->media[1]->link }}">
+                    name="youtube_en_2" value="{{ count($event->media) > 0 ? $event->media[1]->link : '' }}">
                 @if ($errors->has('youtube_en_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_2') }}</span>
                 @endif
@@ -491,10 +502,15 @@
           <div class="col-sm-6 col-xs-12 text-center">
 
             {{-- Arabic Images --}}
-            @if ( isset($arabic_images) && !empty($arabic_images) )
+            @if ( isset($arabic_images) && !empty($arabic_images) && count($arabic_images) > 0 )
                 @foreach ($arabic_images as $img)
                     <img src="{{ asset($img->link) }}" alt="image" width="75" height="75">
                 @endforeach
+            @else 
+              <figure>
+                <img src="{{ asset($default_image) }}" alt="image" width="75" height="75">
+                <figcaption>default image</figcaption>
+              </figure>
             @endif
 
             <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
@@ -513,10 +529,15 @@
           <div class="col-sm-6 col-xs-12 text-center">
 
             {{-- Arabic Images --}}
-            @if ( isset($english_images) && !empty($english_images) )
+            @if ( isset($english_images) && !empty($english_images) && count($english_images) > 0 )
                 @foreach ($english_images as $img)
                     <img src="{{ asset($img->link) }}" alt="image" width="75" height="75">
                 @endforeach
+            @else 
+              <figure>
+                <img src="{{ asset($default_image) }}" alt="image" width="75" height="75">
+                <figcaption>default image</figcaption>
+              </figure>
             @endif
 
             <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>

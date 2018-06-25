@@ -5442,9 +5442,6 @@ window.Materialize = {};
  * Licensed under MIT http://www.opensource.org/licenses/MIT
  */
 
-var next=0;
-var prev=0;
-
 
 
 ;(function ($, undefined)
@@ -12850,7 +12847,7 @@ else if (typeof define === 'function' && define.amd) {
   "use strict";
 
   function b(b, c) {
-    this.itemsArray = [], this.$element = a(b), this.$element.hide(), this.isSelect = "SELECT" === b.tagName, this.multiple = this.isSelect && b.hasAttribute("multiple"), this.objectItems = c && c.itemValue, this.placeholderText = b.hasAttribute("placeholder") ? this.$element.attr("placeholder") : "", this.inputSize = Math.max(1, this.placeholderText.length), this.$container = a('<div class="bootstrap-tagsinput"></div>'), this.$input = a('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container), this.$element.before(this.$container), this.build(c)
+    this.itemsArray = [], this.$element = a(b), this.$element.hide(), this.isSelect = "SELECT" === b.tagName, this.multiple = this.isSelect && b.hasAttribute("multiple"), this.objectItems = c && c.itemValue, this.placeholderText = b.hasAttribute("placeholder") ? this.$element.attr("placeholder") : "", this.inputSize = Math.max(1, this.placeholderText.length), this.$container = a('<div class="bootstrap-tagsinput"></div>'), this.$input = a('<input id="hash" maxlength="12" minLength ="3" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container), this.$element.before(this.$container), this.build(c)
   }
 
   function c(a, b) {
@@ -19516,10 +19513,10 @@ if(this.$element.prop("multiple"))this.current(function(d){var e=[];a=[a],a.push
         submitButton: $(),
           instructions: $('<p class="js-uploader__instructions uploader__instructions">' + 
           + '</p>')   ,
-        selectButton: $('<input style="height: 0; width: 0;" id="fileinput' + index + '" type="file" multiple class="js-uploader__file-input uploader__file-input">' +
+        selectButton: $('<input style="height: 0; width: 0;" id="fileinput' + index + '" type="file" name="fileinput' + index + '" multiple class="js-uploader__file-input uploader__file-input">' +
           '<label for="fileinput' + index + '" style="cursor: pointer;" class="js-uploader__file-label uploader__file-label">' +
           options.selectButtonCopy + '</label>'),
-        secondarySelectButton: $('<input style="height: 0; width: 0;" id="secondaryfileinput' + index + '" type="file"' +
+        secondarySelectButton: $('<input style="height: 0; width: 0;" id="secondaryfileinput' + index + '" type="file" name="secondaryfileinput' + index + '"' +
           ' multiple class="js-uploader__file-input uploader__file-input">' +
           '<label for="secondaryfileinput' + index + '" style="cursor: pointer;" class="js-uploader__file-label uploader__file-label uploader__file-label--secondary">' +
           options.secondarySelectButtonCopy + '</label>'),

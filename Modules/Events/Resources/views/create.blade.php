@@ -48,7 +48,7 @@
       <form id="horizontal-pill-steps" action="{{ route('event_backend.store') }}" method="POST" role="form" enctype="multipart/form-data" >
         {{ csrf_field() }}
         
-        <h3>Info in En</h3>
+        <h3>@lang('keywords.infoEn')</h3>
         <fieldset>
           <div class="row">
 
@@ -56,7 +56,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">@lang('keywords.eventName')</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="english_event_name" value="{{ old('english_event_name') }}">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3"  id="Event_name" name="english_event_name" value="{{ old('english_event_name') }}">
                 @if ($errors->has('event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('event_name') }}</span>
                 @endif
@@ -67,8 +67,8 @@
             {{-- Description --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="description">@lang('keywords.eventDescription')</label>
-                <textarea class="master_input" id="description" placeholder="Description" Required name="english_description">{{ old('english_description') }}</textarea>
+                <label class="master_label" for="description">@lang('keywords.description')</label>
+                <textarea class="master_input" id="description" placeholder="Description"  name="english_description">{{ old('english_description') }}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
                 @endif
@@ -89,7 +89,7 @@
             <div class="col-xs-6">
                 <div class="master_field">
                   <label class="master_label" for="venue">@lang('keywords.address')</label>
-                  <input class="master_input" type="text" readonly placeholder="ex:CFC" Required id="address" name="address" value="{{ old('address') }}">
+                  <input class="master_input" type="text" readonly placeholder="ex:CFC"  id="address" name="address" value="{{ old('address') }}">
                   @if ($errors->has('address'))
                     <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
                   @endif
@@ -100,7 +100,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">@lang('keywords.venue')</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="english_venu" value="{{ old('english_venu') }}">
+                <input class="master_input" type="text" placeholder="ex:CFC"  id="venue" name="english_venu" value="{{ old('english_venu') }}">
                 @if ($errors->has('english_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_venu') }}</span>
                 @endif
@@ -112,7 +112,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">@lang('keywords.Hashtags')</label>
-                <input type="text" value="" data-role="tagsinput" name="english_hashtags" value="{{ old('english_hashtags') }}">
+                <input type="text" value="" minlength=2 maxlength=12 data-role="tagsinput" name="english_hashtags" max="2" value="{{ old('english_hashtags') }}">
               </div>
               <div class="clearfix"></div>
             </div>
@@ -137,9 +137,9 @@
             {{-- Allowed Age ranges --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label mandatory" for="age">@lang('keywords.Allowed Age Range')</label>
+                <label class="master_label mandatory" for="age">@lang('keywords.Please select age range')</label>
                 <select class="master_input select2" id="age" style="width:100%;" name="age_range">
-                  <option value="" disabled selected>-- Please Select Age Range</option>
+                  <option value="" disabled selected>-- @lang('keywords.Please select age range') --</option>
                   @if ( isset($age_range) && !empty($age_range) )
                       @foreach ($age_range as $range)
                           <option value="{{ $range->id }}">{{ \App::isLocale('en') ? $range->name : \Helper::localization('age_ranges', 'name', $range->id, 2, '') }}</option>
@@ -158,7 +158,7 @@
               <div class="master_field">
                 <label class="master_label" for="start_date">@lang('keywords.start date')</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="start date" Required id="start_date" name="start_date" value="{{ old('start_date') }}">
+                  <input class="datepicker master_input" type="text" placeholder="start date"  id="start_date" name="start_date" value="{{ old('start_date') }}">
                 </div>
                 @if ($errors->has('start_date'))
                   <span class="master_message color--fadegreen">{{ $errors->first('start_date') }}</span>
@@ -172,7 +172,7 @@
               <div class="master_field">
                 <label class="master_label" for="start_time">@lang('keywords.start date time')</label>
                 <div class="bootstrap-timepicker">
-                  <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time" name="start_time" value="{{ old('start_time') }}">
+                  <input class="timepicker master_input" type="text" placeholder="start time"  id="start_time" name="start_time" value="{{ old('start_time') }}">
                 </div>
                 @if ($errors->has('start_time'))
                   <span class="master_message color--fadegreen">{{ $errors->first('start_time') }}</span>
@@ -186,7 +186,7 @@
               <div class="master_field">
                 <label class="master_label" for="end_date">@lang('keywords.end date')</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="end date" Required id="end_date" name="end_date" value="{{ old('end_date') }}">
+                  <input class="datepicker master_input" type="text" placeholder="end date"  id="end_date" name="end_date" value="{{ old('end_date') }}">
                 </div>
                 @if ($errors->has('end_date'))
                   <span class="master_message color--fadegreen">{{ $errors->first('end_date') }}</span>
@@ -200,7 +200,7 @@
               <div class="master_field">
                 <label class="master_label" for="end_time">@lang('keywords.end date time')</label>
                 <div class="bootstrap-timepicker">
-                  <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="end_time" value="{{ old('end_date') }}">
+                  <input class="timepicker master_input" type="text" placeholder="end time" id="end_time" name="end_time" value="{{ old('end_date') }}">
                 </div>
                 @if ($errors->has('end_time'))
                   <span class="master_message color--fadegreen">{{ $errors->first('end_time') }}</span>
@@ -213,7 +213,7 @@
             <div class="col-sm-6 col-xs-12">
               <div class="master_field">
                 <label class="master_label mandatory" for="category">@lang('keywords.category')</label>
-                <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="categories[]">
+                <select class="master_input select2" id="category" multiple="multiple" data-placeholder="Music, Arts..." style="width:100%;" name="categories[]">
                   @if ( isset($categories) && !empty($categories) )
                       @foreach ($categories as $category)
                           <option value="{{ $category->id }}">{{ \App::isLocale('en') ? $category->name : \Helper::localization('interests', 'name', $category->id, 2, $category->name) }}</option>
@@ -246,7 +246,7 @@
           </div>
         </fieldset>
 
-        <h3>Info in Ar</h3>
+        <h3>@lang('keywords.infoAr')</h3>
         <fieldset>
           <div class="row">
 
@@ -254,7 +254,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">اسم الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="arabic_event_name" value="{{ old('arabic_event_name') }}">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" id="Event_name" name="arabic_event_name" value="{{ old('arabic_event_name') }}">
                 @if ($errors->has('arabic_event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_event_name') }}</span>
                 @endif
@@ -266,7 +266,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">وصف الحدث</label>
-                <textarea class="master_input" id="description" placeholder="Description" Required name="arabic_description">{{ old('arabic_description') }}</textarea>
+                <textarea class="master_input" id="description" placeholder="Description" name="arabic_description">{{ old('arabic_description') }}</textarea>
                 @if ($errors->has('arabic_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_description') }}</span>
                 @endif
@@ -278,7 +278,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">مكان الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="arabic_venu" value="{{ old('arabic_venu') }}">
+                <input class="master_input" type="text" placeholder="ex:CFC" id="venue" name="arabic_venu" value="{{ old('arabic_venu') }}">
                 @if ($errors->has('arabic_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_venu') }}</span>
                 @endif
@@ -290,7 +290,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory">الكلمات البحثية</label>
-                <input type="text" value="" data-role="tagsinput" name="arabic_hashtags" value="{{ old('arabic_hashtags') }}">
+                <input type="text"  minlength=2 maxlength=12 value="" data-role="tagsinput" name="arabic_hashtags" value="{{ old('arabic_hashtags') }}">
               </div>
               @if ($errors->has('arabic_hashtags'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_hashtags') }}</span>
@@ -300,7 +300,7 @@
           </div>
         </fieldset>
 
-        <h3>Tickets</h3>
+        <h3>@lang('keywords.tickets')</h3>
         <fieldset>
 
           {{-- Is Event for Free or Paid --}}
@@ -353,7 +353,7 @@
               <div class="col-xs-12">
                 <div class="master_field">
                   <label class="master_label" for="Available_tickets">@lang('keywords.Available tickets')</label>
-                  <input class="master_input" type="number" placeholder="5" min="0" Required id="Available_tickets" name="number_of_tickets" value="{{ old('number_of_tickets') }}">
+                  <input class="master_input" type="number" placeholder="5" min="0"  id="Available_tickets" name="number_of_tickets" value="{{ old('number_of_tickets') }}">
                   @if ($errors->has('number_of_tickets'))
                   <span class="master_message color--fadegreen">{{ $errors->first('number_of_tickets') }}</span>
                 @endif
@@ -364,7 +364,7 @@
         </fieldset>
 
 
-        <h3>Contact Info</h3>
+        <h3>@lang('keywords.contactInfo')</h3>
         <fieldset>
           <div class="row">
 
@@ -384,7 +384,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="e_email">@lang('keywords.email')</label>
-                <input class="master_input" type="email" placeholder="email" Required id="e_email" name="email" value="{{ old('email') }}">
+                <input class="master_input" type="email" placeholder="email"  id="e_email" name="email" value="{{ old('email') }}">
                 @if ($errors->has('email'))
                   <span class="master_message color--fadegreen">{{ $errors->first('email') }}</span>
                 @endif
@@ -396,7 +396,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Code_numbe">@lang('keywords.Code number')</label>
-                <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe" name="code_number" value="{{ old('code_number') }}">
+                <input class="master_input" type="number" placeholder="ex: 2012545"  id="Code_numbe" name="code_number" value="{{ old('code_number') }}">
                 @if ($errors->has('code_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('code_number') }}</span>
                 @endif
@@ -408,7 +408,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Mobile_number">@lang('keywords.mobile number')</label>
-                <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number" name="mobile_number" value="{{ old('mobile_number') }}">
+                <input class="master_input" type="number" placeholder="0123456789"  id="Mobile_number" name="mobile_number" value="{{ old('mobile_number') }}">
                 @if ($errors->has('mobile_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('mobile_number') }}</span>
                 @endif
@@ -418,7 +418,7 @@
         </fieldset>
 
 
-        <h3>Media</h3>
+        <h3>@lang('keywords.media')</h3>
         <fieldset>
           
           <div class="row">
@@ -652,66 +652,7 @@
         
       }
     
-    
-    $(document).ready(function(){
-      $("#finish1").click(function(){
-        var filesDraged0 = document.getElementById('fileinput0');
-        var filesMore0 = document.getElementById('secondaryfileinput0');
-        var filesDraged1 = document.getElementById("fileinput1");
-        var filesMore1 = document.getElementById("secondaryfileinput1");
-          var filesDragedAr = filesDraged0.files; 
-          var filesDragedEn = filesDraged1.files;
-          var filesMoreAr = filesMore0.files;
-          var filesMoreEn = filesMore1.files;
-    
-          var filesListAr=[];
-          var filesListEn=[];
-          //Arabic Files
-        $.each(filesDragedAr,function(index,element){
-          filesListAr.push(element.name);
-        });
-        if(filesMoreAr.length > 0){
-          $.each(filesMoreAr,function(index,element){
-            filesListAr.push(element.name);
-          })
-        }
-        console.log(filesListAr);
-        //English Files /*****/
-        $.each(filesDragedEn,function(index,element){
-          filesListEn.push(element.name);
-        });
-        console.log("engish");
-        console.log(filesDragedEn)
-        if(filesMoreEn.length>0){
-          $.each(filesMoreEn,function(index,element){
-            filesListEn.push(element.name);
-          })
-        }
-        console.log(filesListEn)
-        var form = $("#horizontal-pill-steps").serializeArray();
-        var form_data = {};
-        console.log(form);
-        $.each(form,function(index,element){
-          form_data[element.name] = element.value;
-        })
-        if(form_data.active_event == undefined && form_data.big_event == undefined){
-          //big_event & active event =false (API)
-          console.log("2 undefined")
-        }
-      else if(form_data.active_event == undefined){
-          // active_event = false (API)
-          console.log("active undefined")
-        }
-      else if(form_data.big_event == undefined){
-          //big_event = false (API)
-          console.log("big undefined")
-        }
-        else{
-          // 2= true
-          console.log("2 ~undefined")
-        }
-      });
-    })
+  
     
     var form = $("#horizontal-pill-steps").show();
     form.steps({
