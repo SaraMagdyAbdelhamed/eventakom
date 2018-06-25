@@ -45,7 +45,7 @@
                                       <label class="master_label" for="filter_cat">@lang('keywords.eventCategories')</label>
                                       <select class="master_input select2" id="filter_cat" multiple="multiple" data-placeholder="Event categories" name="categories[]" style="width:100%;" ,>
                                       @foreach($categories as $category)
-                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                        <option value="{{$category->id}}">{{$category->nameMultilang}}</option>
                                         @endforeach
                                       </select>
                                     </div>
@@ -521,7 +521,7 @@
                                       <label class="master_label" for="filter_cat">@lang('keywords.eventCategories')</label>
                                       <select class="master_input select2" id="filter_cat" multiple="multiple" data-placeholder="Event categories" name="categories[]" style="width:100%;" ,>
                                       @foreach($categories as $category)
-                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                        <option value="{{$category->id}}">{{$category->nameMultilang}}</option>
                                         @endforeach
                                       </select>
                                     </div>

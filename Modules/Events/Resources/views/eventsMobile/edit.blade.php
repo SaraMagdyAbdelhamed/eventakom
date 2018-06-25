@@ -219,7 +219,7 @@
                   @if ( isset($categories) && !empty($categories) )
                       @foreach ($categories as $category)
                           <option value="{{ $category->id }}" @foreach($event_categories as $ec) 
-                           <?php $selected = ($category->id == $ec->interest_id)? 'selected' : ''; echo $selected;?> @endforeach>{{ $category->name }}</option>
+                           <?php $selected = ($category->id == $ec->interest_id)? 'selected' : ''; echo $selected;?> @endforeach>{{ $category->nameMultilang }}</option>
                       @endforeach
                   @endif
                 </select>

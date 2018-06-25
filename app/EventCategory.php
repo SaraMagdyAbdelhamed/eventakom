@@ -30,9 +30,9 @@ class EventCategory extends Model
     }
 
      //localization
-    public function getNameAttribute($value)
+    public function  getNameMultilangAttribute($value)
     {
         $result = (\App::isLocale('en')) ? Helper::localization('interests','name',$this->id,1) : Helper::localization('interests','name',$this->id,2);
-        return ($result==null)? $value : $result;
+        return ($result==null)? $this->name : $result;
     }
 }

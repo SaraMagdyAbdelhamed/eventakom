@@ -58,9 +58,9 @@
                                  @if(isset($categories) && !empty($categories))
                                   @foreach($categories as $key=>$category)
                                  @if($key==0)
-                                 {{$category->getCategory($category->interest_id)->name}}
+                                 {{$category->getCategory($category->interest_id)->nameMultilang}}
                                  @else
-                                 <span>, </span>{{$category->getCategory($category->interest_id)->name}}
+                                 <span>, </span>{{$category->getCategory($category->interest_id)->nameMultilang}}
                                  @endif
                                 @endforeach
                                 @endif
@@ -423,7 +423,7 @@
                         </div>
                       </li>
                       <li class="tab__content_item" id="tickets-content">
-                      	@if($event->use_ticketing_system!=1)
+                      	@if($event->is_paid!=1)
                         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                           <p class="text-center">@lang('keywords.This event is free no tickets')</p>
                         </div>
