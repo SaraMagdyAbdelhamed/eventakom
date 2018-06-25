@@ -206,7 +206,31 @@
         'shop_status'=>'الحاله',
         'shop_actions'=>'اكشنز',
         'add_new_shop'=>'أضافه محل او مطعم جديد',
-        'delete_selected_shops'=>'حذف المحلات المحدده'
+        'delete_selected_shops'=>'حذف المحلات المحدده',
+        'adding_mode'=>'مود الاضافه',
+        'info'=>'معلومات',
+        'media'=>'ميديا',
+        'editing_mode'=>'مود التعديل',
+        'shop_name_arabic'=>'اسم المحل بالعربى',
+        'shop_address'=>'عنونا المحل ',
+        'other_info'=>'معلومات اخرى',
+        'other_info_arabic'=>'معلومات اخرى بالعربى',
+        'website'=>'الموقع',
+        'opening_days'=>'الايام  المتاح فيها المحل',
+        'saturday'=>'السبت',
+        'sunday'=>'الاحد',
+        'monday'=>'الاثنين',
+        'tuesday'=>'الثلاثاء',
+        'wednesday'=>'الاربعاء',
+        'thursday'=>'الخميس',
+        'friday'=>'الجمعه',
+        'shop_active'=>'هل المحل اكتيف ام لا ',
+        'add_branch'=>'إضافه فرع',
+        'you_tube'=>'فيديو يوتيوب',
+        'in_en'=>'بالانجليزي',
+        'in_ar'=>'بالعربى',
+        'upload_image'=>'ارفع صور للمحل ',
+        'max_img'=>'اقصي عدد صور 5'
 	
 	];
 
