@@ -25,4 +25,9 @@ class Shop extends Model
     {
         return $this->hasMany('App\ShopMedia','shop_id');
     }
+
+    // public function days()
+    // {
+    //     return $this->belongsToMany('App\Day','shop_days','shop_id','day_id');
+    // }
 }

@@ -11,8 +11,12 @@ class Day extends Model
     protected $fillable = '';
     public $timestamps = false;
 
-     public function day()
+    //  public function day()
+    // {
+    // 	return $this->hasMany('App\ShopDay','id');
+    // }
+    public function shops()
     {
-    	return $this->hasMany('App\ShopDay','day_id');
+        return $this->belongsToMany('App\Shop','shop_days','day_id','shop_id');
     }
 }

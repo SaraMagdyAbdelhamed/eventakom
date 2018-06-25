@@ -104,8 +104,8 @@
           <div class="tabs--wrapper">
             <div class="clearfix"></div>
             <ul class="tabs">
-              <li id="info_{{$value['id']}}">Info</li>
-              <li id="media_{{$value['id']}}">Media</li>
+              <li id="info_{{$value['id']}}">@lang('keywords.info')</li>
+              <li id="media_{{$value['id']}}">@lang('keywords.media')</li>
             </ul>
             <ul class="tab__content">
               <li class="tab__content_item active" id="info_{{$value['id']}}-content">
@@ -113,26 +113,30 @@
                   <div class="full-table">
                     <table class="verticaltable table-master">
                       <tr>
-                        <th><span class="cellcontent">Place name</span></th>
+                        <th><span class="cellcontent">@lang('keywords.shop_name')</span></th>
                         <td><span class="cellcontent">{{$value['name']}}</span></td>
                       </tr>
                       <tr>
-                        <th><span class="cellcontent">Place phone</span></th>
+                        <th><span class="cellcontent">@lang('keywords.shop_phone')</span></th>
                         <td><span class="cellcontent">{{$value['phone']}}</span></td>
                       </tr>
                       <tr>
-                        <th><span class="cellcontent">Website</span></th>
+                        <th><span class="cellcontent">@lang('keywords.website')</span></th>
                         <td><span class="cellcontent">&lt;a href = &quot;#.html&quot;&gt;{{$value['website']}}&lt;/a&gt;</span></td>
                       </tr>
                       <tr>
-                        <th><span class="cellcontent">Opening days</span></th>
-                        <td><span class="cellcontent">sat,sun,mon,tue</span></td>
+                        <th><span class="cellcontent">@lang('keywords.opening_days')</span></th>
+                        <td><span class="cellcontent">
+                          @foreach($value['shop_day'] as $day)
+                          {{$day['day_id']['name']}},
+                          @endforeach
+                        </span></td>
                       </tr>
                       <tr>
-                        <th><span class="cellcontent">other info</span></th>
+                        <th><span class="cellcontent">@lang('keywords.other_info')</span></th>
                         <td><span class="cellcontent">{{$value['info']}}</span></td>
                       </tr>
-                      <tr>
+                      {{-- <tr>
                         <th><span class="cellcontent">Branches</span></th>
                         <td><span class="cellcontent">
                       @foreach($value['shop_branch'] as $branch)
@@ -147,7 +151,7 @@
                       <tr>
                         <th><span class="cellcontent">to</span></th>
                         <td><span class="cellcontent">12:00AM</span></td>
-                      </tr>
+                      </tr> --}}
                       <tr>
                         <th><span class="cellcontent">status</span></th>
                         @if($value['is_active'])

@@ -23,7 +23,7 @@ class ShopController extends Controller
                $value1['link']=url('/').'\/'.$value1['link'];
             }
         }
-        // dd($data['shops']);
+         // dd($data['shops']);
     	
     	return view('shops.index',$data);
     }
