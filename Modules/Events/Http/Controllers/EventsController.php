@@ -95,7 +95,7 @@ class EventsController extends Controller
             'categories' => 'required',
 
             'arabic_event_name' => ($request->arabic_event_name ? 'min:2|max:100' : ''),
-            'arabic_description' => ($request->arabic_description ? 'sometimes|min:2|max:250' : ''),
+            'arabic_description' => ($request->arabic_description ? 'min:2|max:250' : ''),
             // 'arabic_venu' => 'required|',
             // 'arabic_hashtags' => 'required|',
 
@@ -318,6 +318,7 @@ class EventsController extends Controller
         $data['currencies'] = Currency::all();
         $data['ticket']     = EventTicket::where('event_id', $id)->first();
 
+        $data['youtube_links']  = isset($data['event']->media) ? $data['event']->media()->where('type', 2)->get() : '';
         $data['arabic_images']  = isset($data['event']->media) ? $data['event']->media()->where('type', 1)->where('link', 'like', '%arabic%')->get() : '';
         $data['english_images'] = isset($data['event']->media) ? $data['event']->media()->where('type', 1)->where('link', 'like', '%english%')->get() : '';
         $data['default_image']  = 'events/default/events.png';
@@ -444,17 +445,21 @@ class EventsController extends Controller
             }
 
             /**  Youtube links  **/
-            $event->media()->delete();
+            $event->media()->where('type', 2)->delete();
             $event->media()->createMany([
-                ['link' => $request->youtube_en_1, 'type' => 2],
-                ['link' => $request->youtube_en_2, 'type' => 2],
-                ['link' => $request->youtube_ar_1, 'type' => 2],
-                ['link' => $request->youtube_ar_2, 'type' => 2],
+                ['link' => ($request->youtube_en_1 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_en_2 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_1 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_2 ? : ''), 'type' => 2],
             ]);
 
             // Check if there is any images or files and move them to public/events
             // Arabic Event Images
             if ($request->hasfile('arabic_images')) {
+
+                // Delete old arabic images
+                $event->media()->where('type', 1)->where('link', 'like', '%arabic%')->delete();
+
                 foreach ($request->file('arabic_images') as $image) {
                     $name = time() . '_' . $image->getClientOriginalName();
                     $image->move('events/arabic', $name);
@@ -476,6 +481,10 @@ class EventsController extends Controller
             
             // English Event Images
             if ($request->hasfile('english_images')) {
+
+                // Delete old english images
+                $event->media()->where('type', 1)->where('link', 'like', '%english%')->delete();
+
                 foreach ($request->file('english_images') as $image) {
                     $name = time() . '_' . $image->getClientOriginalName();
                     $image->move('events/english', $name);
@@ -496,23 +505,23 @@ class EventsController extends Controller
 
             /** Ticket price **/
             if($request->is_paid == 1) {
-                try {
+
+                if(EventTicket::where('event_id', $event->id)->first() != NULL) {
                     $ticket = EventTicket::where('event_id', $event->id)->first();
-                    $ticket->event_id = $request->id;
-                    $ticket->name = $request->english_event_name;
-                    $ticket->price = $request->price;
-                    $ticket->available_tickets = $request->number_of_tickets;
-                    $ticket->current_available_tickets = $request->number_of_tickets;
-                    $ticket->currency_id = $request->currency;
-                    $ticket->save();
-                } catch (\Exception $ex) {
-                    Session::flash('warning', 'price error!');
-                    return redirect()->back();
+                } else {
+                    $ticket = new EventTicket;
                 }
+
+                $ticket->event_id = $request->id;
+                $ticket->name = $request->english_event_name;
+                $ticket->price = $request->price;
+                $ticket->available_tickets = $request->number_of_tickets;
+                $ticket->current_available_tickets = $request->number_of_tickets;
+                $ticket->currency_id = $request->currency;
+                $ticket->save();
             }
 
         } catch (\Exception $ex) {
-            dd($ex);
             Session::flash('warning', 'Error 1');
             return redirect()->back();
         }
