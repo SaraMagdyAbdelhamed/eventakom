@@ -573,6 +573,7 @@
     <script type="text/javascript">
       // var currentCount =0;
       //  var nextCount = 0 ;
+      
       $('.add-more-branch').on('click' , function(){
        var currentCount =$('.branch-container').length;
        // for (var i = 1 ; i<= currentCount ; i++) {
@@ -648,7 +649,7 @@ var shop_long;
         });
 
 
-
+         
       }
         function assignAutoCompl(_id , long , lat)
       {
