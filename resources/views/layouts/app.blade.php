@@ -89,10 +89,36 @@
                   </ul>
                   <ul class="actionsbar desktop-view hidden-xs">
                     <li class="dropdowny"><a class="nav-link dropdowny-toggle  " href="#"><i class="fa fa-bell"></i></a>
+                      @if(App::isLocale("en"))
+                        <ul class="dropdowny-menu" role="menu">
+                          @foreach(\App\Helpers\Helper::ListNotifications() as $notification)
+                          <li><a href="#">
+                            <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
+                            <p>{{$notification->msg}}</p><span class="notification_date"><i class="fa fa-clock-o"></i>{{date('d/m/Y', strtotime($notification->created_at))}}
+                              {{date('H:i:s', strtotime($notification->created_at))}}</span></a></li>
+
+                          @endforeach
+                         </ul> 
+
+
+                      @else
                       <ul class="dropdowny-menu" role="menu">
+                          @foreach(\App\Helpers\Helper::ListNotifications() as $notification)
+                          <li><a href="#">
+                            <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
+                            <p>{{$notification->msg_ar}}</p><span class="notification_date"><i class="fa fa-clock-o"></i>{{date('d/m/Y', strtotime($notification->created_at))}}
+                              {{date('H:i:s', strtotime($notification->created_at))}}</span></a></li>
+
+                          @endforeach
+                         </ul> 
+
+
+
+                      @endif
+                      <!-- <ul class="dropdowny-menu" role="menu">
                         <li><a href="#">
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
-                            <p>lorem ipsum dollar lorem ipsum dollarss</p><span class="notification_date"><i class="fa fa-clock-o"></i>5/11/2015
+                            <p>Medo ipsum dollar lorem ipsum dollarss</p><span class="notification_date"><i class="fa fa-clock-o"></i>5/11/2015
                               11:00:00AM</span></a></li>
                         <li><a href="#">
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
@@ -138,7 +164,7 @@
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
                             <p>lorem ipsum dollar lorem ipsum</p><span class="notification_date"><i class="fa fa-clock-o"></i>5/11/2015
                               11:00:00AM</span></a></li>
-                      </ul>
+                      </ul> -->
                     </li>
                   </ul>
                 </div>
@@ -209,20 +235,25 @@
                   @endif
                   <li class="side__list" id="menu_3"> <a class="side__item side__item--sub">@lang('keywords.events')</a>
                     <ul class="side__submenu">
+                      @if(\App\Helpers\Helper::hasRule(['Super Admin','Admin' ,'Data Entry','Backend User']) )
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_1" href="{{ route('event_backend') }}">@lang('keywords.addfrombackend')</a></li>
+                      @endif
+                       @if(\App\Helpers\Helper::hasRule(['Super Admin','Admin' ,'Data Entry','Backend User','Mobile User']) )
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_2" href="{{ route('event_mobile') }}">@lang('keywords.addfromMobile')</a></li>
+                      @endif
                        @if(\App\Helpers\Helper::hasRule(['Super Admin']) )
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="{{ route('big_events') }}">@lang('keywords.bigevents')</a></li>
                       @endif
                     </ul>
                   </li>
-
+                   @if(\App\Helpers\Helper::hasRule(['Super Admin','Admin' ,'Data Entry','Backend User']) )
                   <li class="side__list" id="menu_5"> <a class="side__item" id="sub_5_1" href="{{ route('fa.list') }}">@lang('keywords.famousAtt')</a>
                   </li>
                   <li class="side__list" id="menu_6"> <a class="side__item" id="sub_6_1" href="{{ route('offers.list') }}">@lang('keywords.offers')</a>
                   </li>
                   <li class="side__list" id="menu_7"> <a class="side__item" id="sub_7_1" href="{{route('shops')}}">@lang('keywords.shopndine')</a>
                   </li>
+                  @endif
                   @if(\App\Helpers\Helper::hasRule(['Super Admin','Admin']) )
                   <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="{{route('notification')}}">@lang('keywords.notifications')</a>
                   </li>

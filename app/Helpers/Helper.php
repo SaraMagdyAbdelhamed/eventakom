@@ -12,8 +12,8 @@ use Auth;
 use App\Users;
 use App\Entity;
 use App\EntityLocalization;
-use App\Notifications;
-use App\NotificationsPush;
+use App\Notification;
+use App\NotificationPush;
 use Illuminate\Database\Eloquent\Model;
 use PHPUnit\Framework\Constraint\Exception;
 
@@ -243,7 +243,6 @@ class Helper
         }
          
         }
-    
         return false;
     }
 
@@ -259,4 +258,21 @@ class Helper
         } 
         return '';
     }
+     }
+
+
+       public static function hisEvent($event_id)
+    {     
+        $event  = \App\EventMobile::find($event_id);
+        if($event->created_by == Auth::id()){
+          return true;  
+        }
+        return false;
+     }
+
+
+     public static function ListNotifications(){
+        $notifications = Notification::whereNull('user_id')->where('notification_type_id',8)->get();
+        return $notifications;
+     }
 }
