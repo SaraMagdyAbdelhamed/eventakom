@@ -118,6 +118,10 @@ class ShopController extends Controller
                 }
         }
         }
+        else
+        {
+            $shop->update(["photo"=>"img/default.jpg"]);
+        }
         // dd($request->all());
         if(isset($request['place_name_ar']))
         {
