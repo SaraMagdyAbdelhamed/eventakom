@@ -92,8 +92,8 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
     Route::post('/notifications/edit', '\Modules\Main\Http\Controllers\MainController@notifications_update')->name('notifications.edit');
     Route::post('/notifications/delete/single', '\Modules\Main\Http\Controllers\MainController@notifications_delete')->name('notifications.delete');
     Route::post('/notifications/delete/selected', '\Modules\Main\Http\Controllers\MainController@notifications_deleteSelected')->name('notifications.deleteSelected');
-    });
-    });
+    }); //notification rule
+    });  //main rule
   Route::middleware(['auth', 'Rule:Super Admin'])->group( function($lang = null) {
     //users.mobile
     Route::get('/users_mobile', '\Modules\UsersModule\Http\Controllers\UsersController@index')->name('users_mobile');
@@ -107,7 +107,8 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
     Route::get('/test','\Modules\UsersModule\Http\Controllers\UsersController@test');
     Route::post('/backend_store', '\Modules\UsersModule\Http\Controllers\UsersController@backend_store')->name('backend_store');
     Route::post('/backend_edit/{id}', '\Modules\UsersModule\Http\Controllers\UsersController@backend_edit')->name('backend_edit');
-        });
+        }); //users rules
+   Route::middleware(['auth', 'Rule:Super Admin,Admin,Data Entry,Backend User'])->group( function($lang = null) {
     // Events: Back-end
     Route::get('/events/backend', '\Modules\Events\Http\Controllers\EventsController@index')->name('event_backend');
     Route::get('/events/backend/add', '\Modules\Events\Http\Controllers\EventsController@create')->name('event_backend.add');
@@ -119,11 +120,12 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
     Route::post('/events/backend/destroy', '\Modules\Events\Http\Controllers\EventsController@destroy')->name('event_backend.destroy');
     Route::post('/events/backend/destroy_selected', '\Modules\Events\Http\Controllers\EventsController@destroySelected')->name('event_backend.destroySelected');
     Route::get('/events/backend/filter', '\Modules\Events\Http\Controllers\EventsController@filter')->name('event_backend.filter');
-
+      }); //events backend rules
 
     // Events: Mobile
-    // Route::group( ['middleware' => ['auth', 'Rule:Mobile User,Admin'] ], function($lang = null) {
+   Route::middleware(['auth', 'Rule:Super Admin,Admin,Data Entry,Backend User,Mobile User'])->group( function($lang = null) {
     Route::get('/events/mobile', '\Modules\Events\Http\Controllers\EventsMobileController@index')->name('event_mobile');
+    
     Route::get('/events/mobile/add', '\Modules\Events\Http\Controllers\EventsMobileController@create')->name('event_mobile.add');
     Route::post('/events/mobile/store', '\Modules\Events\Http\Controllers\EventsMobileController@store')->name('event_mobile.store');
     Route::post('/event_filter', '\Modules\Events\Http\Controllers\EventsMobileController@event_filter')->name('event_filter');
@@ -139,7 +141,7 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
     Route::post('/post_destroy_all', '\Modules\Events\Http\Controllers\EventsMobileController@post_destroy_all')->name('post_destroy_all');
     Route::get('events/mobile/edit/{id}', '\Modules\Events\Http\Controllers\EventsMobileController@edit')->name('event_edit');
     Route::post('/events/mobile/update', '\Modules\Events\Http\Controllers\EventsMobileController@update')->name('event_mobile.update');
-
+     }); //events mobile rules
     // Big Events
     Route::middleware(['auth', 'Rule:Super Admin'])->group( function($lang = null) {
     Route::get('/events/big_events', '\Modules\Events\Http\Controllers\EventsController@big_events')->name('big_events');
@@ -148,14 +150,14 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
    
     //Statistics
     Route::get('/statistics', '\Modules\Statistics\Http\Controllers\StatisticsController@index')->name('statistics');
-       });
+       }); //big events , statistics rules
     //analytics
     //     Route::get('/analytics', function() {
     //    // App::setlocale('en');
     //     return view('analytics');
     // });
 
-
+    Route::middleware(['auth', 'Rule:Super Admin,Admin,Data Entry,Backend User'])->group( function($lang = null) {
     // Famous Attractions
     Route::get('/attractions'           , '\Modules\Famous\Http\Controllers\FamousController@index' )->name('fa.list'   );
     Route::get('/attractions/view'      , '\Modules\Famous\Http\Controllers\FamousController@show'  )->name('fa.show'   );
@@ -165,7 +167,7 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
     Route::post('/attractions/update'   , '\Modules\Famous\Http\Controllers\FamousController@update')->name('fa.update' );
     Route::post('/attractions/delete'   , '\Modules\Famous\Http\Controllers\FamousController@destroy')->name('fa.delete' );
     Route::post('/attractions/delete/selected', '\Modules\Famous\Http\Controllers\FamousController@destroySelected')->name('fa.deleteSelected');
-
+     
 
     // Offers and deals
     Route::get('/offers'            , '\Modules\Offers\Http\Controllers\OffersController@index' )->name('offers.list'    );
@@ -174,11 +176,7 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
     Route::post('/offers/update'    , '\Modules\Offers\Http\Controllers\OffersController@update')->name('offers.update'  );
     Route::post('/offers/delete'    , '\Modules\Offers\Http\Controllers\OffersController@destroy')->name('offers.delete' );
     Route::post('/offers/delete/selected', '\Modules\Offers\Http\Controllers\OffersController@destroySelected')->name('offers.deleteSelected');
-    // Notifications_view
-    Route::get('/notification', 'NotificationController@index')->name('notification');
-    Route::post('/add_notification', 'NotificationController@add')->name('add_notification');
-
-
+    
     // shops
     Route::get('/shops', 'ShopController@index')->name('shops');
     Route::get('/add_shop', 'ShopController@add')->name('add_shop');
@@ -188,9 +186,16 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
 
     Route::post('/add_shop_data', 'ShopController@add_shop')->name('add_shop_data');
     Route::post('/edit_shop_data/{id}', 'ShopController@edit_shop')->name('edit_shop_data');
-});
+}); // famouse attractions , offers and deals , shop and dine rules
+
+   Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = null) {
+    // Notifications_view
+    Route::get('/notification', 'NotificationController@index')->name('notification');
+    Route::post('/add_notification', 'NotificationController@add')->name('add_notification');
+  }); //notification view rules
 
 
+ });
 
 //AHmed ALaa Test Routes 
 Route::get("/test_not","HomeController@test_not");

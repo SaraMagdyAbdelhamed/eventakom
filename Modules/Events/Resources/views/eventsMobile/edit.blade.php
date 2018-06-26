@@ -556,7 +556,7 @@
                       @endif
                       @endforeach
                       @if($imgar_count < 1 )
-                      <img src="{{url('/')}}{{'/events/arabic/home.jpg'}}" width="75" height="75">
+                      <img src="{{url('/')}}{{'/events/default/events.png'}}" width="75" height="75">
                       @endif
                     </div>
                           </div>
@@ -616,7 +616,7 @@
                       @endif
                       @endforeach
                       @if($imgen_count < 1 )
-                      <img src="{{url('/')}}{{'/events/english/home.jpg'}}" width="75" height="75">
+                      <img src="{{url('/')}}{{'/events/default/events.png'}}" width="75" height="75">
                       @endif
                     </div>
                           </div>       
