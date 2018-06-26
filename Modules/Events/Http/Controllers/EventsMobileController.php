@@ -62,7 +62,7 @@ class EventsMobileController extends Controller
      }
 
       public function event_filter(Request $request)
-    {   $mobileUser = Helper::hasRule(['Mobile User']);
+    {  
         if (isset($request->categories)) {
         $data['current_events'] =   $events = EventMobile::whereHas('categories', function($q) use($request){
             $q->whereIn('event_categories.interest_id', $request->categories);
@@ -101,7 +101,7 @@ class EventsMobileController extends Controller
                 $q->whereIn('is_active', $request->status);
                  }
          
-          if($mobileUser){ 
+          if(Helper::hasRule(['Mobile User'])){ 
 
              $q->where('created_by',Auth::id());
           }  
@@ -142,7 +142,7 @@ class EventsMobileController extends Controller
                 $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
 
             }
-            if($mobileUser){ 
+            if(Helper::hasRule(['Mobile User'])){ 
 
              $q->where('created_by',Auth::id());
           } 
