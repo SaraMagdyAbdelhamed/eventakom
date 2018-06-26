@@ -214,6 +214,7 @@
         'isThisPlaceActive' => 'هل هذا المكان مفعل؟',
         'openday'   => 'الايام المتاحة',
         'otherInfo' => 'معلومات اضافية',
+        'famousHint'=> 'من فضلك فعل اليوم لتتمكن من تعديل وقته  ',
 
        // big events
          'orderSaved'    => ' <div class="alert text-center" id="form_message" style="background-color: #2ecc71; color: white; padding: 10px; margin-top: 40px;">

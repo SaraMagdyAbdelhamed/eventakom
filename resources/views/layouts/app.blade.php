@@ -655,6 +655,8 @@
 
         @if( isset($event->latitude) && isset($event->longtuide) ) 
           var myLatlng = {lat: {{ $event->latitude }}, lng: {{ $event->longtuide }} };
+        @elseif( isset($famous->latitude) && isset($famous->longtuide) )
+          var myLatlng = {lat: {{ $famous->latitude }}, lng: {{ $famous->longtuide }} };
         @else 
           var myLatlng = {lat: 30.042701, lng: 31.432662};
         @endif

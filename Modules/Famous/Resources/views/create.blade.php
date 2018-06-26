@@ -115,7 +115,8 @@
                 </div>
 
                 <div class="col-sm-12 col-xs-12">
-                <h5>@lang('keywords.openday')</h5>
+                <h4>@lang('keywords.openday')</h5>
+                <h6>@lang('keywords.famousHint')</h6>
                 </div>
                 <div class="col-sm-2 col-xs-12">
                 <div class="master_field">
@@ -323,7 +324,10 @@
                 <div class="col-xs-12">
                 <div class="master_field">
                     <label class="master_label" for="Other_info">@lang('keywords.otherInfo')</label>
-                    <textarea class="master_input" name="other_info" id="Other_info" placeholder="Other info" ></textarea>
+                    <textarea class="master_input" name="other_info" id="Other_info" placeholder="Other info" >{{ old('other_info') }}</textarea>
+                    @if ($errors->has('other_info'))
+                        <span class="master_message color--fadegreen">{{ $errors->first('other_info') }}</span>
+                    @endif
                 </div>
                 </div>
             </div>
@@ -336,19 +340,25 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label" for="Place_name">@lang('keywords.placeName')</label>
-                    <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name"><span class="master_message color--fadegreen">validation message will be here</span>
+                    <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" />
+                    @if ($errors->has('place_name_ar'))
+                        <span class="master_message color--fadegreen">{{ $errors->first('place_name_ar') }}</span>
+                    @endif
                 </div>
                 </div>
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label" for="Address_name">@lang('keywords.placeAddress')</label>
-                    <input class="master_input" type="text" placeholder="ex:52 Ahmed Salh st .city stars"  id="Address_name"><span class="master_message color--fadegreen">validation message will be here</span>
+                    <input class="master_input" type="text" placeholder="ex:52 Ahmed Salh st .city stars"  id="Address_name" name="place_address_ar" />
+                    @if ($errors->has('place_address_ar'))
+                        <span class="master_message color--fadegreen">{{ $errors->first('place_address_ar') }}</span>
+                    @endif
                 </div>
                 </div>
                 <div class="col-xs-12">
                 <div class="master_field">
                     <label class="master_label" for="Other_info_ar">@lang('keywords.otherInfo')</label>
-                    <textarea class="master_input" name="other_info_ar" id="Other_info_ar" placeholder="Other info" ></textarea>
+                    <textarea class="master_input" name="other_info_ar" id="Other_info_ar" placeholder="Other info" >{{ old('other_info_ar') }}</textarea>
                 </div>
                 </div>
             </div>
@@ -361,13 +371,19 @@
                 <div class="col-sm-6 col-xs-12">
                 <div class="master_field">
                     <label class="master_label" for="YouTube_video_en">add youtube video link in English</label>
-                    <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en" id="YouTube_video_en">
+                    <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en" id="YouTube_video_en" value="{{ old('youtube_en') }}" />
+                    @if ($errors->has('youtube_en'))
+                        <span class="master_message color--fadegreen">{{ $errors->first('youtube_en') }}</span>
+                    @endif
                 </div>
                 </div>
                 <div class="col-sm-6 col-xs-12">
                 <div class="master_field">
                     <label class="master_label" for="YouTube_video_ar">add youtube video link in Arabic</label>
-                    <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar" id="YouTube_video_ar">
+                    <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar" id="YouTube_video_ar" value="{{ old('youtube_ar') }}">
+                    @if ($errors->has('youtube_ar'))
+                        <span class="master_message color--fadegreen">{{ $errors->first('youtube_ar') }}</span>
+                    @endif
                 </div>
                 </div>
 

@@ -246,4 +246,17 @@ class Helper
     
         return false;
     }
+
+    public static function is_day($obj, $day_id) {
+        return $result = count($obj->days()->where('day_id', $day_id)->get()) > 0 ? true : false;
+    }
+
+    public static function get_day_start_end($obj, $day_id) {
+        $day = $obj->days()->where('day_id', $day_id)->first();
+
+        if( $day != NULL ) {
+            return ['start' => $day->pivot->from, 'end' => $day->pivot->to];
+        } 
+        return '';
+    }
 }
