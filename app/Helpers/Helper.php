@@ -243,7 +243,17 @@ class Helper
         }
          
         }
-    
         return false;
-    }
+     }
+
+
+       public static function hisEvent($event_id)
+    {    
+        
+        $event  = \App\EventMobile::find($event_id);
+        if($event->created_by == Auth::id()){
+          return true;  
+        }
+        return false;
+     }
 }
