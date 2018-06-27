@@ -32,8 +32,6 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     {{-- Custom CSS --}}
- 
-
   </head>
   <body>
     <div class="toggled" id="wrapper">

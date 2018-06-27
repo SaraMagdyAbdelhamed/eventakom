@@ -58,9 +58,7 @@ class PushNotificationQueue extends Command
                         }else{
 
                         }
-
                     }
-                
             }catch(\Exception $e){
 
             }
