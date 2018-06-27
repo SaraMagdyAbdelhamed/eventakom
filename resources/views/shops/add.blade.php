@@ -516,11 +516,7 @@
       }());
       
     </script>
-    <script type="text/javascript">
-      $(function () {
-        $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
-      });
-    </script>
+    
     <script type="text/javascript">
       var currentCount =0;
        var nextCount = 0 ;

@@ -24,6 +24,7 @@ class FamousAttraction extends Model
 
     // Many to Many relations between 
     public function days() {
-        return $this->belongsToMany('App\FamousAttractionDays', 'famous_attraction_days', 'famous_attraction_id', 'day_id');
+        // withPivot let object access additional pivot fields
+        return $this->belongsToMany('App\FamousAttractionDays', 'famous_attraction_days', 'famous_attraction_id', 'day_id')->withPivot('from', 'to');
     }
 }

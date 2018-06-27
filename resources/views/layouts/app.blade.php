@@ -32,8 +32,6 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     {{-- Custom CSS --}}
- 
-
   </head>
   <body>
     <div class="toggled" id="wrapper">
@@ -89,10 +87,29 @@
                   </ul>
                   <ul class="actionsbar desktop-view hidden-xs">
                     <li class="dropdowny"><a class="nav-link dropdowny-toggle  " href="#"><i class="fa fa-bell"></i></a>
+                      @if(App::isLocale("en"))
+                        <ul class="dropdowny-menu" role="menu">
+                          @foreach(\App\Helpers\Helper::ListNotifications() as $notification)
+                          <li><a href="{{url('/mark_read')}}/{{$notification->id}}">
+                            <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
+                            <p>{{$notification->msg}}</p><span class="notification_date"><i class="fa fa-clock-o"></i>{{date('d/m/Y', strtotime($notification->created_at))}}
+                              {{date('H:i:s', strtotime($notification->created_at))}}</span></a></li>
+                          @endforeach
+                         </ul> 
+                      @else
                       <ul class="dropdowny-menu" role="menu">
+                          @foreach(\App\Helpers\Helper::ListNotifications() as $notification)
+                          <li><a href="{{url('/mark_read')}}/{{$notification->id}}">
+                            <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
+                            <p>{{$notification->msg_ar}}</p><span class="notification_date"><i class="fa fa-clock-o"></i>{{date('d/m/Y', strtotime($notification->created_at))}}
+                              {{date('H:i:s', strtotime($notification->created_at))}}</span></a></li>
+                          @endforeach
+                         </ul> 
+                      @endif
+                      <!-- <ul class="dropdowny-menu" role="menu">
                         <li><a href="#">
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
-                            <p>lorem ipsum dollar lorem ipsum dollarss</p><span class="notification_date"><i class="fa fa-clock-o"></i>5/11/2015
+                            <p>Medo ipsum dollar lorem ipsum dollarss</p><span class="notification_date"><i class="fa fa-clock-o"></i>5/11/2015
                               11:00:00AM</span></a></li>
                         <li><a href="#">
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
@@ -138,7 +155,7 @@
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
                             <p>lorem ipsum dollar lorem ipsum</p><span class="notification_date"><i class="fa fa-clock-o"></i>5/11/2015
                               11:00:00AM</span></a></li>
-                      </ul>
+                      </ul> -->
                     </li>
                   </ul>
                 </div>
@@ -660,6 +677,8 @@
 
         @if( isset($event->latitude) && isset($event->longtuide) ) 
           var myLatlng = {lat: {{ $event->latitude }}, lng: {{ $event->longtuide }} };
+        @elseif( isset($famous->latitude) && isset($famous->longtuide) )
+          var myLatlng = {lat: {{ $famous->latitude }}, lng: {{ $famous->longtuide }} };
         @else 
           var myLatlng = {lat: 30.042701, lng: 31.432662};
         @endif

@@ -12,6 +12,7 @@ class FamousAttractionDays extends Model
     public $timestamps = false;
 
     public function attractions() {
-        return $this->belongsToMany('App\FamousAttraction', 'famous_attraction_days', 'famous_attraction_id', 'day_id');
+        // withPivot let object access additional pivot fields
+        return $this->belongsToMany('App\FamousAttraction', 'famous_attraction_days', 'famous_attraction_id', 'day_id')->withPivot('from', 'to');
     }
 }

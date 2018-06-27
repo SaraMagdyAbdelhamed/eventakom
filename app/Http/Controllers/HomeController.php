@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Library\Services\NotificationsService;
+use App\Notification;
 
 class HomeController extends Controller
 {
@@ -47,5 +48,13 @@ class HomeController extends Controller
         $message['en'] = 'aaa';$message['ar']='rtrt';
         $user = \App\Users::find(1);
        echo  $this->NotifcationsService->save_notification($message,2,2,2,$user);
+    }
+
+    public function mark_read($id){
+        $notification = Notification::find($id);
+        $notification->is_read = 1;
+        $notification->save();
+        return redirect("/events/mobile/view/".$notification->item_id);
+
     }
 }
