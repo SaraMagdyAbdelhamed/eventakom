@@ -712,4 +712,6 @@ class MainController extends Controller
     public function notifications_deleteSelected(Request $request) {
         
     }
+
+
 }
