@@ -258,7 +258,7 @@ class Helper
         } 
         return '';
     }
-     }
+     
 
 
        public static function hisEvent($event_id)
