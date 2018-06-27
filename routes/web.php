@@ -16,7 +16,9 @@
 Route::get('/', function () {
     return redirect('/login');
 });
-
+Route::get('/map-test', function () {
+    return view('map-search-test');
+});
 // login form route
 Route::get('/login', function($lang = null) {
     App::setlocale('en');
