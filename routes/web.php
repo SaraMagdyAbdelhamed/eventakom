@@ -32,13 +32,20 @@ Route::post('/change/language', 'ChangeLanguage@changeLang')->name('changeLang')
 // custom login/logout
 Route::post('/login' , 'Auth\LoginController@login')->name('login'); // override authentication urls to manually use languages
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');   // for testing purposes
+//Mark Notifcation as Read
 
 
 // App URLs
 Route::group( ['middleware' => ['auth', 'locale'] ], function($lang = null) {
 Route::get('/about', '\Modules\Main\Http\Controllers\MainController@about')->name('about');
+
+
+// Route::get('/main/mark_read/{$id}','\Modules\Main\Http\Controllers\MainController@mark_read');
+
+
 Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = null) {
     // about us
+
     
     Route::post('/main/about/edit/{id}', '\Modules\Main\Http\Controllers\MainController@update_fixed')->name('about.edit');
 
@@ -191,6 +198,7 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
 
    Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = null) {
     // Notifications_view
+
     Route::get('/notification', 'NotificationController@index')->name('notification');
     Route::post('/add_notification', 'NotificationController@add')->name('add_notification');
   }); //notification view rules
@@ -200,3 +208,4 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
 
 //AHmed ALaa Test Routes 
 Route::get("/test_not","HomeController@test_not");
+Route::get("/mark_read/{id}","HomeController@mark_read");

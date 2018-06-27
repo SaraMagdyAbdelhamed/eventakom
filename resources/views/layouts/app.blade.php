@@ -32,8 +32,6 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     {{-- Custom CSS --}}
- 
-
   </head>
   <body>
     <div class="toggled" id="wrapper">
@@ -92,28 +90,21 @@
                       @if(App::isLocale("en"))
                         <ul class="dropdowny-menu" role="menu">
                           @foreach(\App\Helpers\Helper::ListNotifications() as $notification)
-                          <li><a href="#">
+                          <li><a href="{{url('/mark_read')}}/{{$notification->id}}">
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
                             <p>{{$notification->msg}}</p><span class="notification_date"><i class="fa fa-clock-o"></i>{{date('d/m/Y', strtotime($notification->created_at))}}
                               {{date('H:i:s', strtotime($notification->created_at))}}</span></a></li>
-
                           @endforeach
                          </ul> 
-
-
                       @else
                       <ul class="dropdowny-menu" role="menu">
                           @foreach(\App\Helpers\Helper::ListNotifications() as $notification)
-                          <li><a href="#">
+                          <li><a href="{{url('/mark_read')}}/{{$notification->id}}">
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
                             <p>{{$notification->msg_ar}}</p><span class="notification_date"><i class="fa fa-clock-o"></i>{{date('d/m/Y', strtotime($notification->created_at))}}
                               {{date('H:i:s', strtotime($notification->created_at))}}</span></a></li>
-
                           @endforeach
                          </ul> 
-
-
-
                       @endif
                       <!-- <ul class="dropdowny-menu" role="menu">
                         <li><a href="#">

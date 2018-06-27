@@ -54,7 +54,7 @@ class FavouriteEventsNotification extends Command
             foreach ($events_in_favourites as $event) {
                 $message['en'] = '1 Day left for '. $event->name;
                 $message['ar'] = 'باقي يوم على  انطلاق'.' ' . $event->name;
-                foreach ($event->users_favorites as $user) {
+                foreach ($event->users_favorites()->UserWithDeviceTokens()->get() as $user) {
                     $notification = $notifcation_service->save_notification($message,7,4,$event->id,$user->id);     
                     $queue = new NotificationPush();
                     $queue->notification_id = $notification->id;
@@ -64,9 +64,6 @@ class FavouriteEventsNotification extends Command
                     $queue->user_id         = $user->id;
                     $queue->save();               
                 }
-
-                //$notifcaion_service->PushToManyUsers($event->users_favorites,$notification);
-
                 
             }
 
@@ -84,8 +81,8 @@ class FavouriteEventsNotification extends Command
                 $message['en'] = '1 Day left for '. $event->name;
                 $message['ar'] = 'باقي يوم على  انطلاق'.' ' . $event->name;
                 //$notifcaion_service->PushToManyUsers($event->CalenderUsers,$notification);  
-                foreach ($event->CalenderUsers as $user) {
-                    $notification = $notifcation_service->save_notification($message,6,4,$event->id,$user->id);     
+                foreach ($event->CalenderUsers()->UserWithDeviceTokens()->get() as $user) {
+                    $notification = $notifcation_service->save_notification($message,6,4,$event->id,$user->id);  
                     $queue = new NotificationPush();
                     $queue->notification_id = $notification->id;
                     $queue->device_token    = $user->device_token;
