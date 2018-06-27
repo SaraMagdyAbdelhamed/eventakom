@@ -272,7 +272,7 @@ class Helper
 
 
      public static function ListNotifications(){
-        $notifications = Notification::whereNull('user_id')->where('notification_type_id',8)->get();
+        $notifications = Notification::whereNull('user_id')->where('notification_type_id',8)->orderBy('created_at','DESC')->get();
         return $notifications;
      }
 }

@@ -96,11 +96,8 @@
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
                             <p>{{$notification->msg}}</p><span class="notification_date"><i class="fa fa-clock-o"></i>{{date('d/m/Y', strtotime($notification->created_at))}}
                               {{date('H:i:s', strtotime($notification->created_at))}}</span></a></li>
-
                           @endforeach
                          </ul> 
-
-
                       @else
                       <ul class="dropdowny-menu" role="menu">
                           @foreach(\App\Helpers\Helper::ListNotifications() as $notification)
@@ -108,12 +105,8 @@
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
                             <p>{{$notification->msg_ar}}</p><span class="notification_date"><i class="fa fa-clock-o"></i>{{date('d/m/Y', strtotime($notification->created_at))}}
                               {{date('H:i:s', strtotime($notification->created_at))}}</span></a></li>
-
                           @endforeach
                          </ul> 
-
-
-
                       @endif
                       <!-- <ul class="dropdowny-menu" role="menu">
                         <li><a href="#">
