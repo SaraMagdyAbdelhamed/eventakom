@@ -29,38 +29,53 @@
           </div>
           <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
             <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-            <div>
-              <div class="row">
-                <div class="col-xs-12">
-                  <h3>Filters</h3>
-                </div>
-                <div class="col-sm-6 col-xs-12">
-                  <div class="master_field">
-                    <label class="master_label" for="filter_cat">place categories </label>
-                    <select class="master_input select2" id="filter_cat" multiple="multiple" data-placeholder="place categories" style="width:100%;" ,>
-                      <option>historical</option>
-                      <option>meditations</option>
-                      <option>Etc</option>
-                    </select>
+
+            <form action="{{ route('fa.filter') }}" method="POST">
+              {{ csrf_field() }}
+
+              <div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h3>@lang('keywords.filter')</h3>
                   </div>
-                </div>
-                <div class="col-sm-6 col-xs-12">
-                  <div class="master_field">
-                    <label class="master_label">place status</label>
-                    <div class="funkyradio">
-                      <input type="checkbox" name="radio" id="event_status_2">
-                      <label for="event_status_2">Active</label>
-                    </div>
-                    <div class="funkyradio">
-                      <input type="checkbox" name="radio" id="event_status_3">
-                      <label for="event_status_3">inActive</label>
+
+                  {{-- Start categories --}}
+                  <div class="col-sm-6 col-xs-12">
+                    <div class="master_field">
+                      <label class="master_label" for="filter_cat">@lang('keywords.placeCategories')</label>
+                      <select class="master_input select2" id="filter_cat" name="place_categories[]" multiple="multiple" data-placeholder="place categories" style="width:100%;" ,>
+                        @if ( isset($categories) && !empty($categories) )
+                            @foreach ($categories as $cat)
+                                <option value="{{ $cat->id }}">{{ \App::isLocale('en') ? $cat->name : \Helper::localization('fa_categories', 'name', $cat->id, 2, $cat->name) }}</option>
+                            @endforeach
+                        @endif
+                      </select>
                     </div>
                   </div>
+                  {{-- End categories --}}
+
+                  {{-- Start active & in-active checkboxes --}}
+                  <div class="col-sm-6 col-xs-12">
+                    <div class="master_field">
+                      <label class="master_label">@lang('keywords.status')</label>
+                      <div class="funkyradio">
+                        <input type="checkbox" name="is_active" id="event_status_2" value="1">
+                        <label for="event_status_2">@lang('keywords.Active')</label>
+                      </div>
+                      <div class="funkyradio">
+                        <input type="checkbox" name="is_inActive" id="event_status_3" value="1">
+                        <label for="event_status_3">@lang('keywords.Inactive')</label>
+                      </div>
+                    </div>
+                  </div>
+                  {{-- End active & in-active checkboxes --}}
+
                 </div>
-              </div>
-            </div><br>
-            <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-            <button class="remodal-confirm" data-remodal-action="confirm">Apply Filters</button>
+              </div><br>
+              <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
+              <button class="remodal-confirm" type="submit">Apply Filters</button>
+            </form>
+
           </div>
           <form id="dataTableTriggerId_001_form">
             <table class="data-table-trigger table-master" id="dataTableTriggerId_001">
@@ -89,7 +104,7 @@
                           <td>
                             <span class="cellcontent">
                               @foreach ($attraction->categories as $cat)
-                                  {{ \App::isLocale('en') ? $cat->name : \Helper::localization('fa_categories', 'name', $cat->id, 2, '') }}
+                                  {{ \App::isLocale('en') ? $cat->name : \Helper::localization('fa_categories', 'name', $cat->id, 2, $cat->name) }}
                                   {{ count($attraction->categories) != $loop->index+1  ? ',' : '' }}
                               @endforeach
                             </span>
@@ -682,6 +697,8 @@
             // On success, set retrieved data to edit input fields
             success: function (data)
             { console.log(data);
+
+                // Get data from JSON object & assign it to the HTML elements.
                 $("#place_title").text(data.name);
                 $("#place_name").text(data.name);  
                 $("#place_categories").text(data.categories);
@@ -701,8 +718,20 @@
                 }
 
                 $("#image_modal").attr("src", data.image);
-                $("#youtube_ar").attr("src", data.youtube_ar);
-                $("#youtube_en").attr("src", data.youtube_en);
+
+                // get youtube URLs from JSON object
+                var youtube_ar = data.youtube_ar;
+                var youtube_en = data.youtube_en;
+
+                // change youtube URL that it was copied & pasted from browser URL to the embeded format.
+                // the difference between the regular youtube URL and youtube embedded URL in just in `watch?v=` 
+                // so we will replace it with the `embed/` keyword to be embedded in the HTML elements.
+                var youtube_ar_embed = youtube_ar.replace('watch?v=', 'embed/');
+                var youtube_en_embed = youtube_en.replace('watch?v=', 'embed/');
+
+                // set formated youtube URLs to the HTML elements.
+                $("#youtube_ar").attr("src", youtube_ar_embed);
+                $("#youtube_en").attr("src", youtube_en_embed);
 
             },
                 error: function(response) {

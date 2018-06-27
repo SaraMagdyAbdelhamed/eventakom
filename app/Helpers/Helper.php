@@ -258,10 +258,9 @@ class Helper
         } 
         return '';
     }
-     }
 
 
-       public static function hisEvent($event_id)
+    public static function hisEvent($event_id)
     {     
         $event  = \App\EventMobile::find($event_id);
         if($event->created_by == Auth::id()){

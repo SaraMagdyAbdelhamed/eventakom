@@ -165,7 +165,8 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
     Route::get('/attractions/edit/{id}' , '\Modules\Famous\Http\Controllers\FamousController@edit'  )->name('fa.edit'   );
     Route::post('/attractions/store'    , '\Modules\Famous\Http\Controllers\FamousController@store' )->name('fa.store'  );
     Route::post('/attractions/update'   , '\Modules\Famous\Http\Controllers\FamousController@update')->name('fa.update' );
-    Route::post('/attractions/delete'   , '\Modules\Famous\Http\Controllers\FamousController@destroy')->name('fa.delete' );
+    Route::post('/attractions/filter'   , '\Modules\Famous\Http\Controllers\FamousController@filter')->name('fa.filter' );
+    Route::post('/attractions/delete'   , '\Modules\Famous\Http\Controllers\FamousController@destroy')->name('fa.delete');
     Route::post('/attractions/delete/selected', '\Modules\Famous\Http\Controllers\FamousController@destroySelected')->name('fa.deleteSelected');
      
 

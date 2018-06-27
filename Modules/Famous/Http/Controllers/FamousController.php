@@ -27,6 +27,7 @@ class FamousController extends Controller
     public function index()
     {
         $data['attractions'] = FamousAttraction::all();
+        $data['categories']  = FamousCategory::all();
         return view('famous::list', $data);
     }
 
@@ -289,7 +290,7 @@ class FamousController extends Controller
             'other_info'  => ($request->other_info ? 'max:140' : ''),
         ]);
 
-        // Insert English values
+        // Update English values
         try {
             // Add new famous attraction
             $famous = FamousAttraction::find($request->id);
@@ -359,7 +360,7 @@ class FamousController extends Controller
             }
 
             // Attach media
-            $famous->media()->delete();
+            $famous->media()->where('type', 2)->delete();
             $famous->media()->createMany([
                 ['media' => ($request->youtube_en ? : ''), 'type' => 2],
                 ['media' => ($request->youtube_ar ? : ''), 'type' => 2],
@@ -368,6 +369,9 @@ class FamousController extends Controller
                         // Check if there is any images or files and move them to public/events
             // Arabic Event Images
             if ($request->hasfile('arabic_images')) {
+
+                // delete old images if new exists
+                $famous->media()->where('type', 1)->where('media', 'like', '%arabic%')->delete();
 
                 // Setup every image
                 foreach ($request->file('arabic_images') as $image) {
@@ -392,6 +396,9 @@ class FamousController extends Controller
             // English Event Images
             if ($request->hasfile('english_images')) {
 
+                // delete old images if new exists
+                $famous->media()->where('type', 1)->where('media', 'like', '%english%')->delete();
+                
                 // Setup every image
                 foreach ($request->file('english_images') as $image) {
                     $name = time() . '_' . $image->getClientOriginalName();
@@ -419,7 +426,7 @@ class FamousController extends Controller
             return redirect()->back();
         }
 
-        // Insert Arabic values
+        // Update Arabic values
         try {
             Helper::edit_entity_localization('famous_attractions', 'name', $famous->id, 2, ($request->place_name_ar ? : 'بدون اسم'));
             Helper::edit_entity_localization('famous_attractions', 'address', $famous->id, 2, ($request->place_address_ar ? : 'بدون عنوان'));
@@ -481,4 +488,44 @@ class FamousController extends Controller
         }
     }
 
+    public function filter(Request $request) {
+        // dd($request->all());
+
+        $categories = array(); 
+        $categories = $request->place_categories;
+
+        // create new object
+        $data['attractions'] = new FamousAttraction;
+
+        // search by category
+        if( $categories ){
+            $data['attractions'] = $data['attractions']->whereHas('categories', function($q) use($categories) {
+                $q->whereIn('fa_categories.id', $categories);
+            });
+        }
+
+        // dd($data['attractions']->get());
+        // search by active
+        if( $request->is_active && $request->is_inActive ) {
+            $data['attractions'] = $data['attractions'];
+        }
+        else if( $request->is_active ) {
+            $data['attractions'] = $data['attractions']->where('is_active', 1);
+        } 
+        else if ( $request->is_inActive ) {
+            // search by inactive
+            $data['attractions'] = $data['attractions']->where('is_active', 0);
+        }
+
+        $data['categories']  = FamousCategory::all();
+
+        if($data['attractions'] != NULL) {
+            $data['attractions'] = $data['attractions']->get();
+        } else {
+            $data['attractions'] = $data['attractions']->all();
+        }
+
+        // return filtered results
+        return view('famous::list', $data);
+    }
 }
