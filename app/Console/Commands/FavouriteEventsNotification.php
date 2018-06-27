@@ -82,7 +82,7 @@ class FavouriteEventsNotification extends Command
                 $message['ar'] = 'باقي يوم على  انطلاق'.' ' . $event->name;
                 //$notifcaion_service->PushToManyUsers($event->CalenderUsers,$notification);  
                 foreach ($event->CalenderUsers()->UserWithDeviceTokens()->get() as $user) {
-                    $notification = $notifcation_service->save_notification($message,6,4,$event->id,$user->id);     
+                    $notification = $notifcation_service->save_notification($message,6,4,$event->id,$user->id);  
                     $queue = new NotificationPush();
                     $queue->notification_id = $notification->id;
                     $queue->device_token    = $user->device_token;
