@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
+            
               <!-- =============== Custom Content ===========-==========-->
               <div class="row">
                 <div class="col-xs-12">
@@ -27,24 +27,26 @@
                       <h3>@lang('keywords.info') </h3>
                       <fieldset>
                         <div class="row">
-                          <div class="col-xs-4">
+                          <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="Place_name">@lang('keywords.shop_name')</label>
                               <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
-                          <div class="col-xs-4">
+                          <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="Place_name">@lang('keywords.shop_name_arabic')</label>
                               <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
-                           <div class="col-xs-4">
+                           <div class="col-xs-5">
                             <div class="master_field">
                               <label class="master_label" for="Place_address">@lang('keywords.shop_address')</label>
                               <input class="master_input" type="text" placeholder="ex:city stars" Required id="shop_address" name="place_address"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
+                          <div class="col-md-2 col-xs-1"> <br><br><a class="bradius--no border-btn master-btn" type="button" href="#mapModal">Map</a></div>
+                        
 
                          {{--  <div class="col-xs-4">
                               <div class="master_field">
@@ -675,4 +677,5 @@ var shop_long;
           });
       }
     </script>
+  
 @endsection

@@ -45,6 +45,7 @@
                               <input class="master_input" type="text" placeholder="ex:city stars" Required id="shop_address" name="place_address" value="{{$shop['address']}}"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
+                          
 
                          {{--  <div class="col-xs-4">
                               <div class="master_field">
