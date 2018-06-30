@@ -272,7 +272,7 @@
                                 <div class="master_field">
                                     {{-- Input: Arabic Image Name --}}
                                     <label class="master_label" for="Offer_title">اضف اسم الصورة</label>
-                                    <input class="master_input" type="text" name="image_ar_name" 
+                                    <input class="master_input" type="text" name="image_ar_name" max="100"
                                         placeholder="Offer title" Required id="Offer_title" value="{{ old('image_ar_name') }}">
                                     <span class="master_message inherit"></span>
                                 </div>
@@ -281,7 +281,7 @@
                                 <div class="master_field">
                                     {{-- textarea: Arabic Image Description --}}
                                     <label class="master_label" for="Offer_Description">اضف وصفا للصورة</label>
-                                    <textarea class="master_input" name="image_ar_description" id="Offer_Description" 
+                                    <textarea class="master_input" name="image_ar_description" id="Offer_Description" maxlength="255"
                                         placeholder="Offer Description" Required>{{ old('image_ar_description') }}</textarea>
                                     <span class="master_message inherit"></span>
                                 </div>
@@ -306,7 +306,7 @@
                                 <div class="master_field">
                                     {{-- Input: English Image Name --}}
                                     <label class="master_label" for="Offer_title">Offer title in English</label>
-                                    <input class="master_input" type="text" name="image_en_name" 
+                                    <input class="master_input" type="text" name="image_en_name" max="100"
                                         placeholder="Offer title" Required id="Offer_title" value="{{ old('image_en_name') }}">
                                     <span class="master_message inherit"></span>
                                 </div>
@@ -315,7 +315,7 @@
                                 <div class="master_field">
                                     {{-- Input: English Image Description --}}
                                     <label class="master_label" for="Offer_Description">Offer Description in English</label>
-                                    <textarea class="master_input" name="image_en_description" 
+                                    <textarea class="master_input" name="image_en_description" maxlength="255"
                                         id="Offer_Description" placeholder="Offer Description" Required>{{ old('image_en_description') }}</textarea>
                                     <span class="master_message inherit"></span>
                                 </div>
@@ -394,7 +394,7 @@
                                 <div class="master_field">
                                     {{-- Input: Arabic Image Name --}}
                                     <label class="master_label" for="Offer_title">اضف اسم الصورة</label>
-                                    <input class="master_input" name="image_ar_name1" type="text" 
+                                    <input class="master_input" name="image_ar_name1" type="text" max="100"
                                         placeholder="Offer title" Required id="Offer_title" value="">
                                         <span class="master_message inherit"></span>
                                 </div>
@@ -403,7 +403,7 @@
                                 <div class="master_field">
                                     {{-- textarea: Arabic Image Description --}}
                                     <label class="master_label" for="Offer_Description">اضف وصفا للصورة</label>
-                                    <textarea class="master_input" name="image_ar_description1" id="Offer_Description" 
+                                    <textarea class="master_input" name="image_ar_description1" id="Offer_Description" maxlength="255"
                                         placeholder="Offer Description" Required></textarea>
                                         <span class="master_message inherit"></span>
                                 </div>
@@ -428,7 +428,7 @@
                                 <div class="master_field">
                                     {{-- Input: English Image Name --}}
                                     <label class="master_label" for="Offer_title">Offer title in English</label>
-                                    <input class="master_input" type="text" name="image_en_name1"
+                                    <input class="master_input" type="text" name="image_en_name1" max="100"
                                         placeholder="Offer title" Required id="Offer_title" value="">
                                         <span class="master_message inherit"></span>
                                 </div>
@@ -437,7 +437,7 @@
                                 <div class="master_field">
                                     {{-- textarea: English Image Description --}}
                                     <label class="master_label" for="Offer_Description">Offer Description in English</label>
-                                    <textarea class="master_input" id="Offer_Description" name="image_en_description1"
+                                    <textarea class="master_input" id="Offer_Description" name="image_en_description1" maxlength="255"
                                         placeholder="Offer Description" Required></textarea>
                                         <span class="master_message inherit"></span>
                                 </div>

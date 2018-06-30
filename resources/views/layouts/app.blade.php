@@ -32,8 +32,6 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     {{-- Custom CSS --}}
- 
-
   </head>
   <body>
     <div class="toggled" id="wrapper">
@@ -89,10 +87,29 @@
                   </ul>
                   <ul class="actionsbar desktop-view hidden-xs">
                     <li class="dropdowny"><a class="nav-link dropdowny-toggle  " href="#"><i class="fa fa-bell"></i></a>
+                      @if(App::isLocale("en"))
+                        <ul class="dropdowny-menu" role="menu">
+                          @foreach(\App\Helpers\Helper::ListNotifications() as $notification)
+                          <li><a href="{{url('/mark_read')}}/{{$notification->id}}">
+                            <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
+                            <p>{{$notification->msg}}</p><span class="notification_date"><i class="fa fa-clock-o"></i>{{date('d/m/Y', strtotime($notification->created_at))}}
+                              {{date('H:i:s', strtotime($notification->created_at))}}</span></a></li>
+                          @endforeach
+                         </ul> 
+                      @else
                       <ul class="dropdowny-menu" role="menu">
+                          @foreach(\App\Helpers\Helper::ListNotifications() as $notification)
+                          <li><a href="{{url('/mark_read')}}/{{$notification->id}}">
+                            <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
+                            <p>{{$notification->msg_ar}}</p><span class="notification_date"><i class="fa fa-clock-o"></i>{{date('d/m/Y', strtotime($notification->created_at))}}
+                              {{date('H:i:s', strtotime($notification->created_at))}}</span></a></li>
+                          @endforeach
+                         </ul> 
+                      @endif
+                      <!-- <ul class="dropdowny-menu" role="menu">
                         <li><a href="#">
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
-                            <p>lorem ipsum dollar lorem ipsum dollarss</p><span class="notification_date"><i class="fa fa-clock-o"></i>5/11/2015
+                            <p>Medo ipsum dollar lorem ipsum dollarss</p><span class="notification_date"><i class="fa fa-clock-o"></i>5/11/2015
                               11:00:00AM</span></a></li>
                         <li><a href="#">
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
@@ -138,7 +155,7 @@
                             <div class="icon-container"><i class="fa fa-volume-up"> </i></div>
                             <p>lorem ipsum dollar lorem ipsum</p><span class="notification_date"><i class="fa fa-clock-o"></i>5/11/2015
                               11:00:00AM</span></a></li>
-                      </ul>
+                      </ul> -->
                     </li>
                   </ul>
                 </div>
@@ -174,7 +191,9 @@
               </div>
               <div class="side">
                 <ul class="side-menu">
+                  @if(\App\Helpers\Helper::hasRule(['Super Admin','Admin']) )
                   <li class="side__list" id="menu_1"><a class="side__item side__item--sub">@lang('keywords.mainData')</a>
+                  
                     <ul class="side__submenu">
                       <li class="side__sublist"><a class="side__subitem" id="sub_1_1" href="{{ route('about') }}">@lang('keywords.aboutUs')</a>
                       </li>
@@ -196,32 +215,45 @@
                       </li>
                     </ul>
                   </li>
+                  @endif
+                  @if(\App\Helpers\Helper::hasRule(['Super Admin']) )
                   <li class="side__list" id="menu_2"> <a class="side__item side__item--sub">@lang('keywords.Users')</a>
                     <ul class="side__submenu">
                       <li class="side__sublist"><a class="side__subitem" id="sub_2_1" href="{{ route('users_mobile')  }}">@lang('keywords.MobileAppUsers')</a></li>
                       <li class="side__sublist"><a class="side__subitem" id="sub_2_2" href="{{ route('users_backend')  }}">@lang('keywords.BackendUsers')</a></li>
                     </ul>
                   </li>
+                  @endif
                   <li class="side__list" id="menu_3"> <a class="side__item side__item--sub">@lang('keywords.events')</a>
                     <ul class="side__submenu">
+                      @if(\App\Helpers\Helper::hasRule(['Super Admin','Admin' ,'Data Entry','Backend User']) )
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_1" href="{{ route('event_backend') }}">@lang('keywords.addfrombackend')</a></li>
+                      @endif
+                       @if(\App\Helpers\Helper::hasRule(['Super Admin','Admin' ,'Data Entry','Backend User','Mobile User']) )
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_2" href="{{ route('event_mobile') }}">@lang('keywords.addfromMobile')</a></li>
+                      @endif
+                       @if(\App\Helpers\Helper::hasRule(['Super Admin']) )
                       <li class="side__sublist"><a class="side__subitem" id="sub_3_3" href="{{ route('big_events') }}">@lang('keywords.bigevents')</a></li>
+                      @endif
                     </ul>
                   </li>
-
+                   @if(\App\Helpers\Helper::hasRule(['Super Admin','Admin' ,'Data Entry','Backend User']) )
                   <li class="side__list" id="menu_5"> <a class="side__item" id="sub_5_1" href="{{ route('fa.list') }}">@lang('keywords.famousAtt')</a>
                   </li>
                   <li class="side__list" id="menu_6"> <a class="side__item" id="sub_6_1" href="{{ route('offers.list') }}">@lang('keywords.offers')</a>
                   </li>
                   <li class="side__list" id="menu_7"> <a class="side__item" id="sub_7_1" href="{{route('shops')}}">@lang('keywords.shopndine')</a>
                   </li>
+                  @endif
+                  @if(\App\Helpers\Helper::hasRule(['Super Admin','Admin']) )
                   <li class="side__list" id="menu_8"> <a class="side__item" id="sub_8_1" href="{{route('notification')}}">@lang('keywords.notifications')</a>
                   </li>
-
+                  @endif
+                  @if(\App\Helpers\Helper::hasRule(['Super Admin']) )
                   <li class="side__list" id="menu_9"> <a class="side__item" href="{{ route('statistics') }}">@lang('keywords.statistics')</a>
 
                   </li>
+                  @endif
                 </ul>
               </div>
             </nav>
@@ -638,13 +670,15 @@
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&libraries=places&callback=initMap" type="text/javascript"></script>
   
   {{-- Map script --}}
-  <script>
+<!--   <script>
 
       var map;
       function initMap() {
 
         @if( isset($event->latitude) && isset($event->longtuide) ) 
           var myLatlng = {lat: {{ $event->latitude }}, lng: {{ $event->longtuide }} };
+        @elseif( isset($famous->latitude) && isset($famous->longtuide) )
+          var myLatlng = {lat: {{ $famous->latitude }}, lng: {{ $famous->longtuide }} };
         @else 
           var myLatlng = {lat: 30.042701, lng: 31.432662};
         @endif
@@ -660,6 +694,7 @@
         var marker = new google.maps.Marker({
             position: myLatlng,
             map: map,
+             draggable: true,
             title: 'Click to zoom'
           });
 
@@ -695,8 +730,77 @@
           }
 
       }
-  </script>
-
+  </script> -->
+<script>
+/* script */
+function initMap() {
+  @if( isset($event->latitude) && isset($event->longtuide) ) 
+          var latlng = {lat: {{ $event->latitude }}, lng: {{ $event->longtuide }} };
+        @else 
+          var latlng = {lat: 30.042701, lng: 31.432662};
+        @endif
+   // var latlng = new google.maps.LatLng(28.5355161,77.39102649999995);
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: latlng,
+      zoom: 13
+    });
+    var marker = new google.maps.Marker({
+      map: map,
+      position: latlng,
+      draggable: true,
+      anchorPoint: new google.maps.Point(0, -29)
+   });
+    var input = document.getElementById('searchInput');
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    var geocoder = new google.maps.Geocoder();
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.bindTo('bounds', map);
+    var infowindow = new google.maps.InfoWindow();   
+    autocomplete.addListener('place_changed', function() {
+        infowindow.close();
+        marker.setVisible(false);
+        var place = autocomplete.getPlace();
+        if (!place.geometry) {
+            window.alert("Autocomplete's returned place contains no geometry");
+            return;
+        }
+  
+        // If the place has a geometry, then present it on a map.
+        if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+        } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17);
+        }
+       
+        marker.setPosition(place.geometry.location);
+        marker.setVisible(true);          
+    
+        bindDataToForm(place.formatted_address,place.geometry.location.lat(),place.geometry.location.lng());
+        infowindow.setContent(place.formatted_address);
+        infowindow.open(map, marker);
+       
+    });
+    // this function will work on marker move event into map 
+    google.maps.event.addListener(marker, 'dragend', function() {
+        geocoder.geocode({'latLng': marker.getPosition()}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          if (results[0]) {        
+              bindDataToForm(results[0].formatted_address,marker.getPosition().lat(),marker.getPosition().lng());
+              infowindow.setContent(results[0].formatted_address);
+              infowindow.open(map, marker);
+          }
+        }
+        });
+    });
+}
+function bindDataToForm(address,lat,lng){
+   document.getElementById('location').value = address;
+   document.getElementById('lat').value = lat;
+   document.getElementById('lng').value = lng;
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
 
 <script type="text/javascript">
   @if(\App::isLocale('ar'))

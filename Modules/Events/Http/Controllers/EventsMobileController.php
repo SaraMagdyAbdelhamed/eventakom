@@ -44,10 +44,17 @@ class EventsMobileController extends Controller
 
      public function index()
     {
-        
+        $mobileUser = Helper::hasRule(['Mobile User']);
+        if($mobileUser){
+        $current_events = EventMobile::CurrentEvents()->where('created_by',Auth::id())->get();
+        $pending_events = EventMobile::PendingEvents()->where('created_by',Auth::id())->get();
+        $rejected_events= EventMobile::EventsRejected()->where('created_by',Auth::id())->get();   
+
+        }else{
         $current_events = EventMobile::CurrentEvents()->get();
         $pending_events = EventMobile::PendingEvents()->get();
         $rejected_events= EventMobile::EventsRejected()->get();
+        }
         $categories = EventCategory::all();
         return view('events::eventsMobile.list')
                     // ->with('events', EventMobile::MobileApproved()->get());
@@ -55,7 +62,7 @@ class EventsMobileController extends Controller
      }
 
       public function event_filter(Request $request)
-    {
+    {  
         if (isset($request->categories)) {
         $data['current_events'] =   $events = EventMobile::whereHas('categories', function($q) use($request){
             $q->whereIn('event_categories.interest_id', $request->categories);
@@ -93,6 +100,11 @@ class EventsMobileController extends Controller
                  if (isset($request->status)) {
                 $q->whereIn('is_active', $request->status);
                  }
+         
+          if(Helper::hasRule(['Mobile User'])){ 
+
+             $q->where('created_by',Auth::id());
+          }  
               })->get();
 
             } else{
@@ -130,7 +142,10 @@ class EventsMobileController extends Controller
                 $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
 
             }
+            if(Helper::hasRule(['Mobile User'])){ 
 
+             $q->where('created_by',Auth::id());
+          } 
         })->get();
         }
       // dd($data['current_events']);
@@ -148,6 +163,12 @@ class EventsMobileController extends Controller
      */
     public function view($id)
     {
+        $mobileUser = Helper::hasRule(['Mobile User']);
+        if($mobileUser){ 
+        if(!Helper::hisEvent($id)) {
+            return redirect('/events/mobile');  
+        }
+        }
         //INFO
         $data['event'] = EventMobile::find($id);
         $data['categories'] =  EventMobile::join('event_categories as c','events.id','=','c.event_id')->where(function ($q) use ($id) {
@@ -174,6 +195,12 @@ class EventsMobileController extends Controller
     public function edit($id)
     {
         // mobile event
+        $mobileUser = Helper::hasRule(['Mobile User']);
+        if($mobileUser){ 
+        if(!Helper::hisEvent($id)) {
+            return redirect('/events/mobile');  
+        }
+        }
         $data['event']         = EventMobile::find($id);
         $data['genders']       = Genders::all();
         $data['age_range']     = Age_Ranges::all();
@@ -197,6 +224,12 @@ class EventsMobileController extends Controller
 
  public function update(Request $request)
     { 
+         $mobileUser = Helper::hasRule(['Mobile User']);
+        if($mobileUser){ 
+        if(!Helper::hisEvent($request['event_id'])) {
+            return redirect('/events/mobile');  
+        }
+        }
         //dd($request);
         // Validate incoming request inputs with the following validation rules.
         $this->validate($request, [
@@ -585,6 +618,13 @@ class EventsMobileController extends Controller
      */
      public function destroy($id)
      {
+        $mobileUser = Helper::hasRule(['Mobile User']);
+        if($mobileUser){ 
+        if(!Helper::hisEvent($id)) {
+            return redirect('/events/mobile');  
+        }
+        }
+
          $event = EventMobile::find($id);
          $event->delete();
      }
@@ -593,6 +633,12 @@ class EventsMobileController extends Controller
      {
          $ids = $_POST['ids'];
          foreach ($ids as $id) {
+            $mobileUser = Helper::hasRule(['Mobile User']);
+        if($mobileUser){ 
+        if(!Helper::hisEvent($id)) {
+            return redirect('/events/mobile');  
+        }
+        }
              EventMobile::find($id)->delete();
          }
      }

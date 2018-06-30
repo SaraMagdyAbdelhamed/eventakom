@@ -199,12 +199,16 @@
                 @foreach($value['shop_media'] as $video)          
                  @if($image['type'] ==2)
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom"><iframe width="100%" height="350" src="{{$video['link']}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                  <iframe width="100%" height="350" src="{{$video['link']}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                  </div>
                 </div>
                 @endif
                 @endforeach
                 {{-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom"><iframe width="100%" height="350" src="https://www.youtube.com/embed/tMe0vwZ13fw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                  <iframe width="100%" height="350" src="https://www.youtube.com/embed/tMe0vwZ13fw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                  </div>
                 </div> --}}
               </li>
             </ul>

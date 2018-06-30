@@ -45,8 +45,8 @@
             </select>
           </div>
           <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-            <button class="btn btn-block" id="multiselect_rightSelected" type="button"><i class="fa fa-chevron-right"></i></button>
-            <button class="btn btn-block" id="multiselect_leftSelected" type="button"><i class="fa fa-chevron-left"></i></button>
+            <button class="btn btn-block" id="multiselect_rightSelected" type="button"><i class="{{\App::isLocale('en') ?'fa fa-chevron-right':'fa fa-chevron-left'}}"></i></button>
+            <button class="btn btn-block" id="multiselect_leftSelected" type="button"><i class="{{\App::isLocale('en') ?'fa fa-chevron-left':'fa fa-chevron-right'}}"></i></button>
           </div>
           <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
             <select class="select_big_event" id="multiselect_to" name="to[]" size="8" multiple="multiple">

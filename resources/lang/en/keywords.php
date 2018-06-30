@@ -202,6 +202,7 @@
         'isThisPlaceActive' => 'Is this place active?',
         'openday'   => 'Opening Days',
         'otherInfo' => 'Other Info',
+        'famousHint'=> 'Please check the day that you want to edit its time.',
 		
         //Statistics
         'statistics'=>'Statistics',

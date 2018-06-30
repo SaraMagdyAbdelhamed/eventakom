@@ -230,7 +230,7 @@
                               @if($shop->is_active)
                               <input  type="checkbox" checked  name="is_active">
                               @else
-                              <input class="make-switch" type="checkbox"  data-on-text="active" data-off-text="inactive" name="is_active">
+                              <input type="checkbox"   name="is_active">
                               @endif
                             </div>
                           </div>
@@ -570,16 +570,16 @@
       }());
       
     </script>
-    <script type="text/javascript">
-      $(function () {
-        $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
-      });
-    </script>
+    
     <script type="text/javascript">
       // var currentCount =0;
       //  var nextCount = 0 ;
+      
       $('.add-more-branch').on('click' , function(){
        var currentCount =$('.branch-container').length;
+       // for (var i = 1 ; i<= currentCount ; i++) {
+       //   assignAutoCompl("branch_address_"+i,"#branch_long_"+i,"#branch_lat_"+i);
+       // }
       var nextCount = currentCount +1;
        $('#mbranch').append("<div class='branch-container'>  <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+"@lang('keywords.in_ar')</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name'  id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_address')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_address_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>@lang('keywords.branch_start') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>@lang('keywords.branch_end') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" long</label><input class='master_input' type='text' placeholder='branch "+nextCount+" long'  id='branch_long_"+nextCount+"' name='branch_long["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" lat</label><input class='master_input' type='text' placeholder='branch "+nextCount+" lat'  id='branch_lat_"+nextCount+"' name='branch_lat["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div></div> ");
       
@@ -650,7 +650,7 @@ var shop_long;
         });
 
 
-
+         
       }
         function assignAutoCompl(_id , long , lat)
       {
