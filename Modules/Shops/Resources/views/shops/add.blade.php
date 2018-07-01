@@ -1,7 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
-
+<div class="remodal" data-remodal-id="mapModal" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+      <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
+      <div>
+        <div class="row">
+          <div class="col-lg-12">
+            <h3>Map</h3>
+          </div>
+          <div class="col-xs-12">
+            <form>
+              <div class="tabs--wrapper">
+                <div class="mapouter">
+                  <div class="gmap_canvas">
+                    <iframe id="gmap_canvas" width="600" height="500" src="https://maps.google.com/maps?q=مصر الجديدة، Egypt&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"><a href="https://www.embedgooglemap.net"></a></iframe>
+                  </div>
+                </div>
+              </div><br>
+              <div class="col-xs-12">
+                <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
+                <button class="remodal-confirm" data-remodal-action="confirm">OK</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+            
               <!-- =============== Custom Content ===========-==========-->
               <div class="row">
                 <div class="col-xs-12">
@@ -27,41 +52,30 @@
                       <h3>@lang('keywords.info') </h3>
                       <fieldset>
                         <div class="row">
-                          <div class="col-xs-4">
+                          <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="Place_name">@lang('keywords.shop_name')</label>
                               <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
-                          <div class="col-xs-4">
+                          <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="Place_name">@lang('keywords.shop_name_arabic')</label>
                               <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
-                           <div class="col-xs-4">
+                           <div class="col-xs-5">
                             <div class="master_field">
                               <label class="master_label" for="Place_address">@lang('keywords.shop_address')</label>
                               <input class="master_input" type="text" placeholder="ex:city stars" Required id="shop_address" name="place_address"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
-
-                         {{--  <div class="col-xs-4">
-                              <div class="master_field">
-                                <label class="master_label" for="start_time">start date time</label>
-                                <div class="bootstrap-timepicker">
-                                  <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time"name="shop_start">
-                                </div><span class="master_message inherit">message content</span>
-                              </div>
-                            </div>
-                            <div class=" col-xs-4">
-                              <div class="master_field">
-                                <label class="master_label" for="end_time">end date time</label>
-                                <div class="bootstrap-timepicker">
-                                  <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="shop_end">
-                                </div><span class="master_message inherit">message content</span>
-                              </div>
-                            </div> --}}
+                          <div class="col-md-2 col-xs-1"> 
+                          <br>
+                          <br>
+                          <a class="bradius--no border-btn master-btn" type="button" href="#mapModal">Map</a>
+                          </div>
+                       
                           
                           <div class="col-xs-4">
                             <div class="master_field">
@@ -542,48 +556,6 @@
         
 
       });
-      
-      // alert(nextCount);
-      
-      //    function initMap() {
-      
-      //   // nextCount+1;
-      //   for(var i=1 ; i <= 3 ; i++)
-      // {
-      //   var input = document.getElementById("branch_address_"+i);
-      //  alert(input);
-      //   var autocomplete = new google.maps.places.Autocomplete(input);
-
-      //   autocomplete.addListener('place_changed', function() {
- 
-      //     var place = autocomplete.getPlace();
-      //     if (!place.geometry) {
-      //       // User entered the name of a Place that was not suggested and
-      //       // pressed the Enter key, or the Place Details request failed.
-      //       window.alert("No details available for input: '" + place.name + "'");
-      //       return;
-      //     }
-
-      //     var address = '';
-      //     if (place.address_components) {
-      //       address = [
-      //         (place.address_components[0] && place.address_components[0].short_name || ''),
-      //         (place.address_components[1] && place.address_components[1].short_name || ''),
-      //         (place.address_components[2] && place.address_components[2].short_name || '')
-      //       ].join(' ');
-      //     }
-
-      //     var branch_long = place.geometry.location.lat();
-      //  var  branch_lat= place.geometry.location.lng();
-      //  alert(branch_long);
-      //    // $('#branch_address').val(branch_address);
-      //    // $('#branch_address').val(branch_address);
-      //   });
-
-
-
-      // }
-      // }
         
       
     </script>
@@ -671,4 +643,5 @@ var shop_long;
           });
       }
     </script>
+  
 @endsection

@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Shops\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
 use App\Shop;
 use App\ShopBranch;
 use App\ShopDay;
@@ -12,8 +14,13 @@ use Illuminate\Support\Facades\File;
 use App\Helpers\Helper;
 use App\ShopBranchTime;
 use App\Day;
-class ShopController extends Controller
+
+class ShopsController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     * @return Response
+     */
     public function index()
     {
         $data['shops']=Shop::with('shop_branch')->with('shop_day')->with('shop_media')->get();
@@ -32,19 +39,19 @@ class ShopController extends Controller
 
           // dd($data['shops']);
     	
-    	return view('shops.index',$data);
+    	return view('shops::shops.index',$data);
     }
      public function add()
     {
         
-        return view('shops.add');
+        return view('shops::shops.add');
     }
 
     public function edit($id)
     {
         $data['shop']=Shop::find($id);
     	// dd($data['shop']);
-    	return view('shops.edit',$data);
+    	return view('shops::shops.edit',$data);
     }
 
     public function destroy($id)
@@ -151,6 +158,7 @@ class ShopController extends Controller
         if(isset($request['video']))
         {
             foreach ($request['video'] as $key => $value) {
+                $value=str_replace('watch?v=', 'embed/', $value);
                if($value != null)
                {
                 $shop_media=ShopMedia::create([
@@ -160,7 +168,10 @@ class ShopController extends Controller
                 ]);
                  if($request['video_ar'][$key] != null)
                {
-                Helper::add_localization(21,'link',$shop_media->id,$request['video_ar'][$key],2);
+                //    dd( $request['video_ar'][$key]);
+                // $value_ar= $request['video_ar'][$key];
+                $value_ar=str_replace('watch?v=', 'embed/', $request['video_ar'][$key]);
+                Helper::add_localization(21,'link',$shop_media->id,$value_ar,2);
                 }
                 else
                 {

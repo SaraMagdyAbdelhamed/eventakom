@@ -16,7 +16,9 @@
 Route::get('/', function () {
     return redirect('/login');
 });
-
+Route::get('/map-test', function () {
+    return view('map-search-test');
+});
 // login form route
 Route::get('/login', function($lang = null) {
     App::setlocale('en');
@@ -186,14 +188,14 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
     Route::post('/offers/delete/selected', '\Modules\Offers\Http\Controllers\OffersController@destroySelected')->name('offers.deleteSelected');
     
     // shops
-    Route::get('/shops', 'ShopController@index')->name('shops');
-    Route::get('/add_shop', 'ShopController@add')->name('add_shop');
-    Route::get('/edit_shop/{id}', 'ShopController@edit')->name('edit_shop');
-    Route::get('/shop_destroy/{id}', 'ShopController@destroy')->name('shop_destroy');
-    Route::post('/shop_destroy_all', 'ShopController@destroy_all')->name('shop_destroy_all');
+    Route::get('/shops', '\Modules\Shops\Http\Controllers\ShopsController@index')->name('shops');
+    Route::get('/add_shop', '\Modules\Shops\Http\Controllers\ShopsController@add')->name('add_shop');
+    Route::get('/edit_shop/{id}', '\Modules\Shops\Http\Controllers\ShopsController@edit')->name('edit_shop');
+    Route::get('/shop_destroy/{id}', '\Modules\Shops\Http\Controllers\ShopsController@destroy')->name('shop_destroy');
+    Route::post('/shop_destroy_all', '\Modules\Shops\Http\Controllers\ShopsController@destroy_all')->name('shop_destroy_all');
 
-    Route::post('/add_shop_data', 'ShopController@add_shop')->name('add_shop_data');
-    Route::post('/edit_shop_data/{id}', 'ShopController@edit_shop')->name('edit_shop_data');
+    Route::post('/add_shop_data', '\Modules\Shops\Http\Controllers\ShopsController@add_shop')->name('add_shop_data');
+    Route::post('/edit_shop_data/{id}', '\Modules\Shops\Http\Controllers\ShopsController@edit_shop')->name('edit_shop_data');
 }); // famouse attractions , offers and deals , shop and dine rules
 
    Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = null) {
