@@ -79,7 +79,6 @@
             {{-- Google Maps API --}}
             <div class="col-xs-12">
               <div class="mapouter">
-              <input id="searchInput" class="input-controls" type="text" placeholder="Enter a location">
                 <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
                 <input type="hidden" name="event_id" value="{{$event->id}}">
                 <input type="hidden" name="lat" id="lat" >
@@ -91,7 +90,7 @@
              <div class="col-xs-6">
                 <div class="master_field">
                   <label class="master_label" for="venue">@lang('keywords.address')</label>
-                  <input class="master_input" type="text" readonly placeholder="ex:CFC" Required id="location" name="address" value="{{$event->address}}">
+                  <input class="master_input" id="searchInput" type="text" placeholder="ex:CFC" Required id="location" name="address" value="{{$event->address}}">
                   @if ($errors->has('address'))
                     <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
                   @endif

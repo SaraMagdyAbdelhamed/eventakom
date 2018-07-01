@@ -84,7 +84,7 @@
                 <div class="col-xs-6">
                 <div class="master_field" >
                     <label class="master_label" for="Address_name">@lang('keywords.address')</label>
-                    <input class="master_input" type="text" placeholder="ex:52 Ahmed Salh st .city stars" readonly  id="address" name="address" value="{{ $famous->address ? : '' }}">
+                    <input class="master_input" id="searchInput" type="text" placeholder="ex:52 Ahmed Salh st .city stars" Required name="address" value="{{ $famous->address ? : '' }}" />
                 </div>
                 </div>
 

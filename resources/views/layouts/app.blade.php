@@ -731,14 +731,18 @@
 
       }
   </script> -->
+  
 <script>
 /* script */
 function initMap() {
-  @if( isset($event->latitude) && isset($event->longtuide) ) 
-          var latlng = {lat: {{ $event->latitude }}, lng: {{ $event->longtuide }} };
-        @else 
-          var latlng = {lat: 30.042701, lng: 31.432662};
-        @endif
+      @if( isset($event->latitude) && isset($event->longtuide) ) 
+        var latlng = {lat: {{ $event->latitude }}, lng: {{ $event->longtuide }} };
+      @elseif( isset($famous->latitude) && isset($famous->longtuide) )
+        var latlng = {lat: {{ $famous->latitude }}, lng: {{ $famous->longtuide }} };
+      @else 
+        var latlng = {lat: 30.042701, lng: 31.432662};
+      @endif
+      
    // var latlng = new google.maps.LatLng(28.5355161,77.39102649999995);
     var map = new google.maps.Map(document.getElementById('map'), {
       center: latlng,
@@ -751,7 +755,7 @@ function initMap() {
       anchorPoint: new google.maps.Point(0, -29)
    });
     var input = document.getElementById('searchInput');
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
     var geocoder = new google.maps.Geocoder();
     var autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.bindTo('bounds', map);
@@ -764,7 +768,7 @@ function initMap() {
             window.alert("Autocomplete's returned place contains no geometry");
             return;
         }
-  
+
         // If the place has a geometry, then present it on a map.
         if (place.geometry.viewport) {
             map.fitBounds(place.geometry.viewport);
@@ -795,7 +799,7 @@ function initMap() {
     });
 }
 function bindDataToForm(address,lat,lng){
-   document.getElementById('location').value = address;
+   document.getElementById('searchInput').value = address;
    document.getElementById('lat').value = lat;
    document.getElementById('lng').value = lng;
 }

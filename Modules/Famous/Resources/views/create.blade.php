@@ -81,7 +81,7 @@
                 <div class="col-xs-6">
                 <div class="master_field" >
                     <label class="master_label" for="Address_name">@lang('keywords.address')</label>
-                    <input class="master_input" type="text" placeholder="ex:52 Ahmed Salh st .city stars" readonly  id="address" name="address" value="Cairo, Egypt">
+                    <input class="master_input" type="text" placeholder="ex:CFC" Required id="searchInput" name="address" value="" />
                 </div>
                 </div>
 

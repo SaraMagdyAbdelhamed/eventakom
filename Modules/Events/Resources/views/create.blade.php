@@ -79,22 +79,24 @@
             {{-- Google Maps API --}}
             <div class="col-xs-12">
               <div class="mapouter">
+
+                {{-- Map Latitude & Longtuide --}}
                 <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
-                <input type="hidden" name="lat" id="lat" value="30.047059762805294">
-                <input type="hidden" name="lng" id="lng" value="32.5693651023837">
-                
+                  <input type="hidden" name="lat" id="lat" >
+                  <input type="hidden" name="lng" id="lng" >
               </div>
             </div>
 
+            {{-- Search address --}}
             <div class="col-xs-6">
-                <div class="master_field">
-                  <label class="master_label" for="venue">@lang('keywords.address')</label>
-                  <input class="master_input" type="text" readonly placeholder="ex:CFC"  id="address" name="address" value="{{ old('address') }}">
-                  @if ($errors->has('address'))
-                    <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
-                  @endif
-                </div>
+              <div class="master_field">
+                <label class="master_label" for="venue">@lang('keywords.address')</label>
+                <input class="master_input" id="searchInput" type="text" placeholder="ex:CFC" Required id="location" name="address" value="">
+                @if ($errors->has('address'))
+                  <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
+                @endif
               </div>
+            </div>
 
             {{-- English Venu --}}
             <div class="col-xs-6">
