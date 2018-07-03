@@ -192,6 +192,7 @@
         'address'   => 'Address',
         'endDateFrom'   => 'End date from',
         'endDateTo'     => 'End date to',
+        'free'  => 'Free',
 
         
         // Offers & Deals AND Famous Attractions

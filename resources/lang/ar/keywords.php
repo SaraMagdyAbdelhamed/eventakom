@@ -128,7 +128,7 @@
         'noTickets' => ' عذرا ، لا يوجد تذاكر متاحة',
         'endDateFrom'   => 'وقت الانتهاء من',
         'endDateTo'     => 'وقت الانتهاء الي',
-		
+		'free'  => 'مجانا',
         // Events Mobile
         'addfromMobile' => 'المضاف من التطبيق',
 		'Current' => 'الحالية',

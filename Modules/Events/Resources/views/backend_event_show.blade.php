@@ -454,7 +454,7 @@
                       @lang('keywords.Price')
                     </span></th>
                     <td><span class="cellcontent">
-                      {{ $event->ticket()->first()->price ? : 0 }}  {{ $event->ticket()->first()->currency->symbol ? : 'USD' }}
+                      {{ count($event->ticket) ? $event->ticket()->first()->price : __('keywords.free') }}  {{ count($event->ticket) ? $event->ticket()->first()->currency->symbol: '' }}
                     </span></td>
                   </tr>
                 </table>
