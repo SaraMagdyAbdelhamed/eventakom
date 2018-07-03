@@ -111,7 +111,7 @@
         'editfrombackend'=> 'Edit From Backend',
         'info'      => 'Info',
         'posts'     => 'Posts',
-        'tickets'   => 'Tickets',
+        'ticket'   => 'Ticket',
         'eventName' => 'Event Name',
         'venue'     => 'Venue',
         'start'     => 'Starts',
@@ -123,6 +123,8 @@
         'tickets'   => 'Tickets',
         'contactInfo'   => 'Contact Info',
         'media'     => 'Media',
+        'foundTickets'  => 'Current available tickets: ',
+        'noTickets' => 'No tickets available',
 		
         // Events Mobile
         'addfromMobile' => 'Added from mobile application',
@@ -188,6 +190,9 @@
         'next'=>'Next',
         'prev'=>'Prev',
         'address'   => 'Address',
+        'endDateFrom'   => 'End date from',
+        'endDateTo'     => 'End date to',
+
         
         // Offers & Deals AND Famous Attractions
         'offers'    => 'Offers and Deals',

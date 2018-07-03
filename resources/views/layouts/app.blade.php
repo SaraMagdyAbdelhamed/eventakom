@@ -175,9 +175,9 @@
               </ul>
               <div class="coverglobal text-center bshadow--2" style="background:undefined url( '{{ asset('img/covers/dummy.jpg') }}') no-repeat center center; background-size:cover;">
                 <button class="hamburger is-closed" type="button" data-toggle="offcanvas"><span class="hamb-top"></span><span class="hamb-middle"></span><span class="hamb-bottom"></span></button>
-                <div class="text-center"><a href="user_profile.html"><img class="coverglobal__avatar bradius--circle" src="{{ asset('img/avaters/male.jpg') }}">
+                <div class="text-center">
+                    <img class="coverglobal__avatar bradius--circle" src="{{ asset('img/avaters/male.jpg') }}">
                     <h3 class="coverglobal__title">{{ Auth::user()->first_name .' '. Auth::user()->last_name }}</h3>
-                    </a>
                     <small class="coverglobal__slogan">
                       <div class="row text-center">
                         {{ Helper::getUserLocalTimezone(Helper::getUserLastLogin()) }}

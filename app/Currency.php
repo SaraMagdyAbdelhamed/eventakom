@@ -18,4 +18,8 @@ class Currency extends Model
         $result = (\App::isLocale('en')) ? Helper::localization('currencies','symbol',$this->id,1) : Helper::localization('currencies','symbol',$this->id,2);
         return ($result==null)? $value : $result;
     }
+
+    public function ticket() {
+        return $this->hasMany('App\EventTicket', 'currency_id');
+    }
 }

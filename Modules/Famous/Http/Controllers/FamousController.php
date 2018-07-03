@@ -264,6 +264,12 @@ class FamousController extends Controller
         $data['categories'] = FamousCategory::all();
         $data['famous'] = FamousAttraction::find($id);
 
+        // redirect back if not found!
+        if ( $data['famous'] == NULL ) {
+            Session::flash('warning', 'Not found! غير موجود');
+            return redirect('/attractions');
+        }
+
         $data['image_ar']   = $data['famous']->media()->where('type', 1)->where('media', 'like', '%arabic%')->first() ? $data['famous']->media()->where('type', 1)->where('media', 'like', '%arabic%')->first()->media : '';
         $data['image_en']   = $data['famous']->media()->where('type', 1)->where('media', 'like', '%english%')->first() ? $data['famous']->media()->where('type', 1)->where('media', 'like', '%english%')->first()->media : '';
 

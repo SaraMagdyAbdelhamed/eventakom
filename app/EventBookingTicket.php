@@ -12,8 +12,8 @@ class EventBookingTicket extends Model
     public $timestamp = true;
 
     // relations
-    public function event() {
-        return $this->belongsTo('App\EventMobile', 'event_id');
+    public function event($model='App\EventMobile') {
+        return $this->belongsTo($model, 'event_id');
     }
 
     public function booking() {

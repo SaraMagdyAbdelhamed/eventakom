@@ -443,7 +443,7 @@
                               </tr> -->
                               <tr>
                               <th><span class="cellcontent">@lang('keywords.Price')</span></th>
-                                <td><span class="cellcontent">@if(isset($tickets[0]->price) && !empty($tickets[0]->price)){{$tickets[0]->price}} USD @endif</span></td>
+                                <td><span class="cellcontent">@if(isset($tickets[0]->price) && !empty($tickets[0]->price)){{$tickets[0]->price}} {{ $event->ticket()->first()->currency->symbol ? : 0 }} @endif</span></td>
                                
                             </tr>
                             </table>

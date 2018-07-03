@@ -112,7 +112,7 @@
         'addNewBackend'  => 'اضف حدثا جديدا',
         'info'      => 'المعلومات',
         'posts'     => 'المنشورات',
-        'tickets'   => 'التذاكر',
+        'ticket'   => 'تذكرة',
         'eventName' => 'اسم الحدث',
         'venue'     => 'المكان',
         'start'     => 'يبدأ في',
@@ -124,6 +124,10 @@
         'tickets'   => 'التذاكر',
         'contactInfo'   => 'معلومات التواصل',
         'media'     => 'الوسائط',
+        'foundTickets'  => 'عدد التذاكر المتوفرة ',
+        'noTickets' => ' عذرا ، لا يوجد تذاكر متاحة',
+        'endDateFrom'   => 'وقت الانتهاء من',
+        'endDateTo'     => 'وقت الانتهاء الي',
 		
         // Events Mobile
         'addfromMobile' => 'المضاف من التطبيق',

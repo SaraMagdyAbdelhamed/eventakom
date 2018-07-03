@@ -256,18 +256,22 @@
                     </thead>
                     <tbody>
 
-                        <tr>
-                          <td><span class="cellcontent"></span></td>
-                          <td><span class="cellcontent">10</span></td>
-                          <td><span class="cellcontent">John Doe</span></td>
-                          <td><span class="cellcontent">Lorem ipsum lorem ipsum</span></td>
-                          <td><span class="cellcontent">1-1-1975</span></td>
-                          <td>
-                            <span class="cellcontent">
-                              <a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a>
-                            </span>
-                          </td>
-                        </tr>
+                      @if ( isset($event->post) && !empty($event->post) )
+                          @foreach ($event->post as $post)
+                          <tr>
+                              <td><span class="cellcontent"></span></td>
+                              <td><span class="cellcontent">{{ $loop->index + 1 }}</span></td>
+                              <td><span class="cellcontent">{{ $post->user ? $post->user->username : '' }}</span></td>
+                              <td><span class="cellcontent">{{ $post->post ? : '' }}</span></td>
+                              <td><span class="cellcontent">{{ $post->created_at->format('Y-m-d H:m:i A ') }}</span></td>
+                              <td>
+                                <span class="cellcontent">
+                                  <a href="#"  class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a>
+                                </span>
+                              </td>
+                            </tr>
+                          @endforeach
+                      @endif
 
                     </tbody>
                   </table>
@@ -429,20 +433,29 @@
                     </div>
                   </div>
                 </div>
-                <button id="delete-test">Delete Tests</button>
               </div>
             </div>
           </li>
           <li class="tab__content_item" id="tickets-content">
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-              <p class="text-center">This event is free no tickets </p>
+              <p class="text-center">
+                @if ( $event->is_paid == 1 )
+                    @lang('keywords.foundTickets') {{ $event->ticket()->first()->current_available_tickets ? : 0 }} @lang('keywords.ticket') 
+                @else 
+                  @lang('keywords.noTickets')
+                @endif
+              </p>
             </div>
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
               <div class="full-table">
                 <table class="verticaltable table-master">
                   <tr>
-                    <th><span class="cellcontent"> Price</span></th>
-                    <td><span class="cellcontent">50 USD</span></td>
+                    <th><span class="cellcontent">
+                      @lang('keywords.Price')
+                    </span></th>
+                    <td><span class="cellcontent">
+                      {{ $event->ticket()->first()->price ? : 0 }}  {{ $event->ticket()->first()->currency->symbol ? : 'USD' }}
+                    </span></td>
                   </tr>
                 </table>
                 <div class="remodal log-custom" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
@@ -612,26 +625,30 @@
                     <thead>
                       <tr class="bgcolor--gray_mm color--gray_d">
                         <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
-                        <th><span class="cellcontent"> serial</span></th>
-                        <th><span class="cellcontent">Ticket Barcode</span></th>
-                        <th><span class="cellcontent">Ticket serial</span></th>
-                        <th><span class="cellcontent">Ticket Status</span></th>
-                        <th><span class="cellcontent">User name</span></th>
-                        <th><span class="cellcontent">Booking date</span></th>
-                        <th><span class="cellcontent">status</span></th>
+                        <th><span class="cellcontent">@lang('keywords.serialNo')</span></th>
+                        <th><span class="cellcontent">@lang('keywords.Ticket Barcode')</span></th>
+                        <th><span class="cellcontent">@lang('keywords.Ticket serial')</span></th>
+                        <th><span class="cellcontent">@lang('keywords.Ticket Status')</span></th>
+                        <th><span class="cellcontent">@lang('keywords.UserName')</span></th>
+                        <th><span class="cellcontent">@lang('keywords.Booking date')</span></th>
+                        <th><span class="cellcontent">@lang('keywords.Status')</span></th>
                       </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                          <td><span class="cellcontent"></span></td>
-                          <td><span class="cellcontent">02</span></td>
-                          <td><span class="cellcontent"><img src = "https://source.unsplash.com/random" , class = " img-in-table"></span></td>
-                          <td><span class="cellcontent">213456794546478</span></td>
-                          <td><span class="cellcontent">Booked</span></td>
-                          <td><span class="cellcontent">John Doe</span></td>
-                          <td><span class="cellcontent">1-1-1975</span></td>
-                          <td><span class="cellcontent"><i class = "fa icon-in-table-true fa-check"></i><i class = "fa icon-in-table-false fa-times"></i></span></td>
-                        </tr>
+                      @if ( isset($booked_tickets) && !empty($booked_tickets) )
+                        @foreach($booked_tickets as $ticket)
+                          <tr>
+                            <td><span class="cellcontent"></span></td>
+                            <td><span class="cellcontent">{{ $loop->index+1 }}</span></td>
+                            <td><span class="cellcontent"><img src = "https://source.unsplash.com/random" , class = " img-in-table"></span></td>
+                            <td><span class="cellcontent">{{ $ticket->serial_number ? : '' }}</span></td>
+                            <td><span class="cellcontent">Booked</span></td>
+                            <td><span class="cellcontent">{{ $ticket->booking->user->username ? : '' }}</span></td>
+                            <td><span class="cellcontent">{{ $ticket->created_at ? $ticket->created_at->format('Y-m-d h:i A') : '' }}</span></td>
+                            <td><span class="cellcontent">@if($ticket->is_used==1)<i class = "fa icon-in-table-true fa-check"></i> @else  <i class = "fa icon-in-table-false fa-times"></i> @endif</span></td>
+                          </tr>
+                        @endforeach
+                      @endif
                     </tbody>
                   </table>
                 </form>

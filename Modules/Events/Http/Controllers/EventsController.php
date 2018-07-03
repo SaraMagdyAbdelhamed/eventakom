@@ -27,20 +27,21 @@ use App\BigEvent;
 use App\Library\Services\NotificationsService;
 use App\EventMedia;
 use App\EventTicket;
+use App\EventPost;
 
 
 class EventsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-     private $NotifcationService;
+    private $NotifcationService;
 
-     public function __construct()
-        {
+    public function __construct()
+    {
             //blockio init
-            $this->NotifcationService = new NotificationsService();
-      
-        }
+        $this->NotifcationService = new NotificationsService();
+
+    }
 
     /**
      * Display a listing of the resource.
@@ -99,9 +100,9 @@ class EventsController extends Controller
             // 'arabic_venu' => 'required|',
             // 'arabic_hashtags' => 'required|',
 
-            'is_paid'   => 'required',
-            'price'     => ($request->price ? 'sometimes|numeric' : ''),
-            'currency'  => ($request->currency ? 'sometimes|numeric' : ''),
+            'is_paid' => 'required',
+            'price' => ($request->price ? 'sometimes|numeric' : ''),
+            'currency' => ($request->currency ? 'sometimes|numeric' : ''),
             'number_of_tickets' => ($request->number_of_tickets ? 'numeric' : ''),
 
             'website' => 'required',
@@ -206,7 +207,7 @@ class EventsController extends Controller
                         $media->type = 1;
                         $media->save();
                     }
-                }                
+                }
             }
             
             // English Event Images
@@ -232,8 +233,8 @@ class EventsController extends Controller
                 }
 
             }
-            
-            if( !$request->hasfile('arabic_images') || !$request->hasfile('english_images') ) {
+
+            if (!$request->hasfile('arabic_images') || !$request->hasfile('english_images')) {
                 $default = new EventMedia;
                 $default->event_id = $event->id;
                 $default->link = 'events/default/events.png';
@@ -242,7 +243,7 @@ class EventsController extends Controller
             }
 
             /** Ticket price **/
-            if($request->is_paid == 1) {
+            if ($request->is_paid == 1) {
                 try {
                     $ticket = new EventTicket;
                     $ticket->event_id = $event->id;
@@ -257,7 +258,7 @@ class EventsController extends Controller
                     return redirect()->back();
                 }
             }
-            
+
 
         } catch (\Exception $ex) {
             dd($ex);
@@ -272,14 +273,14 @@ class EventsController extends Controller
             Helper::add_localization(4, 'venue', $event->id, ($request->arabic_venu ? : 'بدون عنوان'), 2);                  // arabic_venu
 
             // Explode hashtags into an array
-            if( isset($request->arabic_hashtags) && !empty($request->arabic_hashtags) ){
+            if (isset($request->arabic_hashtags) && !empty($request->arabic_hashtags)) {
                 $arabic_hashtags = explode(',', $request->arabic_hashtags);
                 for ($i = 0; $i < count($arabic_hashtags); $i++) {
                     // Add arabic hashtags in entity_localization table
                     Helper::add_localization(17, 'hash_tags', $event->id, $arabic_hashtags[$i], 2);                        // arabic_hashtags
                 }
             }
-            
+
         } catch (\Exception $ex) {
             dd($ex);
             Session::flash('warning', 'Error 2');
@@ -302,6 +303,17 @@ class EventsController extends Controller
     {
         $data['event'] = EventBackend::find($id);
 
+        // redirect back if not found!
+        if ( $data['event'] == NULL ) {
+            Session::flash('warning', 'Not found! غير موجود');
+            return redirect('/events/backend');
+        }
+
+        if( $data['event']->is_backend != 1 ) {
+            Session::flash('warning', 'Not found! غير موجود');
+            return redirect('/events/backend');
+        } 
+        
         return view('events::backend_event_show', $data);
     }
 
@@ -311,17 +323,24 @@ class EventsController extends Controller
      */
     public function edit($id)
     {
-        $data['event']      = EventBackend::find($id);
-        $data['genders']    = Genders::all();
-        $data['age_range']  = Age_Ranges::all();
+        $data['event'] = EventBackend::find($id);
+
+        // redirect back if not found!
+        if ( $data['event'] == NULL ) {
+            Session::flash('warning', 'Not found! غير موجود');
+            return redirect('/events/backend');
+        }
+        
+        $data['genders'] = Genders::all();
+        $data['age_range'] = Age_Ranges::all();
         $data['categories'] = EventCategory::all();
         $data['currencies'] = Currency::all();
-        $data['ticket']     = EventTicket::where('event_id', $id)->first();
+        $data['ticket'] = EventTicket::where('event_id', $id)->first();
 
-        $data['youtube_links']  = isset($data['event']->media) ? $data['event']->media()->where('type', 2)->get() : '';
-        $data['arabic_images']  = isset($data['event']->media) ? $data['event']->media()->where('type', 1)->where('link', 'like', '%arabic%')->get() : '';
+        $data['youtube_links'] = isset($data['event']->media) ? $data['event']->media()->where('type', 2)->get() : '';
+        $data['arabic_images'] = isset($data['event']->media) ? $data['event']->media()->where('type', 1)->where('link', 'like', '%arabic%')->get() : '';
         $data['english_images'] = isset($data['event']->media) ? $data['event']->media()->where('type', 1)->where('link', 'like', '%english%')->get() : '';
-        $data['default_image']  = 'events/default/events.png';
+        $data['default_image'] = 'events/default/events.png';
 
         return view('events::backend_event_edit', $data);
     }
@@ -358,9 +377,9 @@ class EventsController extends Controller
             // 'arabic_venu' => 'required|',
             // 'arabic_hashtags' => 'required|',
 
-            'is_paid'   => 'required',
-            'price'     => ($request->price ? 'sometimes|numeric' : ''),
-            'currency'  => ($request->currency ? 'sometimes|numeric' : ''),
+            'is_paid' => 'required',
+            'price' => ($request->price ? 'sometimes|numeric' : ''),
+            'currency' => ($request->currency ? 'sometimes|numeric' : ''),
             'number_of_tickets' => ($request->number_of_tickets ? 'numeric' : ''),
 
             'website' => 'required',
@@ -504,9 +523,9 @@ class EventsController extends Controller
             }
 
             /** Ticket price **/
-            if($request->is_paid == 1) {
+            if ($request->is_paid == 1) {
 
-                if(EventTicket::where('event_id', $event->id)->first() != NULL) {
+                if (EventTicket::where('event_id', $event->id)->first() != null) {
                     $ticket = EventTicket::where('event_id', $event->id)->first();
                 } else {
                     $ticket = new EventTicket;
@@ -673,25 +692,25 @@ class EventsController extends Controller
     {
         $ids = $request['big_events'];
         $ids_array = array();
-    
+
         foreach ($ids as $order => $id) {
-            $bigevent = BigEvent::where('event_id',$id)->first();
-            if($bigevent){
-            $bigevent->sort_order = $order + 1;
-            $bigevent->save();   
-            }else{
-            $bigevent = new BigEvent;
-            $bigevent->event_id = $id;
-            $bigevent->sort_order = $order + 1;
-            $bigevent->save();
+            $bigevent = BigEvent::where('event_id', $id)->first();
+            if ($bigevent) {
+                $bigevent->sort_order = $order + 1;
+                $bigevent->save();
+            } else {
+                $bigevent = new BigEvent;
+                $bigevent->event_id = $id;
+                $bigevent->sort_order = $order + 1;
+                $bigevent->save();
             }
-            array_push($ids_array,$id);
-         
+            array_push($ids_array, $id);
+
         }
         //delete old events which are not found in new selected ones
-        BigEvent::whereNotIn('event_id',$ids_array)->delete();
+        BigEvent::whereNotIn('event_id', $ids_array)->delete();
         //return response()->json(lang('keywords.orderSaved'));
-         return response()->json(trans('keywords.orderSaved'));
+        return response()->json(trans('keywords.orderSaved'));
     }
 
     public function bigevents_select($value, Request $request)
@@ -711,7 +730,7 @@ class EventsController extends Controller
             // ->with('categories', EventCategory::all());
     }
 
-      public function bigevents_post_old(Request $request)
+    public function bigevents_post_old(Request $request)
     {
         $ids = $request['big_events'];
         BigEvent::truncate();
