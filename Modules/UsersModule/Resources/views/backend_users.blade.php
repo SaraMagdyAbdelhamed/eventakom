@@ -137,10 +137,38 @@
                   {{-- START FORM --}}
                   <form role="form" action="{{route('backend_edit',$user->id)}}" method="post" enctype="multipart/form-data" accept-charset="utf-8">
                     {{csrf_field()}}
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="master_field">
+                        <label class="master_label" for="firstName">@lang('keywords.FullName')</label>
+                        <input name="firstName" class="master_input" type="text" placeholder="ex:john_doe" 
+                          Required id="firstName" value="{{ $user->first_name ? : '' }}">
+                          <span class="master_message inherit">
+                            @if ($errors->has('firstName'))
+                              {{ $errors->first('firstName')}}
+                            @endif
+                          </span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+
+                    {{-- <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="master_field">
+                        <label class="master_label" for="lastName">@lang('keywords.LastName')</label>
+                        <input name="lastName" class="master_input" type="text" placeholder="ex:john_doe" 
+                          Required id="lastName" onkeypress="return RestrictSpace()" value="{{ $user->last_name ? : '' }}">
+                        <span class="master_message inherit">
+                        @if ($errors->has('lastName'))
+                          {{ $errors->first('lastName')}}
+                        @endif</span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>                    --}}
+
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <div class="master_field">
                         <label class="master_label" for="new_user">@lang('keywords.UserName')</label>
-                        <input name="name" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user" onkeypress="return RestrictSpace()"><span class="master_message inherit">
+                        <input name="username" value="{{$user->username}}" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user" onkeypress="return RestrictSpace()"><span class="master_message inherit">
                                 @if ($errors->has('name'))
                                   {{ $errors->first('name')}}
                                   @endif</span>
@@ -157,6 +185,36 @@
                       </div>
                       <div class="clearfix"></div>
                     </div>
+
+                    {{-- Password --}}
+                    {{-- <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="master_field">
+                        <label class="master_label" for="password">@lang('keywords.Password')</label>
+                        <input name="password" class="master_input" type="password" placeholder="make it complex as possible" 
+                          Required id="password" onkeypress="return RestrictSpace()" value="">
+                        <span class="master_message inherit">
+                          @if ($errors->has('password'))
+                            {{ $errors->first('password')}}
+                          @endif
+                        </span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div> --}}
+
+                    {{-- Confirm Password --}}
+                    {{-- <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="master_field">
+                        <label class="master_label" for="cofirm_password">@lang('keywords.confirmPassword')</label>
+                        <input name="password_confirmation" class="master_input" placeholder="confirm password.." type="password" Required id="confirm_password" onkeypress="return RestrictSpace()">
+                        <span class="master_message inherit">
+                          @if ($errors->has('password_confirmation'))
+                            {{ $errors->first('password_confirmation')}}
+                          @endif
+                        </span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div> --}}
+
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <div class="master_field">
                         <label class="master_label" for="new_phone">@lang('keywords.UserPhone')</label>
@@ -227,16 +285,40 @@
           <div class="col-xs-12"></div>
           <h3>@lang('keywords.AddBackendUser')</h3>
 
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="master_field">
+              <label class="master_label" for="firstName">@lang('keywords.FullName')</label>
+              <input name="firstName" class="master_input" type="text" placeholder="ex:john_doe" 
+                Required id="firstName"><span class="master_message inherit">
+              @if ($errors->has('firstName'))
+                {{ $errors->first('firstName')}}
+              @endif</span>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+          {{-- <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="master_field">
+              <label class="master_label" for="lastName">@lang('keywords.LastName')</label>
+              <input name="lastName" class="master_input" type="text" placeholder="ex:john_doe" Required id="lastName" onkeypress="return RestrictSpace()"><span class="master_message inherit">
+              @if ($errors->has('lastName'))
+                {{ $errors->first('lastName')}}
+              @endif</span>
+            </div>
+            <div class="clearfix"></div>
+          </div> --}}
+
             <div class="col-md-6 col-sm-6 col-xs-12">
               <div class="master_field">
                 <label class="master_label" for="new_user">@lang('keywords.UserName')</label>
-                <input name="name" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user" onkeypress="return RestrictSpace()"><span class="master_message inherit">
-                        @if ($errors->has('name'))
-                          {{ $errors->first('name')}}
-                          @endif</span>
+                <input name="username" class="master_input" type="text" placeholder="ex:john_doe" Required id="new_user" onkeypress="return RestrictSpace()"><span class="master_message inherit">
+                @if ($errors->has('username'))
+                  {{ $errors->first('username')}}
+                @endif</span>
               </div>
               <div class="clearfix"></div>
             </div>
+
             <div class="col-md-6 col-sm-6 col-xs-12">
               <div class="master_field">
                 <label class="master_label" for="new_email">@lang('keywords.UserEmail')</label>
@@ -247,6 +329,39 @@
               </div>
               <div class="clearfix"></div>
             </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="master_field">
+              </div>
+            </div>
+            
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="master_field">
+                <label class="master_label" for="password">@lang('keywords.Password')</label>
+                <input name="password" class="master_input" type="password" placeholder="make it complex as possible" Required id="password" onkeypress="return RestrictSpace()">
+                <span class="master_message inherit">
+                  @if ($errors->has('password'))
+                    {{ $errors->first('password')}}
+                  @endif
+                </span>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="master_field">
+                <label class="master_label" for="cofirm_password">@lang('keywords.confirmPassword')</label>
+                <input name="password_confirmation" class="master_input" placeholder="confirm password.." type="password" Required id="confirm_password" onkeypress="return RestrictSpace()">
+                <span class="master_message inherit">
+                  @if ($errors->has('password_confirmation'))
+                    {{ $errors->first('password_confirmation')}}
+                  @endif
+                </span>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
             <div class="col-md-6 col-sm-6 col-xs-12">
               <div class="master_field">
                 <label class="master_label" for="new_phone">@lang('keywords.UserPhone')</label>
@@ -275,7 +390,7 @@
                 <div class="file-upload">
                   <div class="file-select">
                     <div class="file-select-name" id="noFile">click to add user image</div>
-                    <input class="chooseFile" type="file" name="image" id="user_img" Required>
+                    <input class="chooseFile" type="file" name="image" id="user_img" >
                   </div>
                 </div><span class="master_message inherit">png,jpg and max size is 5MB</span>
               </div>

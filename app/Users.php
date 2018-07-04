@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
@@ -24,77 +25,89 @@ class Users extends Authenticatable
 
     public function gender()
     {
-        return $this->belongsTo('App\Genders','gender_id');
+        return $this->belongsTo('App\Genders', 'gender_id');
     }
 
     public function country()
     {
-        return $this->belongsTo('App\Countries','country_id');
+        return $this->belongsTo('App\Countries', 'country_id');
     }
 
     public function city()
     {
-        return $this->belongsTo('App\Cities','city_id');
+        return $this->belongsTo('App\Cities', 'city_id');
     }
 
     public function rules()
     {
-        return $this->belongsToMany('App\Rules','user_rules','user_id','rule_id');
+        return $this->belongsToMany('App\Rules', 'user_rules', 'user_id', 'rule_id');
     }
 
-    public function eventCategories() {
+    public function eventCategories()
+    {
         return $this->hasMany('App\EventCategory', 'created_by');
     }
 
-    public function eventBackend() {
+    public function eventBackend()
+    {
         return $this->hasMany('App\EventBackend', 'created_by');
     }
-    public function eventMobile() {
+    public function eventMobile()
+    {
         return $this->hasMany('App\EventMobile', 'created_by');
     }
-    public function eventBooking() {
-        return $this->hasMany('App\EventBooking','user_id');
-    }
-    public function eventPost() {
-        return $this->hasMany('App\EventPost','user_id');
-    }
-    public  function categories()
+    public function eventBooking()
     {
-        return $this->belongsToMany('App\EventCategory', 'user_interests','user_id','interest_id');
+        return $this->hasMany('App\EventBooking', 'user_id');
     }
-    public function favoureite_events() {
-        return $this->belongsToMany('App\EventBackend', 'user_favorites', 'user_id', 'item_id')->withPivot('name','entity_id');
+    public function eventPost()
+    {
+        return $this->hasMany('App\EventPost', 'user_id');
     }
-    public function CalenderEvents(){
-        return $this->belongsToMany('App\EventBackend', 'user_calendars','user_id','event_id')->withPivot('from_date','to_date');
+    public function categories()
+    {
+        return $this->belongsToMany('App\EventCategory', 'user_interests', 'user_id', 'interest_id');
+    }
+    public function favoureite_events()
+    {
+        return $this->belongsToMany('App\EventBackend', 'user_favorites', 'user_id', 'item_id')->withPivot('name', 'entity_id');
+    }
+    public function CalenderEvents()
+    {
+        return $this->belongsToMany('App\EventBackend', 'user_calendars', 'user_id', 'event_id')->withPivot('from_date', 'to_date');
 
     }
 
-    public static function UsersMobile(){
-       return  static::whereHas('rules', function ($q) {
+    public static function UsersMobile()
+    {
+        return static::whereHas('rules', function ($q) {
             $q->where('rule_id', 2);
         })->UserWithDeviceTokens()->get();
     }
 
-    public  function CurrentRule(){
-        foreach($this->rules as $rule){
-            if($rule->pivot->rule_id != 1){
-               $result= \App::isLocale('en') ? \Helper::localization('rules','name',$rule->id,1) : \Helper::localization('rules','name',$rule->id,2);
-               $rule = ($result == 'Error')? $this->rules[0]->name : $result;
-               return $rule;
-                 }
-      }
+    public function CurrentRule()
+    {
+        foreach ($this->rules as $rule) {
+            if ($rule->pivot->rule_id != 1) {
+                $result = \App::isLocale('en') ? $rule->name : \Helper::localization('rules', 'name', $rule->id, 2);
+                $rule = ($result == 'Error') ? $this->rules[0]->name : $result;
+                return $rule;
+            }
+        }
     }
 
-    public function IsBackEndUser(){
+    public function IsBackEndUser()
+    {
         return ($this->rules[0]->id == 1) ? true : false;
     }
 
-    public function isSuperAdmin() {
+    public function isSuperAdmin()
+    {
         return ($this->rules[0]->id == 1 && $this->rules[1]->id == 3) ? true : false;
     }
 
-    public function isAdmin() {
+    public function isAdmin()
+    {
         return ($this->rules[0]->id == 1 && $this->rules[1]->id == 4) ? true : false;
     }
 
@@ -105,7 +118,8 @@ class Users extends Authenticatable
     }
 
     //Query Scopes
-    public function scopeUserWithDeviceTokens($query){
+    public function scopeUserWithDeviceTokens($query)
+    {
         return $query->whereNotNull("device_token");
     }
 

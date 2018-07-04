@@ -133,15 +133,19 @@ class UsersController extends Controller
     public function backend_store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'rule' => 'required',
-            'email' => 'required|email|max:40',
-            'phone' => 'required|digits_between:1,14',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:5120',
+            'firstName' => 'required|min:3|max:100',
+            // 'lastName'  => 'required|min:3|max:100',
+            'username'  => 'required|min:3|max:100|unique:users,deleted_at',
+            'rule'      => 'required',
+            // 'password'  => 'required|min:6|confirmed',
+            // 'password_confirmation' => 'required|min:6',
+            'email'     => 'required|email|max:40',
+            'phone'     => 'required|digits_between:1,14',
+            'image'     => 'required|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         if ($validator->fails()) {
-            return redirect('ar/users_backend#popupModal_1')
+            return redirect('/users_backend#popupModal_1')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -156,10 +160,13 @@ class UsersController extends Controller
             $user->photo = $fileNameToStore;
         }
 
-        $user->username = $request->name;
-        $user->email = $request->email;
-        $user->mobile = $request->phone;
-        $user->is_active = $request->status;
+        $user->first_name   = $request->firstName;
+        $user->last_name    = $request->lastName; 
+        $user->username     = $request->username;
+        $user->email        = $request->email;
+        $user->password     = bcrypt($request->password);
+        $user->mobile       = $request->phone;
+        $user->is_active    = $request->status;
         $user->save();
         $user->rules()->attach([$request->rule, 1]);
 
@@ -182,8 +189,12 @@ class UsersController extends Controller
     public function backend_edit($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'firstName' => 'required|min:3|max:100',
+            // 'lastName'  => 'required|min:3|max:100',
+            'username'  => 'required|min:3|max:100|unique:users,deleted_at',
             'rule' => 'required',
+            // 'password'  => 'required|min:6|confirmed',
+            // 'password_confirmation' => 'required|min:6',
             'email' => 'required|email|max:40',
             'phone' => 'required|digits_between:1,14',
             'image' => 'image|mimes:jpg,jpeg,png|max:5120',
@@ -202,14 +213,22 @@ class UsersController extends Controller
             Input::file('image')->move($destinationPath, $fileNameToStore);
             $user->photo = $fileNameToStore;
         }
-        $user->username = $request->name;
-        $user->email = $request->email;
-        $user->mobile = $request->phone;
-        $user->is_active = $request->status;
+
+        $user->first_name   = $request->firstName;
+        $user->last_name    = $request->lastName; 
+        $user->username     = $request->username;
+        $user->email        = $request->email;
+        // $user->password     = bcrypt($request->password);
+        $user->mobile       = $request->phone;
+        $user->is_active    = $request->status;
         $user->save();
         $user->rules()->detach();
         $user->rules()->attach([$request->rule, 1]);
 
+        if($user->id == Auth::id()) {
+            Auth::logout();
+            return redirect('/login');
+        }
         return redirect()->back();
     }
 
