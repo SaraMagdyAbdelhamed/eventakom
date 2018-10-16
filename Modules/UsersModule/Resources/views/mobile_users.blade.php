@@ -169,12 +169,20 @@
                   <span class="cellcontent">{{$mobile->mobile ? : __('keywords.not')}}</span>
                 </td>
                 <td>
-                  <span class="cellcontent">{{\App::isLocale('en') ? $mobile->country->name : \Helper::localization('geo_countries','name',$mobile->country_id,'2',
-                    $mobile->country->name)}}</span>
+                  <span class="cellcontent">
+                    @if (isset($mobile->country))
+                      {{ \App::isLocale('en') ? $mobile->country->name : \Helper::localization('geo_countries','name',$mobile->country_id,'2', $mobile->country->name) }}
+                    @else 
+                      {{ __('keywords.not') }}
+                    @endif
+                  </span>
                 </td>
                 <td>
-                  <span class="cellcontent">{{\App::isLocale('en') ? $mobile->city->name : \Helper::localization('geo_cities','name',$mobile->city_id,'2',
-                    $mobile->city->name)}}</span>
+                  @if (isset($mobile->city))
+                    <span class="cellcontent">{{\App::isLocale('en') ? $mobile->city->name : \Helper::localization('geo_cities','name',$mobile->city_id,'2', $mobile->city->name)}}</span>
+                  @else 
+                    {{ __('keywords.not') }}
+                  @endif
                 </td>
                 <td>
                   <span class="cellcontent">{{\App::isLocale('en') ? ($mobile->gender ? $mobile->gender->name : __('keywords.not')) : \Helper::localization('genders','name',$mobile->gender_id,'2',
@@ -209,22 +217,28 @@
 
               <div class="remodal" data-remodal-id="popupModal_{{$mobile->id}}" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
                  <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-                  <form action="{{route('mobile_status',$mobile->id)}}" method="POST">
+
+                  <form action="{{route('mobile_status', $mobile->id)}}" method="POST">
                     {{csrf_field()}}
+                    
                     <div class="row">
                       <h3>@lang('keywords.EditUser')</h3>
                       <div class="col-xs-12 text-center">
                         <div class="master_field text-center">
                           <label class="master_label">@lang('keywords.pleaseSetTheUserStatus')</label>
-                          <input class="icon" type="radio" name="is_active" id="radbtn_2{{$mobile->id}}" value="1" >
+
+                          {{-- set active --}}
+                          <input class="icon" type="radio" name="is_active" id="radbtn_2{{$mobile->id}}" value="1" checked>
                           <label for="radbtn_2{{$mobile->id}}">@lang('keywords.Active')</label>
+
+                          {{-- set inactive --}}
                           <input class="icon" type="radio" name="is_active" id="radbtn_3{{$mobile->id}}" value="0" >
                           <label for="radbtn_3{{$mobile->id}}">@lang('keywords.Inactive')</label>
                         </div>
                       </div>
                     </div>
                   <br>
-                  <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
+                  <button class="remodal-cancel" type="cancel">@lang('keywords.cancel')</button>
                   <button class="remodal-confirm" type="submit">@lang('keywords.save')</button>
                 </form>
               </div>

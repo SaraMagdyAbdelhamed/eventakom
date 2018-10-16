@@ -10,7 +10,7 @@
         'logout'            => 'Logout',
         'language'          => 'English',
         'email'             => 'Email',
-        'not'               => '',
+        'not'               => 'undefined',
         'addNew'            => 'Add new',
         'edit'              => 'Edit',
         'image'             => 'Image',
@@ -104,7 +104,7 @@
         'UserImage' =>'UserImage',
         'Active'    =>'Active',
         'Inactive'  =>'Inactive',
-        'pleaseSetTheUserStatus'=>'pleaseSetTheUserStatus',
+        'pleaseSetTheUserStatus'=>'Please Set The User Status',
 		
 
 
