@@ -65,163 +65,7 @@
                 </tbody>
             </table>
             </form>
-            <div class="remodal log-custom" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-            <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-            <div>
-                <h2 class="title">title of the changing log in</h2>
-                <div class="log-content">
-                <div class="log-container">
-                    <table class="log-table">
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <th>log title</th>
-                        <th>user</th>
-                        <th>time</th>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>January</td>
-                        <td>$100</td>
-                        <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                        <td>February</td>
-                        <td>$80</td>
-                        <td>$80</td>
-                    </tr>
-                    </table>
-                </div>
-                </div>
-            </div>
-            </div>
+
         </div>
         </div>
     </div><br>
@@ -238,6 +82,7 @@
             <h3>@lang('keywords.placeName')</h3>
         </div>
         <div class="col-xs-12">
+            <h4 id="uploading"></h4>
             <form action="" method="POST" enctype="multipart/form-data" id="addForm">
                 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -358,6 +203,7 @@
         <div class="col-xs-12">
             <h3>@lang('keywords.edit')</h3>
         </div>
+        <h4 id="uploading1"></h4>
         <div class="col-xs-12">
             <form method="POST" enctype="multipart/form-data" id="editForm">
                 {{ csrf_field() }}
@@ -503,6 +349,9 @@
                 data.append('offer_status' , $("input[name=offer_status]").val());
             } 
 
+            // view loading
+            $("#uploading").text('Uploading...').css('color', 'blue');
+
             var token = '{{ csrf_token() }}';
 
             $.ajaxSetup({
@@ -522,6 +371,7 @@
 
                 success: function (data)
                 {
+                    {{ \Session::flash('success', 'Uploaded successfully!') }}
                     window.location.replace('{{ route('offers.list') }}');
                 },
                     error: function(response) {
@@ -702,6 +552,9 @@
                 data.append('offer_status' , 0);
             }
 
+            // view loading
+            $("#uploading1").text('Uploading...').css('color', 'blue');
+
             var token = '{{ csrf_token() }}';
 
             $.ajaxSetup({
@@ -721,6 +574,7 @@
 
                 success: function (data)
                 {
+                    {{ \Session::flash('success', 'Successful Edit!') }}
                     window.location.replace('{{ route('offers.list') }}');
                 },
                     error: function(response) {

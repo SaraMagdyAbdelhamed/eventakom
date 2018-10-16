@@ -43,7 +43,7 @@ class OffersController extends Controller
     {
         $input = $request->all();
 
-        if( $request->hasFile('image_ar') || $request->hasFile('image_en') ) {
+        if( $request->hasFile('image_ar') && $request->hasFile('image_en') ) {
             // Get images
             $image_ar = $request->image_ar;
             $image_en = $request->image_en;

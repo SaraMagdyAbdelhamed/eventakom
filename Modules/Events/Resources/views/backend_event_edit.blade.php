@@ -91,7 +91,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">@lang('keywords.address')</label>
-                <input class="master_input" id="searchInput" type="text" placeholder="ex:CFC" Required id="location" name="address" value="{{ $event->address }}">
+                <input class="master_input" id="searchInput" type="text" placeholder="ex:CFC" min="0" max="50" Required id="location" name="address" value="{{ $event->address }}">
                 @if ($errors->has('address'))
                   <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
                 @endif
