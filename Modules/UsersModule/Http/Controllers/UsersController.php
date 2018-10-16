@@ -70,9 +70,17 @@ class UsersController extends Controller
     public function mobile_status(Request $request, $id)
     {
         $user = Users::find($id);
-        $user->is_active = $request->is_active;
+        
+        if (isset($request->is_active) && $request->is_active == 1) {
+            $user->is_active = 1;
+            $user->is_mobile_verified = 1;
+        } else {
+            $user->is_active = 0;
+            $user->is_mobile_verified = 0;
+        }
+
         $user->save();
-        return redirect()->back()->with('success', 'تم تغيير الحاله بنجاح');
+        return redirect()->back()->with('success', 'Successfull edit تم تغيير الحاله بنجاح');
     }
 
     public function mobile_filter(Request $request)
