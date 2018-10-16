@@ -3,6 +3,10 @@
 /public/storage
 /public/mobile_users
 /public/img
+/public/backend_users
+/public/famous_images
+/public/offer_images
+/public/shops_images
 /storage/*.key
 /vendor
 /.idea
