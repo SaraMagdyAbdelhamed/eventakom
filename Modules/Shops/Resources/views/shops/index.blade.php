@@ -73,7 +73,7 @@
                     <tr data-shop-id={{$value['id']}}>
                         <td><span class="cellcontent"></span></td>
                         <td><span class="cellcontent">{{$value['id']}}</span></td>
-                        <td><span class="cellcontent"><img src = "{{ \App::isLocale('en') ? str_replace('\\', '', asset($value['photo']) ) : asset( \Helper::localization('shop_media', 'link', $value['id'], 2, '') ) }}" , class = " img-in-table"></span></td>
+                        <td><span class="cellcontent"><img src = "{{ \App::isLocale('en') ? str_replace('\\', '', asset($value['photo']) ) : asset( \Helper::localization('shop_media', 'link', $value['id'], 2, str_replace('\\', '', asset($value['photo']) ) ) ) }}" , class = " img-in-table"></span></td>
                         <td><span class="cellcontent">{{$value['name']}}</span></td>
                         <td><span class="cellcontent">{{$value['phone']}}</span></td>
                         @if($value['is_active'])

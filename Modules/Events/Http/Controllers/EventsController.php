@@ -598,7 +598,6 @@ class EventsController extends Controller
      */
     public function destroySelected(Request $request)
     {
-
         foreach ($request->ids as $id) {
             // find that record
             $event = EventBackend::find($id);

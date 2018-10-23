@@ -164,9 +164,9 @@
 
     // push cities IDs selected by user
     $('input.input-in-table:checked').each(function() {
-        allVals.push( $(this).data("id") );
+        allVals.push( $(this).closest('tr').data("id") );
     });
-
+console.log(allVals);
     // check if user selected nothing
     if(allVals.length <= 0) {
     confirm('إختر عميل علي الاقل لتستطيع حذفه');

@@ -30,7 +30,7 @@
             <div class="col-lg-6">
               <div class="master_field">
                 <label class="master_label" for="new_cat">@lang('keywords.distance')</label>
-                <input name="notification" class="master_input" type="text" placeholder="@lang('keywords.notifications')" required id="new_cat" value="{{ isset($distance) ? $distance : '' }}">
+                <input name="notification" class="master_input" type="number" min="0" placeholder="@lang('keywords.notifications')" required id="new_cat" value="{{ isset($distance) ? $distance : '' }}">
               </div>
             </div>
             <div class="col-lg-6">

@@ -10,7 +10,7 @@ use App\Age_Ranges;
 use App\Interest;
 use App\Users;
 use App\Helpers\Helper;
-use App\UsersInterest;
+use App\UsersInterest;	
 class NotificationController extends Controller
 {
     public function index()
