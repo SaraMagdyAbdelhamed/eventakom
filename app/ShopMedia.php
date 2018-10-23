@@ -16,4 +16,5 @@ class ShopMedia extends Model
     {
     	return $this->belongsTo('App\Shop','shop_id');
     }
+
 }

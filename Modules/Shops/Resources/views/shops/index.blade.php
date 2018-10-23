@@ -73,7 +73,7 @@
                     <tr data-shop-id={{$value['id']}}>
                         <td><span class="cellcontent"></span></td>
                         <td><span class="cellcontent">{{$value['id']}}</span></td>
-                        <td><span class="cellcontent"><img src = "{{$value['photo']}}" , class = " img-in-table"></span></td>
+                        <td><span class="cellcontent"><img src = "{{ \App::isLocale('en') ? str_replace('\\', '', asset($value['photo']) ) : asset( \Helper::localization('shop_media', 'link', $value['id'], 2, '') ) }}" , class = " img-in-table"></span></td>
                         <td><span class="cellcontent">{{$value['name']}}</span></td>
                         <td><span class="cellcontent">{{$value['phone']}}</span></td>
                         @if($value['is_active'])
@@ -175,15 +175,11 @@
                     <div class="slideperview" id="slider--3">
                       <div class="swiper-container">
                         <div class="swiper-wrapper">    
-                          @foreach($value['shop_media'] as $image)           @if($image['type'] ==1)      
-                          <div class="swiper-slide"><img class="full-size" src="{{$image['link']}}"></div>
-                          @endif
+                          @foreach($value['shop_media'] as $image)           
+                            @if($image['type'] ==1)      
+                             <div class="swiper-slide"><img class="full-size" src="{{ \App::isLocale('en') ? $image['link'] : \Helper::localization(21, 'link', $image['id'], 2, $image['link'] ) }}"></div>
+                            @endif
                           @endforeach
-                          {{-- <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/350/300/?random"></div>
-                          <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/g/350/300"></div>
-                          <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/350/300"></div>
-                          <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/350/300/?random"></div>
-                          <div class="swiper-slide"><img class="full-size" src="https://unsplash.it/g/350/300"></div> --}}
                         </div>
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next swiper-button-white"></div>
@@ -200,7 +196,7 @@
                  @if($image['type'] ==2)
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                  <iframe width="100%" height="350" src="{{$video['link']}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                  <iframe width="100%" height="350" src="{{ \App::isLocale('en') ? $image['link'] : \Helper::localization(21, 'link', $image['id'], 2, $image['link'] ) }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                   </div>
                 </div>
                 @endif
