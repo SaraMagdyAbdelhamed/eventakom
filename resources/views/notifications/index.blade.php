@@ -41,11 +41,11 @@
               <div class="master_field">
                 <label class="master_label mandatory">@lang('keywords.gender')</label>
                 <div class="funkyradio">
-                  <input type="checkbox" name="gender_m" id="radbtn_2" >
+                  <input type="checkbox" name="gender" id="radbtn_2" value="1" checked>
                   <label for="radbtn_2">@lang('keywords.male')</label>
                 </div>
                 <div class="funkyradio">
-                  <input type="checkbox" name="gender_f" id="radbtn_3">
+                  <input type="checkbox" name="gender" id="radbtn_3" value="0">
                   <label for="radbtn_3">@lang('keywords.female')</label>
                 </div>
               </div>
@@ -53,29 +53,26 @@
             <div class="col-sm-4 col-xs-12">
               <div class="master_field">
                 <label class="master_label" for="filter_age">@lang('keywords.age')</label>
+
                 <select class="master_input select2" id="filter_age" multiple="multiple" data-placeholder="Age " style="width:100%;" name="age[]">
-                  {{--  <option>Kids</option>
-                  <option>15-18 Y</option>
-                  <option>18-25 Y</option>
-                  <option>More than 25 Y</option> --}}
-                    @foreach($ages as $age)
-                  <option value="{{$age['id']}}">{{$age['name']}}</option>
+                  @foreach($ages as $age)
+                    <option value="{{$age['id']}}">{{$age['name']}}</option>
                   @endforeach
                 </select>
+
               </div>
             </div>
             <div class="col-sm-5 col-xs-12">
               <div class="master_field">
                 <label class="master_label mandatory" for="category">@lang('keywords.category')</label>
-                <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="category[]">
-                  {{-- <option>Category 1</option>
-                  <option>Category 2s</option>
-                  <option>Category 3</option>
-                  <option>Category 4</option> --}}
+
+                <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="category[]" required>
+                  {{-- <option disabled selected > -- please select a category --</option> --}}
                   @foreach($interests as $cat)
-                  <option value="{{$cat['id']}}">{{$cat['name']}}</option>
+                    <option value="{{$cat['id']}}">{{$cat['name']}}</option>
                   @endforeach
-                </select><span class="master_message inherit">message content</span>
+                </select>
+
               </div>
             </div>
             </div>
@@ -84,13 +81,23 @@
             <div class="col-sm-6 col-xs-12">
               <div class="master_field">
                 <label class="master_label" for="ID_No-12">@lang('keywords.noti_en')</label>
-                <textarea class="master_input" name="msg" id="ID_No-12" placeholder="notification content in English" Required></textarea><span class="master_message inherit">message content</span>
+                <textarea class="master_input" name="msg" id="ID_No-12" placeholder="notification content in English" Required></textarea>
+
+                @if ($errors->has('msg'))
+                    <span class="master_message inherit">{{ $errors->first('msg') }}</span>
+                @endif
+
               </div>
             </div>
             <div class="col-sm-6 col-xs-12">
               <div class="master_field">
                 <label class="master_label" for="ID_No-13">@lang('keywords.noti_ar')</label>
-                <textarea class="master_input" name="msg_ar" id="ID_No-13" placeholder="notification content in Arabic" Required></textarea><span class="master_message inherit">message content</span>
+                <textarea class="master_input" name="msg_ar" id="ID_No-13" placeholder="notification content in Arabic" Required></textarea>
+                
+                @if ($errors->has('msg_ar'))
+                    <span class="master_message inherit">{{ $errors->first('msg_ar') }}</span>
+                @endif
+                
               </div>
             </div>
             <div class="clearfix"></div>
