@@ -288,7 +288,7 @@
               <li class="tab__content_item active" id="arabic1-content">
                 <div class="master_field">
                   <label class="master_label" for="edit_id_ar">تعديل البحث المتداول باللغة العربية</label>
-                  <input name="arabic"class="master_input" type="text" placeholder="تعديل الكلمة" Required id="edit_id_ar" oninvalid="this.setCustomValidity('من فضلك لا تترك هذا الحقل فارغاَ')">
+                  <input name="arabic"class="master_input" type="text" placeholder="تعديل الكلمة" Required id="edit_id_ar" >
                 </div>
               </li>
               <li class="tab__content_item" id="english1-content">

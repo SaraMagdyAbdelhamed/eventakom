@@ -163,7 +163,7 @@
               <li class="tab__content_item active" id="arabic1-content">
                 <div class="master_field">
                   <label class="master_label" for="edit_id_ar">تعديل راعي باللغة العربية</label>
-                  <input name="arabic"class="master_input" type="text" placeholder="تعديل اسم الراعي" Required id="edit_id_ar" oninvalid="this.setCustomValidity('من فضلك لا تترك هذا الحقل فارغاَ')">
+                  <input name="arabic"class="master_input" type="text" placeholder="تعديل اسم الراعي" Required id="edit_id_ar" >
                 </div>
 
                 <div class="master_field">
