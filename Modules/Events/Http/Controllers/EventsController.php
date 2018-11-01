@@ -8,27 +8,25 @@
 
 namespace Modules\Events\Http\Controllers;
 
+use App\Age_Ranges;
+use App\BigEvent;
+use App\Currency;
+use App\EventBackend;
+use App\EventCategory;
+use App\EventHashtags;
+use App\EventMedia;
+use App\EventTicket;
+use App\Genders;
+use App\Library\Services\NotificationsService;
 use Helper;
-use Session;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\EventBackend;
-use App\Genders;
-use App\Age_Ranges;
-use App\EventCategory;
-use App\Currency;
-use App\EventHashtags;
-use App\BigEvent;
-use App\Library\Services\NotificationsService;
-use App\EventMedia;
-use App\EventTicket;
-use App\EventPost;
-
+use Session;
 
 class EventsController extends Controller
 {
@@ -38,7 +36,7 @@ class EventsController extends Controller
 
     public function __construct()
     {
-            //blockio init
+        //blockio init
         $this->NotifcationService = new NotificationsService();
 
     }
@@ -120,7 +118,6 @@ class EventsController extends Controller
             // 'english_images.*'      => 'max:5'
         ]);
 
-
         // Insert Event in events table
         try {
             $event = new EventBackend;
@@ -141,8 +138,8 @@ class EventsController extends Controller
             // concatinate end_date + end_time to make them end_datetime
             $event->end_datetime = date('Y-m-d', strtotime($request->end_date)) . ' ' . date('h:i:s', strtotime($request->end_time));
 
-            $event->suggest_big_event = $request->is_big_event ? : 0;   // check if value is missing then replace it with zero
-            $event->is_active = $request->is_active ? : 0;            // check if value is missing then replace it with zero
+            $event->suggest_big_event = $request->is_big_event ?: 0; // check if value is missing then replace it with zero
+            $event->is_active = $request->is_active ?: 0; // check if value is missing then replace it with zero
 
             $event->is_paid = $request->is_paid;
 
@@ -167,7 +164,7 @@ class EventsController extends Controller
                     $hash->save();
                 }
 
-                $id = EventHashtags::where('name', '=', $hashtags[$i])->first()->id;    // get hashtage id from `hash_tag` table
+                $id = EventHashtags::where('name', '=', $hashtags[$i])->first()->id; // get hashtage id from `hash_tag` table
 
                 // attach event's hashtags with
                 $event->hashtags()->attach($id);
@@ -180,10 +177,10 @@ class EventsController extends Controller
 
             /**  Youtube links  **/
             $event->media()->createMany([
-                ['link' => ($request->youtube_en_1 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_en_2 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_1 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_2 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_en_1 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_en_2 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_1 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_2 ?: ''), 'type' => 2],
             ]);
 
             // Check if there is any images or files and move them to public/events
@@ -209,7 +206,7 @@ class EventsController extends Controller
                     }
                 }
             }
-            
+
             // English Event Images
             if ($request->hasfile('english_images')) {
 
@@ -259,7 +256,6 @@ class EventsController extends Controller
                 }
             }
 
-
         } catch (\Exception $ex) {
             dd($ex);
             Session::flash('warning', 'Error 1');
@@ -268,16 +264,16 @@ class EventsController extends Controller
 
         // Insert Arabic localizations
         try {
-            Helper::add_localization(4, 'name', $event->id, ($request->arabic_event_name ? : 'بدون اسم'), 2);             // arabic_event_name
-            Helper::add_localization(4, 'description', $event->id, ($request->arabic_description ? : 'بدون وصف'), 2);     // arabic_description
-            Helper::add_localization(4, 'venue', $event->id, ($request->arabic_venu ? : 'بدون عنوان'), 2);                  // arabic_venu
+            Helper::add_localization(4, 'name', $event->id, ($request->arabic_event_name ?: 'بدون اسم'), 2); // arabic_event_name
+            Helper::add_localization(4, 'description', $event->id, ($request->arabic_description ?: 'بدون وصف'), 2); // arabic_description
+            Helper::add_localization(4, 'venue', $event->id, ($request->arabic_venu ?: 'بدون عنوان'), 2); // arabic_venu
 
             // Explode hashtags into an array
             if (isset($request->arabic_hashtags) && !empty($request->arabic_hashtags)) {
                 $arabic_hashtags = explode(',', $request->arabic_hashtags);
                 for ($i = 0; $i < count($arabic_hashtags); $i++) {
                     // Add arabic hashtags in entity_localization table
-                    Helper::add_localization(17, 'hash_tags', $event->id, $arabic_hashtags[$i], 2);                        // arabic_hashtags
+                    Helper::add_localization(17, 'hash_tags', $event->id, $arabic_hashtags[$i], 2); // arabic_hashtags
                 }
             }
 
@@ -304,16 +300,16 @@ class EventsController extends Controller
         $data['event'] = EventBackend::find($id);
 
         // redirect back if not found!
-        if ( $data['event'] == NULL ) {
+        if ($data['event'] == null) {
             Session::flash('warning', 'Not found! غير موجود');
             return redirect('/events/backend');
         }
 
-        if( $data['event']->is_backend != 1 ) {
+        if ($data['event']->is_backend != 1) {
             Session::flash('warning', 'Not found! غير موجود');
             return redirect('/events/backend');
-        } 
-        
+        }
+
         return view('events::backend_event_show', $data);
     }
 
@@ -326,11 +322,11 @@ class EventsController extends Controller
         $data['event'] = EventBackend::find($id);
 
         // redirect back if not found!
-        if ( $data['event'] == NULL ) {
+        if ($data['event'] == null) {
             Session::flash('warning', 'Not found! غير موجود');
             return redirect('/events/backend');
         }
-        
+
         $data['genders'] = Genders::all();
         $data['age_range'] = Age_Ranges::all();
         $data['categories'] = EventCategory::all();
@@ -397,7 +393,6 @@ class EventsController extends Controller
             // 'english_images.*'      => 'max:5'
         ]);
 
-
         // Insert Event in events table
         try {
             $event = EventBackend::find($request->id);
@@ -418,8 +413,8 @@ class EventsController extends Controller
             // concatinate end_date + end_time to make them end_datetime
             $event->end_datetime = date('Y-m-d', strtotime($request->end_date)) . ' ' . date('h:i:s', strtotime($request->end_time));
 
-            $event->suggest_big_event = $request->is_big_event ? : 0;   // check if value is missing then replace it with zero
-            $event->is_active = $request->is_active ? : 0;            // check if value is missing then replace it with zero
+            $event->suggest_big_event = $request->is_big_event ?: 0; // check if value is missing then replace it with zero
+            $event->is_active = $request->is_active ?: 0; // check if value is missing then replace it with zero
 
             $event->is_paid = $request->is_paid;
 
@@ -430,7 +425,6 @@ class EventsController extends Controller
             $event->updated_by = Auth::id();
 
             $event->save();
-
 
             /**  INSERT English Hashtags **/
             // remove old hashtags
@@ -448,7 +442,7 @@ class EventsController extends Controller
                     $hash->save();
                 }
 
-                $id = EventHashtags::where('name', '=', $hashtags[$i])->first()->id;    // get hashtage id from `hash_tag` table
+                $id = EventHashtags::where('name', '=', $hashtags[$i])->first()->id; // get hashtage id from `hash_tag` table
 
                 // attach event's hashtags with
                 $event->hashtags()->attach($id);
@@ -466,10 +460,10 @@ class EventsController extends Controller
             /**  Youtube links  **/
             $event->media()->where('type', 2)->delete();
             $event->media()->createMany([
-                ['link' => ($request->youtube_en_1 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_en_2 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_1 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_2 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_en_1 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_en_2 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_1 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_2 ?: ''), 'type' => 2],
             ]);
 
             // Check if there is any images or files and move them to public/events
@@ -497,7 +491,7 @@ class EventsController extends Controller
                     }
                 }
             }
-            
+
             // English Event Images
             if ($request->hasfile('english_images')) {
 
@@ -547,9 +541,9 @@ class EventsController extends Controller
 
         // Insert Arabic localizations
         try {
-            Helper::edit_entity_localization('events', 'name', $event->id, 2, $request->arabic_event_name);             // arabic_event_name
-            Helper::edit_entity_localization('events', 'description', $event->id, 2, $request->arabic_description);             // arabic_description
-            Helper::edit_entity_localization('events', 'venue', $event->id, 2, $request->arabic_venu);             // arabic_venu
+            Helper::edit_entity_localization('events', 'name', $event->id, 2, $request->arabic_event_name); // arabic_event_name
+            Helper::edit_entity_localization('events', 'description', $event->id, 2, $request->arabic_description); // arabic_description
+            Helper::edit_entity_localization('events', 'venue', $event->id, 2, $request->arabic_venu); // arabic_venu
 
             // remove old hashtags localizations
             Helper::remove_localization(17, 'hash_tags', $event->id, 2);
@@ -558,7 +552,7 @@ class EventsController extends Controller
             $arabic_hashtags = explode(',', $request->arabic_hashtags);
             for ($i = 0; $i < count($arabic_hashtags); $i++) {
                 // Add arabic hashtags in entity_localization table
-                Helper::add_localization(17, 'hash_tags', $event->id, $arabic_hashtags[$i], 2);                        // arabic_hashtags
+                Helper::add_localization(17, 'hash_tags', $event->id, $arabic_hashtags[$i], 2); // arabic_hashtags
             }
         } catch (\Exception $ex) {
             dd($ex);
@@ -581,15 +575,23 @@ class EventsController extends Controller
         // find that record
         $event = EventBackend::find($request->id);
 
-        $event->media()->delete();          // delete english & arabic youtube links
-        $event->hashtags()->detach();       // delete hashtags
-        $event->categories()->detach();     // delete categories
-        $event->delete();                   // delete events
+        if (count($event->media) > 0) {
+            $event->media()->delete(); // delete english & arabic youtube links
+        }
+
+        if (count($event->hashtags) > 0) {
+            $event->hashtags()->detach(); // delete hashtags
+        }
+
+        if (count($event->categories) > 0) {
+            $event->categories()->detach(); // delete categories
+        }
+
+        $event->delete(); // delete events
 
         Session::flash('success', 'Event deleted successfully! تم مسح الحدث بنجاح');
         return response()->json(['success', 'event deleted!']);
     }
-
 
     /**
      * Delete multi records using AJAX
@@ -606,10 +608,19 @@ class EventsController extends Controller
 
             // delete arabic images or files
 
-            $event->media()->delete();          // delete english & arabic youtube links
-            $event->hashtags()->detach();       // delete hashtags
-            $event->categories()->detach();     // delete categories
-            $event->delete();                   // delete events
+            if (count($event->media) > 0) {
+                $event->media()->delete(); // delete english & arabic youtube links
+            }
+
+            if (count($event->hashtags) > 0) {
+                $event->hashtags()->detach(); // delete hashtags
+            }
+
+            if (count($event->categories) > 0) {
+                $event->categories()->detach(); // delete categories
+            }
+
+            $event->delete(); // delete events
         }
 
         Session::flash('success', 'Event deleted successfully! تم مسح الحدث بنجاح');
@@ -636,7 +647,7 @@ class EventsController extends Controller
             $flag = 1;
             $events = $events->where('is_active', 1);
         } else
-            if ($request->active == null && $request->inactive == 1) {
+        if ($request->active == null && $request->inactive == 1) {
             $flag = 1;
             $events = $events->where('is_active', 0);
         }
@@ -653,8 +664,6 @@ class EventsController extends Controller
             $Datetime = date('Y-m-d', strtotime($request->start_to));
             $events = $events->where('start_datetime', '<=', $Datetime);
         }
-
-
 
         // end datetime
         if (isset($request->end_from) && !empty($request->end_from)) {
@@ -726,7 +735,7 @@ class EventsController extends Controller
         }
         //dd(response()->json($options));
         return response()->json($options);
-            // ->with('categories', EventCategory::all());
+        // ->with('categories', EventCategory::all());
     }
 
     public function bigevents_post_old(Request $request)
@@ -741,6 +750,5 @@ class EventsController extends Controller
         }
         return response()->json($ids);
     }
-
 
 }
