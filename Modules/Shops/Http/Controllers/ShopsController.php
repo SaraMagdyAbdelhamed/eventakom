@@ -164,13 +164,13 @@ class ShopsController extends Controller
         if (isset($request['video_ar'])) {
             foreach ($request['video_ar'] as $key => $value) {
                 $value = str_replace('watch?v=', 'embed/', $value);
-                if ($value != null && isset($request['video'][$key]) == null ) {
+                if ($value != null && isset($request['video'][$key]) == null) {
                     $shop_media = ShopMedia::create([
                         "shop_id" => $shop->id,
                         "link" => $value,
                         "type" => 2,
                     ]);
-                    
+
                     Helper::add_localization(21, 'link', $shop_media->id, $value, 2);
                 }
 

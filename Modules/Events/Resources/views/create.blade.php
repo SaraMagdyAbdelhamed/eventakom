@@ -428,8 +428,8 @@
             {{-- 1st Youtube vedio in Arabic --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_en">@lang('keywords.YouTube-ar-1')</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_1" value="{{ old('youtube_ar_1') }}">
+                <label class="master_label" for="YouTube_video_ar1">@lang('keywords.YouTube-ar-1')</label>
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" name="youtube_ar_1" value="{{ old('youtube_ar_1') }}">
                 @if ($errors->has('youtube_ar_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_1') }}</span>
                 @endif
@@ -439,8 +439,8 @@
             {{-- 1st Youtube video in English --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_ar">@lang('keywords.YouTube-en-1')</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_1" value="{{ old('youtube_en_1') }}">
+                <label class="master_label" for="YouTube_video_en1">@lang('keywords.YouTube-en-1')</label>
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" name="youtube_en_1" value="{{ old('youtube_en_1') }}">
                 @if ($errors->has('youtube_en_1'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_1') }}</span>
                 @endif
@@ -450,8 +450,8 @@
             {{-- 2nd Youtube video in Arabic --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_en">@lang('keywords.YouTube-ar-2')</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" name="youtube_ar_2" value="{{ old('youtube_ar_2') }}">
+                <label class="master_label" for="YouTube_video_ar2">@lang('keywords.YouTube-ar-2')</label>
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2" name="youtube_ar_2" value="{{ old('youtube_ar_2') }}">
                 @if ($errors->has('youtube_ar_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_ar_2') }}</span>
                 @endif
@@ -461,8 +461,8 @@
             {{-- 2nd Youtube video in English --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_ar">@lang('keywords.YouTube-en-2')</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" name="youtube_en_2" value="{{ old('youtube_en_2') }}">
+                <label class="master_label" for="YouTube_video_en2">@lang('keywords.YouTube-en-2')</label>
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2" name="youtube_en_2" value="{{ old('youtube_en_2') }}">
                 @if ($errors->has('youtube_en_2'))
                   <span class="master_message inherit">{{ $errors->first('youtube_en_2') }}</span>
                 @endif
@@ -738,5 +738,42 @@
   });
 </script>
 
+<script>
+    $(document).ready(function(){
+      $("#YouTube_video_en1").focusout(function() {
+        var value = $(this).val();
+        
+        checkYoutubeLink(this, value);
+      }); 
+
+      $("#YouTube_video_en2").focusout(function() {
+        var value = $(this).val();
+        
+        checkYoutubeLink(this, value);
+      }); 
+
+      $("#YouTube_video_ar1").focusout(function() {
+        var value = $(this).val();
+        
+        checkYoutubeLink(this, value);
+      }); 
+
+      $("#YouTube_video_ar2").focusout(function() {
+        var value = $(this).val();
+        
+        checkYoutubeLink(this, value);
+      }); 
+
+      function checkYoutubeLink(id, value) {
+        var con = value.search("https://www.youtube.com/watch?");
+
+        if ( !con ) {
+          console.log('You may pass! have a good day.')
+        } else {
+          console.log('You shall not pass!');
+        }
+      }
+    });
+</script>
 
 @endsection
