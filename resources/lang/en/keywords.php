@@ -48,6 +48,7 @@
         'eventCategories'   => 'Event Categories',
         'famous'    => 'Famous attractions categories',
         'sponsors'  => 'sponsors',
+        'addsponsor'=> 'Add New Sponsor',
         'trends'    => 'Trending searches control',
         'trendWords'    => 'Trending Search Words',
         'notifications' => 'Notification distance',
@@ -297,7 +298,8 @@
         'branch_name'=>'Branch Name ',
         'branch_address'=>'Branch Address',
         'branch_start'=>'Start Time',
-        'branch_end'=>'End Time'
+        'branch_end'=>'End Time',
+        'addcat'    => 'Add New Category',
 		
     ];
 

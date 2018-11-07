@@ -6,8 +6,9 @@
   /* Always set the map height explicitly to define the size of the div
    * element that contains the map. */
   #map {
-    height: 100% !important;
+    height: 250px !important;
   }
+
   /* Optional: Makes the sample page fill the window. */
   html, body {
     height: 100%;
@@ -56,7 +57,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">@lang('keywords.eventName')</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3"  id="Event_name" name="english_event_name" value="{{ old('english_event_name') }}">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3"  id="Event_name" name="english_event_name" required
+                     value="{{ old('english_event_name') }}">
                 @if ($errors->has('event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('event_name') }}</span>
                 @endif
@@ -68,7 +70,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">@lang('keywords.description')</label>
-                <textarea class="master_input" id="description" placeholder="Description"  name="english_description">{{ old('english_description') }}</textarea>
+                <textarea class="master_input" id="description" placeholder="Description"  name="english_description" required>{{ old('english_description') }}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
                 @endif
@@ -79,11 +81,9 @@
             {{-- Google Maps API --}}
             <div class="col-xs-12">
               <div class="mapouter">
-
-                {{-- Map Latitude & Longtuide --}}
-                <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
-                  <input type="hidden" name="lat" id="lat" value="{{ old('lat') }}">
-                  <input type="hidden" name="lng" id="lng" value="{{ old('lng') }}">
+                <div id="map" style= " background: none!important;height: 250px;width: 100%;"></div>
+                <input type="hidden" name="lat" id="lat" value="{{ old('lat') }}">
+                <input type="hidden" name="lng" id="lng" value="{{ old('lng') }}">
               </div>
             </div>
 
@@ -91,7 +91,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">@lang('keywords.address')</label>
-                <input class="master_input" id="searchInput" type="text" placeholder="ex:CFC" min="0" max="50" Required id="location" name="address" value="">
+                <input class="master_input" id="searchInput" type="text" placeholder="ex:CFC" required id="location" name="address" />
                 @if ($errors->has('address'))
                   <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
                 @endif
@@ -102,7 +102,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">@lang('keywords.venue')</label>
-                <input class="master_input" type="text" placeholder="ex:CFC"  id="venue" name="english_venu" value="{{ old('english_venu') }}">
+                <input class="master_input" type="text" placeholder="ex:CFC" id="venue" name="english_venu" value="{{ old('english_venu') }}" required>
                 @if ($errors->has('english_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_venu') }}</span>
                 @endif
@@ -124,7 +124,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory" for="gender">@lang('keywords.Gender')</label>
-                <select class="master_input select2" id="gender" style="width:100%;" name="gender">
+                <select class="master_input select2" id="gender" style="width:100%;" name="gender" required>
                   <option value="" disabled selected>-- @lang('keywords.Please select a gender') --</option>
                   @if ( isset($genders) && !empty($genders) )
                       @foreach ($genders as $gender)
@@ -140,7 +140,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label mandatory" for="age">@lang('keywords.Please select age range')</label>
-                <select class="master_input select2" id="age" style="width:100%;" name="age_range">
+                <select class="master_input select2" id="age" style="width:100%;" name="age_range" required>
                   <option value="" disabled selected>-- @lang('keywords.Please select age range') --</option>
                   @if ( isset($age_range) && !empty($age_range) )
                       @foreach ($age_range as $range)
@@ -160,7 +160,7 @@
               <div class="master_field">
                 <label class="master_label" for="start_date">@lang('keywords.start date')</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="start date"  id="start_date" name="start_date" value="{{ old('start_date') }}">
+                  <input class=" master_input" type="text" placeholder="start date" id="start_date" name="start_date" required value="{{ old('start_date') }}">
                 </div>
                 @if ($errors->has('start_date'))
                   <span class="master_message color--fadegreen">{{ $errors->first('start_date') }}</span>
@@ -174,7 +174,7 @@
               <div class="master_field">
                 <label class="master_label" for="start_time">@lang('keywords.start date time')</label>
                 <div class="bootstrap-timepicker">
-                  <input class="timepicker master_input" type="text" placeholder="start time"  id="start_time" name="start_time" value="{{ old('start_time') }}">
+                  <input class="timepicker master_input" type="text" placeholder="start time"  id="start_time" required name="start_time" value="{{ old('start_time') }}">
                 </div>
                 @if ($errors->has('start_time'))
                   <span class="master_message color--fadegreen">{{ $errors->first('start_time') }}</span>
@@ -188,7 +188,7 @@
               <div class="master_field">
                 <label class="master_label" for="end_date">@lang('keywords.end date')</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="end date"  id="end_date" name="end_date" value="{{ old('end_date') }}">
+                  <input class=" master_input" type="text" placeholder="end date" id="end_date" name="end_date" required value="{{ old('end_date') }}">
                 </div>
                 @if ($errors->has('end_date'))
                   <span class="master_message color--fadegreen">{{ $errors->first('end_date') }}</span>
@@ -202,7 +202,7 @@
               <div class="master_field">
                 <label class="master_label" for="end_time">@lang('keywords.end date time')</label>
                 <div class="bootstrap-timepicker">
-                  <input class="timepicker master_input" type="text" placeholder="end time" id="end_time" name="end_time" value="{{ old('end_date') }}">
+                  <input class="timepicker master_input" type="text" placeholder="end time" id="end_time" name="end_time" required value="{{ old('end_date') }}">
                 </div>
                 @if ($errors->has('end_time'))
                   <span class="master_message color--fadegreen">{{ $errors->first('end_time') }}</span>
@@ -256,7 +256,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">اسم الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" id="Event_name" name="arabic_event_name" value="{{ old('arabic_event_name') }}">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" id="Event_name" name="arabic_event_name" required value="{{ old('arabic_event_name') }}">
                 @if ($errors->has('arabic_event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_event_name') }}</span>
                 @endif
@@ -268,7 +268,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">وصف الحدث</label>
-                <textarea class="master_input" id="description" placeholder="Description" name="arabic_description">{{ old('arabic_description') }}</textarea>
+                <textarea class="master_input" id="description" placeholder="Description" name="arabic_description" required>{{ old('arabic_description') }}</textarea>
                 @if ($errors->has('arabic_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_description') }}</span>
                 @endif
@@ -280,7 +280,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">مكان الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" id="venue" name="arabic_venu" value="{{ old('arabic_venu') }}">
+                <input class="master_input" type="text" placeholder="ex:CFC" id="venue" name="arabic_venu" required value="{{ old('arabic_venu') }}" />
                 @if ($errors->has('arabic_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_venu') }}</span>
                 @endif
@@ -324,7 +324,7 @@
               <div class="col-xs-8">
                 <div class="master_field">
                   <label class="master_label" for="Price">@lang('keywords.Price')</label>
-                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price" value="{{ old('price') }}">
+                  <input class="master_input" type="number" placeholder="50" min="0" id="Price" name="price" required value="{{ old('price') }}">
                   @if ($errors->has('price'))
                     <span class="master_message color--fadegreen">{{ $errors->first('price') }}</span>
                   @endif
@@ -336,7 +336,7 @@
               <div class="col-xs-4">
                 <div class="master_field">
                   <label class="master_label mandatory" for="Currency">@lang('keywords.Currency')</label>
-                  <select class="master_input" id="Currency" name="currency">
+                  <select class="master_input" id="Currency" name="currency" required>
                     <option value="" disabled selected>-- @lang('keywords.Please Select a Currency Symbol') --</option>
                     @if ( isset($currencies) && !empty($currencies) )
                         @foreach ($currencies as $currency)
@@ -355,7 +355,7 @@
               <div class="col-xs-12">
                 <div class="master_field">
                   <label class="master_label" for="Available_tickets">@lang('keywords.Available tickets')</label>
-                  <input class="master_input" type="number" placeholder="5" min="0"  id="Available_tickets" name="number_of_tickets" value="{{ old('number_of_tickets') }}">
+                  <input class="master_input" type="number" placeholder="5" min="0"  id="Available_tickets" name="number_of_tickets" required value="{{ old('number_of_tickets') }}">
                   @if ($errors->has('number_of_tickets'))
                   <span class="master_message color--fadegreen">{{ $errors->first('number_of_tickets') }}</span>
                 @endif
@@ -398,7 +398,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Code_numbe">@lang('keywords.Code number')</label>
-                <input class="master_input" type="number" placeholder="ex: 2012545"  id="Code_numbe" name="code_number" value="{{ old('code_number') }}">
+                <input class="master_input" type="number" placeholder="ex: 2012545"  id="Code_numbe" name="code_number" required value="{{ old('code_number') }}">
                 @if ($errors->has('code_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('code_number') }}</span>
                 @endif
@@ -410,7 +410,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Mobile_number">@lang('keywords.mobile number')</label>
-                <input class="master_input" type="number" placeholder="0123456789"  id="Mobile_number" name="mobile_number" value="{{ old('mobile_number') }}">
+                <input class="master_input" type="number" placeholder="0123456789"  id="Mobile_number" name="mobile_number" required value="{{ old('mobile_number') }}">
                 @if ($errors->has('mobile_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('mobile_number') }}</span>
                 @endif
@@ -431,7 +431,7 @@
                 <label class="master_label" for="YouTube_video_ar1">@lang('keywords.YouTube-ar-1')</label>
                 <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" name="youtube_ar_1" value="{{ old('youtube_ar_1') }}">
                 @if ($errors->has('youtube_ar_1'))
-                  <span class="master_message inherit">{{ $errors->first('youtube_ar_1') }}</span>
+                  <span class="master_message inherit" style="color: red;" id="yl_1">{{ $errors->first('youtube_ar_1') }}</span>
                 @endif
               </div>
             </div>
@@ -439,10 +439,10 @@
             {{-- 1st Youtube video in English --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_en1">@lang('keywords.YouTube-en-1')</label>
+                <label class="master_label error" for="YouTube_video_en1">@lang('keywords.YouTube-en-1')</label>
                 <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" name="youtube_en_1" value="{{ old('youtube_en_1') }}">
                 @if ($errors->has('youtube_en_1'))
-                  <span class="master_message inherit">{{ $errors->first('youtube_en_1') }}</span>
+                  <span class="master_message inherit" style="color: red;" id="yl_2">{{ $errors->first('youtube_en_1') }}</span>
                 @endif
               </div>
             </div>
@@ -453,7 +453,7 @@
                 <label class="master_label" for="YouTube_video_ar2">@lang('keywords.YouTube-ar-2')</label>
                 <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2" name="youtube_ar_2" value="{{ old('youtube_ar_2') }}">
                 @if ($errors->has('youtube_ar_2'))
-                  <span class="master_message inherit">{{ $errors->first('youtube_ar_2') }}</span>
+                  <span class="master_message inherit" style="color: red;" id="yl_3">{{ $errors->first('youtube_ar_2') }}</span>
                 @endif
               </div>
             </div>
@@ -464,7 +464,7 @@
                 <label class="master_label" for="YouTube_video_en2">@lang('keywords.YouTube-en-2')</label>
                 <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2" name="youtube_en_2" value="{{ old('youtube_en_2') }}">
                 @if ($errors->has('youtube_en_2'))
-                  <span class="master_message inherit">{{ $errors->first('youtube_en_2') }}</span>
+                  <span class="master_message inherit" style="color: red;" id="yl_4">{{ $errors->first('youtube_en_2') }}</span>
                 @endif
               </div>
             </div>
@@ -515,6 +515,51 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
+
+    var test_test =0;
+      var form = $("#horizontal-pill-steps").show();
+      form.steps({
+        headerTag: "h3",
+        bodyTag: "fieldset",
+        transitionEffect: "slideLeft",
+        onStepChanging:function test(event, currentIndex, newIndex){    
+          if (currentIndex > newIndex) {
+              return true;
+          }
+          if (currentIndex < newIndex) {
+              form.find(".body:eq(" + newIndex + ") span.error").remove();
+              form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
+          }
+          form.validate().settings.ignore = ":disabled,:hidden";
+          return form.valid();
+        },
+        
+        onFinishing:function test3(e){
+          // TODO: check youtube links & image size 
+          if(test_test == 0){
+            
+            e.preventDefault();
+              $("#finish1").addClass("disabled-btn")
+              // alert_fun();
+              alert("Attention, some fields are not valid, please check on them.");
+          }
+          else{
+            var form = $(this);
+            form.submit();
+          }
+        
+          
+        },
+        
+      }).validate({
+        errorPlacement: function errorPlacement(error, element) { element.after(error); },
+      });
+
+    // constrain start and end date
+    dateRange('start_date', 'end_date');
+
+  });
+
     $(function () {
       $(".select2").select2();
     });
@@ -557,14 +602,31 @@
         
         output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
         for (var i = 0; i < listAr.length; i++) {
-        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-                            '<span class="uploader__file-list__thumbnail">'+
-                            '<img class="thumbnail" id="img_" src="+list.img+">'+
-                            '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
-                            '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
-                            '<span class="uploader__file-list__button">'+'</span>'+
-                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
-                            '</button>'+'</span>'+'</li>';
+          var imgMaxSize = 1024;
+          var imgSize = (listAr[i].size)/1000;
+
+          if (imgSize > imgMaxSize) {
+            output.innerHTML += '<li class="js-uploader__file-list uploader__file-list" style="color:red !important;">'+
+                                '<span class="uploader__file-list__thumbnail">'+
+                                '<img class="thumbnail" id="img_" src="+list.img+">'+
+                                '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                                '<span class="uploader__file-list__size">' + imgSize +'KB'+'</span>'+
+                                '<span class="uploader__file-list__button">'+'</span>'+
+                                '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                                '</button>'+'</span>'+'</li>';
+            $('#finish1').attr('disabled', "disabled");
+          } else {
+            output.innerHTML += '<li class="js-uploader__file-list uploader__file-list" style="color:blue !important;">'+
+                                '<span class="uploader__file-list__thumbnail">'+
+                                '<img class="thumbnail" id="img_" src="+list.img+">'+
+                                '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                                '<span class="uploader__file-list__size">' + imgSize +'KB'+'</span>'+
+                                '<span class="uploader__file-list__button">'+'</span>'+
+                                '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                                '</button>'+'</span>'+'</li>';
+          }
+
+          
                       
                       
       }
@@ -585,14 +647,29 @@
     
       output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
       for (var i = 0; i < listAr.length; i++) {
-        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-                            '<span class="uploader__file-list__thumbnail">'+
-                            '<img class="thumbnail" id="img_" src="+list.img+">'+
-                            '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
-                            '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
-                            '<span class="uploader__file-list__button">'+'</span>'+
-                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
-                            '</button>'+'</span>'+'</li>';
+        var imgMaxSize = 1024;
+        var imgSize = (listAr[i].size)/1000;
+
+        if (imgSize > imgMaxSize) {
+          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list" style="color:red !important;">'+
+                              '<span class="uploader__file-list__thumbnail">'+
+                              '<img class="thumbnail" id="img_" src="+list.img+">'+
+                              '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                              '<span class="uploader__file-list__size">' + imgSize +'KB'+'</span>'+
+                              '<span class="uploader__file-list__button">'+'</span>'+
+                              '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                              '</button>'+'</span>'+'</li>';
+          $('#finish1').attr('disabled', "disabled");
+        } else {
+          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list" style="color:blue !important;">'+
+                              '<span class="uploader__file-list__thumbnail">'+
+                              '<img class="thumbnail" id="img_" src="+list.img+">'+
+                              '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                              '<span class="uploader__file-list__size">' + imgSize +'KB'+'</span>'+
+                              '<span class="uploader__file-list__button">'+'</span>'+
+                              '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                              '</button>'+'</span>'+'</li>';
+        }
       }
       output.innerHTML += '</ul>';
       }
@@ -656,12 +733,9 @@
     
   
     
-    var form = $("#horizontal-pill-steps").show();
-    form.steps({
-      headerTag: "h3",
-      bodyTag: "fieldset",
-      transitionEffect: "slideLeft",
-    });
+    
+
+    
 
     $(function() {
       $('input, select').on('change', function(event) {
@@ -679,10 +753,8 @@
       }).trigger('change');
     });
 
-  });
   
   $(function () {
-    $('.datepicker').datepicker({autoclose: true});
     $(".timepicker").timepicker({showInputs: false});
   });
 
@@ -764,6 +836,10 @@
         checkYoutubeLink(this, value);
       }); 
 
+      function checkAllYoutubeLinks() {
+
+      }
+
       function checkYoutubeLink(id, value) {
         var con = value.search("https://www.youtube.com/watch?");
 
@@ -771,9 +847,33 @@
           console.log('You may pass! have a good day.')
         } else {
           console.log('You shall not pass!');
+          $("#yl_1").text('Invalid youtube link..');
         }
       }
     });
+</script>
+
+
+{{-- Check Image before uploading --}}
+<script>
+  $(document).ready(function(){
+    $('#user_img').on('change', function() {
+      checkImageSize('#user_img', 5120, '#add_user_submit', '#add_error_msg');
+    });
+  });
+
+  function checkImageSize(input, maxSize, submitBtnId, error_msg_id) {
+    // size of the image
+    var imageSizeInMB = ($(input)[0].files[0].size) / 1024;
+
+    if (imageSizeInMB <= maxSize) {
+      $(submitBtnId).prop('disabled', false);
+      $(error_msg_id).text("Image size is perfect!").css('color', 'blue');
+    } else {
+      $(submitBtnId).prop('disabled', true);
+      $(error_msg_id).text("Image max size is 5MB (5120KB).").css('color', 'red');
+    }      
+  }
 </script>
 
 @endsection

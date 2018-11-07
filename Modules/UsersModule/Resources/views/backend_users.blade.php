@@ -239,13 +239,15 @@
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <div class="master_field">
-                        <label class="master_label" for="user_img">@lang('keywords.UserImage')</label>
+                        <label class="master_label" for="edit_user_img">@lang('keywords.UserImage')</label>
                         <div class="file-upload">
                           <div class="file-select">
                             <div class="file-select-name" id="noFile">click to add user image</div>
-                            <input class="chooseFile" type="file" name="image" id="user_img">
+                          <input class="chooseFile" type="file" name="image" id="edit_user_img_{{ $loop->index + 1 }}"
+                            onchange="checkImageSize('#edit_user_img_{{ $loop->index + 1 }}', 5120, '#edit_user_submit_{{ $loop->index + 1 }}', '#edit_error_msg_{{ $loop->index + 1 }}');" />
                           </div>
-                        </div><span class="master_message inherit">png,jpg and max size is 5MB</span>
+                        </div>
+                        <span class="master_message inherit" id="edit_error_msg_{{ $loop->index + 1 }}"></span>
                       </div>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -259,7 +261,7 @@
                     </div>
                     <div class="col-xs-12">
                       <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
-                      <button class="remodal-confirm" type="submit">@lang('keywords.save')</button>
+                      <button class="remodal-confirm" type="submit" id="edit_user_submit_{{ $loop->index + 1 }}">@lang('keywords.save')</button>
                     </div>
                   </form>
                   {{-- END FORM --}}
@@ -390,9 +392,11 @@
                 <div class="file-upload">
                   <div class="file-select">
                     <div class="file-select-name" id="noFile">click to add user image</div>
-                    <input class="chooseFile" type="file" name="image" id="user_img" >
+                    <input class="chooseFile" type="file" name="image" id="user_img">
                   </div>
-                </div><span class="master_message inherit">png,jpg and max size is 5MB</span>
+                </div>
+                
+                <span class="master_message inherit" id="add_error_msg"></span>
               </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -406,7 +410,7 @@
             </div>
             <div class="col-xs-12">
               <button class="remodal-cancel" data-remodal-action="cancel">@lang('keywords.cancel')</button>
-              <button class="remodal-confirm" type="submit">@lang('keywords.save')</button>
+              <button class="remodal-confirm" type="submit" id="add_user_submit">@lang('keywords.save')</button>
             </div>
 
         </div>
@@ -483,13 +487,37 @@
 
     });
 </script>
-    
-{{-- add active class to sidebar menu --}}
-    <script>
-        $(document).ready(function(){
-            $('#menu_2').addClass('openedmenu');
-            $('#sub_2_2').addClass('pure-active');
-        });
-    </script>
+
+  {{-- add active class to sidebar menu --}}
+  <script>
+      $(document).ready(function(){
+          $('#menu_2').addClass('openedmenu');
+          $('#sub_2_2').addClass('pure-active');
+      });
+  </script>
+
+
+  {{-- Check Image before uploading --}}
+  <script>
+    $(document).ready(function(){
+      $('#user_img').on('change', function() {
+        checkImageSize('#user_img', 5120, '#add_user_submit', '#add_error_msg');
+      });
+    });
+
+    function checkImageSize(input, maxSize, submitBtnId, error_msg_id) {
+      // size of the image
+      var imageSizeInMB = ($(input)[0].files[0].size) / 1024;
+
+      if (imageSizeInMB <= maxSize) {
+        $(submitBtnId).prop('disabled', false);
+        $(error_msg_id).text("Image size is perfect!").css('color', 'blue');
+      } else {
+        $(submitBtnId).prop('disabled', true);
+        $(error_msg_id).text("Image max size is 5MB (5120KB).").css('color', 'red');
+      }      
+    }
+  </script>
+
     @endsection
 @endsection

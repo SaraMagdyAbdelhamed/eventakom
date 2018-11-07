@@ -6,7 +6,7 @@
   /* Always set the map height explicitly to define the size of the div
    * element that contains the map. */
   #map {
-    height: 100% !important;
+    height: 250px !important;
   }
   /* Optional: Makes the sample page fill the window. */
   html, body {
@@ -81,8 +81,8 @@
             {{-- Google Maps API --}}
             <div class="col-xs-12">
               <div class="mapouter">
-                <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
-                <input type="hidden" name="lat" id="lat" value="{{ $event->latitude ? : '' }}">
+                <div id="map" style= " background: none!important;height: 250px;width: 100%;"></div>
+                <input type="hidden" name="lat" id="lat" value="{{ $event->latitude ? : ''}}">
                 <input type="hidden" name="lng" id="lng" value="{{ $event->longtuide ? : '' }}">
               </div>
             </div>
@@ -168,7 +168,7 @@
               <div class="master_field">
                 <label class="master_label" for="start_date">@lang('keywords.start date')</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="start date" Required 
+                  <input class=" master_input" type="text" placeholder="start date" Required 
                     id="start_date" name="start_date" value="{{ $event->start_datetime ? $event->start_datetime->format('d/m/Y') : '' }}">
                 </div>
                 @if ($errors->has('start_date'))
@@ -197,7 +197,7 @@
               <div class="master_field">
                 <label class="master_label" for="end_date">@lang('keywords.end date')</label>
                 <div class="bootstrap-timepicker">
-                  <input class="datepicker master_input" type="text" placeholder="end date" Required id="end_date" name="end_date" value="{{ $event->end_datetime ? $event->end_datetime->format('d/m/Y') : '' }}">
+                  <input class=" master_input" type="text" placeholder="end date" Required id="end_date" name="end_date" value="{{ $event->end_datetime ? $event->end_datetime->format('d/m/Y') : '' }}">
                 </div>
                 @if ($errors->has('end_date'))
                   <span class="master_message color--fadegreen">{{ $errors->first('end_date') }}</span>
@@ -772,6 +772,7 @@
       transitionEffect: "slideLeft",
     });
 
+    
     $(function() {
       $('input, select').on('change', function(event) {
         var $element = $(event.target),
@@ -791,7 +792,6 @@
   });
   
   $(function () {
-    $('.datepicker').datepicker({autoclose: true});
     $(".timepicker").timepicker({showInputs: false});
   });
 

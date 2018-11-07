@@ -69,7 +69,7 @@
     <div>
         <div class="row">
         <div class="col-lg-12">
-            <h3>@lang('keywords.addcat')</h3>
+            <h3>@lang('keywords.addsponsor')</h3>
         </div>
 
         <form action="{{ route('sponsor.add') }}" method="POST" enctype="multipart/form-data">
@@ -225,7 +225,7 @@
 
             // push cities IDs selected by user
             $('input.input-in-table:checked').each(function() {
-                allVals.push( $(this).data("id") );
+                allVals.push( $(this).closest('tr').data("id") );
             });
 
             // check if user selected nothing

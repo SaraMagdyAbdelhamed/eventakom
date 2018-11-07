@@ -5422,6 +5422,1538 @@ $(document).ready(function () {
   });
 });
 
+/*!
+ * jQuery Validation Plugin v1.15.0
+ *
+ * http://jqueryvalidation.org/
+ *
+ * Copyright (c) 2016 JÃ¶rn Zaefferer
+ * Released under the MIT license
+ */
+(function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+		define( ["jquery"], factory );
+	} else if (typeof module === "object" && module.exports) {
+		module.exports = factory( require( "jquery" ) );
+	} else {
+		factory( jQuery );
+	}
+}(function( $ ) {
+
+$.extend( $.fn, {
+
+	// http://jqueryvalidation.org/validate/
+	validate: function( options ) {
+
+		// If nothing is selected, return nothing; can't chain anyway
+		if ( !this.length ) {
+			if ( options && options.debug && window.console ) {
+				console.warn( "Nothing selected, can't validate, returning nothing." );
+			}
+			return;
+		}
+
+		// Check if a validator for this form was already created
+		var validator = $.data( this[ 0 ], "validator" );
+		if ( validator ) {
+			return validator;
+		}
+
+		// Add novalidate tag if HTML5.
+		this.attr( "novalidate", "novalidate" );
+
+		validator = new $.validator( options, this[ 0 ] );
+		$.data( this[ 0 ], "validator", validator );
+
+		if ( validator.settings.onsubmit ) {
+
+			this.on( "click.validate", ":submit", function( event ) {
+				if ( validator.settings.submitHandler ) {
+					validator.submitButton = event.target;
+				}
+
+				// Allow suppressing validation by adding a cancel class to the submit button
+				if ( $( this ).hasClass( "cancel" ) ) {
+					validator.cancelSubmit = true;
+				}
+
+				// Allow suppressing validation by adding the html5 formnovalidate attribute to the submit button
+				if ( $( this ).attr( "formnovalidate" ) !== undefined ) {
+					validator.cancelSubmit = true;
+				}
+			} );
+
+			// Validate the form on submit
+			this.on( "submit.validate", function( event ) {
+				if ( validator.settings.debug ) {
+
+					// Prevent form submit to be able to see console output
+					event.preventDefault();
+				}
+				function handle() {
+					var hidden, result;
+					if ( validator.settings.submitHandler ) {
+						if ( validator.submitButton ) {
+
+							// Insert a hidden input as a replacement for the missing submit button
+							hidden = $( "<input type='hidden'/>" )
+								.attr( "name", validator.submitButton.name )
+								.val( $( validator.submitButton ).val() )
+								.appendTo( validator.currentForm );
+						}
+						result = validator.settings.submitHandler.call( validator, validator.currentForm, event );
+						if ( validator.submitButton ) {
+
+							// And clean up afterwards; thanks to no-block-scope, hidden can be referenced
+							hidden.remove();
+						}
+						if ( result !== undefined ) {
+							return result;
+						}
+						return false;
+					}
+					return true;
+				}
+
+				// Prevent submit for invalid forms or custom submit handlers
+				if ( validator.cancelSubmit ) {
+					validator.cancelSubmit = false;
+					return handle();
+				}
+				if ( validator.form() ) {
+					if ( validator.pendingRequest ) {
+						validator.formSubmitted = true;
+						return false;
+					}
+					return handle();
+				} else {
+					validator.focusInvalid();
+					return false;
+				}
+			} );
+		}
+
+		return validator;
+	},
+
+	// http://jqueryvalidation.org/valid/
+	valid: function() {
+		var valid, validator, errorList;
+
+		if ( $( this[ 0 ] ).is( "form" ) ) {
+			valid = this.validate().form();
+		} else {
+			errorList = [];
+			valid = true;
+			validator = $( this[ 0 ].form ).validate();
+			this.each( function() {
+				valid = validator.element( this ) && valid;
+				if ( !valid ) {
+					errorList = errorList.concat( validator.errorList );
+				}
+			} );
+			validator.errorList = errorList;
+		}
+		return valid;
+	},
+
+	// http://jqueryvalidation.org/rules/
+	rules: function( command, argument ) {
+
+		// If nothing is selected, return nothing; can't chain anyway
+		if ( !this.length ) {
+			return;
+		}
+
+		var element = this[ 0 ],
+			settings, staticRules, existingRules, data, param, filtered;
+
+		if ( command ) {
+			settings = $.data( element.form, "validator" ).settings;
+			staticRules = settings.rules;
+			existingRules = $.validator.staticRules( element );
+			switch ( command ) {
+			case "add":
+				$.extend( existingRules, $.validator.normalizeRule( argument ) );
+
+				// Remove messages from rules, but allow them to be set separately
+				delete existingRules.messages;
+				staticRules[ element.name ] = existingRules;
+				if ( argument.messages ) {
+					settings.messages[ element.name ] = $.extend( settings.messages[ element.name ], argument.messages );
+				}
+				break;
+			case "remove":
+				if ( !argument ) {
+					delete staticRules[ element.name ];
+					return existingRules;
+				}
+				filtered = {};
+				$.each( argument.split( /\s/ ), function( index, method ) {
+					filtered[ method ] = existingRules[ method ];
+					delete existingRules[ method ];
+					if ( method === "required" ) {
+						$( element ).removeAttr( "aria-required" );
+					}
+				} );
+				return filtered;
+			}
+		}
+
+		data = $.validator.normalizeRules(
+		$.extend(
+			{},
+			$.validator.classRules( element ),
+			$.validator.attributeRules( element ),
+			$.validator.dataRules( element ),
+			$.validator.staticRules( element )
+		), element );
+
+		// Make sure required is at front
+		if ( data.required ) {
+			param = data.required;
+			delete data.required;
+			data = $.extend( { required: param }, data );
+			$( element ).attr( "aria-required", "true" );
+		}
+
+		// Make sure remote is at back
+		if ( data.remote ) {
+			param = data.remote;
+			delete data.remote;
+			data = $.extend( data, { remote: param } );
+		}
+
+		return data;
+	}
+} );
+
+// Custom selectors
+$.extend( $.expr[ ":" ], {
+
+	// http://jqueryvalidation.org/blank-selector/
+	blank: function( a ) {
+		return !$.trim( "" + $( a ).val() );
+	},
+
+	// http://jqueryvalidation.org/filled-selector/
+	filled: function( a ) {
+		var val = $( a ).val();
+		return val !== null && !!$.trim( "" + val );
+	},
+
+	// http://jqueryvalidation.org/unchecked-selector/
+	unchecked: function( a ) {
+		return !$( a ).prop( "checked" );
+	}
+} );
+
+// Constructor for validator
+$.validator = function( options, form ) {
+	this.settings = $.extend( true, {}, $.validator.defaults, options );
+	this.currentForm = form;
+	this.init();
+};
+
+// http://jqueryvalidation.org/jQuery.validator.format/
+$.validator.format = function( source, params ) {
+	if ( arguments.length === 1 ) {
+		return function() {
+			var args = $.makeArray( arguments );
+			args.unshift( source );
+			return $.validator.format.apply( this, args );
+		};
+	}
+	if ( params === undefined ) {
+		return source;
+	}
+	if ( arguments.length > 2 && params.constructor !== Array  ) {
+		params = $.makeArray( arguments ).slice( 1 );
+	}
+	if ( params.constructor !== Array ) {
+		params = [ params ];
+	}
+	$.each( params, function( i, n ) {
+		source = source.replace( new RegExp( "\\{" + i + "\\}", "g" ), function() {
+			return n;
+		} );
+	} );
+	return source;
+};
+
+$.extend( $.validator, {
+
+	defaults: {
+		messages: {},
+		groups: {},
+		rules: {},
+		errorClass: "error",
+		pendingClass: "pending",
+		validClass: "valid",
+		errorElement: "label",
+		focusCleanup: false,
+		focusInvalid: true,
+		errorContainer: $( [] ),
+		errorLabelContainer: $( [] ),
+		onsubmit: true,
+		ignore: ":hidden",
+		ignoreTitle: false,
+		onfocusin: function( element ) {
+			this.lastActive = element;
+
+			// Hide error label and remove error class on focus if enabled
+			if ( this.settings.focusCleanup ) {
+				if ( this.settings.unhighlight ) {
+					this.settings.unhighlight.call( this, element, this.settings.errorClass, this.settings.validClass );
+				}
+				this.hideThese( this.errorsFor( element ) );
+			}
+		},
+		onfocusout: function( element ) {
+			if ( !this.checkable( element ) && ( element.name in this.submitted || !this.optional( element ) ) ) {
+				this.element( element );
+			}
+		},
+		onkeyup: function( element, event ) {
+
+			// Avoid revalidate the field when pressing one of the following keys
+			// Shift       => 16
+			// Ctrl        => 17
+			// Alt         => 18
+			// Caps lock   => 20
+			// End         => 35
+			// Home        => 36
+			// Left arrow  => 37
+			// Up arrow    => 38
+			// Right arrow => 39
+			// Down arrow  => 40
+			// Insert      => 45
+			// Num lock    => 144
+			// AltGr key   => 225
+			var excludedKeys = [
+				16, 17, 18, 20, 35, 36, 37,
+				38, 39, 40, 45, 144, 225
+			];
+
+			if ( event.which === 9 && this.elementValue( element ) === "" || $.inArray( event.keyCode, excludedKeys ) !== -1 ) {
+				return;
+			} else if ( element.name in this.submitted || element.name in this.invalid ) {
+				this.element( element );
+			}
+		},
+		onclick: function( element ) {
+
+			// Click on selects, radiobuttons and checkboxes
+			if ( element.name in this.submitted ) {
+				this.element( element );
+
+			// Or option elements, check parent select in that case
+			} else if ( element.parentNode.name in this.submitted ) {
+				this.element( element.parentNode );
+			}
+		},
+		highlight: function( element, errorClass, validClass ) {
+			if ( element.type === "radio" ) {
+				this.findByName( element.name ).addClass( errorClass ).removeClass( validClass );
+			} else {
+				$( element ).addClass( errorClass ).removeClass( validClass );
+			}
+		},
+		unhighlight: function( element, errorClass, validClass ) {
+			if ( element.type === "radio" ) {
+				this.findByName( element.name ).removeClass( errorClass ).addClass( validClass );
+			} else {
+				$( element ).removeClass( errorClass ).addClass( validClass );
+			}
+		}
+	},
+
+	// http://jqueryvalidation.org/jQuery.validator.setDefaults/
+	setDefaults: function( settings ) {
+		$.extend( $.validator.defaults, settings );
+	},
+
+	messages: {
+		required: "This field is required",
+		remote: "Please fix this field",
+		email: "Please enter a valid email address",
+		url: "Please enter a valid URL",
+		date: "Please enter a valid date",
+		dateISO: "Please enter a valid date ( ISO )",
+		number: "Please enter a valid number",
+		digits: "Please enter only digits",
+		equalTo: "Please enter the same value again",
+		maxlength: $.validator.format( "Please enter no more than {0} characters" ),
+		minlength: $.validator.format( "Please enter at least {0} characters" ),
+		rangelength: $.validator.format( "Please enter a value between {0} and {1} characters long" ),
+		range: $.validator.format( "Please enter a value between {0} and {1}" ),
+		max: $.validator.format( "Please enter a value less than or equal to {0}" ),
+		min: $.validator.format( "Please enter a value greater than or equal to {0}" ),
+		step: $.validator.format( "Please enter a multiple of {0}" )
+	},
+
+	autoCreateRanges: false,
+
+	prototype: {
+
+		init: function() {
+			this.labelContainer = $( this.settings.errorLabelContainer );
+			this.errorContext = this.labelContainer.length && this.labelContainer || $( this.currentForm );
+			this.containers = $( this.settings.errorContainer ).add( this.settings.errorLabelContainer );
+			this.submitted = {};
+			this.valueCache = {};
+			this.pendingRequest = 0;
+			this.pending = {};
+			this.invalid = {};
+			this.reset();
+
+			var groups = ( this.groups = {} ),
+				rules;
+			$.each( this.settings.groups, function( key, value ) {
+				if ( typeof value === "string" ) {
+					value = value.split( /\s/ );
+				}
+				$.each( value, function( index, name ) {
+					groups[ name ] = key;
+				} );
+			} );
+			rules = this.settings.rules;
+			$.each( rules, function( key, value ) {
+				rules[ key ] = $.validator.normalizeRule( value );
+			} );
+
+			function delegate( event ) {
+				var validator = $.data( this.form, "validator" ),
+					eventType = "on" + event.type.replace( /^validate/, "" ),
+					settings = validator.settings;
+				if ( settings[ eventType ] && !$( this ).is( settings.ignore ) ) {
+					settings[ eventType ].call( validator, this, event );
+				}
+			}
+
+			$( this.currentForm )
+				.on( "focusin.validate focusout.validate keyup.validate",
+					":text, [type='password'], [type='file'], select, textarea, [type='number'], [type='search'], " +
+					"[type='tel'], [type='url'], [type='email'], [type='datetime'], [type='date'], [type='month'], " +
+					"[type='week'], [type='time'], [type='datetime-local'], [type='range'], [type='color'], " +
+					"[type='radio'], [type='checkbox'], [contenteditable]", delegate )
+
+				// Support: Chrome, oldIE
+				// "select" is provided as event.target when clicking a option
+				.on( "click.validate", "select, option, [type='radio'], [type='checkbox']", delegate );
+
+			if ( this.settings.invalidHandler ) {
+				$( this.currentForm ).on( "invalid-form.validate", this.settings.invalidHandler );
+			}
+
+			// Add aria-required to any Static/Data/Class required fields before first validation
+			// Screen readers require this attribute to be present before the initial submission http://www.w3.org/TR/WCAG-TECHS/ARIA2.html
+			$( this.currentForm ).find( "[required], [data-rule-required], .required" ).attr( "aria-required", "true" );
+		},
+
+		// http://jqueryvalidation.org/Validator.form/
+		form: function() {
+			this.checkForm();
+			$.extend( this.submitted, this.errorMap );
+			this.invalid = $.extend( {}, this.errorMap );
+			if ( !this.valid() ) {
+				$( this.currentForm ).triggerHandler( "invalid-form", [ this ] );
+			}
+			this.showErrors();
+			return this.valid();
+		},
+
+		checkForm: function() {
+			this.prepareForm();
+			for ( var i = 0, elements = ( this.currentElements = this.elements() ); elements[ i ]; i++ ) {
+				this.check( elements[ i ] );
+			}
+			return this.valid();
+		},
+
+		// http://jqueryvalidation.org/Validator.element/
+		element: function( element ) {
+			var cleanElement = this.clean( element ),
+				checkElement = this.validationTargetFor( cleanElement ),
+				v = this,
+				result = true,
+				rs, group;
+
+			if ( checkElement === undefined ) {
+				delete this.invalid[ cleanElement.name ];
+			} else {
+				this.prepareElement( checkElement );
+				this.currentElements = $( checkElement );
+
+				// If this element is grouped, then validate all group elements already
+				// containing a value
+				group = this.groups[ checkElement.name ];
+				if ( group ) {
+					$.each( this.groups, function( name, testgroup ) {
+						if ( testgroup === group && name !== checkElement.name ) {
+							cleanElement = v.validationTargetFor( v.clean( v.findByName( name ) ) );
+							if ( cleanElement && cleanElement.name in v.invalid ) {
+								v.currentElements.push( cleanElement );
+								result = result && v.check( cleanElement );
+							}
+						}
+					} );
+				}
+
+				rs = this.check( checkElement ) !== false;
+				result = result && rs;
+				if ( rs ) {
+					this.invalid[ checkElement.name ] = false;
+				} else {
+					this.invalid[ checkElement.name ] = true;
+				}
+
+				if ( !this.numberOfInvalids() ) {
+
+					// Hide error containers on last error
+					this.toHide = this.toHide.add( this.containers );
+				}
+				this.showErrors();
+
+				// Add aria-invalid status for screen readers
+				$( element ).attr( "aria-invalid", !rs );
+			}
+
+			return result;
+		},
+
+		// http://jqueryvalidation.org/Validator.showErrors/
+		showErrors: function( errors ) {
+			if ( errors ) {
+				var validator = this;
+
+				// Add items to error list and map
+				$.extend( this.errorMap, errors );
+				this.errorList = $.map( this.errorMap, function( message, name ) {
+					return {
+						message: message,
+						element: validator.findByName( name )[ 0 ]
+					};
+				} );
+
+				// Remove items from success list
+				this.successList = $.grep( this.successList, function( element ) {
+					return !( element.name in errors );
+				} );
+			}
+			if ( this.settings.showErrors ) {
+				this.settings.showErrors.call( this, this.errorMap, this.errorList );
+			} else {
+				this.defaultShowErrors();
+			}
+		},
+
+		// http://jqueryvalidation.org/Validator.resetForm/
+		resetForm: function() {
+			if ( $.fn.resetForm ) {
+				$( this.currentForm ).resetForm();
+			}
+			this.invalid = {};
+			this.submitted = {};
+			this.prepareForm();
+			this.hideErrors();
+			var elements = this.elements()
+				.removeData( "previousValue" )
+				.removeAttr( "aria-invalid" );
+
+			this.resetElements( elements );
+		},
+
+		resetElements: function( elements ) {
+			var i;
+
+			if ( this.settings.unhighlight ) {
+				for ( i = 0; elements[ i ]; i++ ) {
+					this.settings.unhighlight.call( this, elements[ i ],
+						this.settings.errorClass, "" );
+					this.findByName( elements[ i ].name ).removeClass( this.settings.validClass );
+				}
+			} else {
+				elements
+					.removeClass( this.settings.errorClass )
+					.removeClass( this.settings.validClass );
+			}
+		},
+
+		numberOfInvalids: function() {
+			return this.objectLength( this.invalid );
+		},
+
+		objectLength: function( obj ) {
+			/* jshint unused: false */
+			var count = 0,
+				i;
+			for ( i in obj ) {
+				if ( obj[ i ] ) {
+					count++;
+				}
+			}
+			return count;
+		},
+
+		hideErrors: function() {
+			this.hideThese( this.toHide );
+		},
+
+		hideThese: function( errors ) {
+			errors.not( this.containers ).text( "" );
+			this.addWrapper( errors ).hide();
+		},
+
+		valid: function() {
+			return this.size() === 0;
+		},
+
+		size: function() {
+			return this.errorList.length;
+		},
+
+		focusInvalid: function() {
+			if ( this.settings.focusInvalid ) {
+				try {
+					$( this.findLastActive() || this.errorList.length && this.errorList[ 0 ].element || [] )
+					.filter( ":visible" )
+					.focus()
+
+					// Manually trigger focusin event; without it, focusin handler isn't called, findLastActive won't have anything to find
+					.trigger( "focusin" );
+				} catch ( e ) {
+
+					// Ignore IE throwing errors when focusing hidden elements
+				}
+			}
+		},
+
+		findLastActive: function() {
+			var lastActive = this.lastActive;
+			return lastActive && $.grep( this.errorList, function( n ) {
+				return n.element.name === lastActive.name;
+			} ).length === 1 && lastActive;
+		},
+
+		elements: function() {
+			var validator = this,
+				rulesCache = {};
+
+			// Select all valid inputs inside the form (no submit or reset buttons)
+			return $( this.currentForm )
+			.find( "input, select, textarea, [contenteditable]" )
+			.not( ":submit, :reset, :image, :disabled" )
+			.not( this.settings.ignore )
+			.filter( function() {
+				var name = this.name || $( this ).attr( "name" ); // For contenteditable
+				if ( !name && validator.settings.debug && window.console ) {
+					console.error( "%o has no name assigned", this );
+				}
+
+				// Set form expando on contenteditable
+				if ( this.hasAttribute( "contenteditable" ) ) {
+					this.form = $( this ).closest( "form" )[ 0 ];
+				}
+
+				// Select only the first element for each name, and only those with rules specified
+				if ( name in rulesCache || !validator.objectLength( $( this ).rules() ) ) {
+					return false;
+				}
+
+				rulesCache[ name ] = true;
+				return true;
+			} );
+		},
+
+		clean: function( selector ) {
+			return $( selector )[ 0 ];
+		},
+
+		errors: function() {
+			var errorClass = this.settings.errorClass.split( " " ).join( "." );
+			return $( this.settings.errorElement + "." + errorClass, this.errorContext );
+		},
+
+		resetInternals: function() {
+			this.successList = [];
+			this.errorList = [];
+			this.errorMap = {};
+			this.toShow = $( [] );
+			this.toHide = $( [] );
+		},
+
+		reset: function() {
+			this.resetInternals();
+			this.currentElements = $( [] );
+		},
+
+		prepareForm: function() {
+			this.reset();
+			this.toHide = this.errors().add( this.containers );
+		},
+
+		prepareElement: function( element ) {
+			this.reset();
+			this.toHide = this.errorsFor( element );
+		},
+
+		elementValue: function( element ) {
+			var $element = $( element ),
+				type = element.type,
+				val, idx;
+
+			if ( type === "radio" || type === "checkbox" ) {
+				return this.findByName( element.name ).filter( ":checked" ).val();
+			} else if ( type === "number" && typeof element.validity !== "undefined" ) {
+				return element.validity.badInput ? "NaN" : $element.val();
+			}
+
+			if ( element.hasAttribute( "contenteditable" ) ) {
+				val = $element.text();
+			} else {
+				val = $element.val();
+			}
+
+			if ( type === "file" ) {
+
+				// Modern browser (chrome & safari)
+				if ( val.substr( 0, 12 ) === "C:\\fakepath\\" ) {
+					return val.substr( 12 );
+				}
+
+				// Legacy browsers
+				// Unix-based path
+				idx = val.lastIndexOf( "/" );
+				if ( idx >= 0 ) {
+					return val.substr( idx + 1 );
+				}
+
+				// Windows-based path
+				idx = val.lastIndexOf( "\\" );
+				if ( idx >= 0 ) {
+					return val.substr( idx + 1 );
+				}
+
+				// Just the file name
+				return val;
+			}
+
+			if ( typeof val === "string" ) {
+				return val.replace( /\r/g, "" );
+			}
+			return val;
+		},
+
+		check: function( element ) {
+			element = this.validationTargetFor( this.clean( element ) );
+
+			var rules = $( element ).rules(),
+				rulesCount = $.map( rules, function( n, i ) {
+					return i;
+				} ).length,
+				dependencyMismatch = false,
+				val = this.elementValue( element ),
+				result, method, rule;
+
+			// If a normalizer is defined for this element, then
+			// call it to retreive the changed value instead
+			// of using the real one.
+			// Note that `this` in the normalizer is `element`.
+			if ( typeof rules.normalizer === "function" ) {
+				val = rules.normalizer.call( element, val );
+
+				if ( typeof val !== "string" ) {
+					throw new TypeError( "The normalizer should return a string value." );
+				}
+
+				// Delete the normalizer from rules to avoid treating
+				// it as a pre-defined method.
+				delete rules.normalizer;
+			}
+
+			for ( method in rules ) {
+				rule = { method: method, parameters: rules[ method ] };
+				try {
+					result = $.validator.methods[ method ].call( this, val, element, rule.parameters );
+
+					// If a method indicates that the field is optional and therefore valid,
+					// don't mark it as valid when there are no other rules
+					if ( result === "dependency-mismatch" && rulesCount === 1 ) {
+						dependencyMismatch = true;
+						continue;
+					}
+					dependencyMismatch = false;
+
+					if ( result === "pending" ) {
+						this.toHide = this.toHide.not( this.errorsFor( element ) );
+						return;
+					}
+
+					if ( !result ) {
+						this.formatAndAdd( element, rule );
+						return false;
+					}
+				} catch ( e ) {
+					if ( this.settings.debug && window.console ) {
+						console.log( "Exception occurred when checking element " + element.id + ", check the '" + rule.method + "' method.", e );
+					}
+					if ( e instanceof TypeError ) {
+						e.message += ".  Exception occurred when checking element " + element.id + ", check the '" + rule.method + "' method.";
+					}
+
+					throw e;
+				}
+			}
+			if ( dependencyMismatch ) {
+				return;
+			}
+			if ( this.objectLength( rules ) ) {
+				this.successList.push( element );
+			}
+			return true;
+		},
+
+		// Return the custom message for the given element and validation method
+		// specified in the element's HTML5 data attribute
+		// return the generic message if present and no method specific message is present
+		customDataMessage: function( element, method ) {
+			return $( element ).data( "msg" + method.charAt( 0 ).toUpperCase() +
+				method.substring( 1 ).toLowerCase() ) || $( element ).data( "msg" );
+		},
+
+		// Return the custom message for the given element name and validation method
+		customMessage: function( name, method ) {
+			var m = this.settings.messages[ name ];
+			return m && ( m.constructor === String ? m : m[ method ] );
+		},
+
+		// Return the first defined argument, allowing empty strings
+		findDefined: function() {
+			for ( var i = 0; i < arguments.length; i++ ) {
+				if ( arguments[ i ] !== undefined ) {
+					return arguments[ i ];
+				}
+			}
+			return undefined;
+		},
+
+		defaultMessage: function( element, rule ) {
+			var message = this.findDefined(
+					this.customMessage( element.name, rule.method ),
+					this.customDataMessage( element, rule.method ),
+
+					// 'title' is never undefined, so handle empty string as undefined
+					!this.settings.ignoreTitle && element.title || undefined,
+					$.validator.messages[ rule.method ],
+					"<strong>Warning: No message defined for " + element.name + "</strong>"
+				),
+				theregex = /\$?\{(\d+)\}/g;
+			if ( typeof message === "function" ) {
+				message = message.call( this, rule.parameters, element );
+			} else if ( theregex.test( message ) ) {
+				message = $.validator.format( message.replace( theregex, "{$1}" ), rule.parameters );
+			}
+
+			return message;
+		},
+
+		formatAndAdd: function( element, rule ) {
+			var message = this.defaultMessage( element, rule );
+
+			this.errorList.push( {
+				message: message,
+				element: element,
+				method: rule.method
+			} );
+
+			this.errorMap[ element.name ] = message;
+			this.submitted[ element.name ] = message;
+		},
+
+		addWrapper: function( toToggle ) {
+			if ( this.settings.wrapper ) {
+				toToggle = toToggle.add( toToggle.parent( this.settings.wrapper ) );
+			}
+			return toToggle;
+		},
+
+		defaultShowErrors: function() {
+			var i, elements, error;
+			for ( i = 0; this.errorList[ i ]; i++ ) {
+				error = this.errorList[ i ];
+				if ( this.settings.highlight ) {
+					this.settings.highlight.call( this, error.element, this.settings.errorClass, this.settings.validClass );
+				}
+				this.showLabel( error.element, error.message );
+			}
+			if ( this.errorList.length ) {
+				this.toShow = this.toShow.add( this.containers );
+			}
+			if ( this.settings.success ) {
+				for ( i = 0; this.successList[ i ]; i++ ) {
+					this.showLabel( this.successList[ i ] );
+				}
+			}
+			if ( this.settings.unhighlight ) {
+				for ( i = 0, elements = this.validElements(); elements[ i ]; i++ ) {
+					this.settings.unhighlight.call( this, elements[ i ], this.settings.errorClass, this.settings.validClass );
+				}
+			}
+			this.toHide = this.toHide.not( this.toShow );
+			this.hideErrors();
+			this.addWrapper( this.toShow ).show();
+		},
+
+		validElements: function() {
+			return this.currentElements.not( this.invalidElements() );
+		},
+
+		invalidElements: function() {
+			return $( this.errorList ).map( function() {
+				return this.element;
+			} );
+		},
+
+		showLabel: function( element, message ) {
+			var place, group, errorID, v,
+				error = this.errorsFor( element ),
+				elementID = this.idOrName( element ),
+				describedBy = $( element ).attr( "aria-describedby" );
+
+			if ( error.length ) {
+
+				// Refresh error/success class
+				error.removeClass( this.settings.validClass ).addClass( this.settings.errorClass );
+
+				// Replace message on existing label
+				error.html( message );
+			} else {
+
+				// Create error element
+				error = $( "<" + this.settings.errorElement + ">" )
+					.attr( "id", elementID + "-error" )
+					.addClass( this.settings.errorClass )
+					.html( message || "" );
+
+				// Maintain reference to the element to be placed into the DOM
+				place = error;
+				if ( this.settings.wrapper ) {
+
+					// Make sure the element is visible, even in IE
+					// actually showing the wrapped element is handled elsewhere
+					place = error.hide().show().wrap( "<" + this.settings.wrapper + "/>" ).parent();
+				}
+				if ( this.labelContainer.length ) {
+					this.labelContainer.append( place );
+				} else if ( this.settings.errorPlacement ) {
+					this.settings.errorPlacement( place, $( element ) );
+				} else {
+					place.insertAfter( element );
+				}
+
+				// Link error back to the element
+				if ( error.is( "label" ) ) {
+
+					// If the error is a label, then associate using 'for'
+					error.attr( "for", elementID );
+
+					// If the element is not a child of an associated label, then it's necessary
+					// to explicitly apply aria-describedby
+				} else if ( error.parents( "label[for='" + this.escapeCssMeta( elementID ) + "']" ).length === 0 ) {
+					errorID = error.attr( "id" );
+
+					// Respect existing non-error aria-describedby
+					if ( !describedBy ) {
+						describedBy = errorID;
+					} else if ( !describedBy.match( new RegExp( "\\b" + this.escapeCssMeta( errorID ) + "\\b" ) ) ) {
+
+						// Add to end of list if not already present
+						describedBy += " " + errorID;
+					}
+					$( element ).attr( "aria-describedby", describedBy );
+
+					// If this element is grouped, then assign to all elements in the same group
+					group = this.groups[ element.name ];
+					if ( group ) {
+						v = this;
+						$.each( v.groups, function( name, testgroup ) {
+							if ( testgroup === group ) {
+								$( "[name='" + v.escapeCssMeta( name ) + "']", v.currentForm )
+									.attr( "aria-describedby", error.attr( "id" ) );
+							}
+						} );
+					}
+				}
+			}
+			if ( !message && this.settings.success ) {
+				error.text( "" );
+				if ( typeof this.settings.success === "string" ) {
+					error.addClass( this.settings.success );
+				} else {
+					this.settings.success( error, element );
+				}
+			}
+			this.toShow = this.toShow.add( error );
+		},
+
+		errorsFor: function( element ) {
+			var name = this.escapeCssMeta( this.idOrName( element ) ),
+				describer = $( element ).attr( "aria-describedby" ),
+				selector = "label[for='" + name + "'], label[for='" + name + "'] *";
+
+			// 'aria-describedby' should directly reference the error element
+			if ( describer ) {
+				selector = selector + ", #" + this.escapeCssMeta( describer )
+					.replace( /\s+/g, ", #" );
+			}
+
+			return this
+				.errors()
+				.filter( selector );
+		},
+
+		// See https://api.jquery.com/category/selectors/, for CSS
+		// meta-characters that should be escaped in order to be used with JQuery
+		// as a literal part of a name/id or any selector.
+		escapeCssMeta: function( string ) {
+			return string.replace( /([\\!"#$%&'()*+,./:;<=>?@\[\]^`{|}~])/g, "\\$1" );
+		},
+
+		idOrName: function( element ) {
+			return this.groups[ element.name ] || ( this.checkable( element ) ? element.name : element.id || element.name );
+		},
+
+		validationTargetFor: function( element ) {
+
+			// If radio/checkbox, validate first element in group instead
+			if ( this.checkable( element ) ) {
+				element = this.findByName( element.name );
+			}
+
+			// Always apply ignore filter
+			return $( element ).not( this.settings.ignore )[ 0 ];
+		},
+
+		checkable: function( element ) {
+			return ( /radio|checkbox/i ).test( element.type );
+		},
+
+		findByName: function( name ) {
+			return $( this.currentForm ).find( "[name='" + this.escapeCssMeta( name ) + "']" );
+		},
+
+		getLength: function( value, element ) {
+			switch ( element.nodeName.toLowerCase() ) {
+			case "select":
+				return $( "option:selected", element ).length;
+			case "input":
+				if ( this.checkable( element ) ) {
+					return this.findByName( element.name ).filter( ":checked" ).length;
+				}
+			}
+			return value.length;
+		},
+
+		depend: function( param, element ) {
+			return this.dependTypes[ typeof param ] ? this.dependTypes[ typeof param ]( param, element ) : true;
+		},
+
+		dependTypes: {
+			"boolean": function( param ) {
+				return param;
+			},
+			"string": function( param, element ) {
+				return !!$( param, element.form ).length;
+			},
+			"function": function( param, element ) {
+				return param( element );
+			}
+		},
+
+		optional: function( element ) {
+			var val = this.elementValue( element );
+			return !$.validator.methods.required.call( this, val, element ) && "dependency-mismatch";
+		},
+
+		startRequest: function( element ) {
+			if ( !this.pending[ element.name ] ) {
+				this.pendingRequest++;
+				$( element ).addClass( this.settings.pendingClass );
+				this.pending[ element.name ] = true;
+			}
+		},
+
+		stopRequest: function( element, valid ) {
+			this.pendingRequest--;
+
+			// Sometimes synchronization fails, make sure pendingRequest is never < 0
+			if ( this.pendingRequest < 0 ) {
+				this.pendingRequest = 0;
+			}
+			delete this.pending[ element.name ];
+			$( element ).removeClass( this.settings.pendingClass );
+			if ( valid && this.pendingRequest === 0 && this.formSubmitted && this.form() ) {
+				$( this.currentForm ).submit();
+				this.formSubmitted = false;
+			} else if ( !valid && this.pendingRequest === 0 && this.formSubmitted ) {
+				$( this.currentForm ).triggerHandler( "invalid-form", [ this ] );
+				this.formSubmitted = false;
+			}
+		},
+
+		previousValue: function( element, method ) {
+			return $.data( element, "previousValue" ) || $.data( element, "previousValue", {
+				old: null,
+				valid: true,
+				message: this.defaultMessage( element, { method: method } )
+			} );
+		},
+
+		// Cleans up all forms and elements, removes validator-specific events
+		destroy: function() {
+			this.resetForm();
+
+			$( this.currentForm )
+				.off( ".validate" )
+				.removeData( "validator" )
+				.find( ".validate-equalTo-blur" )
+					.off( ".validate-equalTo" )
+					.removeClass( "validate-equalTo-blur" );
+		}
+
+	},
+
+	classRuleSettings: {
+		required: { required: true },
+		email: { email: true },
+		url: { url: true },
+		date: { date: true },
+		dateISO: { dateISO: true },
+		number: { number: true },
+		digits: { digits: true },
+		creditcard: { creditcard: true }
+	},
+
+	addClassRules: function( className, rules ) {
+		if ( className.constructor === String ) {
+			this.classRuleSettings[ className ] = rules;
+		} else {
+			$.extend( this.classRuleSettings, className );
+		}
+	},
+
+	classRules: function( element ) {
+		var rules = {},
+			classes = $( element ).attr( "class" );
+
+		if ( classes ) {
+			$.each( classes.split( " " ), function() {
+				if ( this in $.validator.classRuleSettings ) {
+					$.extend( rules, $.validator.classRuleSettings[ this ] );
+				}
+			} );
+		}
+		return rules;
+	},
+
+	normalizeAttributeRule: function( rules, type, method, value ) {
+
+		// Convert the value to a number for number inputs, and for text for backwards compability
+		// allows type="date" and others to be compared as strings
+		if ( /min|max|step/.test( method ) && ( type === null || /number|range|text/.test( type ) ) ) {
+			value = Number( value );
+
+			// Support Opera Mini, which returns NaN for undefined minlength
+			if ( isNaN( value ) ) {
+				value = undefined;
+			}
+		}
+
+		if ( value || value === 0 ) {
+			rules[ method ] = value;
+		} else if ( type === method && type !== "range" ) {
+
+			// Exception: the jquery validate 'range' method
+			// does not test for the html5 'range' type
+			rules[ method ] = true;
+		}
+	},
+
+	attributeRules: function( element ) {
+		var rules = {},
+			$element = $( element ),
+			type = element.getAttribute( "type" ),
+			method, value;
+
+		for ( method in $.validator.methods ) {
+
+			// Support for <input required> in both html5 and older browsers
+			if ( method === "required" ) {
+				value = element.getAttribute( method );
+
+				// Some browsers return an empty string for the required attribute
+				// and non-HTML5 browsers might have required="" markup
+				if ( value === "" ) {
+					value = true;
+				}
+
+				// Force non-HTML5 browsers to return bool
+				value = !!value;
+			} else {
+				value = $element.attr( method );
+			}
+
+			this.normalizeAttributeRule( rules, type, method, value );
+		}
+
+		// 'maxlength' may be returned as -1, 2147483647 ( IE ) and 524288 ( safari ) for text inputs
+		if ( rules.maxlength && /-1|2147483647|524288/.test( rules.maxlength ) ) {
+			delete rules.maxlength;
+		}
+
+		return rules;
+	},
+
+	dataRules: function( element ) {
+		var rules = {},
+			$element = $( element ),
+			type = element.getAttribute( "type" ),
+			method, value;
+
+		for ( method in $.validator.methods ) {
+			value = $element.data( "rule" + method.charAt( 0 ).toUpperCase() + method.substring( 1 ).toLowerCase() );
+			this.normalizeAttributeRule( rules, type, method, value );
+		}
+		return rules;
+	},
+
+	staticRules: function( element ) {
+		var rules = {},
+			validator = $.data( element.form, "validator" );
+
+		if ( validator.settings.rules ) {
+			rules = $.validator.normalizeRule( validator.settings.rules[ element.name ] ) || {};
+		}
+		return rules;
+	},
+
+	normalizeRules: function( rules, element ) {
+
+		// Handle dependency check
+		$.each( rules, function( prop, val ) {
+
+			// Ignore rule when param is explicitly false, eg. required:false
+			if ( val === false ) {
+				delete rules[ prop ];
+				return;
+			}
+			if ( val.param || val.depends ) {
+				var keepRule = true;
+				switch ( typeof val.depends ) {
+				case "string":
+					keepRule = !!$( val.depends, element.form ).length;
+					break;
+				case "function":
+					keepRule = val.depends.call( element, element );
+					break;
+				}
+				if ( keepRule ) {
+					rules[ prop ] = val.param !== undefined ? val.param : true;
+				} else {
+					$.data( element.form, "validator" ).resetElements( $( element ) );
+					delete rules[ prop ];
+				}
+			}
+		} );
+
+		// Evaluate parameters
+		$.each( rules, function( rule, parameter ) {
+			rules[ rule ] = $.isFunction( parameter ) && rule !== "normalizer" ? parameter( element ) : parameter;
+		} );
+
+		// Clean number parameters
+		$.each( [ "minlength", "maxlength" ], function() {
+			if ( rules[ this ] ) {
+				rules[ this ] = Number( rules[ this ] );
+			}
+		} );
+		$.each( [ "rangelength", "range" ], function() {
+			var parts;
+			if ( rules[ this ] ) {
+				if ( $.isArray( rules[ this ] ) ) {
+					rules[ this ] = [ Number( rules[ this ][ 0 ] ), Number( rules[ this ][ 1 ] ) ];
+				} else if ( typeof rules[ this ] === "string" ) {
+					parts = rules[ this ].replace( /[\[\]]/g, "" ).split( /[\s,]+/ );
+					rules[ this ] = [ Number( parts[ 0 ] ), Number( parts[ 1 ] ) ];
+				}
+			}
+		} );
+
+		if ( $.validator.autoCreateRanges ) {
+
+			// Auto-create ranges
+			if ( rules.min != null && rules.max != null ) {
+				rules.range = [ rules.min, rules.max ];
+				delete rules.min;
+				delete rules.max;
+			}
+			if ( rules.minlength != null && rules.maxlength != null ) {
+				rules.rangelength = [ rules.minlength, rules.maxlength ];
+				delete rules.minlength;
+				delete rules.maxlength;
+			}
+		}
+
+		return rules;
+	},
+
+	// Converts a simple string to a {string: true} rule, e.g., "required" to {required:true}
+	normalizeRule: function( data ) {
+		if ( typeof data === "string" ) {
+			var transformed = {};
+			$.each( data.split( /\s/ ), function() {
+				transformed[ this ] = true;
+			} );
+			data = transformed;
+		}
+		return data;
+	},
+
+	// http://jqueryvalidation.org/jQuery.validator.addMethod/
+	addMethod: function( name, method, message ) {
+		$.validator.methods[ name ] = method;
+		$.validator.messages[ name ] = message !== undefined ? message : $.validator.messages[ name ];
+		if ( method.length < 3 ) {
+			$.validator.addClassRules( name, $.validator.normalizeRule( name ) );
+		}
+	},
+
+	// http://jqueryvalidation.org/jQuery.validator.methods/
+	methods: {
+
+		// http://jqueryvalidation.org/required-method/
+		required: function( value, element, param ) {
+
+			// Check if dependency is met
+			if ( !this.depend( param, element ) ) {
+				return "dependency-mismatch";
+			}
+			if ( element.nodeName.toLowerCase() === "select" ) {
+
+				// Could be an array for select-multiple or a string, both are fine this way
+				var val = $( element ).val();
+				return val && val.length > 0;
+			}
+			if ( this.checkable( element ) ) {
+				return this.getLength( value, element ) > 0;
+			}
+			return value.length > 0;
+		},
+
+		// http://jqueryvalidation.org/email-method/
+		email: function( value, element ) {
+
+			// From https://html.spec.whatwg.org/multipage/forms.html#valid-e-mail-address
+			// Retrieved 2014-01-14
+			// If you have a problem with this implementation, report a bug against the above spec
+			// Or use custom methods to implement your own email validation
+			return this.optional( element ) || /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test( value );
+		},
+
+		// http://jqueryvalidation.org/url-method/
+		url: function( value, element ) {
+
+			// Copyright (c) 2010-2013 Diego Perini, MIT licensed
+			// https://gist.github.com/dperini/729294
+			// see also https://mathiasbynens.be/demo/url-regex
+			// modified to allow protocol-relative URLs
+			return this.optional( element ) || /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})).?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test( value );
+		},
+
+		// http://jqueryvalidation.org/date-method/
+		date: function( value, element ) {
+			return this.optional( element ) || !/Invalid|NaN/.test( new Date( value ).toString() );
+		},
+
+		// http://jqueryvalidation.org/dateISO-method/
+		dateISO: function( value, element ) {
+			return this.optional( element ) || /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.test( value );
+		},
+
+		// http://jqueryvalidation.org/number-method/
+		number: function( value, element ) {
+			return this.optional( element ) || /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test( value );
+		},
+
+		// http://jqueryvalidation.org/digits-method/
+		digits: function( value, element ) {
+			return this.optional( element ) || /^\d+$/.test( value );
+		},
+
+		// http://jqueryvalidation.org/minlength-method/
+		minlength: function( value, element, param ) {
+			var length = $.isArray( value ) ? value.length : this.getLength( value, element );
+			return this.optional( element ) || length >= param;
+		},
+
+		// http://jqueryvalidation.org/maxlength-method/
+		maxlength: function( value, element, param ) {
+			var length = $.isArray( value ) ? value.length : this.getLength( value, element );
+			return this.optional( element ) || length <= param;
+		},
+
+		// http://jqueryvalidation.org/rangelength-method/
+		rangelength: function( value, element, param ) {
+			var length = $.isArray( value ) ? value.length : this.getLength( value, element );
+			return this.optional( element ) || ( length >= param[ 0 ] && length <= param[ 1 ] );
+		},
+
+		// http://jqueryvalidation.org/min-method/
+		min: function( value, element, param ) {
+			return this.optional( element ) || value >= param;
+		},
+
+		// http://jqueryvalidation.org/max-method/
+		max: function( value, element, param ) {
+			return this.optional( element ) || value <= param;
+		},
+
+		// http://jqueryvalidation.org/range-method/
+		range: function( value, element, param ) {
+			return this.optional( element ) || ( value >= param[ 0 ] && value <= param[ 1 ] );
+		},
+
+		// http://jqueryvalidation.org/step-method/
+		step: function( value, element, param ) {
+			var type = $( element ).attr( "type" ),
+				errorMessage = "Step attribute on input type " + type + " is not supported.",
+				supportedTypes = [ "text", "number", "range" ],
+				re = new RegExp( "\\b" + type + "\\b" ),
+				notSupported = type && !re.test( supportedTypes.join() );
+
+			// Works only for text, number and range input types
+			// TODO find a way to support input types date, datetime, datetime-local, month, time and week
+			if ( notSupported ) {
+				throw new Error( errorMessage );
+			}
+			return this.optional( element ) || ( value % param === 0 );
+		},
+
+		// http://jqueryvalidation.org/equalTo-method/
+		equalTo: function( value, element, param ) {
+
+			// Bind to the blur event of the target in order to revalidate whenever the target field is updated
+			var target = $( param );
+			if ( this.settings.onfocusout && target.not( ".validate-equalTo-blur" ).length ) {
+				target.addClass( "validate-equalTo-blur" ).on( "blur.validate-equalTo", function() {
+					$( element ).valid();
+				} );
+			}
+			return value === target.val();
+		},
+
+		// http://jqueryvalidation.org/remote-method/
+		remote: function( value, element, param, method ) {
+			if ( this.optional( element ) ) {
+				return "dependency-mismatch";
+			}
+
+			method = typeof method === "string" && method || "remote";
+
+			var previous = this.previousValue( element, method ),
+				validator, data, optionDataString;
+
+			if ( !this.settings.messages[ element.name ] ) {
+				this.settings.messages[ element.name ] = {};
+			}
+			previous.originalMessage = previous.originalMessage || this.settings.messages[ element.name ][ method ];
+			this.settings.messages[ element.name ][ method ] = previous.message;
+
+			param = typeof param === "string" && { url: param } || param;
+			optionDataString = $.param( $.extend( { data: value }, param.data ) );
+			if ( previous.old === optionDataString ) {
+				return previous.valid;
+			}
+
+			previous.old = optionDataString;
+			validator = this;
+			this.startRequest( element );
+			data = {};
+			data[ element.name ] = value;
+			$.ajax( $.extend( true, {
+				mode: "abort",
+				port: "validate" + element.name,
+				dataType: "json",
+				data: data,
+				context: validator.currentForm,
+				success: function( response ) {
+					var valid = response === true || response === "true",
+						errors, message, submitted;
+
+					validator.settings.messages[ element.name ][ method ] = previous.originalMessage;
+					if ( valid ) {
+						submitted = validator.formSubmitted;
+						validator.resetInternals();
+						validator.toHide = validator.errorsFor( element );
+						validator.formSubmitted = submitted;
+						validator.successList.push( element );
+						validator.invalid[ element.name ] = false;
+						validator.showErrors();
+					} else {
+						errors = {};
+						message = response || validator.defaultMessage( element, { method: method, parameters: value } );
+						errors[ element.name ] = previous.message = message;
+						validator.invalid[ element.name ] = true;
+						validator.showErrors( errors );
+					}
+					previous.valid = valid;
+					validator.stopRequest( element, valid );
+				}
+			}, param ) );
+			return "pending";
+		}
+	}
+
+} );
+
+// Ajax mode: abort
+// usage: $.ajax({ mode: "abort"[, port: "uniqueport"]});
+// if mode:"abort" is used, the previous request on that port (port can be undefined) is aborted via XMLHttpRequest.abort()
+
+var pendingRequests = {},
+	ajax;
+
+// Use a prefilter if available (1.5+)
+if ( $.ajaxPrefilter ) {
+	$.ajaxPrefilter( function( settings, _, xhr ) {
+		var port = settings.port;
+		if ( settings.mode === "abort" ) {
+			if ( pendingRequests[ port ] ) {
+				pendingRequests[ port ].abort();
+			}
+			pendingRequests[ port ] = xhr;
+		}
+	} );
+} else {
+
+	// Proxy ajax
+	ajax = $.ajax;
+	$.ajax = function( settings ) {
+		var mode = ( "mode" in settings ? settings : $.ajaxSettings ).mode,
+			port = ( "port" in settings ? settings : $.ajaxSettings ).port;
+		if ( mode === "abort" ) {
+			if ( pendingRequests[ port ] ) {
+				pendingRequests[ port ].abort();
+			}
+			pendingRequests[ port ] = ajax.apply( this, arguments );
+			return pendingRequests[ port ];
+		}
+		return ajax.apply( this, arguments );
+	};
+}
+
+}));
 //! moment.js
 //! version : 2.18.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -12950,6 +14482,11 @@ else if (typeof define === 'function' && define.amd) {
                 cancel: !1,
                 options: d
               });
+            //   $('#tagsInput').on('beforeItemAdd', function(event) {
+            //     if (event.item.length < 3) {
+            //         event.cancel = true;
+            //     }
+            // });
               if (f.$element.trigger(o), !o.cancel) {
                 f.itemsArray.push(b);
                 var p = a('<span class="tag ' + e(l) + (null !== m ? '" title="' + m : "") + '">' + e(k) + '<span data-role="remove"></span></span>');
@@ -13151,6 +14688,7 @@ else if (typeof define === 'function' && define.amd) {
     a("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput()
   })
 }(window.jQuery);
+
 //# sourceMappingURL=bootstrap-tagsinput.min.js.map
 
 /*! DataTables 1.10.7
@@ -19458,6 +20996,503 @@ if(this.$element.prop("multiple"))this.current(function(d){var e=[];a=[a],a.push
   e.fn.timepicker.Constructor = i
 })(jQuery, window, document);
 
+/*!
+ * BootstrapValidator (http://bootstrapvalidator.com)
+ * The best jQuery plugin to validate form fields. Designed to use with Bootstrap 3
+ *
+ * @version     v0.5.3, built on 2014-11-05 9:14:18 PM
+ * @author      https://twitter.com/nghuuphuoc
+ * @copyright   (c) 2013 - 2014 Nguyen Huu Phuoc
+ * @license     Commercial: http://bootstrapvalidator.com/license/
+ *              Non-commercial: http://creativecommons.org/licenses/by-nc-nd/3.0/
+ */
+if("undefined"==typeof jQuery)throw new Error("BootstrapValidator requires jQuery");!function(a){var b=a.fn.jquery.split(" ")[0].split(".");if(+b[0]<2&&+b[1]<9||1===+b[0]&&9===+b[1]&&+b[2]<1)throw new Error("BootstrapValidator requires jQuery version 1.9.1 or higher")}(window.jQuery),function(a){var b=function(b,c){this.$form=a(b),this.options=a.extend({},a.fn.bootstrapValidator.DEFAULT_OPTIONS,c),this.$invalidFields=a([]),this.$submitButton=null,this.$hiddenButton=null,this.STATUS_NOT_VALIDATED="NOT_VALIDATED",this.STATUS_VALIDATING="VALIDATING",this.STATUS_INVALID="INVALID",this.STATUS_VALID="VALID";var d=function(){for(var a=3,b=document.createElement("div"),c=b.all||[];b.innerHTML="<!--[if gt IE "+ ++a+"]><br><![endif]-->",c[0];);return a>4?a:!a}(),e=document.createElement("div");this._changeEvent=9!==d&&"oninput"in e?"input":"keyup",this._submitIfValid=null,this._cacheFields={},this._init()};b.prototype={constructor:b,_init:function(){var b=this,c={autoFocus:this.$form.attr("data-bv-autofocus"),container:this.$form.attr("data-bv-container"),events:{formInit:this.$form.attr("data-bv-events-form-init"),formError:this.$form.attr("data-bv-events-form-error"),formSuccess:this.$form.attr("data-bv-events-form-success"),fieldAdded:this.$form.attr("data-bv-events-field-added"),fieldRemoved:this.$form.attr("data-bv-events-field-removed"),fieldInit:this.$form.attr("data-bv-events-field-init"),fieldError:this.$form.attr("data-bv-events-field-error"),fieldSuccess:this.$form.attr("data-bv-events-field-success"),fieldStatus:this.$form.attr("data-bv-events-field-status"),validatorError:this.$form.attr("data-bv-events-validator-error"),validatorSuccess:this.$form.attr("data-bv-events-validator-success")},excluded:this.$form.attr("data-bv-excluded"),feedbackIcons:{valid:this.$form.attr("data-bv-feedbackicons-valid"),invalid:this.$form.attr("data-bv-feedbackicons-invalid"),validating:this.$form.attr("data-bv-feedbackicons-validating")},group:this.$form.attr("data-bv-group"),live:this.$form.attr("data-bv-live"),message:this.$form.attr("data-bv-message"),onError:this.$form.attr("data-bv-onerror"),onSuccess:this.$form.attr("data-bv-onsuccess"),submitButtons:this.$form.attr("data-bv-submitbuttons"),threshold:this.$form.attr("data-bv-threshold"),trigger:this.$form.attr("data-bv-trigger"),verbose:this.$form.attr("data-bv-verbose"),fields:{}};this.$form.attr("novalidate","novalidate").addClass(this.options.elementClass).on("submit.bv",function(a){a.preventDefault(),b.validate()}).on("click.bv",this.options.submitButtons,function(){b.$submitButton=a(this),b._submitIfValid=!0}).find("[name], [data-bv-field]").each(function(){var d=a(this),e=d.attr("name")||d.attr("data-bv-field"),f=b._parseOptions(d);f&&(d.attr("data-bv-field",e),c.fields[e]=a.extend({},f,c.fields[e]))}),this.options=a.extend(!0,this.options,c),this.$hiddenButton=a("<button/>").attr("type","submit").prependTo(this.$form).addClass("bv-hidden-submit").css({display:"none",width:0,height:0}),this.$form.on("click.bv",'[type="submit"]',function(c){if(!c.isDefaultPrevented()){var d=a(c.target),e=d.is('[type="submit"]')?d.eq(0):d.parent('[type="submit"]').eq(0);!b.options.submitButtons||e.is(b.options.submitButtons)||e.is(b.$hiddenButton)||b.$form.off("submit.bv").submit()}});for(var d in this.options.fields)this._initField(d);this.$form.trigger(a.Event(this.options.events.formInit),{bv:this,options:this.options}),this.options.onSuccess&&this.$form.on(this.options.events.formSuccess,function(c){a.fn.bootstrapValidator.helpers.call(b.options.onSuccess,[c])}),this.options.onError&&this.$form.on(this.options.events.formError,function(c){a.fn.bootstrapValidator.helpers.call(b.options.onError,[c])})},_parseOptions:function(b){var c,d,e,f,g,h,i,j,k,l=b.attr("name")||b.attr("data-bv-field"),m={};for(d in a.fn.bootstrapValidator.validators)if(c=a.fn.bootstrapValidator.validators[d],e="data-bv-"+d.toLowerCase(),f=b.attr(e)+"",k="function"==typeof c.enableByHtml5?c.enableByHtml5(b):null,k&&"false"!==f||k!==!0&&(""===f||"true"===f||e===f.toLowerCase())){c.html5Attributes=a.extend({},{message:"message",onerror:"onError",onsuccess:"onSuccess"},c.html5Attributes),m[d]=a.extend({},k===!0?{}:k,m[d]);for(j in c.html5Attributes)g=c.html5Attributes[j],h="data-bv-"+d.toLowerCase()+"-"+j,i=b.attr(h),i&&("true"===i||h===i.toLowerCase()?i=!0:"false"===i&&(i=!1),m[d][g]=i)}var n={autoFocus:b.attr("data-bv-autofocus"),container:b.attr("data-bv-container"),excluded:b.attr("data-bv-excluded"),feedbackIcons:b.attr("data-bv-feedbackicons"),group:b.attr("data-bv-group"),message:b.attr("data-bv-message"),onError:b.attr("data-bv-onerror"),onStatus:b.attr("data-bv-onstatus"),onSuccess:b.attr("data-bv-onsuccess"),selector:b.attr("data-bv-selector"),threshold:b.attr("data-bv-threshold"),trigger:b.attr("data-bv-trigger"),verbose:b.attr("data-bv-verbose"),validators:m},o=a.isEmptyObject(n),p=a.isEmptyObject(m);return!p||!o&&this.options.fields&&this.options.fields[l]?(n.validators=m,n):null},_initField:function(b){var c=a([]);switch(typeof b){case"object":c=b,b=b.attr("data-bv-field");break;case"string":c=this.getFieldElements(b),c.attr("data-bv-field",b)}if(0!==c.length&&null!==this.options.fields[b]&&null!==this.options.fields[b].validators){var d;for(d in this.options.fields[b].validators)a.fn.bootstrapValidator.validators[d]||delete this.options.fields[b].validators[d];null===this.options.fields[b].enabled&&(this.options.fields[b].enabled=!0);for(var e=this,f=c.length,g=c.attr("type"),h=1===f||"radio"===g||"checkbox"===g,i="radio"===g||"checkbox"===g||"file"===g||"SELECT"===c.eq(0).get(0).tagName?"change":this._changeEvent,j=(this.options.fields[b].trigger||this.options.trigger||i).split(" "),k=a.map(j,function(a){return a+".update.bv"}).join(" "),l=0;f>l;l++){var m=c.eq(l),n=this.options.fields[b].group||this.options.group,o=m.parents(n),p="function"==typeof(this.options.fields[b].container||this.options.container)?(this.options.fields[b].container||this.options.container).call(this,m,this):this.options.fields[b].container||this.options.container,q=p&&"tooltip"!==p&&"popover"!==p?a(p):this._getMessageContainer(m,n);p&&"tooltip"!==p&&"popover"!==p&&q.addClass("has-error"),q.find('.help-block[data-bv-validator][data-bv-for="'+b+'"]').remove(),o.find('i[data-bv-icon-for="'+b+'"]').remove(),m.off(k).on(k,function(){e.updateStatus(a(this),e.STATUS_NOT_VALIDATED)}),m.data("bv.messages",q);for(d in this.options.fields[b].validators)m.data("bv.result."+d,this.STATUS_NOT_VALIDATED),h&&l!==f-1||a("<small/>").css("display","none").addClass("help-block").attr("data-bv-validator",d).attr("data-bv-for",b).attr("data-bv-result",this.STATUS_NOT_VALIDATED).html(this._getMessage(b,d)).appendTo(q),"function"==typeof a.fn.bootstrapValidator.validators[d].init&&a.fn.bootstrapValidator.validators[d].init(this,m,this.options.fields[b].validators[d]);if(this.options.fields[b].feedbackIcons!==!1&&"false"!==this.options.fields[b].feedbackIcons&&this.options.feedbackIcons&&this.options.feedbackIcons.validating&&this.options.feedbackIcons.invalid&&this.options.feedbackIcons.valid&&(!h||l===f-1)){o.addClass("has-feedback");var r=a("<i/>").css("display","none").addClass("form-control-feedback").attr("data-bv-icon-for",b).insertAfter(m);if("checkbox"===g||"radio"===g){var s=m.parent();s.hasClass(g)?r.insertAfter(s):s.parent().hasClass(g)&&r.insertAfter(s.parent())}0===o.find("label").length&&r.addClass("bv-no-label"),0!==o.find(".input-group").length&&r.addClass("bv-icon-input-group").insertAfter(o.find(".input-group").eq(0)),h?l===f-1&&c.data("bv.icon",r):m.data("bv.icon",r),p&&m.off("focus.container.bv").on("focus.container.bv",function(){switch(p){case"tooltip":a(this).data("bv.icon").tooltip("show");break;case"popover":a(this).data("bv.icon").popover("show")}}).off("blur.container.bv").on("blur.container.bv",function(){switch(p){case"tooltip":a(this).data("bv.icon").tooltip("hide");break;case"popover":a(this).data("bv.icon").popover("hide")}})}}switch(c.on(this.options.events.fieldSuccess,function(b,c){var d=e.getOptions(c.field,null,"onSuccess");d&&a.fn.bootstrapValidator.helpers.call(d,[b,c])}).on(this.options.events.fieldError,function(b,c){var d=e.getOptions(c.field,null,"onError");d&&a.fn.bootstrapValidator.helpers.call(d,[b,c])}).on(this.options.events.fieldStatus,function(b,c){var d=e.getOptions(c.field,null,"onStatus");d&&a.fn.bootstrapValidator.helpers.call(d,[b,c])}).on(this.options.events.validatorError,function(b,c){var d=e.getOptions(c.field,c.validator,"onError");d&&a.fn.bootstrapValidator.helpers.call(d,[b,c])}).on(this.options.events.validatorSuccess,function(b,c){var d=e.getOptions(c.field,c.validator,"onSuccess");d&&a.fn.bootstrapValidator.helpers.call(d,[b,c])}),k=a.map(j,function(a){return a+".live.bv"}).join(" "),this.options.live){case"submitted":break;case"disabled":c.off(k);break;case"enabled":default:c.off(k).on(k,function(){e._exceedThreshold(a(this))&&e.validateField(a(this))})}c.trigger(a.Event(this.options.events.fieldInit),{bv:this,field:b,element:c})}},_getMessage:function(b,c){if(!(this.options.fields[b]&&a.fn.bootstrapValidator.validators[c]&&this.options.fields[b].validators&&this.options.fields[b].validators[c]))return"";var d=this.options.fields[b].validators[c];switch(!0){case!!d.message:return d.message;case!!this.options.fields[b].message:return this.options.fields[b].message;case!!a.fn.bootstrapValidator.i18n[c]:return a.fn.bootstrapValidator.i18n[c]["default"];default:return this.options.message}},_getMessageContainer:function(a,b){var c=a.parent();if(c.is(b))return c;var d=c.attr("class");if(!d)return this._getMessageContainer(c,b);d=d.split(" ");for(var e=d.length,f=0;e>f;f++)if(/^col-(xs|sm|md|lg)-\d+$/.test(d[f])||/^col-(xs|sm|md|lg)-offset-\d+$/.test(d[f]))return c;return this._getMessageContainer(c,b)},_submit:function(){var b=this.isValid(),c=b?this.options.events.formSuccess:this.options.events.formError,d=a.Event(c);this.$form.trigger(d),this.$submitButton&&(b?this._onSuccess(d):this._onError(d))},_isExcluded:function(b){var c=b.attr("data-bv-excluded"),d=b.attr("data-bv-field")||b.attr("name");switch(!0){case!!d&&this.options.fields&&this.options.fields[d]&&("true"===this.options.fields[d].excluded||this.options.fields[d].excluded===!0):case"true"===c:case""===c:return!0;case!!d&&this.options.fields&&this.options.fields[d]&&("false"===this.options.fields[d].excluded||this.options.fields[d].excluded===!1):case"false"===c:return!1;default:if(this.options.excluded){"string"==typeof this.options.excluded&&(this.options.excluded=a.map(this.options.excluded.split(","),function(b){return a.trim(b)}));for(var e=this.options.excluded.length,f=0;e>f;f++)if("string"==typeof this.options.excluded[f]&&b.is(this.options.excluded[f])||"function"==typeof this.options.excluded[f]&&this.options.excluded[f].call(this,b,this)===!0)return!0}return!1}},_exceedThreshold:function(b){var c=b.attr("data-bv-field"),d=this.options.fields[c].threshold||this.options.threshold;if(!d)return!0;var e=-1!==a.inArray(b.attr("type"),["button","checkbox","file","hidden","image","radio","reset","submit"]);return e||b.val().length>=d},_onError:function(b){if(!b.isDefaultPrevented()){if("submitted"===this.options.live){this.options.live="enabled";var c=this;for(var d in this.options.fields)!function(b){var e=c.getFieldElements(b);if(e.length){var f=a(e[0]).attr("type"),g="radio"===f||"checkbox"===f||"file"===f||"SELECT"===a(e[0]).get(0).tagName?"change":c._changeEvent,h=c.options.fields[d].trigger||c.options.trigger||g,i=a.map(h.split(" "),function(a){return a+".live.bv"}).join(" ");e.off(i).on(i,function(){c._exceedThreshold(a(this))&&c.validateField(a(this))})}}(d)}for(var e=0;e<this.$invalidFields.length;e++){var f=this.$invalidFields.eq(e),g=this._isOptionEnabled(f.attr("data-bv-field"),"autoFocus");if(g){var h,i=f.parents(".tab-pane");i&&(h=i.attr("id"))&&a('a[href="#'+h+'"][data-toggle="tab"]').tab("show"),f.focus();break}}}},_onSuccess:function(a){a.isDefaultPrevented()||this.disableSubmitButtons(!0).defaultSubmit()},_onFieldValidated:function(b,c){var d=b.attr("data-bv-field"),e=this.options.fields[d].validators,f={},g=0,h={bv:this,field:d,element:b,validator:c,result:b.data("bv.response."+c)};if(c)switch(b.data("bv.result."+c)){case this.STATUS_INVALID:b.trigger(a.Event(this.options.events.validatorError),h);break;case this.STATUS_VALID:b.trigger(a.Event(this.options.events.validatorSuccess),h)}f[this.STATUS_NOT_VALIDATED]=0,f[this.STATUS_VALIDATING]=0,f[this.STATUS_INVALID]=0,f[this.STATUS_VALID]=0;for(var i in e)if(e[i].enabled!==!1){g++;var j=b.data("bv.result."+i);j&&f[j]++}f[this.STATUS_VALID]===g?(this.$invalidFields=this.$invalidFields.not(b),b.trigger(a.Event(this.options.events.fieldSuccess),h)):(0===f[this.STATUS_NOT_VALIDATED]||!this._isOptionEnabled(d,"verbose"))&&0===f[this.STATUS_VALIDATING]&&f[this.STATUS_INVALID]>0&&(this.$invalidFields=this.$invalidFields.add(b),b.trigger(a.Event(this.options.events.fieldError),h))},_isOptionEnabled:function(a,b){return!this.options.fields[a]||"true"!==this.options.fields[a][b]&&this.options.fields[a][b]!==!0?!this.options.fields[a]||"false"!==this.options.fields[a][b]&&this.options.fields[a][b]!==!1?"true"===this.options[b]||this.options[b]===!0:!1:!0},getFieldElements:function(b){return this._cacheFields[b]||(this._cacheFields[b]=this.options.fields[b]&&this.options.fields[b].selector?a(this.options.fields[b].selector):this.$form.find('[name="'+b+'"]')),this._cacheFields[b]},getOptions:function(a,b,c){if(!a)return c?this.options[c]:this.options;if("object"==typeof a&&(a=a.attr("data-bv-field")),!this.options.fields[a])return null;var d=this.options.fields[a];return b?d.validators&&d.validators[b]?c?d.validators[b][c]:d.validators[b]:null:c?d[c]:d},disableSubmitButtons:function(a){return a?"disabled"!==this.options.live&&this.$form.find(this.options.submitButtons).attr("disabled","disabled"):this.$form.find(this.options.submitButtons).removeAttr("disabled"),this},validate:function(){if(!this.options.fields)return this;this.disableSubmitButtons(!0),this._submitIfValid=!1;for(var a in this.options.fields)this.validateField(a);return this._submit(),this._submitIfValid=!0,this},validateField:function(b){var c=a([]);switch(typeof b){case"object":c=b,b=b.attr("data-bv-field");break;case"string":c=this.getFieldElements(b)}if(0===c.length||!this.options.fields[b]||this.options.fields[b].enabled===!1)return this;for(var d,e,f=this,g=c.attr("type"),h="radio"===g||"checkbox"===g?1:c.length,i="radio"===g||"checkbox"===g,j=this.options.fields[b].validators,k=this._isOptionEnabled(b,"verbose"),l=0;h>l;l++){var m=c.eq(l);if(!this._isExcluded(m)){var n=!1;for(d in j){if(m.data("bv.dfs."+d)&&m.data("bv.dfs."+d).reject(),n)break;var o=m.data("bv.result."+d);if(o!==this.STATUS_VALID&&o!==this.STATUS_INVALID)if(j[d].enabled!==!1){if(m.data("bv.result."+d,this.STATUS_VALIDATING),e=a.fn.bootstrapValidator.validators[d].validate(this,m,j[d]),"object"==typeof e&&e.resolve)this.updateStatus(i?b:m,this.STATUS_VALIDATING,d),m.data("bv.dfs."+d,e),e.done(function(a,b,c){a.removeData("bv.dfs."+b).data("bv.response."+b,c),c.message&&f.updateMessage(a,b,c.message),f.updateStatus(i?a.attr("data-bv-field"):a,c.valid?f.STATUS_VALID:f.STATUS_INVALID,b),c.valid&&f._submitIfValid===!0?f._submit():c.valid||k||(n=!0)});else if("object"==typeof e&&void 0!==e.valid&&void 0!==e.message){if(m.data("bv.response."+d,e),this.updateMessage(i?b:m,d,e.message),this.updateStatus(i?b:m,e.valid?this.STATUS_VALID:this.STATUS_INVALID,d),!e.valid&&!k)break}else if("boolean"==typeof e&&(m.data("bv.response."+d,e),this.updateStatus(i?b:m,e?this.STATUS_VALID:this.STATUS_INVALID,d),!e&&!k))break}else this.updateStatus(i?b:m,this.STATUS_VALID,d);else this._onFieldValidated(m,d)}}}return this},updateMessage:function(b,c,d){var e=a([]);switch(typeof b){case"object":e=b,b=b.attr("data-bv-field");break;case"string":e=this.getFieldElements(b)}e.each(function(){a(this).data("bv.messages").find('.help-block[data-bv-validator="'+c+'"][data-bv-for="'+b+'"]').html(d)})},updateStatus:function(b,c,d){var e=a([]);switch(typeof b){case"object":e=b,b=b.attr("data-bv-field");break;case"string":e=this.getFieldElements(b)}c===this.STATUS_NOT_VALIDATED&&(this._submitIfValid=!1);for(var f=this,g=e.attr("type"),h=this.options.fields[b].group||this.options.group,i="radio"===g||"checkbox"===g?1:e.length,j=0;i>j;j++){var k=e.eq(j);if(!this._isExcluded(k)){var l=k.parents(h),m=k.data("bv.messages"),n=m.find('.help-block[data-bv-validator][data-bv-for="'+b+'"]'),o=d?n.filter('[data-bv-validator="'+d+'"]'):n,p=k.data("bv.icon"),q="function"==typeof(this.options.fields[b].container||this.options.container)?(this.options.fields[b].container||this.options.container).call(this,k,this):this.options.fields[b].container||this.options.container,r=null;if(d)k.data("bv.result."+d,c);else for(var s in this.options.fields[b].validators)k.data("bv.result."+s,c);o.attr("data-bv-result",c);var t,u,v=k.parents(".tab-pane");switch(v&&(t=v.attr("id"))&&(u=a('a[href="#'+t+'"][data-toggle="tab"]').parent()),c){case this.STATUS_VALIDATING:r=null,this.disableSubmitButtons(!0),l.removeClass("has-success").removeClass("has-error"),p&&p.removeClass(this.options.feedbackIcons.valid).removeClass(this.options.feedbackIcons.invalid).addClass(this.options.feedbackIcons.validating).show(),u&&u.removeClass("bv-tab-success").removeClass("bv-tab-error");break;case this.STATUS_INVALID:r=!1,this.disableSubmitButtons(!0),l.removeClass("has-success").addClass("has-error"),p&&p.removeClass(this.options.feedbackIcons.valid).removeClass(this.options.feedbackIcons.validating).addClass(this.options.feedbackIcons.invalid).show(),u&&u.removeClass("bv-tab-success").addClass("bv-tab-error");break;case this.STATUS_VALID:r=0===n.filter('[data-bv-result="'+this.STATUS_NOT_VALIDATED+'"]').length?n.filter('[data-bv-result="'+this.STATUS_VALID+'"]').length===n.length:null,null!==r&&(this.disableSubmitButtons(this.$submitButton?!this.isValid():!r),p&&p.removeClass(this.options.feedbackIcons.invalid).removeClass(this.options.feedbackIcons.validating).removeClass(this.options.feedbackIcons.valid).addClass(r?this.options.feedbackIcons.valid:this.options.feedbackIcons.invalid).show()),l.removeClass("has-error has-success").addClass(this.isValidContainer(l)?"has-success":"has-error"),u&&u.removeClass("bv-tab-success").removeClass("bv-tab-error").addClass(this.isValidContainer(v)?"bv-tab-success":"bv-tab-error");break;case this.STATUS_NOT_VALIDATED:default:r=null,this.disableSubmitButtons(!1),l.removeClass("has-success").removeClass("has-error"),p&&p.removeClass(this.options.feedbackIcons.valid).removeClass(this.options.feedbackIcons.invalid).removeClass(this.options.feedbackIcons.validating).hide(),u&&u.removeClass("bv-tab-success").removeClass("bv-tab-error")}switch(!0){case p&&"tooltip"===q:r===!1?p.css("cursor","pointer").tooltip("destroy").tooltip({container:"body",html:!0,placement:"auto top",title:n.filter('[data-bv-result="'+f.STATUS_INVALID+'"]').eq(0).html()}):p.css("cursor","").tooltip("destroy");break;case p&&"popover"===q:r===!1?p.css("cursor","pointer").popover("destroy").popover({container:"body",content:n.filter('[data-bv-result="'+f.STATUS_INVALID+'"]').eq(0).html(),html:!0,placement:"auto top",trigger:"hover click"}):p.css("cursor","").popover("destroy");break;default:c===this.STATUS_INVALID?o.show():o.hide()}k.trigger(a.Event(this.options.events.fieldStatus),{bv:this,field:b,element:k,status:c}),this._onFieldValidated(k,d)}}return this},isValid:function(){for(var a in this.options.fields)if(!this.isValidField(a))return!1;return!0},isValidField:function(b){var c=a([]);switch(typeof b){case"object":c=b,b=b.attr("data-bv-field");break;case"string":c=this.getFieldElements(b)}if(0===c.length||!this.options.fields[b]||this.options.fields[b].enabled===!1)return!0;for(var d,e,f,g=c.attr("type"),h="radio"===g||"checkbox"===g?1:c.length,i=0;h>i;i++)if(d=c.eq(i),!this._isExcluded(d))for(e in this.options.fields[b].validators)if(this.options.fields[b].validators[e].enabled!==!1&&(f=d.data("bv.result."+e),f!==this.STATUS_VALID))return!1;return!0},isValidContainer:function(b){var c=this,d={},e="string"==typeof b?a(b):b;if(0===e.length)return!0;e.find("[data-bv-field]").each(function(){var b=a(this),e=b.attr("data-bv-field");c._isExcluded(b)||d[e]||(d[e]=b)});for(var f in d){var g=d[f];if(g.data("bv.messages").find('.help-block[data-bv-validator][data-bv-for="'+f+'"]').filter('[data-bv-result="'+this.STATUS_INVALID+'"]').length>0)return!1}return!0},defaultSubmit:function(){this.$submitButton&&a("<input/>").attr("type","hidden").attr("data-bv-submit-hidden","").attr("name",this.$submitButton.attr("name")).val(this.$submitButton.val()).appendTo(this.$form),this.$form.off("submit.bv").submit()},getInvalidFields:function(){return this.$invalidFields},getSubmitButton:function(){return this.$submitButton},getMessages:function(b,c){var d=this,e=[],f=a([]);switch(!0){case b&&"object"==typeof b:f=b;break;case b&&"string"==typeof b:var g=this.getFieldElements(b);if(g.length>0){var h=g.attr("type");f="radio"===h||"checkbox"===h?g.eq(0):g}break;default:f=this.$invalidFields}var i=c?'[data-bv-validator="'+c+'"]':"";return f.each(function(){e=e.concat(a(this).data("bv.messages").find('.help-block[data-bv-for="'+a(this).attr("data-bv-field")+'"][data-bv-result="'+d.STATUS_INVALID+'"]'+i).map(function(){var b=a(this).attr("data-bv-validator"),c=a(this).attr("data-bv-for");return d.options.fields[c].validators[b].enabled===!1?"":a(this).html()}).get())}),e},updateOption:function(a,b,c,d){return"object"==typeof a&&(a=a.attr("data-bv-field")),this.options.fields[a]&&this.options.fields[a].validators[b]&&(this.options.fields[a].validators[b][c]=d,this.updateStatus(a,this.STATUS_NOT_VALIDATED,b)),this},addField:function(b,c){var d=a([]);switch(typeof b){case"object":d=b,b=b.attr("data-bv-field")||b.attr("name");break;case"string":delete this._cacheFields[b],d=this.getFieldElements(b)}d.attr("data-bv-field",b);for(var e=d.attr("type"),f="radio"===e||"checkbox"===e?1:d.length,g=0;f>g;g++){var h=d.eq(g),i=this._parseOptions(h);i=null===i?c:a.extend(!0,c,i),this.options.fields[b]=a.extend(!0,this.options.fields[b],i),this._cacheFields[b]=this._cacheFields[b]?this._cacheFields[b].add(h):h,this._initField("checkbox"===e||"radio"===e?b:h)}return this.disableSubmitButtons(!1),this.$form.trigger(a.Event(this.options.events.fieldAdded),{field:b,element:d,options:this.options.fields[b]}),this},removeField:function(b){var c=a([]);switch(typeof b){case"object":c=b,b=b.attr("data-bv-field")||b.attr("name"),c.attr("data-bv-field",b);break;case"string":c=this.getFieldElements(b)}if(0===c.length)return this;for(var d=c.attr("type"),e="radio"===d||"checkbox"===d?1:c.length,f=0;e>f;f++){var g=c.eq(f);this.$invalidFields=this.$invalidFields.not(g),this._cacheFields[b]=this._cacheFields[b].not(g)}return this._cacheFields[b]&&0!==this._cacheFields[b].length||delete this.options.fields[b],("checkbox"===d||"radio"===d)&&this._initField(b),this.disableSubmitButtons(!1),this.$form.trigger(a.Event(this.options.events.fieldRemoved),{field:b,element:c}),this},resetField:function(b,c){var d=a([]);switch(typeof b){case"object":d=b,b=b.attr("data-bv-field");break;case"string":d=this.getFieldElements(b)}var e=d.length;if(this.options.fields[b])for(var f=0;e>f;f++)for(var g in this.options.fields[b].validators)d.eq(f).removeData("bv.dfs."+g);if(this.updateStatus(b,this.STATUS_NOT_VALIDATED),c){var h=d.attr("type");"radio"===h||"checkbox"===h?d.removeAttr("checked").removeAttr("selected"):d.val("")}return this},resetForm:function(b){for(var c in this.options.fields)this.resetField(c,b);return this.$invalidFields=a([]),this.$submitButton=null,this.disableSubmitButtons(!1),this},revalidateField:function(a){return this.updateStatus(a,this.STATUS_NOT_VALIDATED).validateField(a),this},enableFieldValidators:function(a,b,c){var d=this.options.fields[a].validators;if(c&&d&&d[c]&&d[c].enabled!==b)this.options.fields[a].validators[c].enabled=b,this.updateStatus(a,this.STATUS_NOT_VALIDATED,c);else if(!c&&this.options.fields[a].enabled!==b){this.options.fields[a].enabled=b;for(var e in d)this.enableFieldValidators(a,b,e)}return this},getDynamicOption:function(b,c){var d="string"==typeof b?this.getFieldElements(b):b,e=d.val();if("function"==typeof c)return a.fn.bootstrapValidator.helpers.call(c,[e,this,d]);if("string"==typeof c){var f=this.getFieldElements(c);return f.length?f.val():a.fn.bootstrapValidator.helpers.call(c,[e,this,d])||c}return null},destroy:function(){var b,c,d,e,f,g;for(b in this.options.fields){c=this.getFieldElements(b),g=this.options.fields[b].group||this.options.group;for(var h=0;h<c.length;h++){if(d=c.eq(h),d.data("bv.messages").find('.help-block[data-bv-validator][data-bv-for="'+b+'"]').remove().end().end().removeData("bv.messages").parents(g).removeClass("has-feedback has-error has-success").end().off(".bv").removeAttr("data-bv-field"),f=d.data("bv.icon")){var i="function"==typeof(this.options.fields[b].container||this.options.container)?(this.options.fields[b].container||this.options.container).call(this,d,this):this.options.fields[b].container||this.options.container;switch(i){case"tooltip":f.tooltip("destroy").remove();break;case"popover":f.popover("destroy").remove();break;default:f.remove()}}d.removeData("bv.icon");for(e in this.options.fields[b].validators)d.data("bv.dfs."+e)&&d.data("bv.dfs."+e).reject(),d.removeData("bv.result."+e).removeData("bv.response."+e).removeData("bv.dfs."+e),"function"==typeof a.fn.bootstrapValidator.validators[e].destroy&&a.fn.bootstrapValidator.validators[e].destroy(this,d,this.options.fields[b].validators[e])}}this.disableSubmitButtons(!1),this.$hiddenButton.remove(),this.$form.removeClass(this.options.elementClass).off(".bv").removeData("bootstrapValidator").find("[data-bv-submit-hidden]").remove().end().find('[type="submit"]').off("click.bv")}},a.fn.bootstrapValidator=function(c){var d=arguments;return this.each(function(){var e=a(this),f=e.data("bootstrapValidator"),g="object"==typeof c&&c;f||(f=new b(this,g),e.data("bootstrapValidator",f)),"string"==typeof c&&f[c].apply(f,Array.prototype.slice.call(d,1))})},a.fn.bootstrapValidator.DEFAULT_OPTIONS={autoFocus:!0,container:null,elementClass:"bv-form",events:{formInit:"init.form.bv",formError:"error.form.bv",formSuccess:"success.form.bv",fieldAdded:"added.field.bv",fieldRemoved:"removed.field.bv",fieldInit:"init.field.bv",fieldError:"error.field.bv",fieldSuccess:"success.field.bv",fieldStatus:"status.field.bv",validatorError:"error.validator.bv",validatorSuccess:"success.validator.bv"},excluded:[":disabled",":hidden",":not(:visible)"],feedbackIcons:{valid:null,invalid:null,validating:null},fields:null,group:".form-group",live:"enabled",message:"This value is not valid",submitButtons:'[type="submit"]',threshold:null,verbose:!0},a.fn.bootstrapValidator.validators={},a.fn.bootstrapValidator.i18n={},a.fn.bootstrapValidator.Constructor=b,a.fn.bootstrapValidator.helpers={call:function(a,b){if("function"==typeof a)return a.apply(this,b);if("string"==typeof a){"()"===a.substring(a.length-2)&&(a=a.substring(0,a.length-2));for(var c=a.split("."),d=c.pop(),e=window,f=0;f<c.length;f++)e=e[c[f]];return"undefined"==typeof e[d]?null:e[d].apply(this,b)}},format:function(b,c){a.isArray(c)||(c=[c]);for(var d in c)b=b.replace("%s",c[d]);return b},date:function(a,b,c,d){if(isNaN(a)||isNaN(b)||isNaN(c))return!1;if(c.length>2||b.length>2||a.length>4)return!1;if(c=parseInt(c,10),b=parseInt(b,10),a=parseInt(a,10),1e3>a||a>9999||0>=b||b>12)return!1;var e=[31,28,31,30,31,30,31,31,30,31,30,31];if((a%400===0||a%100!==0&&a%4===0)&&(e[1]=29),0>=c||c>e[b-1])return!1;if(d===!0){var f=new Date,g=f.getFullYear(),h=f.getMonth(),i=f.getDate();return g>a||a===g&&h>b-1||a===g&&b-1===h&&i>c}return!0},luhn:function(a){for(var b=a.length,c=0,d=[[0,1,2,3,4,5,6,7,8,9],[0,2,4,6,8,1,3,5,7,9]],e=0;b--;)e+=d[c][parseInt(a.charAt(b),10)],c^=1;return e%10===0&&e>0},mod11And10:function(a){for(var b=5,c=a.length,d=0;c>d;d++)b=(2*(b||10)%11+parseInt(a.charAt(d),10))%10;return 1===b},mod37And36:function(a,b){b=b||"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";for(var c=b.length,d=a.length,e=Math.floor(c/2),f=0;d>f;f++)e=(2*(e||c)%(c+1)+b.indexOf(a.charAt(f)))%c;return 1===e}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.base64=a.extend(a.fn.bootstrapValidator.i18n.base64||{},{"default":"Please enter a valid base 64 encoded"}),a.fn.bootstrapValidator.validators.base64={validate:function(a,b){var c=b.val();return""===c?!0:/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/.test(c)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.between=a.extend(a.fn.bootstrapValidator.i18n.between||{},{"default":"Please enter a value between %s and %s",notInclusive:"Please enter a value between %s and %s strictly"}),a.fn.bootstrapValidator.validators.between={html5Attributes:{message:"message",min:"min",max:"max",inclusive:"inclusive"},enableByHtml5:function(a){return"range"===a.attr("type")?{min:a.attr("min"),max:a.attr("max")}:!1},validate:function(b,c,d){var e=c.val();if(""===e)return!0;if(e=this._format(e),!a.isNumeric(e))return!1;var f=a.isNumeric(d.min)?d.min:b.getDynamicOption(c,d.min),g=a.isNumeric(d.max)?d.max:b.getDynamicOption(c,d.max),h=this._format(f),i=this._format(g);return e=parseFloat(e),d.inclusive===!0||void 0===d.inclusive?{valid:e>=h&&i>=e,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.between["default"],[f,g])}:{valid:e>h&&i>e,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.between.notInclusive,[f,g])}},_format:function(a){return(a+"").replace(",",".")}}}(window.jQuery),function(a){a.fn.bootstrapValidator.validators.blank={validate:function(){return!0}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.callback=a.extend(a.fn.bootstrapValidator.i18n.callback||{},{"default":"Please enter a valid value"}),a.fn.bootstrapValidator.validators.callback={html5Attributes:{message:"message",callback:"callback"},validate:function(b,c,d){var e=c.val(),f=new a.Deferred,g={valid:!0};if(d.callback){var h=a.fn.bootstrapValidator.helpers.call(d.callback,[e,b,c]);g="boolean"==typeof h?{valid:h}:h}return f.resolve(c,"callback",g),f}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.choice=a.extend(a.fn.bootstrapValidator.i18n.choice||{},{"default":"Please enter a valid value",less:"Please choose %s options at minimum",more:"Please choose %s options at maximum",between:"Please choose %s - %s options"}),a.fn.bootstrapValidator.validators.choice={html5Attributes:{message:"message",min:"min",max:"max"},validate:function(b,c,d){var e=c.is("select")?b.getFieldElements(c.attr("data-bv-field")).find("option").filter(":selected").length:b.getFieldElements(c.attr("data-bv-field")).filter(":checked").length,f=d.min?a.isNumeric(d.min)?d.min:b.getDynamicOption(c,d.min):null,g=d.max?a.isNumeric(d.max)?d.max:b.getDynamicOption(c,d.max):null,h=!0,i=d.message||a.fn.bootstrapValidator.i18n.choice["default"];switch((f&&e<parseInt(f,10)||g&&e>parseInt(g,10))&&(h=!1),!0){case!!f&&!!g:i=a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.choice.between,[parseInt(f,10),parseInt(g,10)]);break;case!!f:i=a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.choice.less,parseInt(f,10));break;case!!g:i=a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.choice.more,parseInt(g,10))}return{valid:h,message:i}}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.color=a.extend(a.fn.bootstrapValidator.i18n.color||{},{"default":"Please enter a valid color"}),a.fn.bootstrapValidator.validators.color={SUPPORTED_TYPES:["hex","rgb","rgba","hsl","hsla","keyword"],KEYWORD_COLORS:["aliceblue","antiquewhite","aqua","aquamarine","azure","beige","bisque","black","blanchedalmond","blue","blueviolet","brown","burlywood","cadetblue","chartreuse","chocolate","coral","cornflowerblue","cornsilk","crimson","cyan","darkblue","darkcyan","darkgoldenrod","darkgray","darkgreen","darkgrey","darkkhaki","darkmagenta","darkolivegreen","darkorange","darkorchid","darkred","darksalmon","darkseagreen","darkslateblue","darkslategray","darkslategrey","darkturquoise","darkviolet","deeppink","deepskyblue","dimgray","dimgrey","dodgerblue","firebrick","floralwhite","forestgreen","fuchsia","gainsboro","ghostwhite","gold","goldenrod","gray","green","greenyellow","grey","honeydew","hotpink","indianred","indigo","ivory","khaki","lavender","lavenderblush","lawngreen","lemonchiffon","lightblue","lightcoral","lightcyan","lightgoldenrodyellow","lightgray","lightgreen","lightgrey","lightpink","lightsalmon","lightseagreen","lightskyblue","lightslategray","lightslategrey","lightsteelblue","lightyellow","lime","limegreen","linen","magenta","maroon","mediumaquamarine","mediumblue","mediumorchid","mediumpurple","mediumseagreen","mediumslateblue","mediumspringgreen","mediumturquoise","mediumvioletred","midnightblue","mintcream","mistyrose","moccasin","navajowhite","navy","oldlace","olive","olivedrab","orange","orangered","orchid","palegoldenrod","palegreen","paleturquoise","palevioletred","papayawhip","peachpuff","peru","pink","plum","powderblue","purple","red","rosybrown","royalblue","saddlebrown","salmon","sandybrown","seagreen","seashell","sienna","silver","skyblue","slateblue","slategray","slategrey","snow","springgreen","steelblue","tan","teal","thistle","tomato","transparent","turquoise","violet","wheat","white","whitesmoke","yellow","yellowgreen"],validate:function(b,c,d){var e=c.val();
+    if(""===e)return!0;var f=d.type||this.SUPPORTED_TYPES;a.isArray(f)||(f=f.replace(/s/g,"").split(","));for(var g,h,i=!1,j=0;j<f.length;j++)if(h=f[j],g="_"+h.toLowerCase(),i=i||this[g](e))return!0;return!1},_hex:function(a){return/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(a)},_hsl:function(a){return/^hsl\((\s*(-?\d+)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*)\)$/.test(a)},_hsla:function(a){return/^hsla\((\s*(-?\d+)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*,){2}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/.test(a)},_keyword:function(b){return a.inArray(b,this.KEYWORD_COLORS)>=0},_rgb:function(a){var b=/^rgb\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){2}(\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*)\)$/,c=/^rgb\((\s*(\b(0?\d{1,2}|100)\b%)\s*,){2}(\s*(\b(0?\d{1,2}|100)\b%)\s*)\)$/;return b.test(a)||c.test(a)},_rgba:function(a){var b=/^rgba\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/,c=/^rgba\((\s*(\b(0?\d{1,2}|100)\b%)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/;return b.test(a)||c.test(a)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.creditCard=a.extend(a.fn.bootstrapValidator.i18n.creditCard||{},{"default":"Please enter a valid credit card number"}),a.fn.bootstrapValidator.validators.creditCard={validate:function(b,c){var d=c.val();if(""===d)return!0;if(/[^0-9-\s]+/.test(d))return!1;if(d=d.replace(/\D/g,""),!a.fn.bootstrapValidator.helpers.luhn(d))return!1;var e,f,g={AMERICAN_EXPRESS:{length:[15],prefix:["34","37"]},DINERS_CLUB:{length:[14],prefix:["300","301","302","303","304","305","36"]},DINERS_CLUB_US:{length:[16],prefix:["54","55"]},DISCOVER:{length:[16],prefix:["6011","622126","622127","622128","622129","62213","62214","62215","62216","62217","62218","62219","6222","6223","6224","6225","6226","6227","6228","62290","62291","622920","622921","622922","622923","622924","622925","644","645","646","647","648","649","65"]},JCB:{length:[16],prefix:["3528","3529","353","354","355","356","357","358"]},LASER:{length:[16,17,18,19],prefix:["6304","6706","6771","6709"]},MAESTRO:{length:[12,13,14,15,16,17,18,19],prefix:["5018","5020","5038","6304","6759","6761","6762","6763","6764","6765","6766"]},MASTERCARD:{length:[16],prefix:["51","52","53","54","55"]},SOLO:{length:[16,18,19],prefix:["6334","6767"]},UNIONPAY:{length:[16,17,18,19],prefix:["622126","622127","622128","622129","62213","62214","62215","62216","62217","62218","62219","6222","6223","6224","6225","6226","6227","6228","62290","62291","622920","622921","622922","622923","622924","622925"]},VISA:{length:[16],prefix:["4"]}};for(e in g)for(f in g[e].prefix)if(d.substr(0,g[e].prefix[f].length)===g[e].prefix[f]&&-1!==a.inArray(d.length,g[e].length))return!0;return!1}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.cusip=a.extend(a.fn.bootstrapValidator.i18n.cusip||{},{"default":"Please enter a valid CUSIP number"}),a.fn.bootstrapValidator.validators.cusip={validate:function(b,c){var d=c.val();if(""===d)return!0;if(d=d.toUpperCase(),!/^[0-9A-Z]{9}$/.test(d))return!1;for(var e=a.map(d.split(""),function(a){var b=a.charCodeAt(0);return b>="A".charCodeAt(0)&&b<="Z".charCodeAt(0)?b-"A".charCodeAt(0)+10:a}),f=e.length,g=0,h=0;f-1>h;h++){var i=parseInt(e[h],10);h%2!==0&&(i*=2),i>9&&(i-=9),g+=i}return g=(10-g%10)%10,g===e[f-1]}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.cvv=a.extend(a.fn.bootstrapValidator.i18n.cvv||{},{"default":"Please enter a valid CVV number"}),a.fn.bootstrapValidator.validators.cvv={html5Attributes:{message:"message",ccfield:"creditCardField"},validate:function(b,c,d){var e=c.val();if(""===e)return!0;if(!/^[0-9]{3,4}$/.test(e))return!1;if(!d.creditCardField)return!0;var f=b.getFieldElements(d.creditCardField).val();if(""===f)return!0;f=f.replace(/\D/g,"");var g,h,i={AMERICAN_EXPRESS:{length:[15],prefix:["34","37"]},DINERS_CLUB:{length:[14],prefix:["300","301","302","303","304","305","36"]},DINERS_CLUB_US:{length:[16],prefix:["54","55"]},DISCOVER:{length:[16],prefix:["6011","622126","622127","622128","622129","62213","62214","62215","62216","62217","62218","62219","6222","6223","6224","6225","6226","6227","6228","62290","62291","622920","622921","622922","622923","622924","622925","644","645","646","647","648","649","65"]},JCB:{length:[16],prefix:["3528","3529","353","354","355","356","357","358"]},LASER:{length:[16,17,18,19],prefix:["6304","6706","6771","6709"]},MAESTRO:{length:[12,13,14,15,16,17,18,19],prefix:["5018","5020","5038","6304","6759","6761","6762","6763","6764","6765","6766"]},MASTERCARD:{length:[16],prefix:["51","52","53","54","55"]},SOLO:{length:[16,18,19],prefix:["6334","6767"]},UNIONPAY:{length:[16,17,18,19],prefix:["622126","622127","622128","622129","62213","62214","62215","62216","62217","62218","62219","6222","6223","6224","6225","6226","6227","6228","62290","62291","622920","622921","622922","622923","622924","622925"]},VISA:{length:[16],prefix:["4"]}},j=null;for(g in i)for(h in i[g].prefix)if(f.substr(0,i[g].prefix[h].length)===i[g].prefix[h]&&-1!==a.inArray(f.length,i[g].length)){j=g;break}return null===j?!1:"AMERICAN_EXPRESS"===j?4===e.length:3===e.length}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.date=a.extend(a.fn.bootstrapValidator.i18n.date||{},{"default":"Please enter a valid date",min:"Please enter a date after %s",max:"Please enter a date before %s",range:"Please enter a date in the range %s - %s"}),a.fn.bootstrapValidator.validators.date={html5Attributes:{message:"message",format:"format",min:"min",max:"max",separator:"separator"},validate:function(b,c,d){var e=c.val();if(""===e)return!0;d.format=d.format||"MM/DD/YYYY","date"===c.attr("type")&&(d.format="YYYY-MM-DD");var f=d.format.split(" "),g=f[0],h=f.length>1?f[1]:null,i=f.length>2?f[2]:null,j=e.split(" "),k=j[0],l=j.length>1?j[1]:null;if(f.length!==j.length)return{valid:!1,message:d.message||a.fn.bootstrapValidator.i18n.date["default"]};var m=d.separator;if(m||(m=-1!==k.indexOf("/")?"/":-1!==k.indexOf("-")?"-":null),null===m||-1===k.indexOf(m))return{valid:!1,message:d.message||a.fn.bootstrapValidator.i18n.date["default"]};if(k=k.split(m),g=g.split(m),k.length!==g.length)return{valid:!1,message:d.message||a.fn.bootstrapValidator.i18n.date["default"]};var n=k[a.inArray("YYYY",g)],o=k[a.inArray("MM",g)],p=k[a.inArray("DD",g)];if(!n||!o||!p||4!==n.length)return{valid:!1,message:d.message||a.fn.bootstrapValidator.i18n.date["default"]};var q=null,r=null,s=null;if(h){if(h=h.split(":"),l=l.split(":"),h.length!==l.length)return{valid:!1,message:d.message||a.fn.bootstrapValidator.i18n.date["default"]};if(r=l.length>0?l[0]:null,q=l.length>1?l[1]:null,s=l.length>2?l[2]:null){if(isNaN(s)||s.length>2)return{valid:!1,message:d.message||a.fn.bootstrapValidator.i18n.date["default"]};if(s=parseInt(s,10),0>s||s>60)return{valid:!1,message:d.message||a.fn.bootstrapValidator.i18n.date["default"]}}if(r){if(isNaN(r)||r.length>2)return{valid:!1,message:d.message||a.fn.bootstrapValidator.i18n.date["default"]};if(r=parseInt(r,10),0>r||r>=24||i&&r>12)return{valid:!1,message:d.message||a.fn.bootstrapValidator.i18n.date["default"]}}if(q){if(isNaN(q)||q.length>2)return{valid:!1,message:d.message||a.fn.bootstrapValidator.i18n.date["default"]};if(q=parseInt(q,10),0>q||q>59)return{valid:!1,message:d.message||a.fn.bootstrapValidator.i18n.date["default"]}}}var t=a.fn.bootstrapValidator.helpers.date(n,o,p),u=d.message||a.fn.bootstrapValidator.i18n.date["default"],v=null,w=null,x=d.min,y=d.max;switch(x&&(isNaN(Date.parse(x))&&(x=b.getDynamicOption(c,x)),v=this._parseDate(x,g,m)),y&&(isNaN(Date.parse(y))&&(y=b.getDynamicOption(c,y)),w=this._parseDate(y,g,m)),k=new Date(n,o,p,r,q,s),!0){case x&&!y&&t:t=k.getTime()>=v.getTime(),u=d.message||a.fn.bootstrapValidator.helpers.format(a.fn.bootstrapValidator.i18n.date.min,x);break;case y&&!x&&t:t=k.getTime()<=w.getTime(),u=d.message||a.fn.bootstrapValidator.helpers.format(a.fn.bootstrapValidator.i18n.date.max,y);break;case y&&x&&t:t=k.getTime()<=w.getTime()&&k.getTime()>=v.getTime(),u=d.message||a.fn.bootstrapValidator.helpers.format(a.fn.bootstrapValidator.i18n.date.range,[x,y])}return{valid:t,message:u}},_parseDate:function(b,c,d){var e=0,f=0,g=0,h=b.split(" "),i=h[0],j=h.length>1?h[1]:null;i=i.split(d);var k=i[a.inArray("YYYY",c)],l=i[a.inArray("MM",c)],m=i[a.inArray("DD",c)];return j&&(j=j.split(":"),f=j.length>0?j[0]:null,e=j.length>1?j[1]:null,g=j.length>2?j[2]:null),new Date(k,l,m,f,e,g)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.different=a.extend(a.fn.bootstrapValidator.i18n.different||{},{"default":"Please enter a different value"}),a.fn.bootstrapValidator.validators.different={html5Attributes:{message:"message",field:"field"},validate:function(a,b,c){var d=b.val();if(""===d)return!0;for(var e=c.field.split(","),f=!0,g=0;g<e.length;g++){var h=a.getFieldElements(e[g]);if(null!=h&&0!==h.length){var i=h.val();d===i?f=!1:""!==i&&a.updateStatus(h,a.STATUS_VALID,"different")}}return f}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.digits=a.extend(a.fn.bootstrapValidator.i18n.digits||{},{"default":"Please enter only digits"}),a.fn.bootstrapValidator.validators.digits={validate:function(a,b){var c=b.val();return""===c?!0:/^\d+$/.test(c)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.ean=a.extend(a.fn.bootstrapValidator.i18n.ean||{},{"default":"Please enter a valid EAN number"}),a.fn.bootstrapValidator.validators.ean={validate:function(a,b){var c=b.val();if(""===c)return!0;if(!/^(\d{8}|\d{12}|\d{13})$/.test(c))return!1;for(var d=c.length,e=0,f=8===d?[3,1]:[1,3],g=0;d-1>g;g++)e+=parseInt(c.charAt(g),10)*f[g%2];return e=(10-e%10)%10,e+""===c.charAt(d-1)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.emailAddress=a.extend(a.fn.bootstrapValidator.i18n.emailAddress||{},{"default":"Please enter a valid email address"}),a.fn.bootstrapValidator.validators.emailAddress={html5Attributes:{message:"message",multiple:"multiple",separator:"separator"},enableByHtml5:function(a){return"email"===a.attr("type")},validate:function(a,b,c){var d=b.val();if(""===d)return!0;var e=/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,f=c.multiple===!0||"true"===c.multiple;if(f){for(var g=c.separator||/[,;]/,h=this._splitEmailAddresses(d,g),i=0;i<h.length;i++)if(!e.test(h[i]))return!1;return!0}return e.test(d)},_splitEmailAddresses:function(a,b){for(var c=a.split(/"/),d=c.length,e=[],f="",g=0;d>g;g++)if(g%2===0){var h=c[g].split(b),i=h.length;if(1===i)f+=h[0];else{e.push(f+h[0]);for(var j=1;i-1>j;j++)e.push(h[j]);f=h[i-1]}}else f+='"'+c[g],d-1>g&&(f+='"');return e.push(f),e}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.file=a.extend(a.fn.bootstrapValidator.i18n.file||{},{"default":"Please choose a valid file"}),a.fn.bootstrapValidator.validators.file={html5Attributes:{extension:"extension",maxfiles:"maxFiles",minfiles:"minFiles",maxsize:"maxSize",minsize:"minSize",maxtotalsize:"maxTotalSize",mintotalsize:"minTotalSize",message:"message",type:"type"},validate:function(b,c,d){var e=c.val();if(""===e)return!0;var f,g=d.extension?d.extension.toLowerCase().split(","):null,h=d.type?d.type.toLowerCase().split(","):null,i=window.File&&window.FileList&&window.FileReader;if(i){var j=c.get(0).files,k=j.length,l=0;if(d.maxFiles&&k>parseInt(d.maxFiles,10)||d.minFiles&&k<parseInt(d.minFiles,10))return!1;for(var m=0;k>m;m++)if(l+=j[m].size,f=j[m].name.substr(j[m].name.lastIndexOf(".")+1),d.minSize&&j[m].size<parseInt(d.minSize,10)||d.maxSize&&j[m].size>parseInt(d.maxSize,10)||g&&-1===a.inArray(f.toLowerCase(),g)||j[m].type&&h&&-1===a.inArray(j[m].type.toLowerCase(),h))return!1;if(d.maxTotalSize&&l>parseInt(d.maxTotalSize,10)||d.minTotalSize&&l<parseInt(d.minTotalSize,10))return!1}else if(f=e.substr(e.lastIndexOf(".")+1),g&&-1===a.inArray(f.toLowerCase(),g))return!1;return!0}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.greaterThan=a.extend(a.fn.bootstrapValidator.i18n.greaterThan||{},{"default":"Please enter a value greater than or equal to %s",notInclusive:"Please enter a value greater than %s"}),a.fn.bootstrapValidator.validators.greaterThan={html5Attributes:{message:"message",value:"value",inclusive:"inclusive"},enableByHtml5:function(a){var b=a.attr("type"),c=a.attr("min");return c&&"date"!==b?{value:c}:!1},validate:function(b,c,d){var e=c.val();if(""===e)return!0;if(e=this._format(e),!a.isNumeric(e))return!1;var f=a.isNumeric(d.value)?d.value:b.getDynamicOption(c,d.value),g=this._format(f);return e=parseFloat(e),d.inclusive===!0||void 0===d.inclusive?{valid:e>=g,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.greaterThan["default"],f)}:{valid:e>g,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.greaterThan.notInclusive,f)}},_format:function(a){return(a+"").replace(",",".")}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.grid=a.extend(a.fn.bootstrapValidator.i18n.grid||{},{"default":"Please enter a valid GRId number"}),a.fn.bootstrapValidator.validators.grid={validate:function(b,c){var d=c.val();return""===d?!0:(d=d.toUpperCase(),/^[GRID:]*([0-9A-Z]{2})[-\s]*([0-9A-Z]{5})[-\s]*([0-9A-Z]{10})[-\s]*([0-9A-Z]{1})$/g.test(d)?(d=d.replace(/\s/g,"").replace(/-/g,""),"GRID:"===d.substr(0,5)&&(d=d.substr(5)),a.fn.bootstrapValidator.helpers.mod37And36(d)):!1)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.hex=a.extend(a.fn.bootstrapValidator.i18n.hex||{},{"default":"Please enter a valid hexadecimal number"}),a.fn.bootstrapValidator.validators.hex={validate:function(a,b){var c=b.val();return""===c?!0:/^[0-9a-fA-F]+$/.test(c)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.hexColor=a.extend(a.fn.bootstrapValidator.i18n.hexColor||{},{"default":"Please enter a valid hex color"}),a.fn.bootstrapValidator.validators.hexColor={enableByHtml5:function(a){return"color"===a.attr("type")},validate:function(a,b){var c=b.val();return""===c?!0:"color"===b.attr("type")?/^#[0-9A-F]{6}$/i.test(c):/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(c)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.iban=a.extend(a.fn.bootstrapValidator.i18n.iban||{},{"default":"Please enter a valid IBAN number",countryNotSupported:"The country code %s is not supported",country:"Please enter a valid IBAN number in %s",countries:{AD:"Andorra",AE:"United Arab Emirates",AL:"Albania",AO:"Angola",AT:"Austria",AZ:"Azerbaijan",BA:"Bosnia and Herzegovina",BE:"Belgium",BF:"Burkina Faso",BG:"Bulgaria",BH:"Bahrain",BI:"Burundi",BJ:"Benin",BR:"Brazil",CH:"Switzerland",CI:"Ivory Coast",CM:"Cameroon",CR:"Costa Rica",CV:"Cape Verde",CY:"Cyprus",CZ:"Czech Republic",DE:"Germany",DK:"Denmark",DO:"Dominican Republic",DZ:"Algeria",EE:"Estonia",ES:"Spain",FI:"Finland",FO:"Faroe Islands",FR:"France",GB:"United Kingdom",GE:"Georgia",GI:"Gibraltar",GL:"Greenland",GR:"Greece",GT:"Guatemala",HR:"Croatia",HU:"Hungary",IE:"Ireland",IL:"Israel",IR:"Iran",IS:"Iceland",IT:"Italy",JO:"Jordan",KW:"Kuwait",KZ:"Kazakhstan",LB:"Lebanon",LI:"Liechtenstein",LT:"Lithuania",LU:"Luxembourg",LV:"Latvia",MC:"Monaco",MD:"Moldova",ME:"Montenegro",MG:"Madagascar",MK:"Macedonia",ML:"Mali",MR:"Mauritania",MT:"Malta",MU:"Mauritius",MZ:"Mozambique",NL:"Netherlands",NO:"Norway",PK:"Pakistan",PL:"Poland",PS:"Palestine",PT:"Portugal",QA:"Qatar",RO:"Romania",RS:"Serbia",SA:"Saudi Arabia",SE:"Sweden",SI:"Slovenia",SK:"Slovakia",SM:"San Marino",SN:"Senegal",TN:"Tunisia",TR:"Turkey",VG:"Virgin Islands, British"}}),a.fn.bootstrapValidator.validators.iban={html5Attributes:{message:"message",country:"country"},REGEX:{AD:"AD[0-9]{2}[0-9]{4}[0-9]{4}[A-Z0-9]{12}",AE:"AE[0-9]{2}[0-9]{3}[0-9]{16}",AL:"AL[0-9]{2}[0-9]{8}[A-Z0-9]{16}",AO:"AO[0-9]{2}[0-9]{21}",AT:"AT[0-9]{2}[0-9]{5}[0-9]{11}",AZ:"AZ[0-9]{2}[A-Z]{4}[A-Z0-9]{20}",BA:"BA[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{8}[0-9]{2}",BE:"BE[0-9]{2}[0-9]{3}[0-9]{7}[0-9]{2}",BF:"BF[0-9]{2}[0-9]{23}",BG:"BG[0-9]{2}[A-Z]{4}[0-9]{4}[0-9]{2}[A-Z0-9]{8}",BH:"BH[0-9]{2}[A-Z]{4}[A-Z0-9]{14}",BI:"BI[0-9]{2}[0-9]{12}",BJ:"BJ[0-9]{2}[A-Z]{1}[0-9]{23}",BR:"BR[0-9]{2}[0-9]{8}[0-9]{5}[0-9]{10}[A-Z][A-Z0-9]",CH:"CH[0-9]{2}[0-9]{5}[A-Z0-9]{12}",CI:"CI[0-9]{2}[A-Z]{1}[0-9]{23}",CM:"CM[0-9]{2}[0-9]{23}",CR:"CR[0-9]{2}[0-9]{3}[0-9]{14}",CV:"CV[0-9]{2}[0-9]{21}",CY:"CY[0-9]{2}[0-9]{3}[0-9]{5}[A-Z0-9]{16}",CZ:"CZ[0-9]{2}[0-9]{20}",DE:"DE[0-9]{2}[0-9]{8}[0-9]{10}",DK:"DK[0-9]{2}[0-9]{14}",DO:"DO[0-9]{2}[A-Z0-9]{4}[0-9]{20}",DZ:"DZ[0-9]{2}[0-9]{20}",EE:"EE[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{11}[0-9]{1}",ES:"ES[0-9]{2}[0-9]{4}[0-9]{4}[0-9]{1}[0-9]{1}[0-9]{10}",FI:"FI[0-9]{2}[0-9]{6}[0-9]{7}[0-9]{1}",FO:"FO[0-9]{2}[0-9]{4}[0-9]{9}[0-9]{1}",FR:"FR[0-9]{2}[0-9]{5}[0-9]{5}[A-Z0-9]{11}[0-9]{2}",GB:"GB[0-9]{2}[A-Z]{4}[0-9]{6}[0-9]{8}",GE:"GE[0-9]{2}[A-Z]{2}[0-9]{16}",GI:"GI[0-9]{2}[A-Z]{4}[A-Z0-9]{15}",GL:"GL[0-9]{2}[0-9]{4}[0-9]{9}[0-9]{1}",GR:"GR[0-9]{2}[0-9]{3}[0-9]{4}[A-Z0-9]{16}",GT:"GT[0-9]{2}[A-Z0-9]{4}[A-Z0-9]{20}",HR:"HR[0-9]{2}[0-9]{7}[0-9]{10}",HU:"HU[0-9]{2}[0-9]{3}[0-9]{4}[0-9]{1}[0-9]{15}[0-9]{1}",IE:"IE[0-9]{2}[A-Z]{4}[0-9]{6}[0-9]{8}",IL:"IL[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{13}",IR:"IR[0-9]{2}[0-9]{22}",IS:"IS[0-9]{2}[0-9]{4}[0-9]{2}[0-9]{6}[0-9]{10}",IT:"IT[0-9]{2}[A-Z]{1}[0-9]{5}[0-9]{5}[A-Z0-9]{12}",JO:"JO[0-9]{2}[A-Z]{4}[0-9]{4}[0]{8}[A-Z0-9]{10}",KW:"KW[0-9]{2}[A-Z]{4}[0-9]{22}",KZ:"KZ[0-9]{2}[0-9]{3}[A-Z0-9]{13}",LB:"LB[0-9]{2}[0-9]{4}[A-Z0-9]{20}",LI:"LI[0-9]{2}[0-9]{5}[A-Z0-9]{12}",LT:"LT[0-9]{2}[0-9]{5}[0-9]{11}",LU:"LU[0-9]{2}[0-9]{3}[A-Z0-9]{13}",LV:"LV[0-9]{2}[A-Z]{4}[A-Z0-9]{13}",MC:"MC[0-9]{2}[0-9]{5}[0-9]{5}[A-Z0-9]{11}[0-9]{2}",MD:"MD[0-9]{2}[A-Z0-9]{20}",ME:"ME[0-9]{2}[0-9]{3}[0-9]{13}[0-9]{2}",MG:"MG[0-9]{2}[0-9]{23}",MK:"MK[0-9]{2}[0-9]{3}[A-Z0-9]{10}[0-9]{2}",ML:"ML[0-9]{2}[A-Z]{1}[0-9]{23}",MR:"MR13[0-9]{5}[0-9]{5}[0-9]{11}[0-9]{2}",MT:"MT[0-9]{2}[A-Z]{4}[0-9]{5}[A-Z0-9]{18}",MU:"MU[0-9]{2}[A-Z]{4}[0-9]{2}[0-9]{2}[0-9]{12}[0-9]{3}[A-Z]{3}",MZ:"MZ[0-9]{2}[0-9]{21}",NL:"NL[0-9]{2}[A-Z]{4}[0-9]{10}",NO:"NO[0-9]{2}[0-9]{4}[0-9]{6}[0-9]{1}",PK:"PK[0-9]{2}[A-Z]{4}[A-Z0-9]{16}",PL:"PL[0-9]{2}[0-9]{8}[0-9]{16}",PS:"PS[0-9]{2}[A-Z]{4}[A-Z0-9]{21}",PT:"PT[0-9]{2}[0-9]{4}[0-9]{4}[0-9]{11}[0-9]{2}",QA:"QA[0-9]{2}[A-Z]{4}[A-Z0-9]{21}",RO:"RO[0-9]{2}[A-Z]{4}[A-Z0-9]{16}",RS:"RS[0-9]{2}[0-9]{3}[0-9]{13}[0-9]{2}",SA:"SA[0-9]{2}[0-9]{2}[A-Z0-9]{18}",SE:"SE[0-9]{2}[0-9]{3}[0-9]{16}[0-9]{1}",SI:"SI[0-9]{2}[0-9]{5}[0-9]{8}[0-9]{2}",SK:"SK[0-9]{2}[0-9]{4}[0-9]{6}[0-9]{10}",SM:"SM[0-9]{2}[A-Z]{1}[0-9]{5}[0-9]{5}[A-Z0-9]{12}",SN:"SN[0-9]{2}[A-Z]{1}[0-9]{23}",TN:"TN59[0-9]{2}[0-9]{3}[0-9]{13}[0-9]{2}",TR:"TR[0-9]{2}[0-9]{5}[A-Z0-9]{1}[A-Z0-9]{16}",VG:"VG[0-9]{2}[A-Z]{4}[0-9]{16}"},validate:function(b,c,d){var e=c.val();if(""===e)return!0;e=e.replace(/[^a-zA-Z0-9]/g,"").toUpperCase();var f=d.country;if(f?"string"==typeof f&&this.REGEX[f]||(f=b.getDynamicOption(c,f)):f=e.substr(0,2),!this.REGEX[f])return{valid:!1,message:a.fn.bootstrapValidator.helpers.format(a.fn.bootstrapValidator.i18n.iban.countryNotSupported,f)};if(!new RegExp("^"+this.REGEX[f]+"$").test(e))return{valid:!1,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.iban.country,a.fn.bootstrapValidator.i18n.iban.countries[f])};e=e.substr(4)+e.substr(0,4),e=a.map(e.split(""),function(a){var b=a.charCodeAt(0);return b>="A".charCodeAt(0)&&b<="Z".charCodeAt(0)?b-"A".charCodeAt(0)+10:a}),e=e.join("");for(var g=parseInt(e.substr(0,1),10),h=e.length,i=1;h>i;++i)g=(10*g+parseInt(e.substr(i,1),10))%97;return{valid:1===g,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.iban.country,a.fn.bootstrapValidator.i18n.iban.countries[f])}}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.id=a.extend(a.fn.bootstrapValidator.i18n.id||{},{"default":"Please enter a valid identification number",countryNotSupported:"The country code %s is not supported",country:"Please enter a valid identification number in %s",countries:{BA:"Bosnia and Herzegovina",BG:"Bulgaria",BR:"Brazil",CH:"Switzerland",CL:"Chile",CN:"China",CZ:"Czech Republic",DK:"Denmark",EE:"Estonia",ES:"Spain",FI:"Finland",HR:"Croatia",IE:"Ireland",IS:"Iceland",LT:"Lithuania",LV:"Latvia",ME:"Montenegro",MK:"Macedonia",NL:"Netherlands",RO:"Romania",RS:"Serbia",SE:"Sweden",SI:"Slovenia",SK:"Slovakia",SM:"San Marino",TH:"Thailand",ZA:"South Africa"}}),a.fn.bootstrapValidator.validators.id={html5Attributes:{message:"message",country:"country"},COUNTRY_CODES:["BA","BG","BR","CH","CL","CN","CZ","DK","EE","ES","FI","HR","IE","IS","LT","LV","ME","MK","NL","RO","RS","SE","SI","SK","SM","TH","ZA"],validate:function(b,c,d){var e=c.val();if(""===e)return!0;var f=d.country;if(f?("string"!=typeof f||-1===a.inArray(f.toUpperCase(),this.COUNTRY_CODES))&&(f=b.getDynamicOption(c,f)):f=e.substr(0,2),-1===a.inArray(f,this.COUNTRY_CODES))return{valid:!1,message:a.fn.bootstrapValidator.helpers.format(a.fn.bootstrapValidator.i18n.id.countryNotSupported,f)};var g=["_",f.toLowerCase()].join("");return this[g](e)?!0:{valid:!1,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.id.country,a.fn.bootstrapValidator.i18n.id.countries[f.toUpperCase()])}},_validateJMBG:function(a,b){if(!/^\d{13}$/.test(a))return!1;var c=parseInt(a.substr(0,2),10),d=parseInt(a.substr(2,2),10),e=(parseInt(a.substr(4,3),10),parseInt(a.substr(7,2),10)),f=parseInt(a.substr(12,1),10);if(c>31||d>12)return!1;for(var g=0,h=0;6>h;h++)g+=(7-h)*(parseInt(a.charAt(h),10)+parseInt(a.charAt(h+6),10));if(g=11-g%11,(10===g||11===g)&&(g=0),g!==f)return!1;switch(b.toUpperCase()){case"BA":return e>=10&&19>=e;case"MK":return e>=41&&49>=e;case"ME":return e>=20&&29>=e;case"RS":return e>=70&&99>=e;case"SI":return e>=50&&59>=e;default:return!0}},_ba:function(a){return this._validateJMBG(a,"BA")},_mk:function(a){return this._validateJMBG(a,"MK")},_me:function(a){return this._validateJMBG(a,"ME")},_rs:function(a){return this._validateJMBG(a,"RS")},_si:function(a){return this._validateJMBG(a,"SI")},_bg:function(b){if(!/^\d{10}$/.test(b)&&!/^\d{6}\s\d{3}\s\d{1}$/.test(b))return!1;b=b.replace(/\s/g,"");var c=parseInt(b.substr(0,2),10)+1900,d=parseInt(b.substr(2,2),10),e=parseInt(b.substr(4,2),10);if(d>40?(c+=100,d-=40):d>20&&(c-=100,d-=20),!a.fn.bootstrapValidator.helpers.date(c,d,e))return!1;for(var f=0,g=[2,4,8,5,10,9,7,3,6],h=0;9>h;h++)f+=parseInt(b.charAt(h),10)*g[h];return f=f%11%10,f+""===b.substr(9,1)},_br:function(a){if(/^1{11}|2{11}|3{11}|4{11}|5{11}|6{11}|7{11}|8{11}|9{11}|0{11}$/.test(a))return!1;if(!/^\d{11}$/.test(a)&&!/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(a))return!1;a=a.replace(/\./g,"").replace(/-/g,"");for(var b=0,c=0;9>c;c++)b+=(10-c)*parseInt(a.charAt(c),10);if(b=11-b%11,(10===b||11===b)&&(b=0),b+""!==a.charAt(9))return!1;var d=0;for(c=0;10>c;c++)d+=(11-c)*parseInt(a.charAt(c),10);return d=11-d%11,(10===d||11===d)&&(d=0),d+""===a.charAt(10)},_ch:function(a){if(!/^756[\.]{0,1}[0-9]{4}[\.]{0,1}[0-9]{4}[\.]{0,1}[0-9]{2}$/.test(a))return!1;a=a.replace(/\D/g,"").substr(3);for(var b=a.length,c=0,d=8===b?[3,1]:[1,3],e=0;b-1>e;e++)c+=parseInt(a.charAt(e),10)*d[e%2];return c=10-c%10,c+""===a.charAt(b-1)},_cl:function(a){if(!/^\d{7,8}[-]{0,1}[0-9K]$/i.test(a))return!1;for(a=a.replace(/\-/g,"");a.length<9;)a="0"+a;for(var b=0,c=[3,2,7,6,5,4,3,2],d=0;8>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b=11-b%11,11===b?b=0:10===b&&(b="K"),b+""===a.charAt(8).toUpperCase()},_cn:function(b){if(b=b.trim(),!/^\d{15}$/.test(b)&&!/^\d{17}[\dXx]{1}$/.test(b))return!1;var c={11:{0:[0],1:[[0,9],[11,17]],2:[0,28,29]},12:{0:[0],1:[[0,16]],2:[0,21,23,25]},13:{0:[0],1:[[0,5],7,8,21,[23,33],[81,85]],2:[[0,5],[7,9],[23,25],27,29,30,81,83],3:[[0,4],[21,24]],4:[[0,4],6,21,[23,35],81],5:[[0,3],[21,35],81,82],6:[[0,4],[21,38],[81,84]],7:[[0,3],5,6,[21,33]],8:[[0,4],[21,28]],9:[[0,3],[21,30],[81,84]],10:[[0,3],[22,26],28,81,82],11:[[0,2],[21,28],81,82]},14:{0:[0],1:[0,1,[5,10],[21,23],81],2:[[0,3],11,12,[21,27]],3:[[0,3],11,21,22],4:[[0,2],11,21,[23,31],81],5:[[0,2],21,22,24,25,81],6:[[0,3],[21,24]],7:[[0,2],[21,29],81],8:[[0,2],[21,30],81,82],9:[[0,2],[21,32],81],10:[[0,2],[21,34],81,82],11:[[0,2],[21,30],81,82],23:[[0,3],22,23,[25,30],32,33]},15:{0:[0],1:[[0,5],[21,25]],2:[[0,7],[21,23]],3:[[0,4]],4:[[0,4],[21,26],[28,30]],5:[[0,2],[21,26],81],6:[[0,2],[21,27]],7:[[0,3],[21,27],[81,85]],8:[[0,2],[21,26]],9:[[0,2],[21,29],81],22:[[0,2],[21,24]],25:[[0,2],[22,31]],26:[[0,2],[24,27],[29,32],34],28:[0,1,[22,27]],29:[0,[21,23]]},21:{0:[0],1:[[0,6],[11,14],[22,24],81],2:[[0,4],[11,13],24,[81,83]],3:[[0,4],11,21,23,81],4:[[0,4],11,[21,23]],5:[[0,5],21,22],6:[[0,4],24,81,82],7:[[0,3],11,26,27,81,82],8:[[0,4],11,81,82],9:[[0,5],11,21,22],10:[[0,5],11,21,81],11:[[0,3],21,22],12:[[0,2],4,21,23,24,81,82],13:[[0,3],21,22,24,81,82],14:[[0,4],21,22,81]},22:{0:[0],1:[[0,6],12,22,[81,83]],2:[[0,4],11,21,[81,84]],3:[[0,3],22,23,81,82],4:[[0,3],21,22],5:[[0,3],21,23,24,81,82],6:[[0,2],4,5,[21,23],25,81],7:[[0,2],[21,24],81],8:[[0,2],21,22,81,82],24:[[0,6],24,26]},23:{0:[0],1:[[0,12],21,[23,29],[81,84]],2:[[0,8],21,[23,25],27,[29,31],81],3:[[0,7],21,81,82],4:[[0,7],21,22],5:[[0,3],5,6,[21,24]],6:[[0,6],[21,24]],7:[[0,16],22,81],8:[[0,5],11,22,26,28,33,81,82],9:[[0,4],21],10:[[0,5],24,25,81,[83,85]],11:[[0,2],21,23,24,81,82],12:[[0,2],[21,26],[81,83]],27:[[0,4],[21,23]]},31:{0:[0],1:[0,1,[3,10],[12,20]],2:[0,30]},32:{0:[0],1:[[0,7],11,[13,18],24,25],2:[[0,6],11,81,82],3:[[0,5],11,12,[21,24],81,82],4:[[0,2],4,5,11,12,81,82],5:[[0,9],[81,85]],6:[[0,2],11,12,21,23,[81,84]],7:[0,1,3,5,6,[21,24]],8:[[0,4],11,26,[29,31]],9:[[0,3],[21,25],28,81,82],10:[[0,3],11,12,23,81,84,88],11:[[0,2],11,12,[81,83]],12:[[0,4],[81,84]],13:[[0,2],11,[21,24]]},33:{0:[0],1:[[0,6],[8,10],22,27,82,83,85],2:[0,1,[3,6],11,12,25,26,[81,83]],3:[[0,4],22,24,[26,29],81,82],4:[[0,2],11,21,24,[81,83]],5:[[0,3],[21,23]],6:[[0,2],21,24,[81,83]],7:[[0,3],23,26,27,[81,84]],8:[[0,3],22,24,25,81],9:[[0,3],21,22],10:[[0,4],[21,24],81,82],11:[[0,2],[21,27],81]},34:{0:[0],1:[[0,4],11,[21,24],81],2:[[0,4],7,8,[21,23],25],3:[[0,4],11,[21,23]],4:[[0,6],21],5:[[0,4],6,[21,23]],6:[[0,4],21],7:[[0,3],11,21],8:[[0,3],11,[22,28],81],10:[[0,4],[21,24]],11:[[0,3],22,[24,26],81,82],12:[[0,4],21,22,25,26,82],13:[[0,2],[21,24]],14:[[0,2],[21,24]],15:[[0,3],[21,25]],16:[[0,2],[21,23]],17:[[0,2],[21,23]],18:[[0,2],[21,25],81]},35:{0:[0],1:[[0,5],11,[21,25],28,81,82],2:[[0,6],[11,13]],3:[[0,5],22],4:[[0,3],21,[23,30],81],5:[[0,5],21,[24,27],[81,83]],6:[[0,3],[22,29],81],7:[[0,2],[21,25],[81,84]],8:[[0,2],[21,25],81],9:[[0,2],[21,26],81,82]},36:{0:[0],1:[[0,5],11,[21,24]],2:[[0,3],22,81],3:[[0,2],13,[21,23]],4:[[0,3],21,[23,30],81,82],5:[[0,2],21],6:[[0,2],22,81],7:[[0,2],[21,35],81,82],8:[[0,3],[21,30],81],9:[[0,2],[21,26],[81,83]],10:[[0,2],[21,30]],11:[[0,2],[21,30],81]},37:{0:[0],1:[[0,5],12,13,[24,26],81],2:[[0,3],5,[11,14],[81,85]],3:[[0,6],[21,23]],4:[[0,6],81],5:[[0,3],[21,23]],6:[[0,2],[11,13],34,[81,87]],7:[[0,5],24,25,[81,86]],8:[[0,2],11,[26,32],[81,83]],9:[[0,3],11,21,23,82,83],10:[[0,2],[81,83]],11:[[0,3],21,22],12:[[0,3]],13:[[0,2],11,12,[21,29]],14:[[0,2],[21,28],81,82],15:[[0,2],[21,26],81],16:[[0,2],[21,26]],17:[[0,2],[21,28]]},41:{0:[0],1:[[0,6],8,22,[81,85]],2:[[0,5],11,[21,25]],3:[[0,7],11,[22,29],81],4:[[0,4],11,[21,23],25,81,82],5:[[0,3],5,6,22,23,26,27,81],6:[[0,3],11,21,22],7:[[0,4],11,21,[24,28],81,82],8:[[0,4],11,[21,23],25,[81,83]],9:[[0,2],22,23,[26,28]],10:[[0,2],[23,25],81,82],11:[[0,4],[21,23]],12:[[0,2],21,22,24,81,82],13:[[0,3],[21,30],81],14:[[0,3],[21,26],81],15:[[0,3],[21,28]],16:[[0,2],[21,28],81],17:[[0,2],[21,29]],90:[0,1]},42:{0:[0],1:[[0,7],[11,17]],2:[[0,5],22,81],3:[[0,3],[21,25],81],5:[[0,6],[25,29],[81,83]],6:[[0,2],6,7,[24,26],[82,84]],7:[[0,4]],8:[[0,2],4,21,22,81],9:[[0,2],[21,23],81,82,84],10:[[0,3],[22,24],81,83,87],11:[[0,2],[21,27],81,82],12:[[0,2],[21,24],81],13:[[0,3],21,81],28:[[0,2],22,23,[25,28]],90:[0,[4,6],21]},43:{0:[0],1:[[0,5],11,12,21,22,24,81],2:[[0,4],11,21,[23,25],81],3:[[0,2],4,21,81,82],4:[0,1,[5,8],12,[21,24],26,81,82],5:[[0,3],11,[21,25],[27,29],81],6:[[0,3],11,21,23,24,26,81,82],7:[[0,3],[21,26],81],8:[[0,2],11,21,22],9:[[0,3],[21,23],81],10:[[0,3],[21,28],81],11:[[0,3],[21,29]],12:[[0,2],[21,30],81],13:[[0,2],21,22,81,82],31:[0,1,[22,27],30]},44:{0:[0],1:[[0,7],[11,16],83,84],2:[[0,5],21,22,24,29,32,33,81,82],3:[0,1,[3,8]],4:[[0,4]],5:[0,1,[6,15],23,82,83],6:[0,1,[4,8]],7:[0,1,[3,5],81,[83,85]],8:[[0,4],11,23,25,[81,83]],9:[[0,3],23,[81,83]],12:[[0,3],[23,26],83,84],13:[[0,3],[22,24],81],14:[[0,2],[21,24],26,27,81],15:[[0,2],21,23,81],16:[[0,2],[21,25]],17:[[0,2],21,23,81],18:[[0,3],21,23,[25,27],81,82],19:[0],20:[0],51:[[0,3],21,22],52:[[0,3],21,22,24,81],53:[[0,2],[21,23],81]},45:{0:[0],1:[[0,9],[21,27]],2:[[0,5],[21,26]],3:[[0,5],11,12,[21,32]],4:[0,1,[3,6],11,[21,23],81],5:[[0,3],12,21],6:[[0,3],21,81],7:[[0,3],21,22],8:[[0,4],21,81],9:[[0,3],[21,24],81],10:[[0,2],[21,31]],11:[[0,2],[21,23]],12:[[0,2],[21,29],81],13:[[0,2],[21,24],81],14:[[0,2],[21,25],81]},46:{0:[0],1:[0,1,[5,8]],2:[0,1],3:[0,[21,23]],90:[[0,3],[5,7],[21,39]]},50:{0:[0],1:[[0,19]],2:[0,[22,38],[40,43]],3:[0,[81,84]]},51:{0:[0],1:[0,1,[4,8],[12,15],[21,24],29,31,32,[81,84]],3:[[0,4],11,21,22],4:[[0,3],11,21,22],5:[[0,4],21,22,24,25],6:[0,1,3,23,26,[81,83]],7:[0,1,3,4,[22,27],81],8:[[0,2],11,12,[21,24]],9:[[0,4],[21,23]],10:[[0,2],11,24,25,28],11:[[0,2],[11,13],23,24,26,29,32,33,81],13:[[0,4],[21,25],81],14:[[0,2],[21,25]],15:[[0,3],[21,29]],16:[[0,3],[21,23],81],17:[[0,3],[21,25],81],18:[[0,3],[21,27]],19:[[0,3],[21,23]],20:[[0,2],21,22,81],32:[0,[21,33]],33:[0,[21,38]],34:[0,1,[22,37]]},52:{0:[0],1:[[0,3],[11,15],[21,23],81],2:[0,1,3,21,22],3:[[0,3],[21,30],81,82],4:[[0,2],[21,25]],5:[[0,2],[21,27]],6:[[0,3],[21,28]],22:[0,1,[22,30]],23:[0,1,[22,28]],24:[0,1,[22,28]],26:[0,1,[22,36]],27:[[0,2],22,23,[25,32]]},53:{0:[0],1:[[0,3],[11,14],21,22,[24,29],81],3:[[0,2],[21,26],28,81],4:[[0,2],[21,28]],5:[[0,2],[21,24]],6:[[0,2],[21,30]],7:[[0,2],[21,24]],8:[[0,2],[21,29]],9:[[0,2],[21,27]],23:[0,1,[22,29],31],25:[[0,4],[22,32]],26:[0,1,[21,28]],27:[0,1,[22,30]],28:[0,1,22,23],29:[0,1,[22,32]],31:[0,2,3,[22,24]],34:[0,[21,23]],33:[0,21,[23,25]],35:[0,[21,28]]},54:{0:[0],1:[[0,2],[21,27]],21:[0,[21,29],32,33],22:[0,[21,29],[31,33]],23:[0,1,[22,38]],24:[0,[21,31]],25:[0,[21,27]],26:[0,[21,27]]},61:{0:[0],1:[[0,4],[11,16],22,[24,26]],2:[[0,4],22],3:[[0,4],[21,24],[26,31]],4:[[0,4],[22,31],81],5:[[0,2],[21,28],81,82],6:[[0,2],[21,32]],7:[[0,2],[21,30]],8:[[0,2],[21,31]],9:[[0,2],[21,29]],10:[[0,2],[21,26]]},62:{0:[0],1:[[0,5],11,[21,23]],2:[0,1],3:[[0,2],21],4:[[0,3],[21,23]],5:[[0,3],[21,25]],6:[[0,2],[21,23]],7:[[0,2],[21,25]],8:[[0,2],[21,26]],9:[[0,2],[21,24],81,82],10:[[0,2],[21,27]],11:[[0,2],[21,26]],12:[[0,2],[21,28]],24:[0,21,[24,29]],26:[0,21,[23,30]],29:[0,1,[21,27]],30:[0,1,[21,27]]},63:{0:[0],1:[[0,5],[21,23]],2:[0,2,[21,25]],21:[0,[21,23],[26,28]],22:[0,[21,24]],23:[0,[21,24]],25:[0,[21,25]],26:[0,[21,26]],27:[0,1,[21,26]],28:[[0,2],[21,23]]},64:{0:[0],1:[0,1,[4,6],21,22,81],2:[[0,3],5,[21,23]],3:[[0,3],[21,24],81],4:[[0,2],[21,25]],5:[[0,2],21,22]},65:{0:[0],1:[[0,9],21],2:[[0,5]],21:[0,1,22,23],22:[0,1,22,23],23:[[0,3],[23,25],27,28],28:[0,1,[22,29]],29:[0,1,[22,29]],30:[0,1,[22,24]],31:[0,1,[21,31]],32:[0,1,[21,27]],40:[0,2,3,[21,28]],42:[[0,2],21,[23,26]],43:[0,1,[21,26]],90:[[0,4]],27:[[0,2],22,23]},71:{0:[0]},81:{0:[0]},82:{0:[0]}},d=parseInt(b.substr(0,2),10),e=parseInt(b.substr(2,2),10),f=parseInt(b.substr(4,2),10);if(!c[d]||!c[d][e])return!1;for(var g=!1,h=c[d][e],i=0;i<h.length;i++)if(a.isArray(h[i])&&h[i][0]<=f&&f<=h[i][1]||!a.isArray(h[i])&&f===h[i]){g=!0;break}if(!g)return!1;var j;j=18===b.length?b.substr(6,8):"19"+b.substr(6,6);var k=parseInt(j.substr(0,4),10),l=parseInt(j.substr(4,2),10),m=parseInt(j.substr(6,2),10);if(!a.fn.bootstrapValidator.helpers.date(k,l,m))return!1;if(18===b.length){var n=0,o=[7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2];for(i=0;17>i;i++)n+=parseInt(b.charAt(i),10)*o[i];n=(12-n%11)%11;var p="X"!==b.charAt(17).toUpperCase()?parseInt(b.charAt(17),10):10;return p===n}return!0
+    },_cz:function(b){if(!/^\d{9,10}$/.test(b))return!1;var c=1900+parseInt(b.substr(0,2),10),d=parseInt(b.substr(2,2),10)%50%20,e=parseInt(b.substr(4,2),10);if(9===b.length){if(c>=1980&&(c-=100),c>1953)return!1}else 1954>c&&(c+=100);if(!a.fn.bootstrapValidator.helpers.date(c,d,e))return!1;if(10===b.length){var f=parseInt(b.substr(0,9),10)%11;return 1985>c&&(f%=10),f+""===b.substr(9,1)}return!0},_dk:function(b){if(!/^[0-9]{6}[-]{0,1}[0-9]{4}$/.test(b))return!1;b=b.replace(/-/g,"");var c=parseInt(b.substr(0,2),10),d=parseInt(b.substr(2,2),10),e=parseInt(b.substr(4,2),10);switch(!0){case-1!=="5678".indexOf(b.charAt(6))&&e>=58:e+=1800;break;case-1!=="0123".indexOf(b.charAt(6)):case-1!=="49".indexOf(b.charAt(6))&&e>=37:e+=1900;break;default:e+=2e3}return a.fn.bootstrapValidator.helpers.date(e,d,c)},_ee:function(a){return this._lt(a)},_es:function(a){if(!/^[0-9A-Z]{8}[-]{0,1}[0-9A-Z]$/.test(a)&&!/^[XYZ][-]{0,1}[0-9]{7}[-]{0,1}[0-9A-Z]$/.test(a))return!1;a=a.replace(/-/g,"");var b="XYZ".indexOf(a.charAt(0));-1!==b&&(a=b+a.substr(1)+"");var c=parseInt(a.substr(0,8),10);return c="TRWAGMYFPDXBNJZSQVHLCKE"[c%23],c===a.substr(8,1)},_fi:function(b){if(!/^[0-9]{6}[-+A][0-9]{3}[0-9ABCDEFHJKLMNPRSTUVWXY]$/.test(b))return!1;var c=parseInt(b.substr(0,2),10),d=parseInt(b.substr(2,2),10),e=parseInt(b.substr(4,2),10),f={"+":1800,"-":1900,A:2e3};if(e=f[b.charAt(6)]+e,!a.fn.bootstrapValidator.helpers.date(e,d,c))return!1;var g=parseInt(b.substr(7,3),10);if(2>g)return!1;var h=b.substr(0,6)+b.substr(7,3)+"";return h=parseInt(h,10),"0123456789ABCDEFHJKLMNPRSTUVWXY".charAt(h%31)===b.charAt(10)},_hr:function(b){return/^[0-9]{11}$/.test(b)?a.fn.bootstrapValidator.helpers.mod11And10(b):!1},_ie:function(a){if(!/^\d{7}[A-W][AHWTX]?$/.test(a))return!1;var b=function(a){for(;a.length<7;)a="0"+a;for(var b="WABCDEFGHIJKLMNOPQRSTUV",c=0,d=0;7>d;d++)c+=parseInt(a.charAt(d),10)*(8-d);return c+=9*b.indexOf(a.substr(7)),b[c%23]};return 9!==a.length||"A"!==a.charAt(8)&&"H"!==a.charAt(8)?a.charAt(7)===b(a.substr(0,7)):a.charAt(7)===b(a.substr(0,7)+a.substr(8)+"")},_is:function(b){if(!/^[0-9]{6}[-]{0,1}[0-9]{4}$/.test(b))return!1;b=b.replace(/-/g,"");var c=parseInt(b.substr(0,2),10),d=parseInt(b.substr(2,2),10),e=parseInt(b.substr(4,2),10),f=parseInt(b.charAt(9),10);if(e=9===f?1900+e:100*(20+f)+e,!a.fn.bootstrapValidator.helpers.date(e,d,c,!0))return!1;for(var g=0,h=[3,2,7,6,5,4,3,2],i=0;8>i;i++)g+=parseInt(b.charAt(i),10)*h[i];return g=11-g%11,g+""===b.charAt(8)},_lt:function(b){if(!/^[0-9]{11}$/.test(b))return!1;var c=parseInt(b.charAt(0),10),d=parseInt(b.substr(1,2),10),e=parseInt(b.substr(3,2),10),f=parseInt(b.substr(5,2),10),g=c%2===0?17+c/2:17+(c+1)/2;if(d=100*g+d,!a.fn.bootstrapValidator.helpers.date(d,e,f,!0))return!1;for(var h=0,i=[1,2,3,4,5,6,7,8,9,1],j=0;10>j;j++)h+=parseInt(b.charAt(j),10)*i[j];if(h%=11,10!==h)return h+""===b.charAt(10);for(h=0,i=[3,4,5,6,7,8,9,1,2,3],j=0;10>j;j++)h+=parseInt(b.charAt(j),10)*i[j];return h%=11,10===h&&(h=0),h+""===b.charAt(10)},_lv:function(b){if(!/^[0-9]{6}[-]{0,1}[0-9]{5}$/.test(b))return!1;b=b.replace(/\D/g,"");var c=parseInt(b.substr(0,2),10),d=parseInt(b.substr(2,2),10),e=parseInt(b.substr(4,2),10);if(e=e+1800+100*parseInt(b.charAt(6),10),!a.fn.bootstrapValidator.helpers.date(e,d,c,!0))return!1;for(var f=0,g=[10,5,8,4,2,1,6,3,7,9],h=0;10>h;h++)f+=parseInt(b.charAt(h),10)*g[h];return f=(f+1)%11%10,f+""===b.charAt(10)},_nl:function(a){for(;a.length<9;)a="0"+a;if(!/^[0-9]{4}[.]{0,1}[0-9]{2}[.]{0,1}[0-9]{3}$/.test(a))return!1;if(a=a.replace(/\./g,""),0===parseInt(a,10))return!1;for(var b=0,c=a.length,d=0;c-1>d;d++)b+=(9-d)*parseInt(a.charAt(d),10);return b%=11,10===b&&(b=0),b+""===a.charAt(c-1)},_ro:function(b){if(!/^[0-9]{13}$/.test(b))return!1;var c=parseInt(b.charAt(0),10);if(0===c||7===c||8===c)return!1;var d=parseInt(b.substr(1,2),10),e=parseInt(b.substr(3,2),10),f=parseInt(b.substr(5,2),10),g={1:1900,2:1900,3:1800,4:1800,5:2e3,6:2e3};if(f>31&&e>12)return!1;if(9!==c&&(d=g[c+""]+d,!a.fn.bootstrapValidator.helpers.date(d,e,f)))return!1;for(var h=0,i=[2,7,9,1,4,6,3,5,8,2,7,9],j=b.length,k=0;j-1>k;k++)h+=parseInt(b.charAt(k),10)*i[k];return h%=11,10===h&&(h=1),h+""===b.charAt(j-1)},_se:function(b){if(!/^[0-9]{10}$/.test(b)&&!/^[0-9]{6}[-|+][0-9]{4}$/.test(b))return!1;b=b.replace(/[^0-9]/g,"");var c=parseInt(b.substr(0,2),10)+1900,d=parseInt(b.substr(2,2),10),e=parseInt(b.substr(4,2),10);return a.fn.bootstrapValidator.helpers.date(c,d,e)?a.fn.bootstrapValidator.helpers.luhn(b):!1},_sk:function(a){return this._cz(a)},_sm:function(a){return/^\d{5}$/.test(a)},_th:function(a){if(13!==a.length)return!1;for(var b=0,c=0;12>c;c++)b+=parseInt(a.charAt(c),10)*(13-c);return(11-b%11)%10===parseInt(a.charAt(12),10)},_za:function(b){if(!/^[0-9]{10}[0|1][8|9][0-9]$/.test(b))return!1;var c=parseInt(b.substr(0,2),10),d=(new Date).getFullYear()%100,e=parseInt(b.substr(2,2),10),f=parseInt(b.substr(4,2),10);return c=c>=d?c+1900:c+2e3,a.fn.bootstrapValidator.helpers.date(c,e,f)?a.fn.bootstrapValidator.helpers.luhn(b):!1}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.identical=a.extend(a.fn.bootstrapValidator.i18n.identical||{},{"default":"Please enter the same value"}),a.fn.bootstrapValidator.validators.identical={html5Attributes:{message:"message",field:"field"},validate:function(a,b,c){var d=b.val();if(""===d)return!0;var e=a.getFieldElements(c.field);return null===e||0===e.length?!0:d===e.val()?(a.updateStatus(c.field,a.STATUS_VALID,"identical"),!0):!1}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.imei=a.extend(a.fn.bootstrapValidator.i18n.imei||{},{"default":"Please enter a valid IMEI number"}),a.fn.bootstrapValidator.validators.imei={validate:function(b,c){var d=c.val();if(""===d)return!0;switch(!0){case/^\d{15}$/.test(d):case/^\d{2}-\d{6}-\d{6}-\d{1}$/.test(d):case/^\d{2}\s\d{6}\s\d{6}\s\d{1}$/.test(d):return d=d.replace(/[^0-9]/g,""),a.fn.bootstrapValidator.helpers.luhn(d);case/^\d{14}$/.test(d):case/^\d{16}$/.test(d):case/^\d{2}-\d{6}-\d{6}(|-\d{2})$/.test(d):case/^\d{2}\s\d{6}\s\d{6}(|\s\d{2})$/.test(d):return!0;default:return!1}}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.imo=a.extend(a.fn.bootstrapValidator.i18n.imo||{},{"default":"Please enter a valid IMO number"}),a.fn.bootstrapValidator.validators.imo={validate:function(a,b){var c=b.val();if(""===c)return!0;if(!/^IMO \d{7}$/i.test(c))return!1;for(var d=0,e=c.replace(/^.*(\d{7})$/,"$1"),f=6;f>=1;f--)d+=e.slice(6-f,-f)*(f+1);return d%10===parseInt(e.charAt(6),10)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.integer=a.extend(a.fn.bootstrapValidator.i18n.integer||{},{"default":"Please enter a valid number"}),a.fn.bootstrapValidator.validators.integer={enableByHtml5:function(a){return"number"===a.attr("type")&&(void 0===a.attr("step")||a.attr("step")%1===0)},validate:function(a,b){if(this.enableByHtml5(b)&&b.get(0).validity&&b.get(0).validity.badInput===!0)return!1;var c=b.val();return""===c?!0:/^(?:-?(?:0|[1-9][0-9]*))$/.test(c)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.ip=a.extend(a.fn.bootstrapValidator.i18n.ip||{},{"default":"Please enter a valid IP address",ipv4:"Please enter a valid IPv4 address",ipv6:"Please enter a valid IPv6 address"}),a.fn.bootstrapValidator.validators.ip={html5Attributes:{message:"message",ipv4:"ipv4",ipv6:"ipv6"},validate:function(b,c,d){var e=c.val();if(""===e)return!0;d=a.extend({},{ipv4:!0,ipv6:!0},d);var f,g=/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/,h=/^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/,i=!1;switch(!0){case d.ipv4&&!d.ipv6:i=g.test(e),f=d.message||a.fn.bootstrapValidator.i18n.ip.ipv4;break;case!d.ipv4&&d.ipv6:i=h.test(e),f=d.message||a.fn.bootstrapValidator.i18n.ip.ipv6;break;case d.ipv4&&d.ipv6:default:i=g.test(e)||h.test(e),f=d.message||a.fn.bootstrapValidator.i18n.ip["default"]}return{valid:i,message:f}}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.isbn=a.extend(a.fn.bootstrapValidator.i18n.isbn||{},{"default":"Please enter a valid ISBN number"}),a.fn.bootstrapValidator.validators.isbn={validate:function(a,b){var c=b.val();if(""===c)return!0;var d;switch(!0){case/^\d{9}[\dX]$/.test(c):case 13===c.length&&/^(\d+)-(\d+)-(\d+)-([\dX])$/.test(c):case 13===c.length&&/^(\d+)\s(\d+)\s(\d+)\s([\dX])$/.test(c):d="ISBN10";break;case/^(978|979)\d{9}[\dX]$/.test(c):case 17===c.length&&/^(978|979)-(\d+)-(\d+)-(\d+)-([\dX])$/.test(c):case 17===c.length&&/^(978|979)\s(\d+)\s(\d+)\s(\d+)\s([\dX])$/.test(c):d="ISBN13";break;default:return!1}c=c.replace(/[^0-9X]/gi,"");var e,f,g=c.split(""),h=g.length,i=0;switch(d){case"ISBN10":for(i=0,e=0;h-1>e;e++)i+=parseInt(g[e],10)*(10-e);return f=11-i%11,11===f?f=0:10===f&&(f="X"),f+""===g[h-1];case"ISBN13":for(i=0,e=0;h-1>e;e++)i+=e%2===0?parseInt(g[e],10):3*parseInt(g[e],10);return f=10-i%10,10===f&&(f="0"),f+""===g[h-1];default:return!1}}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.isin=a.extend(a.fn.bootstrapValidator.i18n.isin||{},{"default":"Please enter a valid ISIN number"}),a.fn.bootstrapValidator.validators.isin={COUNTRY_CODES:"AF|AX|AL|DZ|AS|AD|AO|AI|AQ|AG|AR|AM|AW|AU|AT|AZ|BS|BH|BD|BB|BY|BE|BZ|BJ|BM|BT|BO|BQ|BA|BW|BV|BR|IO|BN|BG|BF|BI|KH|CM|CA|CV|KY|CF|TD|CL|CN|CX|CC|CO|KM|CG|CD|CK|CR|CI|HR|CU|CW|CY|CZ|DK|DJ|DM|DO|EC|EG|SV|GQ|ER|EE|ET|FK|FO|FJ|FI|FR|GF|PF|TF|GA|GM|GE|DE|GH|GI|GR|GL|GD|GP|GU|GT|GG|GN|GW|GY|HT|HM|VA|HN|HK|HU|IS|IN|ID|IR|IQ|IE|IM|IL|IT|JM|JP|JE|JO|KZ|KE|KI|KP|KR|KW|KG|LA|LV|LB|LS|LR|LY|LI|LT|LU|MO|MK|MG|MW|MY|MV|ML|MT|MH|MQ|MR|MU|YT|MX|FM|MD|MC|MN|ME|MS|MA|MZ|MM|NA|NR|NP|NL|NC|NZ|NI|NE|NG|NU|NF|MP|NO|OM|PK|PW|PS|PA|PG|PY|PE|PH|PN|PL|PT|PR|QA|RE|RO|RU|RW|BL|SH|KN|LC|MF|PM|VC|WS|SM|ST|SA|SN|RS|SC|SL|SG|SX|SK|SI|SB|SO|ZA|GS|SS|ES|LK|SD|SR|SJ|SZ|SE|CH|SY|TW|TJ|TZ|TH|TL|TG|TK|TO|TT|TN|TR|TM|TC|TV|UG|UA|AE|GB|US|UM|UY|UZ|VU|VE|VN|VG|VI|WF|EH|YE|ZM|ZW",validate:function(a,b){var c=b.val();if(""===c)return!0;c=c.toUpperCase();var d=new RegExp("^("+this.COUNTRY_CODES+")[0-9A-Z]{10}$");if(!d.test(c))return!1;for(var e="",f=c.length,g=0;f-1>g;g++){var h=c.charCodeAt(g);e+=h>57?(h-55).toString():c.charAt(g)}var i="",j=e.length,k=j%2!==0?0:1;for(g=0;j>g;g++)i+=parseInt(e[g],10)*(g%2===k?2:1)+"";var l=0;for(g=0;g<i.length;g++)l+=parseInt(i.charAt(g),10);return l=(10-l%10)%10,l+""===c.charAt(f-1)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.ismn=a.extend(a.fn.bootstrapValidator.i18n.ismn||{},{"default":"Please enter a valid ISMN number"}),a.fn.bootstrapValidator.validators.ismn={validate:function(a,b){var c=b.val();if(""===c)return!0;var d;switch(!0){case/^M\d{9}$/.test(c):case/^M-\d{4}-\d{4}-\d{1}$/.test(c):case/^M\s\d{4}\s\d{4}\s\d{1}$/.test(c):d="ISMN10";break;case/^9790\d{9}$/.test(c):case/^979-0-\d{4}-\d{4}-\d{1}$/.test(c):case/^979\s0\s\d{4}\s\d{4}\s\d{1}$/.test(c):d="ISMN13";break;default:return!1}"ISMN10"===d&&(c="9790"+c.substr(1)),c=c.replace(/[^0-9]/gi,"");for(var e=c.length,f=0,g=[1,3],h=0;e-1>h;h++)f+=parseInt(c.charAt(h),10)*g[h%2];return f=10-f%10,f+""===c.charAt(e-1)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.issn=a.extend(a.fn.bootstrapValidator.i18n.issn||{},{"default":"Please enter a valid ISSN number"}),a.fn.bootstrapValidator.validators.issn={validate:function(a,b){var c=b.val();if(""===c)return!0;if(!/^\d{4}\-\d{3}[\dX]$/.test(c))return!1;c=c.replace(/[^0-9X]/gi,"");var d=c.split(""),e=d.length,f=0;"X"===d[7]&&(d[7]=10);for(var g=0;e>g;g++)f+=parseInt(d[g],10)*(8-g);return f%11===0}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.lessThan=a.extend(a.fn.bootstrapValidator.i18n.lessThan||{},{"default":"Please enter a value less than or equal to %s",notInclusive:"Please enter a value less than %s"}),a.fn.bootstrapValidator.validators.lessThan={html5Attributes:{message:"message",value:"value",inclusive:"inclusive"},enableByHtml5:function(a){var b=a.attr("type"),c=a.attr("max");return c&&"date"!==b?{value:c}:!1},validate:function(b,c,d){var e=c.val();if(""===e)return!0;if(e=this._format(e),!a.isNumeric(e))return!1;var f=a.isNumeric(d.value)?d.value:b.getDynamicOption(c,d.value),g=this._format(f);return e=parseFloat(e),d.inclusive===!0||void 0===d.inclusive?{valid:g>=e,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.lessThan["default"],f)}:{valid:g>e,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.lessThan.notInclusive,f)}},_format:function(a){return(a+"").replace(",",".")}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.mac=a.extend(a.fn.bootstrapValidator.i18n.mac||{},{"default":"Please enter a valid MAC address"}),a.fn.bootstrapValidator.validators.mac={validate:function(a,b){var c=b.val();return""===c?!0:/^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$/.test(c)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.meid=a.extend(a.fn.bootstrapValidator.i18n.meid||{},{"default":"Please enter a valid MEID number"}),a.fn.bootstrapValidator.validators.meid={validate:function(b,c){var d=c.val();if(""===d)return!0;switch(!0){case/^[0-9A-F]{15}$/i.test(d):case/^[0-9A-F]{2}[- ][0-9A-F]{6}[- ][0-9A-F]{6}[- ][0-9A-F]$/i.test(d):case/^\d{19}$/.test(d):case/^\d{5}[- ]\d{5}[- ]\d{4}[- ]\d{4}[- ]\d$/.test(d):var e=d.charAt(d.length-1);if(d=d.replace(/[- ]/g,""),d.match(/^\d*$/i))return a.fn.bootstrapValidator.helpers.luhn(d);d=d.slice(0,-1);for(var f="",g=1;13>=g;g+=2)f+=(2*parseInt(d.charAt(g),16)).toString(16);var h=0;for(g=0;g<f.length;g++)h+=parseInt(f.charAt(g),16);return h%10===0?"0"===e:e===(2*(10*Math.floor((h+10)/10)-h)).toString(16);case/^[0-9A-F]{14}$/i.test(d):case/^[0-9A-F]{2}[- ][0-9A-F]{6}[- ][0-9A-F]{6}$/i.test(d):case/^\d{18}$/.test(d):case/^\d{5}[- ]\d{5}[- ]\d{4}[- ]\d{4}$/.test(d):return!0;default:return!1}}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.notEmpty=a.extend(a.fn.bootstrapValidator.i18n.notEmpty||{},{"default":"Please enter a value"}),a.fn.bootstrapValidator.validators.notEmpty={enableByHtml5:function(a){var b=a.attr("required")+"";return"required"===b||"true"===b},validate:function(b,c){var d=c.attr("type");return"radio"===d||"checkbox"===d?b.getFieldElements(c.attr("data-bv-field")).filter(":checked").length>0:"number"===d&&c.get(0).validity&&c.get(0).validity.badInput===!0?!0:""!==a.trim(c.val())}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.numeric=a.extend(a.fn.bootstrapValidator.i18n.numeric||{},{"default":"Please enter a valid float number"}),a.fn.bootstrapValidator.validators.numeric={html5Attributes:{message:"message",separator:"separator"},enableByHtml5:function(a){return"number"===a.attr("type")&&void 0!==a.attr("step")&&a.attr("step")%1!==0},validate:function(a,b,c){if(this.enableByHtml5(b)&&b.get(0).validity&&b.get(0).validity.badInput===!0)return!1;var d=b.val();if(""===d)return!0;var e=c.separator||".";return"."!==e&&(d=d.replace(e,".")),!isNaN(parseFloat(d))&&isFinite(d)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.phone=a.extend(a.fn.bootstrapValidator.i18n.phone||{},{"default":"Please enter a valid phone number",countryNotSupported:"The country code %s is not supported",country:"Please enter a valid phone number in %s",countries:{BR:"Brazil",CN:"China",CZ:"Czech Republic",DE:"Germany",DK:"Denmark",ES:"Spain",FR:"France",GB:"United Kingdom",MA:"Morocco",PK:"Pakistan",RO:"Romania",RU:"Russia",SK:"Slovakia",TH:"Thailand",US:"USA",VE:"Venezuela"}}),a.fn.bootstrapValidator.validators.phone={html5Attributes:{message:"message",country:"country"},COUNTRY_CODES:["BR","CN","CZ","DE","DK","ES","FR","GB","MA","PK","RO","RU","SK","TH","US","VE"],validate:function(b,c,d){var e=c.val();if(""===e)return!0;var f=d.country;if(("string"!=typeof f||-1===a.inArray(f,this.COUNTRY_CODES))&&(f=b.getDynamicOption(c,f)),!f||-1===a.inArray(f.toUpperCase(),this.COUNTRY_CODES))return{valid:!1,message:a.fn.bootstrapValidator.helpers.format(a.fn.bootstrapValidator.i18n.phone.countryNotSupported,f)};var g=!0;switch(f.toUpperCase()){case"BR":e=a.trim(e),g=/^(([\d]{4}[-.\s]{1}[\d]{2,3}[-.\s]{1}[\d]{2}[-.\s]{1}[\d]{2})|([\d]{4}[-.\s]{1}[\d]{3}[-.\s]{1}[\d]{4})|((\(?\+?[0-9]{2}\)?\s?)?(\(?\d{2}\)?\s?)?\d{4,5}[-.\s]?\d{4}))$/.test(e);break;case"CN":e=a.trim(e),g=/^((00|\+)?(86(?:-| )))?((\d{11})|(\d{3}[- ]{1}\d{4}[- ]{1}\d{4})|((\d{2,4}[- ]){1}(\d{7,8}|(\d{3,4}[- ]{1}\d{4}))([- ]{1}\d{1,4})?))$/.test(e);break;case"CZ":g=/^(((00)([- ]?)|\+)(420)([- ]?))?((\d{3})([- ]?)){2}(\d{3})$/.test(e);break;case"DE":e=a.trim(e),g=/^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/.test(e);break;case"DK":e=a.trim(e),g=/^(\+45|0045|\(45\))?\s?[2-9](\s?\d){7}$/.test(e);break;case"ES":e=a.trim(e),g=/^(?:(?:(?:\+|00)34\D?))?(?:9|6)(?:\d\D?){8}$/.test(e);break;case"FR":e=a.trim(e),g=/^(?:(?:(?:\+|00)33[ ]?(?:\(0\)[ ]?)?)|0){1}[1-9]{1}([ .-]?)(?:\d{2}\1?){3}\d{2}$/.test(e);break;case"GB":e=a.trim(e),g=/^\(?(?:(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?\(?(?:0\)?[\s-]?\(?)?|0)(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}|\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4}|\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3})|\d{5}\)?[\s-]?\d{4,5}|8(?:00[\s-]?11[\s-]?11|45[\s-]?46[\s-]?4\d))(?:(?:[\s-]?(?:x|ext\.?\s?|\#)\d+)?)$/.test(e);break;case"MA":e=a.trim(e),g=/^(?:(?:(?:\+|00)212[\s]?(?:[\s]?\(0\)[\s]?)?)|0){1}(?:5[\s.-]?[2-3]|6[\s.-]?[13-9]){1}[0-9]{1}(?:[\s.-]?\d{2}){3}$/.test(e);break;case"PK":e=a.trim(e),g=/^0?3[0-9]{2}[0-9]{7}$/.test(e);break;case"RO":g=/^(\+4|)?(07[0-8]{1}[0-9]{1}|02[0-9]{2}|03[0-9]{2}){1}?(\s|\.|\-)?([0-9]{3}(\s|\.|\-|)){2}$/g.test(e);break;case"RU":g=/^((8|\+7|007)[\-\.\/ ]?)?([\(\/\.]?\d{3}[\)\/\.]?[\-\.\/ ]?)?[\d\-\.\/ ]{7,10}$/g.test(e);break;case"SK":g=/^(((00)([- ]?)|\+)(420)([- ]?))?((\d{3})([- ]?)){2}(\d{3})$/.test(e);break;case"TH":g=/^0\(?([6|8-9]{2})*-([0-9]{3})*-([0-9]{4})$/.test(e);break;case"VE":e=a.trim(e),g=/^0(?:2(?:12|4[0-9]|5[1-9]|6[0-9]|7[0-8]|8[1-35-8]|9[1-5]|3[45789])|4(?:1[246]|2[46]))\d{7}$/.test(e);break;case"US":default:e=e.replace(/\D/g,""),g=/^(?:(1\-?)|(\+1 ?))?\(?(\d{3})[\)\-\.]?(\d{3})[\-\.]?(\d{4})$/.test(e)&&10===e.length}return{valid:g,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.phone.country,a.fn.bootstrapValidator.i18n.phone.countries[f])}}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.regexp=a.extend(a.fn.bootstrapValidator.i18n.regexp||{},{"default":"Please enter a value matching the pattern"}),a.fn.bootstrapValidator.validators.regexp={html5Attributes:{message:"message",regexp:"regexp"},enableByHtml5:function(a){var b=a.attr("pattern");return b?{regexp:b}:!1},validate:function(a,b,c){var d=b.val();if(""===d)return!0;var e="string"==typeof c.regexp?new RegExp(c.regexp):c.regexp;return e.test(d)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.remote=a.extend(a.fn.bootstrapValidator.i18n.remote||{},{"default":"Please enter a valid value"}),a.fn.bootstrapValidator.validators.remote={html5Attributes:{message:"message",name:"name",type:"type",url:"url",data:"data",delay:"delay"},destroy:function(a,b){b.data("bv.remote.timer")&&(clearTimeout(b.data("bv.remote.timer")),b.removeData("bv.remote.timer"))},validate:function(b,c,d){function e(){var b=a.ajax({type:k,headers:l,url:j,dataType:"json",data:i});return b.then(function(a){a.valid=a.valid===!0||"true"===a.valid,g.resolve(c,"remote",a)}),g.fail(function(){b.abort()}),g}var f=c.val(),g=new a.Deferred;if(""===f)return g.resolve(c,"remote",{valid:!0}),g;var h=c.attr("data-bv-field"),i=d.data||{},j=d.url,k=d.type||"GET",l=d.headers||{};return"function"==typeof i&&(i=i.call(this,b)),"string"==typeof i&&(i=JSON.parse(i)),"function"==typeof j&&(j=j.call(this,b)),i[d.name||h]=f,d.delay?(c.data("bv.remote.timer")&&clearTimeout(c.data("bv.remote.timer")),c.data("bv.remote.timer",setTimeout(e,d.delay)),g):e()}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.rtn=a.extend(a.fn.bootstrapValidator.i18n.rtn||{},{"default":"Please enter a valid RTN number"}),a.fn.bootstrapValidator.validators.rtn={validate:function(a,b){var c=b.val();if(""===c)return!0;if(!/^\d{9}$/.test(c))return!1;for(var d=0,e=0;e<c.length;e+=3)d+=3*parseInt(c.charAt(e),10)+7*parseInt(c.charAt(e+1),10)+parseInt(c.charAt(e+2),10);return 0!==d&&d%10===0}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.sedol=a.extend(a.fn.bootstrapValidator.i18n.sedol||{},{"default":"Please enter a valid SEDOL number"}),a.fn.bootstrapValidator.validators.sedol={validate:function(a,b){var c=b.val();if(""===c)return!0;if(c=c.toUpperCase(),!/^[0-9A-Z]{7}$/.test(c))return!1;for(var d=0,e=[1,3,1,7,3,9,1],f=c.length,g=0;f-1>g;g++)d+=e[g]*parseInt(c.charAt(g),36);return d=(10-d%10)%10,d+""===c.charAt(f-1)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.siren=a.extend(a.fn.bootstrapValidator.i18n.siren||{},{"default":"Please enter a valid SIREN number"}),a.fn.bootstrapValidator.validators.siren={validate:function(b,c){var d=c.val();return""===d?!0:/^\d{9}$/.test(d)?a.fn.bootstrapValidator.helpers.luhn(d):!1}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.siret=a.extend(a.fn.bootstrapValidator.i18n.siret||{},{"default":"Please enter a valid SIRET number"}),a.fn.bootstrapValidator.validators.siret={validate:function(a,b){var c=b.val();if(""===c)return!0;for(var d,e=0,f=c.length,g=0;f>g;g++)d=parseInt(c.charAt(g),10),g%2===0&&(d=2*d,d>9&&(d-=9)),e+=d;return e%10===0}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.step=a.extend(a.fn.bootstrapValidator.i18n.step||{},{"default":"Please enter a valid step of %s"}),a.fn.bootstrapValidator.validators.step={html5Attributes:{message:"message",base:"baseValue",step:"step"},validate:function(b,c,d){var e=c.val();if(""===e)return!0;if(d=a.extend({},{baseValue:0,step:1},d),e=parseFloat(e),!a.isNumeric(e))return!1;var f=function(a,b){var c=Math.pow(10,b);a*=c;var d=a>0|-(0>a),e=a%1===.5*d;return e?(Math.floor(a)+(d>0))/c:Math.round(a)/c},g=function(a,b){if(0===b)return 1;var c=(a+"").split("."),d=(b+"").split("."),e=(1===c.length?0:c[1].length)+(1===d.length?0:d[1].length);return f(a-b*Math.floor(a/b),e)},h=g(e-d.baseValue,d.step);return{valid:0===h||h===d.step,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.step["default"],[d.step])}}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.stringCase=a.extend(a.fn.bootstrapValidator.i18n.stringCase||{},{"default":"Please enter only lowercase characters",upper:"Please enter only uppercase characters"}),a.fn.bootstrapValidator.validators.stringCase={html5Attributes:{message:"message","case":"case"},validate:function(b,c,d){var e=c.val();if(""===e)return!0;var f=(d["case"]||"lower").toLowerCase();return{valid:"upper"===f?e===e.toUpperCase():e===e.toLowerCase(),message:d.message||("upper"===f?a.fn.bootstrapValidator.i18n.stringCase.upper:a.fn.bootstrapValidator.i18n.stringCase["default"])}}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.stringLength=a.extend(a.fn.bootstrapValidator.i18n.stringLength||{},{"default":"Please enter a value with valid length",less:"Please enter less than %s characters",more:"Please enter more than %s characters",between:"Please enter value between %s and %s characters long"}),a.fn.bootstrapValidator.validators.stringLength={html5Attributes:{message:"message",min:"min",max:"max",trim:"trim",utf8bytes:"utf8Bytes"},enableByHtml5:function(b){var c={},d=b.attr("maxlength"),e=b.attr("minlength");return d&&(c.max=parseInt(d,10)),e&&(c.min=parseInt(e,10)),a.isEmptyObject(c)?!1:c},validate:function(b,c,d){var e=c.val();if((d.trim===!0||"true"===d.trim)&&(e=a.trim(e)),""===e)return!0;var f=a.isNumeric(d.min)?d.min:b.getDynamicOption(c,d.min),g=a.isNumeric(d.max)?d.max:b.getDynamicOption(c,d.max),h=function(a){for(var b=a.length,c=a.length-1;c>=0;c--){var d=a.charCodeAt(c);d>127&&2047>=d?b++:d>2047&&65535>=d&&(b+=2),d>=56320&&57343>=d&&c--}return b},i=d.utf8Bytes?h(e):e.length,j=!0,k=d.message||a.fn.bootstrapValidator.i18n.stringLength["default"];switch((f&&i<parseInt(f,10)||g&&i>parseInt(g,10))&&(j=!1),!0){case!!f&&!!g:k=a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.stringLength.between,[parseInt(f,10),parseInt(g,10)]);break;case!!f:k=a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.stringLength.more,parseInt(f,10));break;case!!g:k=a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.stringLength.less,parseInt(g,10))}return{valid:j,message:k}}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.uri=a.extend(a.fn.bootstrapValidator.i18n.uri||{},{"default":"Please enter a valid URI"}),a.fn.bootstrapValidator.validators.uri={html5Attributes:{message:"message",allowlocal:"allowLocal",protocol:"protocol"},enableByHtml5:function(a){return"url"===a.attr("type")},validate:function(a,b,c){var d=b.val();if(""===d)return!0;var e=c.allowLocal===!0||"true"===c.allowLocal,f=(c.protocol||"http, https, ftp").split(",").join("|").replace(/\s/g,""),g=new RegExp("^(?:(?:"+f+")://)(?:\\S+(?::\\S*)?@)?(?:"+(e?"":"(?!(?:10|127)(?:\\.\\d{1,3}){3})(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})")+"(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))"+(e?"?":"")+")(?::\\d{2,5})?(?:/[^\\s]*)?$","i");return g.test(d)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.uuid=a.extend(a.fn.bootstrapValidator.i18n.uuid||{},{"default":"Please enter a valid UUID number",version:"Please enter a valid UUID version %s number"}),a.fn.bootstrapValidator.validators.uuid={html5Attributes:{message:"message",version:"version"},validate:function(b,c,d){var e=c.val();if(""===e)return!0;var f={3:/^[0-9A-F]{8}-[0-9A-F]{4}-3[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$/i,4:/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,5:/^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,all:/^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i},g=d.version?d.version+"":"all";return{valid:null===f[g]?!0:f[g].test(e),message:d.version?a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.uuid.version,d.version):d.message||a.fn.bootstrapValidator.i18n.uuid["default"]}}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.vat=a.extend(a.fn.bootstrapValidator.i18n.vat||{},{"default":"Please enter a valid VAT number",countryNotSupported:"The country code %s is not supported",country:"Please enter a valid VAT number in %s",countries:{AT:"Austria",BE:"Belgium",BG:"Bulgaria",BR:"Brazil",CH:"Switzerland",CY:"Cyprus",CZ:"Czech Republic",DE:"Germany",DK:"Denmark",EE:"Estonia",ES:"Spain",FI:"Finland",FR:"France",GB:"United Kingdom",GR:"Greek",EL:"Greek",HU:"Hungary",HR:"Croatia",IE:"Ireland",IS:"Iceland",IT:"Italy",LT:"Lithuania",LU:"Luxembourg",LV:"Latvia",MT:"Malta",NL:"Netherlands",NO:"Norway",PL:"Poland",PT:"Portugal",RO:"Romania",RU:"Russia",RS:"Serbia",SE:"Sweden",SI:"Slovenia",SK:"Slovakia",VE:"Venezuela",ZA:"South Africa"}}),a.fn.bootstrapValidator.validators.vat={html5Attributes:{message:"message",country:"country"},COUNTRY_CODES:["AT","BE","BG","BR","CH","CY","CZ","DE","DK","EE","EL","ES","FI","FR","GB","GR","HR","HU","IE","IS","IT","LT","LU","LV","MT","NL","NO","PL","PT","RO","RU","RS","SE","SK","SI","VE","ZA"],validate:function(b,c,d){var e=c.val();if(""===e)return!0;var f=d.country;if(f?("string"!=typeof f||-1===a.inArray(f.toUpperCase(),this.COUNTRY_CODES))&&(f=b.getDynamicOption(c,f)):f=e.substr(0,2),-1===a.inArray(f,this.COUNTRY_CODES))return{valid:!1,message:a.fn.bootstrapValidator.helpers.format(a.fn.bootstrapValidator.i18n.vat.countryNotSupported,f)};var g=["_",f.toLowerCase()].join("");return this[g](e)?!0:{valid:!1,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.vat.country,a.fn.bootstrapValidator.i18n.vat.countries[f.toUpperCase()])}},_at:function(a){if(/^ATU[0-9]{8}$/.test(a)&&(a=a.substr(2)),!/^U[0-9]{8}$/.test(a))return!1;a=a.substr(1);for(var b=0,c=[1,2,1,2,1,2,1],d=0,e=0;7>e;e++)d=parseInt(a.charAt(e),10)*c[e],d>9&&(d=Math.floor(d/10)+d%10),b+=d;return b=10-(b+4)%10,10===b&&(b=0),b+""===a.substr(7,1)},_be:function(a){if(/^BE[0]{0,1}[0-9]{9}$/.test(a)&&(a=a.substr(2)),!/^[0]{0,1}[0-9]{9}$/.test(a))return!1;if(9===a.length&&(a="0"+a),"0"===a.substr(1,1))return!1;var b=parseInt(a.substr(0,8),10)+parseInt(a.substr(8,2),10);return b%97===0},_bg:function(b){if(/^BG[0-9]{9,10}$/.test(b)&&(b=b.substr(2)),!/^[0-9]{9,10}$/.test(b))return!1;var c=0,d=0;if(9===b.length){for(d=0;8>d;d++)c+=parseInt(b.charAt(d),10)*(d+1);if(c%=11,10===c)for(c=0,d=0;8>d;d++)c+=parseInt(b.charAt(d),10)*(d+3);return c%=10,c+""===b.substr(8)}if(10===b.length){var e=function(b){var c=parseInt(b.substr(0,2),10)+1900,d=parseInt(b.substr(2,2),10),e=parseInt(b.substr(4,2),10);if(d>40?(c+=100,d-=40):d>20&&(c-=100,d-=20),!a.fn.bootstrapValidator.helpers.date(c,d,e))return!1;for(var f=0,g=[2,4,8,5,10,9,7,3,6],h=0;9>h;h++)f+=parseInt(b.charAt(h),10)*g[h];return f=f%11%10,f+""===b.substr(9,1)},f=function(a){for(var b=0,c=[21,19,17,13,11,9,7,3,1],d=0;9>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b%=10,b+""===a.substr(9,1)},g=function(a){for(var b=0,c=[4,3,2,7,6,5,4,3,2],d=0;9>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b=11-b%11,10===b?!1:(11===b&&(b=0),b+""===a.substr(9,1))};return e(b)||f(b)||g(b)}return!1},_br:function(a){if(""===a)return!0;var b=a.replace(/[^\d]+/g,"");if(""===b||14!==b.length)return!1;if("00000000000000"===b||"11111111111111"===b||"22222222222222"===b||"33333333333333"===b||"44444444444444"===b||"55555555555555"===b||"66666666666666"===b||"77777777777777"===b||"88888888888888"===b||"99999999999999"===b)return!1;for(var c=b.length-2,d=b.substring(0,c),e=b.substring(c),f=0,g=c-7,h=c;h>=1;h--)f+=parseInt(d.charAt(c-h),10)*g--,2>g&&(g=9);var i=2>f%11?0:11-f%11;if(i!==parseInt(e.charAt(0),10))return!1;for(c+=1,d=b.substring(0,c),f=0,g=c-7,h=c;h>=1;h--)f+=parseInt(d.charAt(c-h),10)*g--,2>g&&(g=9);return i=2>f%11?0:11-f%11,i===parseInt(e.charAt(1),10)},_ch:function(a){if(/^CHE[0-9]{9}(MWST)?$/.test(a)&&(a=a.substr(2)),!/^E[0-9]{9}(MWST)?$/.test(a))return!1;a=a.substr(1);for(var b=0,c=[5,4,3,2,7,6,5,4],d=0;8>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b=11-b%11,10===b?!1:(11===b&&(b=0),b+""===a.substr(8,1))},_cy:function(a){if(/^CY[0-5|9]{1}[0-9]{7}[A-Z]{1}$/.test(a)&&(a=a.substr(2)),!/^[0-5|9]{1}[0-9]{7}[A-Z]{1}$/.test(a))return!1;if("12"===a.substr(0,2))return!1;for(var b=0,c={0:1,1:0,2:5,3:7,4:9,5:13,6:15,7:17,8:19,9:21},d=0;8>d;d++){var e=parseInt(a.charAt(d),10);d%2===0&&(e=c[e+""]),b+=e}return b="ABCDEFGHIJKLMNOPQRSTUVWXYZ"[b%26],b+""===a.substr(8,1)},_cz:function(b){if(/^CZ[0-9]{8,10}$/.test(b)&&(b=b.substr(2)),!/^[0-9]{8,10}$/.test(b))return!1;var c=0,d=0;if(8===b.length){if(b.charAt(0)+""=="9")return!1;for(c=0,d=0;7>d;d++)c+=parseInt(b.charAt(d),10)*(8-d);return c=11-c%11,10===c&&(c=0),11===c&&(c=1),c+""===b.substr(7,1)
+    }if(9===b.length&&b.charAt(0)+""=="6"){for(c=0,d=0;7>d;d++)c+=parseInt(b.charAt(d+1),10)*(8-d);return c=11-c%11,10===c&&(c=0),11===c&&(c=1),c=[8,7,6,5,4,3,2,1,0,9,10][c-1],c+""===b.substr(8,1)}if(9===b.length||10===b.length){var e=1900+parseInt(b.substr(0,2),10),f=parseInt(b.substr(2,2),10)%50%20,g=parseInt(b.substr(4,2),10);if(9===b.length){if(e>=1980&&(e-=100),e>1953)return!1}else 1954>e&&(e+=100);if(!a.fn.bootstrapValidator.helpers.date(e,f,g))return!1;if(10===b.length){var h=parseInt(b.substr(0,9),10)%11;return 1985>e&&(h%=10),h+""===b.substr(9,1)}return!0}return!1},_de:function(b){return/^DE[0-9]{9}$/.test(b)&&(b=b.substr(2)),/^[0-9]{9}$/.test(b)?a.fn.bootstrapValidator.helpers.mod11And10(b):!1},_dk:function(a){if(/^DK[0-9]{8}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{8}$/.test(a))return!1;for(var b=0,c=[2,7,6,5,4,3,2,1],d=0;8>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b%11===0},_ee:function(a){if(/^EE[0-9]{9}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{9}$/.test(a))return!1;for(var b=0,c=[3,7,1,3,7,1,3,7,1],d=0;9>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b%10===0},_es:function(a){if(/^ES[0-9A-Z][0-9]{7}[0-9A-Z]$/.test(a)&&(a=a.substr(2)),!/^[0-9A-Z][0-9]{7}[0-9A-Z]$/.test(a))return!1;var b=function(a){var b=parseInt(a.substr(0,8),10);return b="TRWAGMYFPDXBNJZSQVHLCKE"[b%23],b+""===a.substr(8,1)},c=function(a){var b=["XYZ".indexOf(a.charAt(0)),a.substr(1)].join("");return b=parseInt(b,10),b="TRWAGMYFPDXBNJZSQVHLCKE"[b%23],b+""===a.substr(8,1)},d=function(a){var b,c=a.charAt(0);if(-1!=="KLM".indexOf(c))return b=parseInt(a.substr(1,8),10),b="TRWAGMYFPDXBNJZSQVHLCKE"[b%23],b+""===a.substr(8,1);if(-1!=="ABCDEFGHJNPQRSUVW".indexOf(c)){for(var d=0,e=[2,1,2,1,2,1,2],f=0,g=0;7>g;g++)f=parseInt(a.charAt(g+1),10)*e[g],f>9&&(f=Math.floor(f/10)+f%10),d+=f;return d=10-d%10,d+""===a.substr(8,1)||"JABCDEFGHI"[d]===a.substr(8,1)}return!1},e=a.charAt(0);return/^[0-9]$/.test(e)?b(a):/^[XYZ]$/.test(e)?c(a):d(a)},_fi:function(a){if(/^FI[0-9]{8}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{8}$/.test(a))return!1;for(var b=0,c=[7,9,10,5,8,4,2,1],d=0;8>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b%11===0},_fr:function(b){if(/^FR[0-9A-Z]{2}[0-9]{9}$/.test(b)&&(b=b.substr(2)),!/^[0-9A-Z]{2}[0-9]{9}$/.test(b))return!1;if(!a.fn.bootstrapValidator.helpers.luhn(b.substr(2)))return!1;if(/^[0-9]{2}$/.test(b.substr(0,2)))return b.substr(0,2)===parseInt(b.substr(2)+"12",10)%97+"";var c,d="0123456789ABCDEFGHJKLMNPQRSTUVWXYZ";return c=/^[0-9]{1}$/.test(b.charAt(0))?24*d.indexOf(b.charAt(0))+d.indexOf(b.charAt(1))-10:34*d.indexOf(b.charAt(0))+d.indexOf(b.charAt(1))-100,(parseInt(b.substr(2),10)+1+Math.floor(c/11))%11===c%11},_gb:function(a){if((/^GB[0-9]{9}$/.test(a)||/^GB[0-9]{12}$/.test(a)||/^GBGD[0-9]{3}$/.test(a)||/^GBHA[0-9]{3}$/.test(a)||/^GB(GD|HA)8888[0-9]{5}$/.test(a))&&(a=a.substr(2)),!(/^[0-9]{9}$/.test(a)||/^[0-9]{12}$/.test(a)||/^GD[0-9]{3}$/.test(a)||/^HA[0-9]{3}$/.test(a)||/^(GD|HA)8888[0-9]{5}$/.test(a)))return!1;var b=a.length;if(5===b){var c=a.substr(0,2),d=parseInt(a.substr(2),10);return"GD"===c&&500>d||"HA"===c&&d>=500}if(11===b&&("GD8888"===a.substr(0,6)||"HA8888"===a.substr(0,6)))return"GD"===a.substr(0,2)&&parseInt(a.substr(6,3),10)>=500||"HA"===a.substr(0,2)&&parseInt(a.substr(6,3),10)<500?!1:parseInt(a.substr(6,3),10)%97===parseInt(a.substr(9,2),10);if(9===b||12===b){for(var e=0,f=[8,7,6,5,4,3,2,10,1],g=0;9>g;g++)e+=parseInt(a.charAt(g),10)*f[g];return e%=97,parseInt(a.substr(0,3),10)>=100?0===e||42===e||55===e:0===e}return!0},_gr:function(a){if(/^(GR|EL)[0-9]{9}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{9}$/.test(a))return!1;8===a.length&&(a="0"+a);for(var b=0,c=[256,128,64,32,16,8,4,2],d=0;8>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b=b%11%10,b+""===a.substr(8,1)},_el:function(a){return this._gr(a)},_hu:function(a){if(/^HU[0-9]{8}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{8}$/.test(a))return!1;for(var b=0,c=[9,7,3,1,9,7,3,1],d=0;8>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b%10===0},_hr:function(b){return/^HR[0-9]{11}$/.test(b)&&(b=b.substr(2)),/^[0-9]{11}$/.test(b)?a.fn.bootstrapValidator.helpers.mod11And10(b):!1},_ie:function(a){if(/^IE[0-9]{1}[0-9A-Z\*\+]{1}[0-9]{5}[A-Z]{1,2}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{1}[0-9A-Z\*\+]{1}[0-9]{5}[A-Z]{1,2}$/.test(a))return!1;var b=function(a){for(;a.length<7;)a="0"+a;for(var b="WABCDEFGHIJKLMNOPQRSTUV",c=0,d=0;7>d;d++)c+=parseInt(a.charAt(d),10)*(8-d);return c+=9*b.indexOf(a.substr(7)),b[c%23]};return/^[0-9]+$/.test(a.substr(0,7))?a.charAt(7)===b(a.substr(0,7)+a.substr(8)+""):-1!=="ABCDEFGHIJKLMNOPQRSTUVWXYZ+*".indexOf(a.charAt(1))?a.charAt(7)===b(a.substr(2,5)+a.substr(0,1)+""):!0},_is:function(a){return/^IS[0-9]{5,6}$/.test(a)&&(a=a.substr(2)),/^[0-9]{5,6}$/.test(a)},_it:function(b){if(/^IT[0-9]{11}$/.test(b)&&(b=b.substr(2)),!/^[0-9]{11}$/.test(b))return!1;if(0===parseInt(b.substr(0,7),10))return!1;var c=parseInt(b.substr(7,3),10);return 1>c||c>201&&999!==c&&888!==c?!1:a.fn.bootstrapValidator.helpers.luhn(b)},_lt:function(a){if(/^LT([0-9]{7}1[0-9]{1}|[0-9]{10}1[0-9]{1})$/.test(a)&&(a=a.substr(2)),!/^([0-9]{7}1[0-9]{1}|[0-9]{10}1[0-9]{1})$/.test(a))return!1;var b,c=a.length,d=0;for(b=0;c-1>b;b++)d+=parseInt(a.charAt(b),10)*(1+b%9);var e=d%11;if(10===e)for(d=0,b=0;c-1>b;b++)d+=parseInt(a.charAt(b),10)*(1+(b+2)%9);return e=e%11%10,e+""===a.charAt(c-1)},_lu:function(a){return/^LU[0-9]{8}$/.test(a)&&(a=a.substr(2)),/^[0-9]{8}$/.test(a)?parseInt(a.substr(0,6),10)%89+""===a.substr(6,2):!1},_lv:function(b){if(/^LV[0-9]{11}$/.test(b)&&(b=b.substr(2)),!/^[0-9]{11}$/.test(b))return!1;var c,d=parseInt(b.charAt(0),10),e=0,f=[],g=b.length;if(d>3){for(e=0,f=[9,1,4,8,3,10,2,5,7,6,1],c=0;g>c;c++)e+=parseInt(b.charAt(c),10)*f[c];return e%=11,3===e}var h=parseInt(b.substr(0,2),10),i=parseInt(b.substr(2,2),10),j=parseInt(b.substr(4,2),10);if(j=j+1800+100*parseInt(b.charAt(6),10),!a.fn.bootstrapValidator.helpers.date(j,i,h))return!1;for(e=0,f=[10,5,8,4,2,1,6,3,7,9],c=0;g-1>c;c++)e+=parseInt(b.charAt(c),10)*f[c];return e=(e+1)%11%10,e+""===b.charAt(g-1)},_mt:function(a){if(/^MT[0-9]{8}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{8}$/.test(a))return!1;for(var b=0,c=[3,4,6,7,8,9,10,1],d=0;8>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b%37===0},_nl:function(a){if(/^NL[0-9]{9}B[0-9]{2}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{9}B[0-9]{2}$/.test(a))return!1;for(var b=0,c=[9,8,7,6,5,4,3,2],d=0;8>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b%=11,b>9&&(b=0),b+""===a.substr(8,1)},_no:function(a){if(/^NO[0-9]{9}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{9}$/.test(a))return!1;for(var b=0,c=[3,2,7,6,5,4,3,2],d=0;8>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b=11-b%11,11===b&&(b=0),b+""===a.substr(8,1)},_pl:function(a){if(/^PL[0-9]{10}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{10}$/.test(a))return!1;for(var b=0,c=[6,5,7,2,3,4,5,6,7,-1],d=0;10>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b%11===0},_pt:function(a){if(/^PT[0-9]{9}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{9}$/.test(a))return!1;for(var b=0,c=[9,8,7,6,5,4,3,2],d=0;8>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b=11-b%11,b>9&&(b=0),b+""===a.substr(8,1)},_ro:function(a){if(/^RO[1-9][0-9]{1,9}$/.test(a)&&(a=a.substr(2)),!/^[1-9][0-9]{1,9}$/.test(a))return!1;for(var b=a.length,c=[7,5,3,2,1,7,5,3,2].slice(10-b),d=0,e=0;b-1>e;e++)d+=parseInt(a.charAt(e),10)*c[e];return d=10*d%11%10,d+""===a.substr(b-1,1)},_ru:function(a){if(/^RU([0-9]{10}|[0-9]{12})$/.test(a)&&(a=a.substr(2)),!/^([0-9]{10}|[0-9]{12})$/.test(a))return!1;var b=0;if(10===a.length){var c=0,d=[2,4,10,3,5,9,4,6,8,0];for(b=0;10>b;b++)c+=parseInt(a.charAt(b),10)*d[b];return c%=11,c>9&&(c%=10),c+""===a.substr(9,1)}if(12===a.length){var e=0,f=[7,2,4,10,3,5,9,4,6,8,0],g=0,h=[3,7,2,4,10,3,5,9,4,6,8,0];for(b=0;11>b;b++)e+=parseInt(a.charAt(b),10)*f[b],g+=parseInt(a.charAt(b),10)*h[b];return e%=11,e>9&&(e%=10),g%=11,g>9&&(g%=10),e+""===a.substr(10,1)&&g+""===a.substr(11,1)}return!1},_rs:function(a){if(/^RS[0-9]{9}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{9}$/.test(a))return!1;for(var b=10,c=0,d=0;8>d;d++)c=(parseInt(a.charAt(d),10)+b)%10,0===c&&(c=10),b=2*c%11;return(b+parseInt(a.substr(8,1),10))%10===1},_se:function(b){return/^SE[0-9]{10}01$/.test(b)&&(b=b.substr(2)),/^[0-9]{10}01$/.test(b)?(b=b.substr(0,10),a.fn.bootstrapValidator.helpers.luhn(b)):!1},_si:function(a){if(/^SI[0-9]{8}$/.test(a)&&(a=a.substr(2)),!/^[0-9]{8}$/.test(a))return!1;for(var b=0,c=[8,7,6,5,4,3,2],d=0;7>d;d++)b+=parseInt(a.charAt(d),10)*c[d];return b=11-b%11,10===b&&(b=0),b+""===a.substr(7,1)},_sk:function(a){return/^SK[1-9][0-9][(2-4)|(6-9)][0-9]{7}$/.test(a)&&(a=a.substr(2)),/^[1-9][0-9][(2-4)|(6-9)][0-9]{7}$/.test(a)?parseInt(a,10)%11===0:!1},_ve:function(a){if(/^VE[VEJPG][0-9]{9}$/.test(a)&&(a=a.substr(2)),!/^[VEJPG][0-9]{9}$/.test(a))return!1;for(var b={V:4,E:8,J:12,P:16,G:20},c=b[a.charAt(0)],d=[3,2,7,6,5,4,3,2],e=0;8>e;e++)c+=parseInt(a.charAt(e+1),10)*d[e];return c=11-c%11,(11===c||10===c)&&(c=0),c+""===a.substr(9,1)},_za:function(a){return/^ZA4[0-9]{9}$/.test(a)&&(a=a.substr(2)),/^4[0-9]{9}$/.test(a)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.vin=a.extend(a.fn.bootstrapValidator.i18n.vin||{},{"default":"Please enter a valid VIN number"}),a.fn.bootstrapValidator.validators.vin={validate:function(a,b){var c=b.val();if(""===c)return!0;if(!/^[a-hj-npr-z0-9]{8}[0-9xX][a-hj-npr-z0-9]{8}$/i.test(c))return!1;c=c.toUpperCase();for(var d={A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,J:1,K:2,L:3,M:4,N:5,P:7,R:9,S:2,T:3,U:4,V:5,W:6,X:7,Y:8,Z:9,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,0:0},e=[8,7,6,5,4,3,2,10,0,9,8,7,6,5,4,3,2],f=0,g=c.length,h=0;g>h;h++)f+=d[c.charAt(h)+""]*e[h];var i=f%11;return 10===i&&(i="X"),i+""===c.charAt(8)}}}(window.jQuery),function(a){a.fn.bootstrapValidator.i18n.zipCode=a.extend(a.fn.bootstrapValidator.i18n.zipCode||{},{"default":"Please enter a valid postal code",countryNotSupported:"The country code %s is not supported",country:"Please enter a valid postal code in %s",countries:{AT:"Austria",BR:"Brazil",CA:"Canada",CH:"Switzerland",CZ:"Czech Republic",DE:"Germany",DK:"Denmark",FR:"France",GB:"United Kingdom",IE:"Ireland",IT:"Italy",MA:"Morocco",NL:"Netherlands",PT:"Portugal",RO:"Romania",RU:"Russia",SE:"Sweden",SG:"Singapore",SK:"Slovakia",US:"USA"}}),a.fn.bootstrapValidator.validators.zipCode={html5Attributes:{message:"message",country:"country"},COUNTRY_CODES:["AT","BR","CA","CH","CZ","DE","DK","FR","GB","IE","IT","MA","NL","PT","RO","RU","SE","SG","SK","US"],validate:function(b,c,d){var e=c.val();if(""===e||!d.country)return!0;var f=d.country;if(("string"!=typeof f||-1===a.inArray(f,this.COUNTRY_CODES))&&(f=b.getDynamicOption(c,f)),!f||-1===a.inArray(f.toUpperCase(),this.COUNTRY_CODES))return{valid:!1,message:a.fn.bootstrapValidator.helpers.format(a.fn.bootstrapValidator.i18n.zipCode.countryNotSupported,f)};var g=!1;switch(f=f.toUpperCase()){case"AT":g=/^([1-9]{1})(\d{3})$/.test(e);break;case"BR":g=/^(\d{2})([\.]?)(\d{3})([\-]?)(\d{3})$/.test(e);break;case"CA":g=/^(?:A|B|C|E|G|H|J|K|L|M|N|P|R|S|T|V|X|Y){1}[0-9]{1}(?:A|B|C|E|G|H|J|K|L|M|N|P|R|S|T|V|W|X|Y|Z){1}\s?[0-9]{1}(?:A|B|C|E|G|H|J|K|L|M|N|P|R|S|T|V|W|X|Y|Z){1}[0-9]{1}$/i.test(e);break;case"CH":g=/^([1-9]{1})(\d{3})$/.test(e);break;case"CZ":g=/^(\d{3})([ ]?)(\d{2})$/.test(e);break;case"DE":g=/^(?!01000|99999)(0[1-9]\d{3}|[1-9]\d{4})$/.test(e);break;case"DK":g=/^(DK(-|\s)?)?\d{4}$/i.test(e);break;case"FR":g=/^[0-9]{5}$/i.test(e);break;case"GB":g=this._gb(e);break;case"IE":g=/^(D6W|[ACDEFHKNPRTVWXY]\d{2})\s[0-9ACDEFHKNPRTVWXY]{4}$/.test(e);break;case"IT":g=/^(I-|IT-)?\d{5}$/i.test(e);break;case"MA":g=/^[1-9][0-9]{4}$/i.test(e);break;case"NL":g=/^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/i.test(e);break;case"PT":g=/^[1-9]\d{3}-\d{3}$/.test(e);break;case"RO":g=/^(0[1-8]{1}|[1-9]{1}[0-5]{1})?[0-9]{4}$/i.test(e);break;case"RU":g=/^[0-9]{6}$/i.test(e);break;case"SE":g=/^(S-)?\d{3}\s?\d{2}$/i.test(e);break;case"SG":g=/^([0][1-9]|[1-6][0-9]|[7]([0-3]|[5-9])|[8][0-2])(\d{4})$/i.test(e);break;case"SK":g=/^(\d{3})([ ]?)(\d{2})$/.test(e);break;case"US":default:g=/^\d{4,5}([\-]?\d{4})?$/.test(e)}return{valid:g,message:a.fn.bootstrapValidator.helpers.format(d.message||a.fn.bootstrapValidator.i18n.zipCode.country,a.fn.bootstrapValidator.i18n.zipCode.countries[f])}},_gb:function(a){for(var b="[ABCDEFGHIJKLMNOPRSTUWYZ]",c="[ABCDEFGHKLMNOPQRSTUVWXY]",d="[ABCDEFGHJKPMNRSTUVWXY]",e="[ABEHMNPRVWXY]",f="[ABDEFGHJLNPQRSTUWXYZ]",g=[new RegExp("^("+b+"{1}"+c+"?[0-9]{1,2})(\\s*)([0-9]{1}"+f+"{2})$","i"),new RegExp("^("+b+"{1}[0-9]{1}"+d+"{1})(\\s*)([0-9]{1}"+f+"{2})$","i"),new RegExp("^("+b+"{1}"+c+"{1}?[0-9]{1}"+e+"{1})(\\s*)([0-9]{1}"+f+"{2})$","i"),new RegExp("^(BF1)(\\s*)([0-6]{1}[ABDEFGHJLNPQRST]{1}[ABDEFGHJLNPQRSTUWZYZ]{1})$","i"),/^(GIR)(\s*)(0AA)$/i,/^(BFPO)(\s*)([0-9]{1,4})$/i,/^(BFPO)(\s*)(c\/o\s*[0-9]{1,3})$/i,/^([A-Z]{4})(\s*)(1ZZ)$/i,/^(AI-2640)$/i],h=0;h<g.length;h++)if(g[h].test(a))return!0;return!1}}}(window.jQuery);
+! function(a, b) {
+    "use strict";
+    if ("function" == typeof define && define.amd) define(["jquery", "moment"], b);
+    else if ("object" == typeof exports) b(require("jquery"), require("moment"));
+    else {
+        if (!jQuery) throw new Error("bootstrap-datetimepicker requires jQuery to be loaded first");
+        if (!moment) throw new Error("bootstrap-datetimepicker requires moment.js to be loaded first");
+        b(a.jQuery, moment)
+    }
+}(this, function(a, b) {
+    "use strict";
+    if ("undefined" == typeof b) throw new Error("momentjs is required");
+    var c = 0,
+        d = function(d, e) {
+            var f, g = a.fn.datetimepicker.defaults,
+                h = {
+                    time: "glyphicon glyphicon-time",
+                    date: "glyphicon glyphicon-calendar",
+                    up: "glyphicon glyphicon-chevron-up",
+                    down: "glyphicon glyphicon-chevron-down"
+                },
+                i = this,
+                j = !1,
+                k = function() {
+                    var f, j, k = !1;
+                    if (i.options = a.extend({}, g, e), i.options.icons = a.extend({}, h, i.options.icons), i.element = a(d), m(), !i.options.pickTime && !i.options.pickDate) throw new Error("Must choose at least one picker");
+                    if (i.id = c++, b.locale(i.options.language), i.date = b(), i.unset = !1, i.isInput = i.element.is("input"), i.component = !1, i.element.hasClass("input-group") && (i.component = i.element.find(0 === i.element.find(".datepickerbutton").size() ? '[class^="input-group-"]' : ".datepickerbutton")), i.format = i.options.format, f = b().localeData(), i.format || (i.format = i.options.pickDate ? f.longDateFormat("L") : "", i.options.pickDate && i.options.pickTime && (i.format += " "), i.format += i.options.pickTime ? f.longDateFormat("LT") : "", i.options.useSeconds && (-1 !== f.longDateFormat("LT").indexOf(" A") ? i.format = i.format.split(" A")[0] + ":ss A" : i.format += ":ss")), i.use24hours = i.format.toLowerCase().indexOf("a") < 0 && i.format.indexOf("h") < 0, i.component && (k = i.component.find("span")), i.options.pickTime && k && k.addClass(i.options.icons.time), i.options.pickDate && k && (k.removeClass(i.options.icons.time), k.addClass(i.options.icons.date)), i.options.widgetParent = "string" == typeof i.options.widgetParent && i.options.widgetParent || i.element.parents().filter(function() {
+                            return "scroll" === a(this).css("overflow-y")
+                        }).get(0) || "body", i.widget = a(Q()).appendTo(i.options.widgetParent), i.minViewMode = i.options.minViewMode || 0, "string" == typeof i.minViewMode) switch (i.minViewMode) {
+                        case "months":
+                            i.minViewMode = 1;
+                            break;
+                        case "years":
+                            i.minViewMode = 2;
+                            break;
+                        default:
+                            i.minViewMode = 0
+                    }
+                    if (i.viewMode = i.options.viewMode || 0, "string" == typeof i.viewMode) switch (i.viewMode) {
+                        case "months":
+                            i.viewMode = 1;
+                            break;
+                        case "years":
+                            i.viewMode = 2;
+                            break;
+                        default:
+                            i.viewMode = 0
+                    }
+                    i.viewMode = Math.max(i.viewMode, i.minViewMode), i.options.disabledDates = O(i.options.disabledDates), i.options.enabledDates = O(i.options.enabledDates), i.startViewMode = i.viewMode, i.setMinDate(i.options.minDate), i.setMaxDate(i.options.maxDate), r(), s(), u(), v(), w(), q(), E(), l().prop("disabled") || F(), "" !== i.options.defaultDate && "" === l().val() && i.setValue(i.options.defaultDate), 1 !== i.options.minuteStepping && (j = i.options.minuteStepping, i.date.minutes(Math.round(i.date.minutes() / j) * j % 60).seconds(0))
+                },
+                l = function() {
+                    var a;
+                    if (i.isInput) return i.element;
+                    if (a = i.element.find(".datepickerinput"), 0 === a.size()) a = i.element.find("input");
+                    else if (!a.is("input")) throw new Error('CSS class "datepickerinput" cannot be applied to non input element');
+                    return a
+                },
+                m = function() {
+                    var a;
+                    a = i.element.is("input") ? i.element.data() : i.element.find("input").data(), void 0 !== a.dateFormat && (i.options.format = a.dateFormat), void 0 !== a.datePickdate && (i.options.pickDate = a.datePickdate), void 0 !== a.datePicktime && (i.options.pickTime = a.datePicktime), void 0 !== a.dateUseminutes && (i.options.useMinutes = a.dateUseminutes), void 0 !== a.dateUseseconds && (i.options.useSeconds = a.dateUseseconds), void 0 !== a.dateUsecurrent && (i.options.useCurrent = a.dateUsecurrent), void 0 !== a.calendarWeeks && (i.options.calendarWeeks = a.calendarWeeks), void 0 !== a.dateMinutestepping && (i.options.minuteStepping = a.dateMinutestepping), void 0 !== a.dateMindate && (i.options.minDate = a.dateMindate), void 0 !== a.dateMaxdate && (i.options.maxDate = a.dateMaxdate), void 0 !== a.dateShowtoday && (i.options.showToday = a.dateShowtoday), void 0 !== a.dateCollapse && (i.options.collapse = a.dateCollapse), void 0 !== a.dateLanguage && (i.options.language = a.dateLanguage), void 0 !== a.dateDefaultdate && (i.options.defaultDate = a.dateDefaultdate), void 0 !== a.dateDisableddates && (i.options.disabledDates = a.dateDisableddates), void 0 !== a.dateEnableddates && (i.options.enabledDates = a.dateEnableddates), void 0 !== a.dateIcons && (i.options.icons = a.dateIcons), void 0 !== a.dateUsestrict && (i.options.useStrict = a.dateUsestrict), void 0 !== a.dateDirection && (i.options.direction = a.dateDirection), void 0 !== a.dateSidebyside && (i.options.sideBySide = a.dateSidebyside), void 0 !== a.dateDaysofweekdisabled && (i.options.daysOfWeekDisabled = a.dateDaysofweekdisabled)
+                },
+                n = function() {
+                    var b, c = "absolute",
+                        d = i.component ? i.component.offset() : i.element.offset(),
+                        e = a(window);
+                    i.width = i.component ? i.component.outerWidth() : i.element.outerWidth(), d.top = d.top + i.element.outerHeight(), "up" === i.options.direction ? b = "top" : "bottom" === i.options.direction ? b = "bottom" : "auto" === i.options.direction && (b = d.top + i.widget.height() > e.height() + e.scrollTop() && i.widget.height() + i.element.outerHeight() < d.top ? "top" : "bottom"), "top" === b ? (d.bottom = e.height() - d.top + i.element.outerHeight() + 3, i.widget.addClass("top").removeClass("bottom")) : (d.top += 1, i.widget.addClass("bottom").removeClass("top")), void 0 !== i.options.width && i.widget.width(i.options.width), "left" === i.options.orientation && (i.widget.addClass("left-oriented"), d.left = d.left - i.widget.width() + 20), J() && (c = "fixed", d.top -= e.scrollTop(), d.left -= e.scrollLeft()), e.width() < d.left + i.widget.outerWidth() ? (d.right = e.width() - d.left - i.width, d.left = "auto", i.widget.addClass("pull-right")) : (d.right = "auto", i.widget.removeClass("pull-right")), i.widget.css("top" === b ? {
+                        position: c,
+                        bottom: ((d.bottom)+80),
+                        top: "auto",
+                        left: d.left,
+                        right: d.right
+                    } : {
+                        position: c,
+                        top: ((d.top)-300),
+                        bottom: "auto",
+                        left: d.left,
+                        right: d.right
+                    })
+                },
+                o = function(a, c) {
+                    (!b(i.date).isSame(b(a)) || j) && (j = !1, i.element.trigger({
+                        type: "dp.change",
+                        date: b(i.date),
+                        oldDate: b(a)
+                    }), "change" !== c && i.element.change())
+                },
+                p = function(a) {
+                    j = !0, i.element.trigger({
+                        type: "dp.error",
+                        date: b(a, i.format, i.options.useStrict)
+                    })
+                },
+                q = function(a) {
+                    b.locale(i.options.language);
+                    var c = a;
+                    c || (c = l().val(), c && (i.date = b(c, i.format, i.options.useStrict)), i.date || (i.date = b())), i.viewDate = b(i.date).startOf("month"), t(), x()
+                },
+                r = function() {
+                    b.locale(i.options.language);
+                    var c, d = a("<tr>"),
+                        e = b.weekdaysMin();
+                    if (i.options.calendarWeeks === !0 && d.append('<th class="cw">#</th>'), 0 === b().localeData()._week.dow)
+                        for (c = 0; 7 > c; c++) d.append('<th class="dow">' + e[c] + "</th>");
+                    else
+                        for (c = 1; 8 > c; c++) d.append(7 === c ? '<th class="dow">' + e[0] + "</th>" : '<th class="dow">' + e[c] + "</th>");
+                    i.widget.find(".datepicker-days thead").append(d)
+                },
+                s = function() {
+                    b.locale(i.options.language);
+                    var a, c = "",
+                        d = b.monthsShort();
+                    for (a = 0; 12 > a; a++) c += '<span class="month">' + d[a] + "</span>";
+                    i.widget.find(".datepicker-months td").append(c)
+                },
+                t = function() {
+                    if (i.options.pickDate) {
+                        b.locale(i.options.language);
+                        var c, d, e, f, g, h, j, k, l, m = i.viewDate.year(),
+                            n = i.viewDate.month(),
+                            o = i.options.minDate.year(),
+                            p = i.options.minDate.month(),
+                            q = i.options.maxDate.year(),
+                            r = i.options.maxDate.month(),
+                            s = [],
+                            t = b.months();
+                        for (i.widget.find(".datepicker-days").find(".disabled").removeClass("disabled"), i.widget.find(".datepicker-months").find(".disabled").removeClass("disabled"), i.widget.find(".datepicker-years").find(".disabled").removeClass("disabled"), i.widget.find(".datepicker-days th:eq(1)").text(t[n] + " " + m), d = b(i.viewDate, i.format, i.options.useStrict).subtract(1, "months"), j = d.daysInMonth(), d.date(j).startOf("week"), (m === o && p >= n || o > m) && i.widget.find(".datepicker-days th:eq(0)").addClass("disabled"), (m === q && n >= r || m > q) && i.widget.find(".datepicker-days th:eq(2)").addClass("disabled"), e = b(d).add(42, "d"); d.isBefore(e);) {
+                            if (d.weekday() === b().startOf("week").weekday() && (f = a("<tr>"), s.push(f), i.options.calendarWeeks === !0 && f.append('<td class="cw">' + d.week() + "</td>")), g = "", d.year() < m || d.year() === m && d.month() < n ? g += " old" : (d.year() > m || d.year() === m && d.month() > n) && (g += " new"), d.isSame(b({
+                                    y: i.date.year(),
+                                    M: i.date.month(),
+                                    d: i.date.date()
+                                })) && (g += " active"), (M(d, "day") || !N(d)) && (g += " disabled"), i.options.showToday === !0 && d.isSame(b(), "day") && (g += " today"), i.options.daysOfWeekDisabled)
+                                for (h = 0; h < i.options.daysOfWeekDisabled.length; h++)
+                                    if (d.day() === i.options.daysOfWeekDisabled[h]) {
+                                        g += " disabled";
+                                        break
+                                    }
+                            f.append('<td class="day' + g + '">' + d.date() + "</td>"), c = d.date(), d.add(1, "d"), c === d.date() && d.add(1, "d")
+                        }
+                        for (i.widget.find(".datepicker-days tbody").empty().append(s), l = i.date.year(), t = i.widget.find(".datepicker-months").find("th:eq(1)").text(m).end().find("span").removeClass("active"), l === m && t.eq(i.date.month()).addClass("active"), o > m - 1 && i.widget.find(".datepicker-months th:eq(0)").addClass("disabled"), m + 1 > q && i.widget.find(".datepicker-months th:eq(2)").addClass("disabled"), h = 0; 12 > h; h++) m === o && p > h || o > m ? a(t[h]).addClass("disabled") : (m === q && h > r || m > q) && a(t[h]).addClass("disabled");
+                        for (s = "", m = 10 * parseInt(m / 10, 10), k = i.widget.find(".datepicker-years").find("th:eq(1)").text(m + "-" + (m + 9)).parents("table").find("td"), i.widget.find(".datepicker-years").find("th").removeClass("disabled"), o > m && i.widget.find(".datepicker-years").find("th:eq(0)").addClass("disabled"), m + 9 > q && i.widget.find(".datepicker-years").find("th:eq(2)").addClass("disabled"), m -= 1, h = -1; 11 > h; h++) s += '<span class="year' + (-1 === h || 10 === h ? " old" : "") + (l === m ? " active" : "") + (o > m || m > q ? " disabled" : "") + '">' + m + "</span>", m += 1;
+                        k.html(s)
+                    }
+                },
+                u = function() {
+                    b.locale(i.options.language);
+                    var a, c, d, e = i.widget.find(".timepicker .timepicker-hours table"),
+                        f = "";
+                    if (e.parent().hide(), i.use24hours)
+                        for (a = 0, c = 0; 6 > c; c += 1) {
+                            for (f += "<tr>", d = 0; 4 > d; d += 1) f += '<td class="hour">' + P(a.toString()) + "</td>", a++;
+                            f += "</tr>"
+                        } else
+                            for (a = 1, c = 0; 3 > c; c += 1) {
+                                for (f += "<tr>", d = 0; 4 > d; d += 1) f += '<td class="hour">' + P(a.toString()) + "</td>", a++;
+                                f += "</tr>"
+                            }
+                    e.html(f)
+                },
+                v = function() {
+                    var a, b, c = i.widget.find(".timepicker .timepicker-minutes table"),
+                        d = "",
+                        e = 0,
+                        f = i.options.minuteStepping;
+                    for (c.parent().hide(), 1 === f && (f = 5), a = 0; a < Math.ceil(60 / f / 4); a++) {
+                        for (d += "<tr>", b = 0; 4 > b; b += 1) 60 > e ? (d += '<td class="minute">' + P(e.toString()) + "</td>", e += f) : d += "<td></td>";
+                        d += "</tr>"
+                    }
+                    c.html(d)
+                },
+                w = function() {
+                    var a, b, c = i.widget.find(".timepicker .timepicker-seconds table"),
+                        d = "",
+                        e = 0;
+                    for (c.parent().hide(), a = 0; 3 > a; a++) {
+                        for (d += "<tr>", b = 0; 4 > b; b += 1) d += '<td class="second">' + P(e.toString()) + "</td>", e += 5;
+                        d += "</tr>"
+                    }
+                    c.html(d)
+                },
+                x = function() {
+                    if (i.date) {
+                        var a = i.widget.find(".timepicker span[data-time-component]"),
+                            b = i.date.hours(),
+                            c = i.date.format("A");
+                        i.use24hours || (0 === b ? b = 12 : 12 !== b && (b %= 12), i.widget.find(".timepicker [data-action=togglePeriod]").text(c)), a.filter("[data-time-component=hours]").text(P(b)), a.filter("[data-time-component=minutes]").text(P(i.date.minutes())), a.filter("[data-time-component=seconds]").text(P(i.date.second()))
+                    }
+                },
+                y = function(c) {
+                    c.stopPropagation(), c.preventDefault(), i.unset = !1;
+                    var d, e, f, g, h = a(c.target).closest("span, td, th"),
+                        j = b(i.date);
+                    if (1 === h.length && !h.is(".disabled")) switch (h[0].nodeName.toLowerCase()) {
+                        case "th":
+                            switch (h[0].className) {
+                                case "picker-switch":
+                                    E(1);
+                                    break;
+                                case "prev":
+                                case "next":
+                                    f = R.modes[i.viewMode].navStep, "prev" === h[0].className && (f = -1 * f), i.viewDate.add(f, R.modes[i.viewMode].navFnc), t()
+                            }
+                            break;
+                        case "span":
+                            h.is(".month") ? (d = h.parent().find("span").index(h), i.viewDate.month(d)) : (e = parseInt(h.text(), 10) || 0, i.viewDate.year(e)), i.viewMode === i.minViewMode && (i.date = b({
+                                y: i.viewDate.year(),
+                                M: i.viewDate.month(),
+                                d: i.viewDate.date(),
+                                h: i.date.hours(),
+                                m: i.date.minutes(),
+                                s: i.date.seconds()
+                            }), K(), o(j, c.type)), E(-1), t();
+                            break;
+                        case "td":
+                            h.is(".day") && (g = parseInt(h.text(), 10) || 1, d = i.viewDate.month(), e = i.viewDate.year(), h.is(".old") ? 0 === d ? (d = 11, e -= 1) : d -= 1 : h.is(".new") && (11 === d ? (d = 0, e += 1) : d += 1), i.date = b({
+                                y: e,
+                                M: d,
+                                d: g,
+                                h: i.date.hours(),
+                                m: i.date.minutes(),
+                                s: i.date.seconds()
+                            }), i.viewDate = b({
+                                y: e,
+                                M: d,
+                                d: Math.min(28, g)
+                            }), t(), K(), o(j, c.type))
+                    }
+                },
+                z = {
+                    incrementHours: function() {
+                        L("add", "hours", 1)
+                    },
+                    incrementMinutes: function() {
+                        L("add", "minutes", i.options.minuteStepping)
+                    },
+                    incrementSeconds: function() {
+                        L("add", "seconds", 1)
+                    },
+                    decrementHours: function() {
+                        L("subtract", "hours", 1)
+                    },
+                    decrementMinutes: function() {
+                        L("subtract", "minutes", i.options.minuteStepping)
+                    },
+                    decrementSeconds: function() {
+                        L("subtract", "seconds", 1)
+                    },
+                    togglePeriod: function() {
+                        var a = i.date.hours();
+                        a >= 12 ? a -= 12 : a += 12, i.date.hours(a)
+                    },
+                    showPicker: function() {
+                        i.widget.find(".timepicker > div:not(.timepicker-picker)").hide(), i.widget.find(".timepicker .timepicker-picker").show()
+                    },
+                    showHours: function() {
+                        i.widget.find(".timepicker .timepicker-picker").hide(), i.widget.find(".timepicker .timepicker-hours").show()
+                    },
+                    showMinutes: function() {
+                        i.widget.find(".timepicker .timepicker-picker").hide(), i.widget.find(".timepicker .timepicker-minutes").show()
+                    },
+                    showSeconds: function() {
+                        i.widget.find(".timepicker .timepicker-picker").hide(), i.widget.find(".timepicker .timepicker-seconds").show()
+                    },
+                    selectHour: function(b) {
+                        var c = parseInt(a(b.target).text(), 10);
+                        i.use24hours || (i.date.hours() >= 12 ? 12 !== c && (c += 12) : 12 === c && (c = 0)), i.date.hours(c), z.showPicker.call(i)
+                    },
+                    selectMinute: function(b) {
+                        i.date.minutes(parseInt(a(b.target).text(), 10)), z.showPicker.call(i)
+                    },
+                    selectSecond: function(b) {
+                        i.date.seconds(parseInt(a(b.target).text(), 10)), z.showPicker.call(i)
+                    }
+                },
+                A = function(c) {
+                    var d = b(i.date),
+                        e = a(c.currentTarget).data("action"),
+                        f = z[e].apply(i, arguments);
+                    return B(c), i.date || (i.date = b({
+                        y: 1970
+                    })), K(), x(), o(d, c.type), f
+                },
+                B = function(a) {
+                    a.stopPropagation(), a.preventDefault()
+                },
+                C = function(a) {
+                    27 === a.keyCode && i.hide()
+                },
+                D = function(c) {
+                    b.locale(i.options.language);
+                    var d = a(c.target),
+                        e = b(i.date),
+                        f = b(d.val(), i.format, i.options.useStrict);
+                    f.isValid() && !M(f) && N(f) ? (q(), i.setValue(f), o(e, c.type), K()) : (i.viewDate = e, i.unset = !0, o(e, c.type), p(f))
+                },
+                E = function(a) {
+                    a && (i.viewMode = Math.max(i.minViewMode, Math.min(2, i.viewMode + a))), i.widget.find(".datepicker > div").hide().filter(".datepicker-" + R.modes[i.viewMode].clsName).show()
+                },
+                F = function() {
+                    var b, c, d, e, f;
+                    i.widget.on("click", ".datepicker *", a.proxy(y, this)), i.widget.on("click", "[data-action]", a.proxy(A, this)), i.widget.on("mousedown", a.proxy(B, this)), i.element.on("keydown", a.proxy(C, this)), i.options.pickDate && i.options.pickTime && i.widget.on("click.togglePicker", ".accordion-toggle", function(g) {
+                        if (g.stopPropagation(), b = a(this), c = b.closest("ul"), d = c.find(".in"), e = c.find(".collapse:not(.in)"), d && d.length) {
+                            if (f = d.data("collapse"), f && f.transitioning) return;
+                            d.collapse("hide"), e.collapse("show"), b.find("span").toggleClass(i.options.icons.time + " " + i.options.icons.date), i.component && i.component.find("span").toggleClass(i.options.icons.time + " " + i.options.icons.date)
+                        }
+                    }), i.isInput ? i.element.on({
+                        click: a.proxy(i.show, this),
+                        focus: a.proxy(i.show, this),
+                        change: a.proxy(D, this),
+                        blur: a.proxy(i.hide, this)
+                    }) : (i.element.on({
+                        change: a.proxy(D, this)
+                    }, "input"), i.component ? (i.component.on("click", a.proxy(i.show, this)), i.component.on("mousedown", a.proxy(B, this))) : i.element.on("click", a.proxy(i.show, this)))
+                },
+                G = function() {
+                    a(window).on("resize.datetimepicker" + i.id, a.proxy(n, this)), i.isInput || a(document).on("mousedown.datetimepicker" + i.id, a.proxy(i.hide, this))
+                },
+                H = function() {
+                    i.widget.off("click", ".datepicker *", i.click), i.widget.off("click", "[data-action]"), i.widget.off("mousedown", i.stopEvent), i.options.pickDate && i.options.pickTime && i.widget.off("click.togglePicker"), i.isInput ? i.element.off({
+                        focus: i.show,
+                        change: D,
+                        click: i.show,
+                        blur: i.hide
+                    }) : (i.element.off({
+                        change: D
+                    }, "input"), i.component ? (i.component.off("click", i.show), i.component.off("mousedown", i.stopEvent)) : i.element.off("click", i.show))
+                },
+                I = function() {
+                    a(window).off("resize.datetimepicker" + i.id), i.isInput || a(document).off("mousedown.datetimepicker" + i.id)
+                },
+                J = function() {
+                    if (i.element) {
+                        var b, c = i.element.parents(),
+                            d = !1;
+                        for (b = 0; b < c.length; b++)
+                            if ("fixed" === a(c[b]).css("position")) {
+                                d = !0;
+                                break
+                            }
+                        return d
+                    }
+                    return !1
+                },
+                K = function() {
+                    b.locale(i.options.language);
+                    var a = "";
+                    i.unset || (a = b(i.date).format(i.format)), l().val(a), i.element.data("date", a), i.options.pickTime || i.hide()
+                },
+                L = function(a, c, d) {
+                    b.locale(i.options.language);
+                    var e;
+                    return "add" === a ? (e = b(i.date), 23 === e.hours() && e.add(d, c), e.add(d, c)) : e = b(i.date).subtract(d, c), M(b(e.subtract(d, c))) || M(e) ? void p(e.format(i.format)) : ("add" === a ? i.date.add(d, c) : i.date.subtract(d, c), void(i.unset = !1))
+                },
+                M = function(a, c) {
+                    b.locale(i.options.language);
+                    var d = b(i.options.maxDate, i.format, i.options.useStrict),
+                        e = b(i.options.minDate, i.format, i.options.useStrict);
+                    return c && (d = d.endOf(c), e = e.startOf(c)), a.isAfter(d) || a.isBefore(e) ? !0 : i.options.disabledDates === !1 ? !1 : i.options.disabledDates[a.format("YYYY-MM-DD")] === !0
+                },
+                N = function(a) {
+                    return b.locale(i.options.language), i.options.enabledDates === !1 ? !0 : i.options.enabledDates[a.format("YYYY-MM-DD")] === !0
+                },
+                O = function(a) {
+                    var c, d = {},
+                        e = 0;
+                    for (c = 0; c < a.length; c++) f = b.isMoment(a[c]) || a[c] instanceof Date ? b(a[c]) : b(a[c], i.format, i.options.useStrict), f.isValid() && (d[f.format("YYYY-MM-DD")] = !0, e++);
+                    return e > 0 ? d : !1
+                },
+                P = function(a) {
+                    return a = a.toString(), a.length >= 2 ? a : "0" + a
+                },
+                Q = function() {
+                    var a = '<thead><tr><th class="prev">&lsaquo;</th><th colspan="' + (i.options.calendarWeeks ? "6" : "5") + '" class="picker-switch"></th><th class="next">&rsaquo;</th></tr></thead>',
+                        b = '<tbody><tr><td colspan="' + (i.options.calendarWeeks ? "8" : "7") + '"></td></tr></tbody>',
+                        c = '<div class="datepicker-days"><table class="table-condensed">' + a + '<tbody></tbody></table></div><div class="datepicker-months"><table class="table-condensed">' + a + b + '</table></div><div class="datepicker-years"><table class="table-condensed">' + a + b + "</table></div>",
+                        d = "";
+                    return i.options.pickDate && i.options.pickTime ? (d = '<div class="bootstrap-datetimepicker-widget' + (i.options.sideBySide ? " timepicker-sbs" : "") + (i.use24hours ? " usetwentyfour" : "") + ' dropdown-menu" style="z-index:9999 !important;">', d += i.options.sideBySide ? '<div class="row"><div class="col-sm-6 datepicker">' + c + '</div><div class="col-sm-6 timepicker">' + S.getTemplate() + "</div></div>" : '<ul class="list-unstyled"><li' + (i.options.collapse ? ' class="collapse in"' : "") + '><div class="datepicker">' + c + '</div></li><li class="picker-switch accordion-toggle"><a class="btn" style="width:100%"><span class="' + i.options.icons.time + '"></span></a></li><li' + (i.options.collapse ? ' class="collapse"' : "") + '><div class="timepicker">' + S.getTemplate() + "</div></li></ul>", d += "</div>") : i.options.pickTime ? '<div class="bootstrap-datetimepicker-widget dropdown-menu"><div class="timepicker">' + S.getTemplate() + "</div></div>" : '<div class="bootstrap-datetimepicker-widget dropdown-menu"><div class="datepicker">' + c + "</div></div>"
+                },
+                R = {
+                    modes: [{
+                        clsName: "days",
+                        navFnc: "month",
+                        navStep: 1
+                    }, {
+                        clsName: "months",
+                        navFnc: "year",
+                        navStep: 1
+                    }, {
+                        clsName: "years",
+                        navFnc: "year",
+                        navStep: 10
+                    }]
+                },
+                S = {
+                    hourTemplate: '<span data-action="showHours"   data-time-component="hours"   class="timepicker-hour"></span>',
+                    minuteTemplate: '<span data-action="showMinutes" data-time-component="minutes" class="timepicker-minute"></span>',
+                    secondTemplate: '<span data-action="showSeconds"  data-time-component="seconds" class="timepicker-second"></span>'
+                };
+            S.getTemplate = function() {
+                return '<div class="timepicker-picker"><table class="table-condensed"><tr><td><a href="#" class="btn" data-action="incrementHours"><span class="' + i.options.icons.up + '"></span></a></td><td class="separator"></td><td>' + (i.options.useMinutes ? '<a href="#" class="btn" data-action="incrementMinutes"><span class="' + i.options.icons.up + '"></span></a>' : "") + "</td>" + (i.options.useSeconds ? '<td class="separator"></td><td><a href="#" class="btn" data-action="incrementSeconds"><span class="' + i.options.icons.up + '"></span></a></td>' : "") + (i.use24hours ? "" : '<td class="separator"></td>') + "</tr><tr><td>" + S.hourTemplate + '</td> <td class="separator">:</td><td>' + (i.options.useMinutes ? S.minuteTemplate : '<span class="timepicker-minute">00</span>') + "</td> " + (i.options.useSeconds ? '<td class="separator">:</td><td>' + S.secondTemplate + "</td>" : "") + (i.use24hours ? "" : '<td class="separator"></td><td><button type="button" class="btn btn-primary" data-action="togglePeriod"></button></td>') + '</tr><tr><td><a href="#" class="btn" data-action="decrementHours"><span class="' + i.options.icons.down + '"></span></a></td><td class="separator"></td><td>' + (i.options.useMinutes ? '<a href="#" class="btn" data-action="decrementMinutes"><span class="' + i.options.icons.down + '"></span></a>' : "") + "</td>" + (i.options.useSeconds ? '<td class="separator"></td><td><a href="#" class="btn" data-action="decrementSeconds"><span class="' + i.options.icons.down + '"></span></a></td>' : "") + (i.use24hours ? "" : '<td class="separator"></td>') + '</tr></table></div><div class="timepicker-hours" data-action="selectHour"><table class="table-condensed"></table></div><div class="timepicker-minutes" data-action="selectMinute"><table class="table-condensed"></table></div>' + (i.options.useSeconds ? '<div class="timepicker-seconds" data-action="selectSecond"><table class="table-condensed"></table></div>' : "")
+            }, i.destroy = function() {
+                H(), I(), i.widget.remove(), i.element.removeData("DateTimePicker"), i.component && i.component.removeData("DateTimePicker")
+            }, i.show = function(a) {
+                if (!l().prop("disabled")) {
+                    if (i.options.useCurrent && "" === l().val()) {
+                        if (1 !== i.options.minuteStepping) {
+                            var c = b(),
+                                d = i.options.minuteStepping;
+                            c.minutes(Math.round(c.minutes() / d) * d % 60).seconds(0), i.setValue(c.format(i.format))
+                        } else i.setValue(b().format(i.format));
+                        o("", a.type)
+                    }
+                    a && "click" === a.type && i.isInput && i.widget.hasClass("picker-open") || (i.widget.hasClass("picker-open") ? (i.widget.hide(), i.widget.removeClass("picker-open")) : (i.widget.show(), i.widget.addClass("picker-open")), i.height = i.component ? i.component.outerHeight() : i.element.outerHeight(), n(), i.element.trigger({
+                        type: "dp.show",
+                        date: b(i.date)
+                    }), G(), a && B(a))
+                }
+            }, i.disable = function() {
+                var a = l();
+                a.prop("disabled") || (a.prop("disabled", !0), H())
+            }, i.enable = function() {
+                var a = l();
+                a.prop("disabled") && (a.prop("disabled", !1), F())
+            }, i.hide = function() {
+                var a, c, d = i.widget.find(".collapse");
+                for (a = 0; a < d.length; a++)
+                    if (c = d.eq(a).data("collapse"), c && c.transitioning) return;
+                i.widget.hide(), i.widget.removeClass("picker-open"), i.viewMode = i.startViewMode, E(), i.element.trigger({
+                    type: "dp.hide",
+                    date: b(i.date)
+                }), I()
+            }, i.setValue = function(a) {
+                b.locale(i.options.language), a ? i.unset = !1 : (i.unset = !0, K()), a = b.isMoment(a) ? a.locale(i.options.language) : a instanceof Date ? b(a) : b(a, i.format, i.options.useStrict), a.isValid() ? (i.date = a, K(), i.viewDate = b({
+                    y: i.date.year(),
+                    M: i.date.month()
+                }), t(), x()) : p(a)
+            }, i.getDate = function() {
+                return i.unset ? null : b(i.date)
+            }, i.setDate = function(a) {
+                var c = b(i.date);
+                i.setValue(a ? a : null), o(c, "function")
+            }, i.setDisabledDates = function(a) {
+                i.options.disabledDates = O(a), i.viewDate && q()
+            }, i.setEnabledDates = function(a) {
+                i.options.enabledDates = O(a), i.viewDate && q()
+            }, i.setMaxDate = function(a) {
+                void 0 !== a && (i.options.maxDate = b.isMoment(a) || a instanceof Date ? b(a) : b(a, i.format, i.options.useStrict), i.viewDate && q())
+            }, i.setMinDate = function(a) {
+                void 0 !== a && (i.options.minDate = b.isMoment(a) || a instanceof Date ? b(a) : b(a, i.format, i.options.useStrict), i.viewDate && q())
+            }, k()
+        };
+    a.fn.datetimepicker = function(b) {
+        return this.each(function() {
+            var c = a(this),
+                e = c.data("DateTimePicker");
+            e || c.data("DateTimePicker", new d(this, b))
+        })
+    }, a.fn.datetimepicker.defaults = {
+        format: !1,
+        pickDate: !0,
+        pickTime: !0,
+        useMinutes: !0,
+        useSeconds: !1,
+        useCurrent: !0,
+        calendarWeeks: !1,
+        minuteStepping: 1,
+        minDate: b({
+            y: 1900
+        }),
+        maxDate: b().add(100, "y"),
+        showToday: !0,
+        collapse: !0,
+        language: b.locale(),
+        defaultDate: "",
+        disabledDates: !1,
+        enabledDates: !1,
+        icons: {},
+        useStrict: !1,
+        direction: "auto",
+        sideBySide: !1,
+        daysOfWeekDisabled: [],
+        widgetParent: !1
+    }
+});
 /* ========================================================================
  * bootstrap-switch - v3.3.2
  * http://www.bootstrap-switch.org
@@ -19741,6 +21776,1639 @@ if(this.$element.prop("multiple"))this.current(function(d){var e=[];a=[a],a.push
   };
 }(jQuery));
 
+/**
+* @version: 2.1.25
+* @author: Dan Grossman http://www.dangrossman.info/
+* @copyright: Copyright (c) 2012-2017 Dan Grossman. All rights reserved.
+* @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
+* @website: https://www.daterangepicker.com/
+*/
+// Follow the UMD template https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Make globaly available as well
+        define(['moment', 'jquery'], function (moment, jquery) {
+            return (root.daterangepicker = factory(moment, jquery));
+        });
+    } else if (typeof module === 'object' && module.exports) {
+        // Node / Browserify
+        //isomorphic issue
+        var jQuery = (typeof window != 'undefined') ? window.jQuery : undefined;
+        if (!jQuery) {
+            jQuery = require('jquery');
+            if (!jQuery.fn) jQuery.fn = {};
+        }
+        module.exports = factory(require('moment'), jQuery);
+    } else {
+        // Browser globals
+        root.daterangepicker = factory(root.moment, root.jQuery);
+    }
+}(this, function(moment, $) {
+    var DateRangePicker = function(element, options, cb) {
+
+        //default settings for options
+        this.parentEl = 'body';
+        this.element = $(element);
+        this.startDate = moment().startOf('day');
+        this.endDate = moment().endOf('day');
+        this.minDate = false;
+        this.maxDate = false;
+        this.dateLimit = false;
+        this.autoApply = false;
+        this.singleDatePicker = false;
+        this.showDropdowns = false;
+        this.showWeekNumbers = false;
+        this.showISOWeekNumbers = false;
+        this.showCustomRangeLabel = true;
+        this.timePicker = false;
+        this.timePicker24Hour = false;
+        this.timePickerIncrement = 1;
+        this.timePickerSeconds = false;
+        this.linkedCalendars = true;
+        this.autoUpdateInput = true;
+        this.alwaysShowCalendars = false;
+        this.ranges = {};
+
+        this.opens = 'right';
+        if (this.element.hasClass('pull-right'))
+            this.opens = 'left';
+
+        this.drops = 'down';
+        if (this.element.hasClass('dropup'))
+            this.drops = 'up';
+
+        this.buttonClasses = 'btn btn-sm';
+        this.applyClass = 'btn-success';
+        this.cancelClass = 'btn-default';
+
+        this.locale = {
+            direction: 'ltr',
+            format: moment.localeData().longDateFormat('L'),
+            separator: ' - ',
+            applyLabel: 'Apply',
+            cancelLabel: 'Cancel',
+            weekLabel: 'W',
+            customRangeLabel: 'Custom Range',
+            daysOfWeek: moment.weekdaysMin(),
+            monthNames: moment.monthsShort(),
+            firstDay: moment.localeData().firstDayOfWeek()
+        };
+
+        this.callback = function() { };
+
+        //some state information
+        this.isShowing = false;
+        this.leftCalendar = {};
+        this.rightCalendar = {};
+
+        //custom options from user
+        if (typeof options !== 'object' || options === null)
+            options = {};
+
+        //allow setting options with data attributes
+        //data-api options will be overwritten with custom javascript options
+        options = $.extend(this.element.data(), options);
+
+        //html template for the picker UI
+        if (typeof options.template !== 'string' && !(options.template instanceof $))
+            options.template = '<div class="daterangepicker dropdown-menu">' +
+                '<div class="calendar left">' +
+                    '<div class="daterangepicker_input">' +
+                      '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />' +
+                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
+                      '<div class="calendar-time">' +
+                        '<div></div>' +
+                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
+                      '</div>' +
+                    '</div>' +
+                    '<div class="calendar-table"></div>' +
+                '</div>' +
+                '<div class="calendar right">' +
+                    '<div class="daterangepicker_input">' +
+                      '<input class="input-mini form-control" type="text" name="daterangepicker_end" value="" />' +
+                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
+                      '<div class="calendar-time">' +
+                        '<div></div>' +
+                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
+                      '</div>' +
+                    '</div>' +
+                    '<div class="calendar-table"></div>' +
+                '</div>' +
+                '<div class="ranges">' +
+                    '<div class="range_inputs">' +
+                        '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
+                        '<button class="cancelBtn" type="button"></button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+
+        this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
+        this.container = $(options.template).appendTo(this.parentEl);
+
+        //
+        // handle all the possible options overriding defaults
+        //
+
+        if (typeof options.locale === 'object') {
+
+            if (typeof options.locale.direction === 'string')
+                this.locale.direction = options.locale.direction;
+
+            if (typeof options.locale.format === 'string')
+                this.locale.format = options.locale.format;
+
+            if (typeof options.locale.separator === 'string')
+                this.locale.separator = options.locale.separator;
+
+            if (typeof options.locale.daysOfWeek === 'object')
+                this.locale.daysOfWeek = options.locale.daysOfWeek.slice();
+
+            if (typeof options.locale.monthNames === 'object')
+              this.locale.monthNames = options.locale.monthNames.slice();
+
+            if (typeof options.locale.firstDay === 'number')
+              this.locale.firstDay = options.locale.firstDay;
+
+            if (typeof options.locale.applyLabel === 'string')
+              this.locale.applyLabel = options.locale.applyLabel;
+
+            if (typeof options.locale.cancelLabel === 'string')
+              this.locale.cancelLabel = options.locale.cancelLabel;
+
+            if (typeof options.locale.weekLabel === 'string')
+              this.locale.weekLabel = options.locale.weekLabel;
+
+            if (typeof options.locale.customRangeLabel === 'string'){
+                //Support unicode chars in the custom range name.
+                var elem = document.createElement('textarea');
+                elem.innerHTML = options.locale.customRangeLabel;
+                var rangeHtml = elem.value;
+                this.locale.customRangeLabel = rangeHtml;
+            }
+        }
+        this.container.addClass(this.locale.direction);
+
+        if (typeof options.startDate === 'string')
+            this.startDate = moment(options.startDate, this.locale.format);
+
+        if (typeof options.endDate === 'string')
+            this.endDate = moment(options.endDate, this.locale.format);
+
+        if (typeof options.minDate === 'string')
+            this.minDate = moment(options.minDate, this.locale.format);
+
+        if (typeof options.maxDate === 'string')
+            this.maxDate = moment(options.maxDate, this.locale.format);
+
+        if (typeof options.startDate === 'object')
+            this.startDate = moment(options.startDate);
+
+        if (typeof options.endDate === 'object')
+            this.endDate = moment(options.endDate);
+
+        if (typeof options.minDate === 'object')
+            this.minDate = moment(options.minDate);
+
+        if (typeof options.maxDate === 'object')
+            this.maxDate = moment(options.maxDate);
+
+        // sanity check for bad options
+        if (this.minDate && this.startDate.isBefore(this.minDate))
+            this.startDate = this.minDate.clone();
+
+        // sanity check for bad options
+        if (this.maxDate && this.endDate.isAfter(this.maxDate))
+            this.endDate = this.maxDate.clone();
+
+        if (typeof options.applyClass === 'string')
+            this.applyClass = options.applyClass;
+
+        if (typeof options.cancelClass === 'string')
+            this.cancelClass = options.cancelClass;
+
+        if (typeof options.dateLimit === 'object')
+            this.dateLimit = options.dateLimit;
+
+        if (typeof options.opens === 'string')
+            this.opens = options.opens;
+
+        if (typeof options.drops === 'string')
+            this.drops = options.drops;
+
+        if (typeof options.showWeekNumbers === 'boolean')
+            this.showWeekNumbers = options.showWeekNumbers;
+
+        if (typeof options.showISOWeekNumbers === 'boolean')
+            this.showISOWeekNumbers = options.showISOWeekNumbers;
+
+        if (typeof options.buttonClasses === 'string')
+            this.buttonClasses = options.buttonClasses;
+
+        if (typeof options.buttonClasses === 'object')
+            this.buttonClasses = options.buttonClasses.join(' ');
+
+        if (typeof options.showDropdowns === 'boolean')
+            this.showDropdowns = options.showDropdowns;
+
+        if (typeof options.showCustomRangeLabel === 'boolean')
+            this.showCustomRangeLabel = options.showCustomRangeLabel;
+
+        if (typeof options.singleDatePicker === 'boolean') {
+            this.singleDatePicker = options.singleDatePicker;
+            if (this.singleDatePicker)
+                this.endDate = this.startDate.clone();
+        }
+
+        if (typeof options.timePicker === 'boolean')
+            this.timePicker = options.timePicker;
+
+        if (typeof options.timePickerSeconds === 'boolean')
+            this.timePickerSeconds = options.timePickerSeconds;
+
+        if (typeof options.timePickerIncrement === 'number')
+            this.timePickerIncrement = options.timePickerIncrement;
+
+        if (typeof options.timePicker24Hour === 'boolean')
+            this.timePicker24Hour = options.timePicker24Hour;
+
+        if (typeof options.autoApply === 'boolean')
+            this.autoApply = options.autoApply;
+
+        if (typeof options.autoUpdateInput === 'boolean')
+            this.autoUpdateInput = options.autoUpdateInput;
+
+        if (typeof options.linkedCalendars === 'boolean')
+            this.linkedCalendars = options.linkedCalendars;
+
+        if (typeof options.isInvalidDate === 'function')
+            this.isInvalidDate = options.isInvalidDate;
+
+        if (typeof options.isCustomDate === 'function')
+            this.isCustomDate = options.isCustomDate;
+
+        if (typeof options.alwaysShowCalendars === 'boolean')
+            this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        // update day names order to firstDay
+        if (this.locale.firstDay != 0) {
+            var iterator = this.locale.firstDay;
+            while (iterator > 0) {
+                this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
+                iterator--;
+            }
+        }
+
+        var start, end, range;
+
+        //if no start/end dates set, check if an input element contains initial values
+        if (typeof options.startDate === 'undefined' && typeof options.endDate === 'undefined') {
+            if ($(this.element).is('input[type=text]')) {
+                var val = $(this.element).val(),
+                    split = val.split(this.locale.separator);
+
+                start = end = null;
+
+                if (split.length == 2) {
+                    start = moment(split[0], this.locale.format);
+                    end = moment(split[1], this.locale.format);
+                } else if (this.singleDatePicker && val !== "") {
+                    start = moment(val, this.locale.format);
+                    end = moment(val, this.locale.format);
+                }
+                if (start !== null && end !== null) {
+                    this.setStartDate(start);
+                    this.setEndDate(end);
+                }
+            }
+        }
+
+        if (typeof options.ranges === 'object') {
+            for (range in options.ranges) {
+
+                if (typeof options.ranges[range][0] === 'string')
+                    start = moment(options.ranges[range][0], this.locale.format);
+                else
+                    start = moment(options.ranges[range][0]);
+
+                if (typeof options.ranges[range][1] === 'string')
+                    end = moment(options.ranges[range][1], this.locale.format);
+                else
+                    end = moment(options.ranges[range][1]);
+
+                // If the start or end date exceed those allowed by the minDate or dateLimit
+                // options, shorten the range to the allowable period.
+                if (this.minDate && start.isBefore(this.minDate))
+                    start = this.minDate.clone();
+
+                var maxDate = this.maxDate;
+                if (this.dateLimit && maxDate && start.clone().add(this.dateLimit).isAfter(maxDate))
+                    maxDate = start.clone().add(this.dateLimit);
+                if (maxDate && end.isAfter(maxDate))
+                    end = maxDate.clone();
+
+                // If the end of the range is before the minimum or the start of the range is
+                // after the maximum, don't display this range option at all.
+                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) 
+                  || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day')))
+                    continue;
+
+                //Support unicode chars in the range names.
+                var elem = document.createElement('textarea');
+                elem.innerHTML = range;
+                var rangeHtml = elem.value;
+
+                this.ranges[rangeHtml] = [start, end];
+            }
+
+            var list = '<ul>';
+            for (range in this.ranges) {
+                list += '<li data-range-key="' + range + '">' + range + '</li>';
+            }
+            if (this.showCustomRangeLabel) {
+                list += '<li data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
+            }
+            list += '</ul>';
+            this.container.find('.ranges').prepend(list);
+        }
+
+        if (typeof cb === 'function') {
+            this.callback = cb;
+        }
+
+        if (!this.timePicker) {
+            this.startDate = this.startDate.startOf('day');
+            this.endDate = this.endDate.endOf('day');
+            this.container.find('.calendar-time').hide();
+        }
+
+        //can't be used together for now
+        if (this.timePicker && this.autoApply)
+            this.autoApply = false;
+
+        if (this.autoApply && typeof options.ranges !== 'object') {
+            this.container.find('.ranges').hide();
+        } else if (this.autoApply) {
+            this.container.find('.applyBtn, .cancelBtn').addClass('hide');
+        }
+
+        if (this.singleDatePicker) {
+            this.container.addClass('single');
+            this.container.find('.calendar.left').addClass('single');
+            this.container.find('.calendar.left').show();
+            this.container.find('.calendar.right').hide();
+            this.container.find('.daterangepicker_input input, .daterangepicker_input > i').hide();
+            if (this.timePicker) {
+                this.container.find('.ranges ul').hide();
+            } else {
+                this.container.find('.ranges').hide();
+            }
+        }
+
+        if ((typeof options.ranges === 'undefined' && !this.singleDatePicker) || this.alwaysShowCalendars) {
+            this.container.addClass('show-calendar');
+        }
+
+        this.container.addClass('opens' + this.opens);
+
+        //swap the position of the predefined ranges if opens right
+        if (typeof options.ranges !== 'undefined' && this.opens == 'right') {
+            this.container.find('.ranges').prependTo( this.container.find('.calendar.left').parent() );
+        }
+
+        //apply CSS classes and labels to buttons
+        this.container.find('.applyBtn, .cancelBtn').addClass(this.buttonClasses);
+        if (this.applyClass.length)
+            this.container.find('.applyBtn').addClass(this.applyClass);
+        if (this.cancelClass.length)
+            this.container.find('.cancelBtn').addClass(this.cancelClass);
+        this.container.find('.applyBtn').html(this.locale.applyLabel);
+        this.container.find('.cancelBtn').html(this.locale.cancelLabel);
+
+        //
+        // event listeners
+        //
+
+        this.container.find('.calendar')
+            .on('click.daterangepicker', '.prev', $.proxy(this.clickPrev, this))
+            .on('click.daterangepicker', '.next', $.proxy(this.clickNext, this))
+            .on('mousedown.daterangepicker', 'td.available', $.proxy(this.clickDate, this))
+            .on('mouseenter.daterangepicker', 'td.available', $.proxy(this.hoverDate, this))
+            .on('mouseleave.daterangepicker', 'td.available', $.proxy(this.updateFormInputs, this))
+            .on('change.daterangepicker', 'select.yearselect', $.proxy(this.monthOrYearChanged, this))
+            .on('change.daterangepicker', 'select.monthselect', $.proxy(this.monthOrYearChanged, this))
+            .on('change.daterangepicker', 'select.hourselect,select.minuteselect,select.secondselect,select.ampmselect', $.proxy(this.timeChanged, this))
+            .on('click.daterangepicker', '.daterangepicker_input input', $.proxy(this.showCalendars, this))
+            .on('focus.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsFocused, this))
+            .on('blur.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsBlurred, this))
+            .on('change.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsChanged, this));
+
+        this.container.find('.ranges')
+            .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
+            .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
+            .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
+            .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
+            .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
+
+        if (this.element.is('input') || this.element.is('button')) {
+            this.element.on({
+                'click.daterangepicker': $.proxy(this.show, this),
+                'focus.daterangepicker': $.proxy(this.show, this),
+                'keyup.daterangepicker': $.proxy(this.elementChanged, this),
+                'keydown.daterangepicker': $.proxy(this.keydown, this)
+            });
+        } else {
+            this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
+        }
+
+        //
+        // if attached to a text input, set the initial value
+        //
+
+        if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
+            this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+            this.element.trigger('change');
+        } else if (this.element.is('input') && this.autoUpdateInput) {
+            this.element.val(this.startDate.format(this.locale.format));
+            this.element.trigger('change');
+        }
+
+    };
+
+    DateRangePicker.prototype = {
+
+        constructor: DateRangePicker,
+
+        setStartDate: function(startDate) {
+            if (typeof startDate === 'string')
+                this.startDate = moment(startDate, this.locale.format);
+
+            if (typeof startDate === 'object')
+                this.startDate = moment(startDate);
+
+            if (!this.timePicker)
+                this.startDate = this.startDate.startOf('day');
+
+            if (this.timePicker && this.timePickerIncrement)
+                this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+
+            if (this.minDate && this.startDate.isBefore(this.minDate)) {
+                this.startDate = this.minDate.clone();
+                if (this.timePicker && this.timePickerIncrement)
+                    this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+            }
+
+            if (this.maxDate && this.startDate.isAfter(this.maxDate)) {
+                this.startDate = this.maxDate.clone();
+                if (this.timePicker && this.timePickerIncrement)
+                    this.startDate.minute(Math.floor(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+            }
+
+            if (!this.isShowing)
+                this.updateElement();
+
+            this.updateMonthsInView();
+        },
+
+        setEndDate: function(endDate) {
+            if (typeof endDate === 'string')
+                this.endDate = moment(endDate, this.locale.format);
+
+            if (typeof endDate === 'object')
+                this.endDate = moment(endDate);
+
+            if (!this.timePicker)
+                this.endDate = this.endDate.endOf('day');
+
+            if (this.timePicker && this.timePickerIncrement)
+                this.endDate.minute(Math.round(this.endDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+
+            if (this.endDate.isBefore(this.startDate))
+                this.endDate = this.startDate.clone();
+
+            if (this.maxDate && this.endDate.isAfter(this.maxDate))
+                this.endDate = this.maxDate.clone();
+
+            if (this.dateLimit && this.startDate.clone().add(this.dateLimit).isBefore(this.endDate))
+                this.endDate = this.startDate.clone().add(this.dateLimit);
+
+            this.previousRightTime = this.endDate.clone();
+
+            if (!this.isShowing)
+                this.updateElement();
+
+            this.updateMonthsInView();
+        },
+
+        isInvalidDate: function() {
+            return false;
+        },
+
+        isCustomDate: function() {
+            return false;
+        },
+
+        updateView: function() {
+            if (this.timePicker) {
+                this.renderTimePicker('left');
+                this.renderTimePicker('right');
+                if (!this.endDate) {
+                    this.container.find('.right .calendar-time select').attr('disabled', 'disabled').addClass('disabled');
+                } else {
+                    this.container.find('.right .calendar-time select').removeAttr('disabled').removeClass('disabled');
+                }
+            }
+            if (this.endDate) {
+                this.container.find('input[name="daterangepicker_end"]').removeClass('active');
+                this.container.find('input[name="daterangepicker_start"]').addClass('active');
+            } else {
+                this.container.find('input[name="daterangepicker_end"]').addClass('active');
+                this.container.find('input[name="daterangepicker_start"]').removeClass('active');
+            }
+            this.updateMonthsInView();
+            this.updateCalendars();
+            this.updateFormInputs();
+        },
+
+        updateMonthsInView: function() {
+            if (this.endDate) {
+
+                //if both dates are visible already, do nothing
+                if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
+                    (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
+                    &&
+                    (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
+                    ) {
+                    return;
+                }
+
+                this.leftCalendar.month = this.startDate.clone().date(2);
+                if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
+                    this.rightCalendar.month = this.endDate.clone().date(2);
+                } else {
+                    this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
+                }
+
+            } else {
+                if (this.leftCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM')) {
+                    this.leftCalendar.month = this.startDate.clone().date(2);
+                    this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
+                }
+            }
+            if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) {
+              this.rightCalendar.month = this.maxDate.clone().date(2);
+              this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
+            }
+        },
+
+        updateCalendars: function() {
+
+            if (this.timePicker) {
+                var hour, minute, second;
+                if (this.endDate) {
+                    hour = parseInt(this.container.find('.left .hourselect').val(), 10);
+                    minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
+                    second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
+                    if (!this.timePicker24Hour) {
+                        var ampm = this.container.find('.left .ampmselect').val();
+                        if (ampm === 'PM' && hour < 12)
+                            hour += 12;
+                        if (ampm === 'AM' && hour === 12)
+                            hour = 0;
+                    }
+                } else {
+                    hour = parseInt(this.container.find('.right .hourselect').val(), 10);
+                    minute = parseInt(this.container.find('.right .minuteselect').val(), 10);
+                    second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
+                    if (!this.timePicker24Hour) {
+                        var ampm = this.container.find('.right .ampmselect').val();
+                        if (ampm === 'PM' && hour < 12)
+                            hour += 12;
+                        if (ampm === 'AM' && hour === 12)
+                            hour = 0;
+                    }
+                }
+                this.leftCalendar.month.hour(hour).minute(minute).second(second);
+                this.rightCalendar.month.hour(hour).minute(minute).second(second);
+            }
+
+            this.renderCalendar('left');
+            this.renderCalendar('right');
+
+            //highlight any predefined range matching the current start and end dates
+            this.container.find('.ranges li').removeClass('active');
+            if (this.endDate == null) return;
+
+            this.calculateChosenLabel();
+        },
+
+        renderCalendar: function(side) {
+
+            //
+            // Build the matrix of dates that will populate the calendar
+            //
+
+            var calendar = side == 'left' ? this.leftCalendar : this.rightCalendar;
+            var month = calendar.month.month();
+            var year = calendar.month.year();
+            var hour = calendar.month.hour();
+            var minute = calendar.month.minute();
+            var second = calendar.month.second();
+            var daysInMonth = moment([year, month]).daysInMonth();
+            var firstDay = moment([year, month, 1]);
+            var lastDay = moment([year, month, daysInMonth]);
+            var lastMonth = moment(firstDay).subtract(1, 'month').month();
+            var lastYear = moment(firstDay).subtract(1, 'month').year();
+            var daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth();
+            var dayOfWeek = firstDay.day();
+
+            //initialize a 6 rows x 7 columns array for the calendar
+            var calendar = [];
+            calendar.firstDay = firstDay;
+            calendar.lastDay = lastDay;
+
+            for (var i = 0; i < 6; i++) {
+                calendar[i] = [];
+            }
+
+            //populate the calendar with date objects
+            var startDay = daysInLastMonth - dayOfWeek + this.locale.firstDay + 1;
+            if (startDay > daysInLastMonth)
+                startDay -= 7;
+
+            if (dayOfWeek == this.locale.firstDay)
+                startDay = daysInLastMonth - 6;
+
+            var curDate = moment([lastYear, lastMonth, startDay, 12, minute, second]);
+
+            var col, row;
+            for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add(24, 'hour')) {
+                if (i > 0 && col % 7 === 0) {
+                    col = 0;
+                    row++;
+                }
+                calendar[row][col] = curDate.clone().hour(hour).minute(minute).second(second);
+                curDate.hour(12);
+
+                if (this.minDate && calendar[row][col].format('YYYY-MM-DD') == this.minDate.format('YYYY-MM-DD') && calendar[row][col].isBefore(this.minDate) && side == 'left') {
+                    calendar[row][col] = this.minDate.clone();
+                }
+
+                if (this.maxDate && calendar[row][col].format('YYYY-MM-DD') == this.maxDate.format('YYYY-MM-DD') && calendar[row][col].isAfter(this.maxDate) && side == 'right') {
+                    calendar[row][col] = this.maxDate.clone();
+                }
+
+            }
+
+            //make the calendar object available to hoverDate/clickDate
+            if (side == 'left') {
+                this.leftCalendar.calendar = calendar;
+            } else {
+                this.rightCalendar.calendar = calendar;
+            }
+
+            //
+            // Display the calendar
+            //
+
+            var minDate = side == 'left' ? this.minDate : this.startDate;
+            var maxDate = this.maxDate;
+            var selected = side == 'left' ? this.startDate : this.endDate;
+            var arrow = this.locale.direction == 'ltr' ? {left: 'chevron-left', right: 'chevron-right'} : {left: 'chevron-right', right: 'chevron-left'};
+
+            var html = '<table class="table-condensed">';
+            html += '<thead>';
+            html += '<tr>';
+
+            // add empty cell for week number
+            if (this.showWeekNumbers || this.showISOWeekNumbers)
+                html += '<th></th>';
+
+            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
+                html += '<th class="prev available"><i class="fa fa-' + arrow.left + ' glyphicon glyphicon-' + arrow.left + '"></i></th>';
+            } else {
+                html += '<th></th>';
+            }
+
+            var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
+
+            if (this.showDropdowns) {
+                var currentMonth = calendar[1][1].month();
+                var currentYear = calendar[1][1].year();
+                var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
+                var minYear = (minDate && minDate.year()) || (currentYear - 50);
+                var inMinYear = currentYear == minYear;
+                var inMaxYear = currentYear == maxYear;
+
+                var monthHtml = '<select class="monthselect">';
+                for (var m = 0; m < 12; m++) {
+                    if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
+                        monthHtml += "<option value='" + m + "'" +
+                            (m === currentMonth ? " selected='selected'" : "") +
+                            ">" + this.locale.monthNames[m] + "</option>";
+                    } else {
+                        monthHtml += "<option value='" + m + "'" +
+                            (m === currentMonth ? " selected='selected'" : "") +
+                            " disabled='disabled'>" + this.locale.monthNames[m] + "</option>";
+                    }
+                }
+                monthHtml += "</select>";
+
+                var yearHtml = '<select class="yearselect">';
+                for (var y = minYear; y <= maxYear; y++) {
+                    yearHtml += '<option value="' + y + '"' +
+                        (y === currentYear ? ' selected="selected"' : '') +
+                        '>' + y + '</option>';
+                }
+                yearHtml += '</select>';
+
+                dateHtml = monthHtml + yearHtml;
+            }
+
+            html += '<th colspan="5" class="month">' + dateHtml + '</th>';
+            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
+                html += '<th class="next available"><i class="fa fa-' + arrow.right + ' glyphicon glyphicon-' + arrow.right + '"></i></th>';
+            } else {
+                html += '<th></th>';
+            }
+
+            html += '</tr>';
+            html += '<tr>';
+
+            // add week number label
+            if (this.showWeekNumbers || this.showISOWeekNumbers)
+                html += '<th class="week">' + this.locale.weekLabel + '</th>';
+
+            $.each(this.locale.daysOfWeek, function(index, dayOfWeek) {
+                html += '<th>' + dayOfWeek + '</th>';
+            });
+
+            html += '</tr>';
+            html += '</thead>';
+            html += '<tbody>';
+
+            //adjust maxDate to reflect the dateLimit setting in order to
+            //grey out end dates beyond the dateLimit
+            if (this.endDate == null && this.dateLimit) {
+                var maxLimit = this.startDate.clone().add(this.dateLimit).endOf('day');
+                if (!maxDate || maxLimit.isBefore(maxDate)) {
+                    maxDate = maxLimit;
+                }
+            }
+
+            for (var row = 0; row < 6; row++) {
+                html += '<tr>';
+
+                // add week number
+                if (this.showWeekNumbers)
+                    html += '<td class="week">' + calendar[row][0].week() + '</td>';
+                else if (this.showISOWeekNumbers)
+                    html += '<td class="week">' + calendar[row][0].isoWeek() + '</td>';
+
+                for (var col = 0; col < 7; col++) {
+
+                    var classes = [];
+
+                    //highlight today's date
+                    if (calendar[row][col].isSame(new Date(), "day"))
+                        classes.push('today');
+
+                    //highlight weekends
+                    if (calendar[row][col].isoWeekday() > 5)
+                        classes.push('weekend');
+
+                    //grey out the dates in other months displayed at beginning and end of this calendar
+                    if (calendar[row][col].month() != calendar[1][1].month())
+                        classes.push('off');
+
+                    //don't allow selection of dates before the minimum date
+                    if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day'))
+                        classes.push('off', 'disabled');
+
+                    //don't allow selection of dates after the maximum date
+                    if (maxDate && calendar[row][col].isAfter(maxDate, 'day'))
+                        classes.push('off', 'disabled');
+
+                    //don't allow selection of date if a custom function decides it's invalid
+                    if (this.isInvalidDate(calendar[row][col]))
+                        classes.push('off', 'disabled');
+
+                    //highlight the currently selected start date
+                    if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD'))
+                        classes.push('active', 'start-date');
+
+                    //highlight the currently selected end date
+                    if (this.endDate != null && calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD'))
+                        classes.push('active', 'end-date');
+
+                    //highlight dates in-between the selected dates
+                    if (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate)
+                        classes.push('in-range');
+
+                    //apply custom classes for this date
+                    var isCustom = this.isCustomDate(calendar[row][col]);
+                    if (isCustom !== false) {
+                        if (typeof isCustom === 'string')
+                            classes.push(isCustom);
+                        else
+                            Array.prototype.push.apply(classes, isCustom);
+                    }
+
+                    var cname = '', disabled = false;
+                    for (var i = 0; i < classes.length; i++) {
+                        cname += classes[i] + ' ';
+                        if (classes[i] == 'disabled')
+                            disabled = true;
+                    }
+                    if (!disabled)
+                        cname += 'available';
+
+                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
+
+                }
+                html += '</tr>';
+            }
+
+            html += '</tbody>';
+            html += '</table>';
+
+            this.container.find('.calendar.' + side + ' .calendar-table').html(html);
+
+        },
+
+        renderTimePicker: function(side) {
+
+            // Don't bother updating the time picker if it's currently disabled
+            // because an end date hasn't been clicked yet
+            if (side == 'right' && !this.endDate) return;
+
+            var html, selected, minDate, maxDate = this.maxDate;
+
+            if (this.dateLimit && (!this.maxDate || this.startDate.clone().add(this.dateLimit).isAfter(this.maxDate)))
+                maxDate = this.startDate.clone().add(this.dateLimit);
+
+            if (side == 'left') {
+                selected = this.startDate.clone();
+                minDate = this.minDate;
+            } else if (side == 'right') {
+                selected = this.endDate.clone();
+                minDate = this.startDate;
+
+                //Preserve the time already selected
+                var timeSelector = this.container.find('.calendar.right .calendar-time div');
+                if (timeSelector.html() != '') {
+
+                    selected.hour(timeSelector.find('.hourselect option:selected').val() || selected.hour());
+                    selected.minute(timeSelector.find('.minuteselect option:selected').val() || selected.minute());
+                    selected.second(timeSelector.find('.secondselect option:selected').val() || selected.second());
+
+                    if (!this.timePicker24Hour) {
+                        var ampm = timeSelector.find('.ampmselect option:selected').val();
+                        if (ampm === 'PM' && selected.hour() < 12)
+                            selected.hour(selected.hour() + 12);
+                        if (ampm === 'AM' && selected.hour() === 12)
+                            selected.hour(0);
+                    }
+
+                }
+
+                if (selected.isBefore(this.startDate))
+                    selected = this.startDate.clone();
+
+                if (maxDate && selected.isAfter(maxDate))
+                    selected = maxDate.clone();
+
+            }
+
+            //
+            // hours
+            //
+
+            html = '<select class="hourselect">';
+
+            var start = this.timePicker24Hour ? 0 : 1;
+            var end = this.timePicker24Hour ? 23 : 12;
+
+            for (var i = start; i <= end; i++) {
+                var i_in_24 = i;
+                if (!this.timePicker24Hour)
+                    i_in_24 = selected.hour() >= 12 ? (i == 12 ? 12 : i + 12) : (i == 12 ? 0 : i);
+
+                var time = selected.clone().hour(i_in_24);
+                var disabled = false;
+                if (minDate && time.minute(59).isBefore(minDate))
+                    disabled = true;
+                if (maxDate && time.minute(0).isAfter(maxDate))
+                    disabled = true;
+
+                if (i_in_24 == selected.hour() && !disabled) {
+                    html += '<option value="' + i + '" selected="selected">' + i + '</option>';
+                } else if (disabled) {
+                    html += '<option value="' + i + '" disabled="disabled" class="disabled">' + i + '</option>';
+                } else {
+                    html += '<option value="' + i + '">' + i + '</option>';
+                }
+            }
+
+            html += '</select> ';
+
+            //
+            // minutes
+            //
+
+            html += ': <select class="minuteselect">';
+
+            for (var i = 0; i < 60; i += this.timePickerIncrement) {
+                var padded = i < 10 ? '0' + i : i;
+                var time = selected.clone().minute(i);
+
+                var disabled = false;
+                if (minDate && time.second(59).isBefore(minDate))
+                    disabled = true;
+                if (maxDate && time.second(0).isAfter(maxDate))
+                    disabled = true;
+
+                if (selected.minute() == i && !disabled) {
+                    html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
+                } else if (disabled) {
+                    html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
+                } else {
+                    html += '<option value="' + i + '">' + padded + '</option>';
+                }
+            }
+
+            html += '</select> ';
+
+            //
+            // seconds
+            //
+
+            if (this.timePickerSeconds) {
+                html += ': <select class="secondselect">';
+
+                for (var i = 0; i < 60; i++) {
+                    var padded = i < 10 ? '0' + i : i;
+                    var time = selected.clone().second(i);
+
+                    var disabled = false;
+                    if (minDate && time.isBefore(minDate))
+                        disabled = true;
+                    if (maxDate && time.isAfter(maxDate))
+                        disabled = true;
+
+                    if (selected.second() == i && !disabled) {
+                        html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
+                    } else if (disabled) {
+                        html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
+                    } else {
+                        html += '<option value="' + i + '">' + padded + '</option>';
+                    }
+                }
+
+                html += '</select> ';
+            }
+
+            //
+            // AM/PM
+            //
+
+            if (!this.timePicker24Hour) {
+                html += '<select class="ampmselect">';
+
+                var am_html = '';
+                var pm_html = '';
+
+                if (minDate && selected.clone().hour(12).minute(0).second(0).isBefore(minDate))
+                    am_html = ' disabled="disabled" class="disabled"';
+
+                if (maxDate && selected.clone().hour(0).minute(0).second(0).isAfter(maxDate))
+                    pm_html = ' disabled="disabled" class="disabled"';
+
+                if (selected.hour() >= 12) {
+                    html += '<option value="AM"' + am_html + '>AM</option><option value="PM" selected="selected"' + pm_html + '>PM</option>';
+                } else {
+                    html += '<option value="AM" selected="selected"' + am_html + '>AM</option><option value="PM"' + pm_html + '>PM</option>';
+                }
+
+                html += '</select>';
+            }
+
+            this.container.find('.calendar.' + side + ' .calendar-time div').html(html);
+
+        },
+
+        updateFormInputs: function() {
+
+            //ignore mouse movements while an above-calendar text input has focus
+            if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
+                return;
+
+            this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.locale.format));
+            if (this.endDate)
+                this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.locale.format));
+
+            if (this.singleDatePicker || (this.endDate && (this.startDate.isBefore(this.endDate) || this.startDate.isSame(this.endDate)))) {
+                this.container.find('button.applyBtn').removeAttr('disabled');
+            } else {
+                this.container.find('button.applyBtn').attr('disabled', 'disabled');
+            }
+
+        },
+
+        move: function() {
+            var parentOffset = { top: 0, left: 0 },
+                containerTop;
+            var parentRightEdge = $(window).width();
+            if (!this.parentEl.is('body')) {
+                parentOffset = {
+                    top: this.parentEl.offset().top - this.parentEl.scrollTop(),
+                    left: this.parentEl.offset().left - this.parentEl.scrollLeft()
+                };
+                parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
+            }
+
+            if (this.drops == 'up')
+                containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
+            else
+                containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
+            this.container[this.drops == 'up' ? 'addClass' : 'removeClass']('dropup');
+
+            if (this.opens == 'left') {
+                this.container.css({
+                    top: containerTop,
+                    right: parentRightEdge - this.element.offset().left - this.element.outerWidth(),
+                    left: 'auto'
+                });
+                if (this.container.offset().left < 0) {
+                    this.container.css({
+                        right: 'auto',
+                        left: 9
+                    });
+                }
+            } else if (this.opens == 'center') {
+                this.container.css({
+                    top: containerTop,
+                    left: this.element.offset().left - parentOffset.left + this.element.outerWidth() / 2
+                            - this.container.outerWidth() / 2,
+                    right: 'auto'
+                });
+                if (this.container.offset().left < 0) {
+                    this.container.css({
+                        right: 'auto',
+                        left: 9
+                    });
+                }
+            } else {
+                this.container.css({
+                    top: containerTop,
+                    left: this.element.offset().left - parentOffset.left,
+                    right: 'auto'
+                });
+                if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
+                    this.container.css({
+                        left: 'auto',
+                        right: 0
+                    });
+                }
+            }
+        },
+
+        show: function(e) {
+            if (this.isShowing) return;
+
+            // Create a click proxy that is private to this instance of datepicker, for unbinding
+            this._outsideClickProxy = $.proxy(function(e) { this.outsideClick(e); }, this);
+
+            // Bind global datepicker mousedown for hiding and
+            $(document)
+              .on('mousedown.daterangepicker', this._outsideClickProxy)
+              // also support mobile devices
+              .on('touchend.daterangepicker', this._outsideClickProxy)
+              // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
+              .on('click.daterangepicker', '[data-toggle=dropdown]', this._outsideClickProxy)
+              // and also close when focus changes to outside the picker (eg. tabbing between controls)
+              .on('focusin.daterangepicker', this._outsideClickProxy);
+
+            // Reposition the picker if the window is resized while it's open
+            $(window).on('resize.daterangepicker', $.proxy(function(e) { this.move(e); }, this));
+
+            this.oldStartDate = this.startDate.clone();
+            this.oldEndDate = this.endDate.clone();
+            this.previousRightTime = this.endDate.clone();
+
+            this.updateView();
+            this.container.show();
+            this.move();
+            this.element.trigger('show.daterangepicker', this);
+            this.isShowing = true;
+        },
+
+        hide: function(e) {
+            if (!this.isShowing) return;
+
+            //incomplete date selection, revert to last values
+            if (!this.endDate) {
+                this.startDate = this.oldStartDate.clone();
+                this.endDate = this.oldEndDate.clone();
+            }
+
+            //if a new date range was selected, invoke the user callback function
+            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
+                this.callback(this.startDate, this.endDate, this.chosenLabel);
+
+            //if picker is attached to a text input, update it
+            this.updateElement();
+
+            $(document).off('.daterangepicker');
+            $(window).off('.daterangepicker');
+            this.container.hide();
+            this.element.trigger('hide.daterangepicker', this);
+            this.isShowing = false;
+        },
+
+        toggle: function(e) {
+            if (this.isShowing) {
+                this.hide();
+            } else {
+                this.show();
+            }
+        },
+
+        outsideClick: function(e) {
+            var target = $(e.target);
+            // if the page is clicked anywhere except within the daterangerpicker/button
+            // itself then call this.hide()
+            if (
+                // ie modal dialog fix
+                e.type == "focusin" ||
+                target.closest(this.element).length ||
+                target.closest(this.container).length ||
+                target.closest('.calendar-table').length
+                ) return;
+            this.hide();
+            this.element.trigger('outsideClick.daterangepicker', this);
+        },
+
+        showCalendars: function() {
+            this.container.addClass('show-calendar');
+            this.move();
+            this.element.trigger('showCalendar.daterangepicker', this);
+        },
+
+        hideCalendars: function() {
+            this.container.removeClass('show-calendar');
+            this.element.trigger('hideCalendar.daterangepicker', this);
+        },
+
+        hoverRange: function(e) {
+
+            //ignore mouse movements while an above-calendar text input has focus
+            if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
+                return;
+
+            var label = e.target.getAttribute('data-range-key');
+
+            if (label == this.locale.customRangeLabel) {
+                this.updateView();
+            } else {
+                var dates = this.ranges[label];
+                this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
+                this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
+            }
+
+        },
+
+        clickRange: function(e) {
+            var label = e.target.getAttribute('data-range-key');
+            this.chosenLabel = label;
+            if (label == this.locale.customRangeLabel) {
+                this.showCalendars();
+            } else {
+                var dates = this.ranges[label];
+                this.startDate = dates[0];
+                this.endDate = dates[1];
+
+                if (!this.timePicker) {
+                    this.startDate.startOf('day');
+                    this.endDate.endOf('day');
+                }
+
+                if (!this.alwaysShowCalendars)
+                    this.hideCalendars();
+                this.clickApply();
+            }
+        },
+
+        clickPrev: function(e) {
+            var cal = $(e.target).parents('.calendar');
+            if (cal.hasClass('left')) {
+                this.leftCalendar.month.subtract(1, 'month');
+                if (this.linkedCalendars)
+                    this.rightCalendar.month.subtract(1, 'month');
+            } else {
+                this.rightCalendar.month.subtract(1, 'month');
+            }
+            this.updateCalendars();
+        },
+
+        clickNext: function(e) {
+            var cal = $(e.target).parents('.calendar');
+            if (cal.hasClass('left')) {
+                this.leftCalendar.month.add(1, 'month');
+            } else {
+                this.rightCalendar.month.add(1, 'month');
+                if (this.linkedCalendars)
+                    this.leftCalendar.month.add(1, 'month');
+            }
+            this.updateCalendars();
+        },
+
+        hoverDate: function(e) {
+
+            //ignore mouse movements while an above-calendar text input has focus
+            //if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
+            //    return;
+
+            //ignore dates that can't be selected
+            if (!$(e.target).hasClass('available')) return;
+
+            //have the text inputs above calendars reflect the date being hovered over
+            var title = $(e.target).attr('data-title');
+            var row = title.substr(1, 1);
+            var col = title.substr(3, 1);
+            var cal = $(e.target).parents('.calendar');
+            var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+
+            if (this.endDate && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
+                this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
+            } else if (!this.endDate && !this.container.find('input[name=daterangepicker_end]').is(":focus")) {
+                this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
+            }
+
+            //highlight the dates between the start date and the date being hovered as a potential end date
+            var leftCalendar = this.leftCalendar;
+            var rightCalendar = this.rightCalendar;
+            var startDate = this.startDate;
+            if (!this.endDate) {
+                this.container.find('.calendar tbody td').each(function(index, el) {
+
+                    //skip week numbers, only look at dates
+                    if ($(el).hasClass('week')) return;
+
+                    var title = $(el).attr('data-title');
+                    var row = title.substr(1, 1);
+                    var col = title.substr(3, 1);
+                    var cal = $(el).parents('.calendar');
+                    var dt = cal.hasClass('left') ? leftCalendar.calendar[row][col] : rightCalendar.calendar[row][col];
+
+                    if ((dt.isAfter(startDate) && dt.isBefore(date)) || dt.isSame(date, 'day')) {
+                        $(el).addClass('in-range');
+                    } else {
+                        $(el).removeClass('in-range');
+                    }
+
+                });
+            }
+
+        },
+
+        clickDate: function(e) {
+
+            if (!$(e.target).hasClass('available')) return;
+
+            var title = $(e.target).attr('data-title');
+            var row = title.substr(1, 1);
+            var col = title.substr(3, 1);
+            var cal = $(e.target).parents('.calendar');
+            var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+
+            //
+            // this function needs to do a few things:
+            // * alternate between selecting a start and end date for the range,
+            // * if the time picker is enabled, apply the hour/minute/second from the select boxes to the clicked date
+            // * if autoapply is enabled, and an end date was chosen, apply the selection
+            // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
+            // * if one of the inputs above the calendars was focused, cancel that manual input
+            //
+
+            if (this.endDate || date.isBefore(this.startDate, 'day')) { //picking start
+                if (this.timePicker) {
+                    var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
+                    if (!this.timePicker24Hour) {
+                        var ampm = this.container.find('.left .ampmselect').val();
+                        if (ampm === 'PM' && hour < 12)
+                            hour += 12;
+                        if (ampm === 'AM' && hour === 12)
+                            hour = 0;
+                    }
+                    var minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
+                    var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
+                    date = date.clone().hour(hour).minute(minute).second(second);
+                }
+                this.endDate = null;
+                this.setStartDate(date.clone());
+            } else if (!this.endDate && date.isBefore(this.startDate)) {
+                //special case: clicking the same date for start/end,
+                //but the time of the end date is before the start date
+                this.setEndDate(this.startDate.clone());
+            } else { // picking end
+                if (this.timePicker) {
+                    var hour = parseInt(this.container.find('.right .hourselect').val(), 10);
+                    if (!this.timePicker24Hour) {
+                        var ampm = this.container.find('.right .ampmselect').val();
+                        if (ampm === 'PM' && hour < 12)
+                            hour += 12;
+                        if (ampm === 'AM' && hour === 12)
+                            hour = 0;
+                    }
+                    var minute = parseInt(this.container.find('.right .minuteselect').val(), 10);
+                    var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
+                    date = date.clone().hour(hour).minute(minute).second(second);
+                }
+                this.setEndDate(date.clone());
+                if (this.autoApply) {
+                  this.calculateChosenLabel();
+                  this.clickApply();
+                }
+            }
+
+            if (this.singleDatePicker) {
+                this.setEndDate(this.startDate);
+                if (!this.timePicker)
+                    this.clickApply();
+            }
+
+            this.updateView();
+
+            //This is to cancel the blur event handler if the mouse was in one of the inputs
+            e.stopPropagation();
+
+        },
+
+        calculateChosenLabel: function () {
+            var customRange = true;
+            var i = 0;
+            for (var range in this.ranges) {
+                if (this.timePicker) {
+                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
+                        customRange = false;
+                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
+                        break;
+                    }
+                } else {
+                    //ignore times when comparing dates if time picker is not enabled
+                    if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
+                        customRange = false;
+                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
+                        break;
+                    }
+                }
+                i++;
+            }
+            if (customRange) {
+                if (this.showCustomRangeLabel) {
+                    this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
+                } else {
+                    this.chosenLabel = null;
+                }
+                this.showCalendars();
+            }
+        },
+
+        clickApply: function(e) {
+            this.hide();
+            this.element.trigger('apply.daterangepicker', this);
+        },
+
+        clickCancel: function(e) {
+            this.startDate = this.oldStartDate;
+            this.endDate = this.oldEndDate;
+            this.hide();
+            this.element.trigger('cancel.daterangepicker', this);
+        },
+
+        monthOrYearChanged: function(e) {
+            var isLeft = $(e.target).closest('.calendar').hasClass('left'),
+                leftOrRight = isLeft ? 'left' : 'right',
+                cal = this.container.find('.calendar.'+leftOrRight);
+
+            // Month must be Number for new moment versions
+            var month = parseInt(cal.find('.monthselect').val(), 10);
+            var year = cal.find('.yearselect').val();
+
+            if (!isLeft) {
+                if (year < this.startDate.year() || (year == this.startDate.year() && month < this.startDate.month())) {
+                    month = this.startDate.month();
+                    year = this.startDate.year();
+                }
+            }
+
+            if (this.minDate) {
+                if (year < this.minDate.year() || (year == this.minDate.year() && month < this.minDate.month())) {
+                    month = this.minDate.month();
+                    year = this.minDate.year();
+                }
+            }
+
+            if (this.maxDate) {
+                if (year > this.maxDate.year() || (year == this.maxDate.year() && month > this.maxDate.month())) {
+                    month = this.maxDate.month();
+                    year = this.maxDate.year();
+                }
+            }
+
+            if (isLeft) {
+                this.leftCalendar.month.month(month).year(year);
+                if (this.linkedCalendars)
+                    this.rightCalendar.month = this.leftCalendar.month.clone().add(1, 'month');
+            } else {
+                this.rightCalendar.month.month(month).year(year);
+                if (this.linkedCalendars)
+                    this.leftCalendar.month = this.rightCalendar.month.clone().subtract(1, 'month');
+            }
+            this.updateCalendars();
+        },
+
+        timeChanged: function(e) {
+
+            var cal = $(e.target).closest('.calendar'),
+                isLeft = cal.hasClass('left');
+
+            var hour = parseInt(cal.find('.hourselect').val(), 10);
+            var minute = parseInt(cal.find('.minuteselect').val(), 10);
+            var second = this.timePickerSeconds ? parseInt(cal.find('.secondselect').val(), 10) : 0;
+
+            if (!this.timePicker24Hour) {
+                var ampm = cal.find('.ampmselect').val();
+                if (ampm === 'PM' && hour < 12)
+                    hour += 12;
+                if (ampm === 'AM' && hour === 12)
+                    hour = 0;
+            }
+
+            if (isLeft) {
+                var start = this.startDate.clone();
+                start.hour(hour);
+                start.minute(minute);
+                start.second(second);
+                this.setStartDate(start);
+                if (this.singleDatePicker) {
+                    this.endDate = this.startDate.clone();
+                } else if (this.endDate && this.endDate.format('YYYY-MM-DD') == start.format('YYYY-MM-DD') && this.endDate.isBefore(start)) {
+                    this.setEndDate(start.clone());
+                }
+            } else if (this.endDate) {
+                var end = this.endDate.clone();
+                end.hour(hour);
+                end.minute(minute);
+                end.second(second);
+                this.setEndDate(end);
+            }
+
+            //update the calendars so all clickable dates reflect the new time component
+            this.updateCalendars();
+
+            //update the form inputs above the calendars with the new time
+            this.updateFormInputs();
+
+            //re-render the time pickers because changing one selection can affect what's enabled in another
+            this.renderTimePicker('left');
+            this.renderTimePicker('right');
+
+        },
+
+        formInputsChanged: function(e) {
+            var isRight = $(e.target).closest('.calendar').hasClass('right');
+            var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.format);
+            var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.format);
+
+            if (start.isValid() && end.isValid()) {
+
+                if (isRight && end.isBefore(start))
+                    start = end.clone();
+
+                this.setStartDate(start);
+                this.setEndDate(end);
+
+                if (isRight) {
+                    this.container.find('input[name="daterangepicker_start"]').val(this.startDate.format(this.locale.format));
+                } else {
+                    this.container.find('input[name="daterangepicker_end"]').val(this.endDate.format(this.locale.format));
+                }
+
+            }
+
+            this.updateView();
+        },
+
+        formInputsFocused: function(e) {
+
+            // Highlight the focused input
+            this.container.find('input[name="daterangepicker_start"], input[name="daterangepicker_end"]').removeClass('active');
+            $(e.target).addClass('active');
+
+            // Set the state such that if the user goes back to using a mouse, 
+            // the calendars are aware we're selecting the end of the range, not
+            // the start. This allows someone to edit the end of a date range without
+            // re-selecting the beginning, by clicking on the end date input then
+            // using the calendar.
+            var isRight = $(e.target).closest('.calendar').hasClass('right');
+            if (isRight) {
+                this.endDate = null;
+                this.setStartDate(this.startDate.clone());
+                this.updateView();
+            }
+
+        },
+
+        formInputsBlurred: function(e) {
+
+            // this function has one purpose right now: if you tab from the first
+            // text input to the second in the UI, the endDate is nulled so that
+            // you can click another, but if you tab out without clicking anything
+            // or changing the input value, the old endDate should be retained
+
+            if (!this.endDate) {
+                var val = this.container.find('input[name="daterangepicker_end"]').val();
+                var end = moment(val, this.locale.format);
+                if (end.isValid()) {
+                    this.setEndDate(end);
+                    this.updateView();
+                }
+            }
+
+        },
+
+        elementChanged: function() {
+            if (!this.element.is('input')) return;
+            if (!this.element.val().length) return;
+            if (this.element.val().length < this.locale.format.length) return;
+
+            var dateString = this.element.val().split(this.locale.separator),
+                start = null,
+                end = null;
+
+            if (dateString.length === 2) {
+                start = moment(dateString[0], this.locale.format);
+                end = moment(dateString[1], this.locale.format);
+            }
+
+            if (this.singleDatePicker || start === null || end === null) {
+                start = moment(this.element.val(), this.locale.format);
+                end = start;
+            }
+
+            if (!start.isValid() || !end.isValid()) return;
+
+            this.setStartDate(start);
+            this.setEndDate(end);
+            this.updateView();
+        },
+
+        keydown: function(e) {
+            //hide on tab or enter
+            if ((e.keyCode === 9) || (e.keyCode === 13)) {
+                this.hide();
+            }
+        },
+
+        updateElement: function() {
+            if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
+                this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+                this.element.trigger('change');
+            } else if (this.element.is('input') && this.autoUpdateInput) {
+                this.element.val(this.startDate.format(this.locale.format));
+                this.element.trigger('change');
+            }
+        },
+
+        remove: function() {
+            this.container.remove();
+            this.element.off('.daterangepicker');
+            this.element.removeData();
+        }
+
+    };
+
+    $.fn.daterangepicker = function(options, callback) {
+        this.each(function() {
+            var el = $(this);
+            if (el.data('daterangepicker'))
+                el.data('daterangepicker').remove();
+            el.data('daterangepicker', new DateRangePicker(el, options, callback));
+        });
+        return this;
+    };
+
+    return DateRangePicker;
+
+}));
+/**
+ * jquery-date-range-picker
+ * @version v0.20.0
+ * @link https://github.com/longbill/jquery-date-range-picker
+ * @license MIT
+ */
+!function(e){"function"==typeof define&&define.amd?define(["jquery","moment"],e):"object"==typeof exports&&"undefined"!=typeof module?module.exports=e(require("jquery"),require("moment")):e(jQuery,moment)}(function(Z,Q){"use strict";Z.dateRangePickerLanguages={default:{selected:"Selected:",day:"Day",days:"Days",apply:"Close","week-1":"mo","week-2":"tu","week-3":"we","week-4":"th","week-5":"fr","week-6":"sa","week-7":"su","week-number":"W","month-name":["january","february","march","april","may","june","july","august","september","october","november","december"],shortcuts:"Shortcuts","custom-values":"Custom Values",past:"Past",following:"Following",previous:"Previous","prev-week":"Week","prev-month":"Month","prev-year":"Year",next:"Next","next-week":"Week","next-month":"Month","next-year":"Year","less-than":"Date range should not be more than %d days","more-than":"Date range should not be less than %d days","default-more":"Please select a date range longer than %d days","default-single":"Please select a date","default-less":"Please select a date range less than %d days","default-range":"Please select a date range between %d and %d days","default-default":"Please select a date range",time:"Time",hour:"Hour",minute:"Minute"},id:{selected:"Terpilih:",day:"Hari",days:"Hari",apply:"Tutup","week-1":"sen","week-2":"sel","week-3":"rab","week-4":"kam","week-5":"jum","week-6":"sab","week-7":"min","week-number":"W","month-name":["januari","februari","maret","april","mei","juni","juli","agustus","september","oktober","november","desember"],shortcuts:"Pintas","custom-values":"Nilai yang ditentukan",past:"Yang Lalu",following:"Mengikuti",previous:"Sebelumnya","prev-week":"Minggu","prev-month":"Bulan","prev-year":"Tahun",next:"Selanjutnya","next-week":"Minggu","next-month":"Bulan","next-year":"Tahun","less-than":"Tanggal harus lebih dari %d hari","more-than":"Tanggal harus kurang dari %d hari","default-more":"Jarak tanggal harus lebih lama dari %d hari","default-single":"Silakan pilih tanggal","default-less":"Jarak rentang tanggal tidak boleh lebih lama dari %d hari","default-range":"Rentang tanggal harus antara %d dan %d hari","default-default":"Silakan pilih rentang tanggal",time:"Waktu",hour:"Jam",minute:"Menit"},az:{selected:"Seçildi:",day:" gün",days:" gün",apply:"tətbiq","week-1":"1","week-2":"2","week-3":"3","week-4":"4","week-5":"5","week-6":"6","week-7":"7","month-name":["yanvar","fevral","mart","aprel","may","iyun","iyul","avqust","sentyabr","oktyabr","noyabr","dekabr"],shortcuts:"Qısayollar",past:"Keçmiş",following:"Növbəti",previous:"&nbsp;&nbsp;&nbsp;","prev-week":"Öncəki həftə","prev-month":"Öncəki ay","prev-year":"Öncəki il",next:"&nbsp;&nbsp;&nbsp;","next-week":"Növbəti həftə","next-month":"Növbəti ay","next-year":"Növbəti il","less-than":"Tarix aralığı %d gündən çox olmamalıdır","more-than":"Tarix aralığı %d gündən az olmamalıdır","default-more":"%d gündən çox bir tarix seçin","default-single":"Tarix seçin","default-less":"%d gündən az bir tarix seçin","default-range":"%d və %d gün aralığında tarixlər seçin","default-default":"Tarix aralığı seçin"},bg:{selected:"Избрано:",day:"Ден",days:"Дни",apply:"Затвори","week-1":"пн","week-2":"вт","week-3":"ср","week-4":"чт","week-5":"пт","week-6":"сб","week-7":"нд","week-number":"С","month-name":["януари","февруари","март","април","май","юни","юли","август","септември","октомври","ноември","декември"],shortcuts:"Преки пътища","custom-values":"Персонализирани стойности",past:"Минал",following:"Следващ",previous:"Предишен","prev-week":"Седмица","prev-month":"Месец","prev-year":"Година",next:"Следващ","next-week":"Седмица","next-month":"Месец","next-year":"Година","less-than":"Периодът от време не трябва да е повече от %d дни","more-than":"Периодът от време не трябва да е по-малко от %d дни","default-more":"Моля изберете период по-дълъг от %d дни","default-single":"Моля изберете дата","default-less":"Моля изберете период по-къс от %d дни","default-range":"Моля изберете период между %d и %d дни","default-default":"Моля изберете период",time:"Време",hour:"Час",minute:"Минута"},cn:{selected:"已选择:",day:"天",days:"天",apply:"确定","week-1":"一","week-2":"二","week-3":"三","week-4":"四","week-5":"五","week-6":"六","week-7":"日","week-number":"周","month-name":["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],shortcuts:"快捷选择",past:"过去",following:"将来",previous:"&nbsp;&nbsp;&nbsp;","prev-week":"上周","prev-month":"上个月","prev-year":"去年",next:"&nbsp;&nbsp;&nbsp;","next-week":"下周","next-month":"下个月","next-year":"明年","less-than":"所选日期范围不能大于%d天","more-than":"所选日期范围不能小于%d天","default-more":"请选择大于%d天的日期范围","default-less":"请选择小于%d天的日期范围","default-range":"请选择%d天到%d天的日期范围","default-single":"请选择一个日期","default-default":"请选择一个日期范围",time:"时间",hour:"小时",minute:"分钟"},cz:{selected:"Vybráno:",day:"Den",days:"Dny",apply:"Zavřít","week-1":"po","week-2":"út","week-3":"st","week-4":"čt","week-5":"pá","week-6":"so","week-7":"ne","month-name":["leden","únor","březen","duben","květen","červen","červenec","srpen","září","říjen","listopad","prosinec"],shortcuts:"Zkratky",past:"po",following:"následující",previous:"předchozí","prev-week":"týden","prev-month":"měsíc","prev-year":"rok",next:"další","next-week":"týden","next-month":"měsíc","next-year":"rok","less-than":"Rozsah data by neměl být větší než %d dnů","more-than":"Rozsah data by neměl být menší než %d dnů","default-more":"Prosím zvolte rozsah data větší než %d dnů","default-single":"Prosím zvolte datum","default-less":"Prosím zvolte rozsah data menší než %d dnů","default-range":"Prosím zvolte rozsah data mezi %d a %d dny","default-default":"Prosím zvolte rozsah data"},de:{selected:"Auswahl:",day:"Tag",days:"Tage",apply:"Schließen","week-1":"mo","week-2":"di","week-3":"mi","week-4":"do","week-5":"fr","week-6":"sa","week-7":"so","month-name":["januar","februar","märz","april","mai","juni","juli","august","september","oktober","november","dezember"],shortcuts:"Schnellwahl",past:"Vorherige",following:"Folgende",previous:"Vorherige","prev-week":"Woche","prev-month":"Monat","prev-year":"Jahr",next:"Nächste","next-week":"Woche","next-month":"Monat","next-year":"Jahr","less-than":"Datumsbereich darf nicht größer sein als %d Tage","more-than":"Datumsbereich darf nicht kleiner sein als %d Tage","default-more":"Bitte mindestens %d Tage auswählen","default-single":"Bitte ein Datum auswählen","default-less":"Bitte weniger als %d Tage auswählen","default-range":"Bitte einen Datumsbereich zwischen %d und %d Tagen auswählen","default-default":"Bitte ein Start- und Enddatum auswählen",Time:"Zeit",hour:"Stunde",minute:"Minute"},es:{selected:"Seleccionado:",day:"Día",days:"Días",apply:"Cerrar","week-1":"lu","week-2":"ma","week-3":"mi","week-4":"ju","week-5":"vi","week-6":"sa","week-7":"do","month-name":["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"],shortcuts:"Accesos directos",past:"Pasado",following:"Siguiente",previous:"Anterior","prev-week":"Semana","prev-month":"Mes","prev-year":"Año",next:"Siguiente","next-week":"Semana","next-month":"Mes","next-year":"Año","less-than":"El rango no debería ser mayor de %d días","more-than":"El rango no debería ser menor de %d días","default-more":"Por favor selecciona un rango mayor a %d días","default-single":"Por favor selecciona un día","default-less":"Por favor selecciona un rango menor a %d días","default-range":"Por favor selecciona un rango entre %d y %d días","default-default":"Por favor selecciona un rango de fechas."},fr:{selected:"Sélection:",day:"Jour",days:"Jours",apply:"Fermer","week-1":"lu","week-2":"ma","week-3":"me","week-4":"je","week-5":"ve","week-6":"sa","week-7":"di","month-name":["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],shortcuts:"Raccourcis",past:"Passé",following:"Suivant",previous:"Précédent","prev-week":"Semaine","prev-month":"Mois","prev-year":"Année",next:"Suivant","next-week":"Semaine","next-month":"Mois","next-year":"Année","less-than":"L'intervalle ne doit pas être supérieure à %d jours","more-than":"L'intervalle ne doit pas être inférieure à %d jours","default-more":"Merci de choisir une intervalle supérieure à %d jours","default-single":"Merci de choisir une date","default-less":"Merci de choisir une intervalle inférieure %d jours","default-range":"Merci de choisir une intervalle comprise entre %d et %d jours","default-default":"Merci de choisir une date"},hu:{selected:"Kiválasztva:",day:"Nap",days:"Nap",apply:"Ok","week-1":"h","week-2":"k","week-3":"sz","week-4":"cs","week-5":"p","week-6":"sz","week-7":"v","month-name":["január","február","március","április","május","június","július","augusztus","szeptember","október","november","december"],shortcuts:"Gyorsválasztó",past:"Múlt",following:"Következő",previous:"Előző","prev-week":"Hét","prev-month":"Hónap","prev-year":"Év",next:"Következő","next-week":"Hét","next-month":"Hónap","next-year":"Év","less-than":"A kiválasztás nem lehet több %d napnál","more-than":"A kiválasztás nem lehet több %d napnál","default-more":"Válassz ki egy időszakot ami hosszabb mint %d nap","default-single":"Válassz egy napot","default-less":"Válassz ki egy időszakot ami rövidebb mint %d nap","default-range":"Válassz ki egy %d - %d nap hosszú időszakot","default-default":"Válassz ki egy időszakot"},it:{selected:"Selezionati:",day:"Giorno",days:"Giorni",apply:"Chiudi","week-1":"lu","week-2":"ma","week-3":"me","week-4":"gi","week-5":"ve","week-6":"sa","week-7":"do","month-name":["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"],shortcuts:"Scorciatoie",past:"Scorso",following:"Successivo",previous:"Precedente","prev-week":"Settimana","prev-month":"Mese","prev-year":"Anno",next:"Prossimo","next-week":"Settimana","next-month":"Mese","next-year":"Anno","less-than":"L'intervallo non dev'essere maggiore di %d giorni","more-than":"L'intervallo non dev'essere minore di %d giorni","default-more":"Seleziona un intervallo maggiore di %d giorni","default-single":"Seleziona una data","default-less":"Seleziona un intervallo minore di %d giorni","default-range":"Seleziona un intervallo compreso tra i %d e i %d giorni","default-default":"Seleziona un intervallo di date"},ko:{selected:"기간:",day:"일",days:"일간",apply:"닫기","week-1":"월","week-2":"화","week-3":"수","week-4":"목","week-5":"금","week-6":"토","week-7":"일","week-number":"주","month-name":["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],shortcuts:"단축키들",past:"지난(오늘기준)",following:"이후(오늘기준)",previous:"이전","prev-week":"1주","prev-month":"1달","prev-year":"1년",next:"다음","next-week":"1주","next-month":"1달","next-year":"1년","less-than":"날짜 범위는 %d 일보다 많을 수 없습니다","more-than":"날짜 범위는 %d 일보다 작을 수 없습니다","default-more":"날짜 범위를 %d 일보다 길게 선택해 주세요","default-single":"날짜를 선택해 주세요","default-less":"%d 일보다 작은 날짜를 선택해 주세요","default-range":"%d와 %d 일 사이의 날짜 범위를 선택해 주세요","default-default":"날짜 범위를 선택해 주세요",time:"시각",hour:"시",minute:"분"},no:{selected:"Valgt:",day:"Dag",days:"Dager",apply:"Lukk","week-1":"ma","week-2":"ti","week-3":"on","week-4":"to","week-5":"fr","week-6":"lø","week-7":"sø","month-name":["januar","februar","mars","april","mai","juni","juli","august","september","oktober","november","desember"],shortcuts:"Snarveier","custom-values":"Egendefinerte Verdier",past:"Over",following:"Følger",previous:"Forrige","prev-week":"Uke","prev-month":"Måned","prev-year":"År",next:"Neste","next-week":"Uke","next-month":"Måned","next-year":"År","less-than":"Datoperioden skal ikkje være lengre enn %d dager","more-than":"Datoperioden skal ikkje være kortere enn %d dager","default-more":"Vennligst velg ein datoperiode lengre enn %d dager","default-single":"Vennligst velg ein dato","default-less":"Vennligst velg ein datoperiode mindre enn %d dager","default-range":"Vennligst velg ein datoperiode mellom %d og %d dager","default-default":"Vennligst velg ein datoperiode",time:"Tid",hour:"Time",minute:"Minutter"},nl:{selected:"Geselecteerd:",day:"Dag",days:"Dagen",apply:"Ok","week-1":"ma","week-2":"di","week-3":"wo","week-4":"do","week-5":"vr","week-6":"za","week-7":"zo","month-name":["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december"],shortcuts:"Snelkoppelingen","custom-values":"Aangepaste waarden",past:"Verleden",following:"Komend",previous:"Vorige","prev-week":"Week","prev-month":"Maand","prev-year":"Jaar",next:"Volgende","next-week":"Week","next-month":"Maand","next-year":"Jaar","less-than":"Interval moet langer dan %d dagen zijn","more-than":"Interval mag niet minder dan %d dagen zijn","default-more":"Selecteer een interval langer dan %dagen","default-single":"Selecteer een datum","default-less":"Selecteer een interval minder dan %d dagen","default-range":"Selecteer een interval tussen %d en %d dagen","default-default":"Selecteer een interval",time:"Tijd",hour:"Uur",minute:"Minuut"},ru:{selected:"Выбрано:",day:"День",days:"Дней",apply:"Применить","week-1":"пн","week-2":"вт","week-3":"ср","week-4":"чт","week-5":"пт","week-6":"сб","week-7":"вс","month-name":["январь","февраль","март","апрель","май","июнь","июль","август","сентябрь","октябрь","ноябрь","декабрь"],shortcuts:"Быстрый выбор","custom-values":"Пользовательские значения",past:"Прошедшие",following:"Следующие",previous:"&nbsp;&nbsp;&nbsp;","prev-week":"Неделя","prev-month":"Месяц","prev-year":"Год",next:"&nbsp;&nbsp;&nbsp;","next-week":"Неделя","next-month":"Месяц","next-year":"Год","less-than":"Диапазон не может быть больше %d дней","more-than":"Диапазон не может быть меньше %d дней","default-more":"Пожалуйста выберите диапазон больше %d дней","default-single":"Пожалуйста выберите дату","default-less":"Пожалуйста выберите диапазон меньше %d дней","default-range":"Пожалуйста выберите диапазон между %d и %d днями","default-default":"Пожалуйста выберите диапазон",time:"Время",hour:"Часы",minute:"Минуты"},uk:{selected:"Вибрано:",day:"День",days:"Днів",apply:"Застосувати","week-1":"пн","week-2":"вт","week-3":"ср","week-4":"чт","week-5":"пт","week-6":"сб","week-7":"нд","month-name":["січень","лютий","березень","квітень","травень","червень","липень","серпень","вересень","жовтень","листопад","грудень"],shortcuts:"Швидкий вибір","custom-values":"Значення користувача",past:"Минулі",following:"Наступні",previous:"&nbsp;&nbsp;&nbsp;","prev-week":"Тиждень","prev-month":"Місяць","prev-year":"Рік",next:"&nbsp;&nbsp;&nbsp;","next-week":"Тиждень","next-month":"Місяць","next-year":"Рік","less-than":"Діапазон не може бути більш ніж %d днів","more-than":"Діапазон не може бути меньш ніж %d днів","default-more":"Будь ласка виберіть діапазон більше %d днів","default-single":"Будь ласка виберіть дату","default-less":"Будь ласка виберіть діапазон менше %d днів","default-range":"Будь ласка виберіть діапазон між %d та %d днями","default-default":"Будь ласка виберіть діапазон",time:"Час",hour:"Години",minute:"Хвилини"},pl:{selected:"Wybrany:",day:"Dzień",days:"Dni",apply:"Zamknij","week-1":"pon","week-2":"wt","week-3":"śr","week-4":"czw","week-5":"pt","week-6":"so","week-7":"nd","month-name":["styczeń","luty","marzec","kwiecień","maj","czerwiec","lipiec","sierpień","wrzesień","październik","listopad","grudzień"],shortcuts:"Skróty","custom-values":"Niestandardowe wartości",past:"Przeszłe",following:"Następne",previous:"Poprzednie","prev-week":"tydzień","prev-month":"miesiąc","prev-year":"rok",next:"Następny","next-week":"tydzień","next-month":"miesiąc","next-year":"rok","less-than":"Okres nie powinien być dłuższy niż %d dni","more-than":"Okres nie powinien być krótszy niż  %d ni","default-more":"Wybierz okres dłuższy niż %d dni","default-single":"Wybierz datę","default-less":"Wybierz okres krótszy niż %d dni","default-range":"Wybierz okres trwający od %d do %d dni","default-default":"Wybierz okres",time:"Czas",hour:"Godzina",minute:"Minuta"},se:{selected:"Vald:",day:"dag",days:"dagar",apply:"godkänn","week-1":"ma","week-2":"ti","week-3":"on","week-4":"to","week-5":"fr","week-6":"lö","week-7":"sö","month-name":["januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"],shortcuts:"genvägar","custom-values":"Anpassade värden",past:"över",following:"följande",previous:"förra","prev-week":"vecka","prev-month":"månad","prev-year":"år",next:"nästa","next-week":"vecka","next-month":"måned","next-year":"år","less-than":"Datumintervall bör inte vara mindre än %d dagar","more-than":"Datumintervall bör inte vara mer än %d dagar","default-more":"Välj ett datumintervall längre än %d dagar","default-single":"Välj ett datum","default-less":"Välj ett datumintervall mindre än %d dagar","default-range":"Välj ett datumintervall mellan %d och %d dagar","default-default":"Välj ett datumintervall",time:"tid",hour:"timme",minute:"minut"},pt:{selected:"Selecionado:",day:"Dia",days:"Dias",apply:"Fechar","week-1":"seg","week-2":"ter","week-3":"qua","week-4":"qui","week-5":"sex","week-6":"sab","week-7":"dom","week-number":"N","month-name":["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"],shortcuts:"Atalhos","custom-values":"Valores Personalizados",past:"Passado",following:"Seguinte",previous:"Anterior","prev-week":"Semana","prev-month":"Mês","prev-year":"Ano",next:"Próximo","next-week":"Próxima Semana","next-month":"Próximo Mês","next-year":"Próximo Ano","less-than":"O período selecionado não deve ser maior que %d dias","more-than":"O período selecionado não deve ser menor que %d dias","default-more":"Selecione um período superior a %d dias","default-single":"Selecione uma data","default-less":"Selecione um período inferior a %d dias","default-range":"Selecione um período de %d a %d dias","default-default":"Selecione um período",time:"Tempo",hour:"Hora",minute:"Minuto"},tc:{selected:"已選擇:",day:"天",days:"天",apply:"確定","week-1":"一","week-2":"二","week-3":"三","week-4":"四","week-5":"五","week-6":"六","week-7":"日","week-number":"周","month-name":["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],shortcuts:"快速選擇",past:"過去",following:"將來",previous:"&nbsp;&nbsp;&nbsp;","prev-week":"上週","prev-month":"上個月","prev-year":"去年",next:"&nbsp;&nbsp;&nbsp;","next-week":"下周","next-month":"下個月","next-year":"明年","less-than":"所選日期範圍不能大於%d天","more-than":"所選日期範圍不能小於%d天","default-more":"請選擇大於%d天的日期範圍","default-less":"請選擇小於%d天的日期範圍","default-range":"請選擇%d天到%d天的日期範圍","default-single":"請選擇一個日期","default-default":"請選擇一個日期範圍",time:"日期",hour:"小時",minute:"分鐘"},ja:{selected:"選択しました:",day:"日",days:"日々",apply:"閉じる","week-1":"月","week-2":"火","week-3":"水","week-4":"木","week-5":"金","week-6":"土","week-7":"日","month-name":["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],shortcuts:"クイック選択",past:"過去",following:"将来",previous:"&nbsp;&nbsp;&nbsp;","prev-week":"先週、","prev-month":"先月","prev-year":"昨年",next:"&nbsp;&nbsp;&nbsp;","next-week":"来週","next-month":"来月","next-year":"来年","less-than":"日付の範囲は ％d 日以上にすべきではありません","more-than":"日付の範囲は ％d 日を下回ってはいけません","default-more":"％d 日よりも長い期間を選択してください","default-less":"％d 日未満の期間を選択してください","default-range":"％d と％ d日の間の日付範囲を選択してください","default-single":"日付を選択してください","default-default":"日付範囲を選択してください",time:"時間",hour:"時間",minute:"分"},da:{selected:"Valgt:",day:"Dag",days:"Dage",apply:"Luk","week-1":"ma","week-2":"ti","week-3":"on","week-4":"to","week-5":"fr","week-6":"lö","week-7":"sö","month-name":["januar","februar","marts","april","maj","juni","juli","august","september","oktober","november","december"],shortcuts:"genveje","custom-values":"Brugerdefinerede værdier",past:"Forbi",following:"Følgende",previous:"Forrige","prev-week":"uge","prev-month":"månad","prev-year":"år",next:"Næste","next-week":"Næste uge","next-month":"Næste måned","next-year":"Næste år","less-than":"Dato interval bør ikke være med end %d dage","more-than":"Dato interval bør ikke være mindre end %d dage","default-more":"Vælg datointerval længere end %d dage","default-single":"Vælg dato","default-less":"Vælg datointerval mindre end %d dage","default-range":"Vælg datointerval mellem %d og %d dage","default-default":"Vælg datointerval",time:"tid",hour:"time",minute:"minut"},fi:{selected:"Valittu:",day:"Päivä",days:"Päivää",apply:"Sulje","week-1":"ma","week-2":"ti","week-3":"ke","week-4":"to","week-5":"pe","week-6":"la","week-7":"su","week-number":"V","month-name":["tammikuu","helmikuu","maaliskuu","huhtikuu","toukokuu","kesäkuu","heinäkuu","elokuu","syyskuu","lokakuu","marraskuu","joulukuu"],shortcuts:"Pikavalinnat","custom-values":"Mukautetut Arvot",past:"Menneet",following:"Tulevat",previous:"Edellinen","prev-week":"Viikko","prev-month":"Kuukausi","prev-year":"Vuosi",next:"Seuraava","next-week":"Viikko","next-month":"Kuukausi","next-year":"Vuosi","less-than":"Aikajakson tulisi olla vähemmän kuin %d päivää","more-than":"Aikajakson ei tulisi olla vähempää kuin %d päivää","default-more":"Valitse pidempi aikajakso kuin %d päivää","default-single":"Valitse päivä","default-less":"Valitse lyhyempi aikajakso kuin %d päivää","default-range":"Valitse aikajakso %d ja %d päivän väliltä","default-default":"Valitse aikajakso",time:"Aika",hour:"Tunti",minute:"Minuutti"},cat:{selected:"Seleccionats:",day:"Dia",days:"Dies",apply:"Tanca","week-1":"Dl","week-2":"Dm","week-3":"Dc","week-4":"Dj","week-5":"Dv","week-6":"Ds","week-7":"Dg","week-number":"S","month-name":["gener","febrer","març","abril","maig","juny","juliol","agost","setembre","octubre","novembre","desembre"],shortcuts:"Dreçeres","custom-values":"Valors personalitzats",past:"Passat",following:"Futur",previous:"Anterior","prev-week":"Setmana","prev-month":"Mes","prev-year":"Any",next:"Següent","next-week":"Setmana","next-month":"Mes","next-year":"Any","less-than":"El període no hauria de ser de més de %d dies","more-than":"El període no hauria de ser de menys de %d dies","default-more":"Perfavor selecciona un període més gran de %d dies","default-single":"Perfavor selecciona una data","default-less":"Perfavor selecciona un període de menys de %d dies","default-range":"Perfavor selecciona un període d'entre %d i %d dies","default-default":"Perfavor selecciona un període",time:"Temps",hour:"Hora",minute:"Minut"}},Z.fn.dateRangePicker=function(p){p||(p={}),(p=Z.extend(!0,{autoClose:!1,format:"YYYY-MM-DD",separator:" to ",language:"auto",startOfWeek:"sunday",getValue:function(){return Z(this).val()},setValue:function(e){Z(this).attr("readonly")||Z(this).is(":disabled")||e==Z(this).val()||Z(this).val(e)},startDate:!1,endDate:!1,time:{enabled:!1},minDays:0,maxDays:0,showShortcuts:!1,shortcuts:{},customShortcuts:[],inline:!1,container:"body",alwaysOpen:!1,singleDate:!1,lookBehind:!1,batchMode:!1,duration:200,stickyMonths:!1,dayDivAttrs:[],dayTdAttrs:[],selectForward:!1,selectBackward:!1,applyBtnClass:"",singleMonth:"auto",hoveringTooltip:function(e,t,a){return 1<e?e+" "+K("days"):""},showTopbar:!0,swapTime:!1,showWeekNumbers:!1,getWeekNumber:function(e){return Q(e).format("w")},customOpenAnimation:null,customCloseAnimation:null,customArrowPrevSymbol:null,customArrowNextSymbol:null,monthSelect:!1,yearSelect:!1},p)).start=!1,p.end=!1,p.startWeek=!1,p.isTouchDevice="ontouchstart"in window||navigator.msMaxTouchPoints,p.isTouchDevice&&(p.hoveringTooltip=!1),"auto"==p.singleMonth&&(p.singleMonth=Z(window).width()<480),p.singleMonth&&(p.stickyMonths=!1),p.showTopbar||(p.autoClose=!0),p.startDate&&"string"==typeof p.startDate&&(p.startDate=Q(p.startDate,p.format).toDate()),p.endDate&&"string"==typeof p.endDate&&(p.endDate=Q(p.endDate,p.format).toDate()),p.yearSelect&&"boolean"==typeof p.yearSelect&&(p.yearSelect=function(e){return[e-5,e+5]});var m,e,r=function(){{if("auto"==p.language){var e=navigator.language?navigator.language:navigator.browserLanguage;return e&&(e=e.toLowerCase())in Z.dateRangePickerLanguages?Z.dateRangePickerLanguages[e]:Z.dateRangePickerLanguages.default}return p.language&&p.language in Z.dateRangePickerLanguages?Z.dateRangePickerLanguages[p.language]:Z.dateRangePickerLanguages.default}}(),s=!1,n=this,i=Z(n).get(0);return Z(this).off(".datepicker").on("click.datepicker",function(e){m.is(":visible")||t(p.duration)}).on("change.datepicker",function(e){a()}).on("keyup.datepicker",function(){try{clearTimeout(e)}catch(e){}e=setTimeout(function(){a()},2e3)}),function(){var t=this;if(Z(this).data("date-picker-opened"))return void N();Z(this).data("date-picker-opened",!0),(m=function(){var e,t='<div class="date-picker-wrapper';p.extraClass&&(t+=" "+p.extraClass+" "),p.singleDate&&(t+=" single-date "),p.showShortcuts||(t+=" no-shortcuts "),p.showTopbar||(t+=" no-topbar "),p.customTopBar&&(t+=" custom-topbar "),t+='">',p.showTopbar&&(t+='<div class="drp_top-bar">',p.customTopBar?("function"==typeof p.customTopBar&&(p.customTopBar=p.customTopBar()),t+='<div class="custom-top">'+p.customTopBar+"</div>"):(t+='<div class="normal-top"><span class="selection-top">'+K("selected")+' </span> <b class="start-day">...</b>',p.singleDate||(t+=' <span class="separator-day">'+p.separator+'</span> <b class="end-day">...</b> <i class="selected-days">(<span class="selected-days-num">3</span> '+K("days")+")</i>"),t+="</div>",t+='<div class="error-top">error</div><div class="default-top">default</div>'),t+='<input type="button" class="apply-btn disabled'+(!(e="")===p.autoClose&&(e+=" hide"),""!==p.applyBtnClass&&(e+=" "+p.applyBtnClass),e)+'" value="'+K("apply")+'" />',t+="</div>");var a=p.showWeekNumbers?6:5,n="&lt;";p.customArrowPrevSymbol&&(n=p.customArrowPrevSymbol);var r="&gt;";if(p.customArrowNextSymbol&&(r=p.customArrowNextSymbol),t+='<div class="month-wrapper">   <table class="month1" cellspacing="0" border="0" cellpadding="0">       <thead>           <tr class="caption">               <th>                   <span class="prev">'+n+'                   </span>               </th>               <th colspan="'+a+'" class="month-name">               </th>               <th>'+(p.singleDate||!p.stickyMonths?'<span class="next">'+r+"</span>":"")+'               </th>           </tr>           <tr class="week-name">'+E()+"       </thead>       <tbody></tbody>   </table>",p.singleMonth||(t+='<div class="gap">'+function(){for(var e=['<div class="gap-top-mask"></div><div class="gap-bottom-mask"></div><div class="gap-lines">'],t=0;t<20;t++)e.push('<div class="gap-line"><div class="gap-1"></div><div class="gap-2"></div><div class="gap-3"></div></div>');return e.push("</div>"),e.join("")}()+'</div><table class="month2" cellspacing="0" border="0" cellpadding="0">   <thead>   <tr class="caption">       <th>'+(p.stickyMonths?"":'<span class="prev">'+n+"</span>")+'       </th>       <th colspan="'+a+'" class="month-name">       </th>       <th>           <span class="next">'+r+'</span>       </th>   </tr>   <tr class="week-name">'+E()+"   </thead>   <tbody></tbody></table>"),t+='<div class="dp-clearfix"></div><div class="time"><div class="time1"></div>',p.singleDate||(t+='<div class="time2"></div>'),t+='</div><div class="dp-clearfix"></div></div>',t+='<div class="footer">',p.showShortcuts){t+='<div class="shortcuts"><b>'+K("shortcuts")+"</b>";var s=p.shortcuts;if(s){var i;if(s["prev-days"]&&0<s["prev-days"].length){t+='&nbsp;<span class="prev-days">'+K("past");for(var o=0;o<s["prev-days"].length;o++)i=s["prev-days"][o],i+=1<s["prev-days"][o]?K("days"):K("day"),t+=' <a href="javascript:;" shortcut="day,-'+s["prev-days"][o]+'">'+i+"</a>";t+="</span>"}if(s["next-days"]&&0<s["next-days"].length){t+='&nbsp;<span class="next-days">'+K("following");for(var o=0;o<s["next-days"].length;o++)i=s["next-days"][o],i+=1<s["next-days"][o]?K("days"):K("day"),t+=' <a href="javascript:;" shortcut="day,'+s["next-days"][o]+'">'+i+"</a>";t+="</span>"}if(s.prev&&0<s.prev.length){t+='&nbsp;<span class="prev-buttons">'+K("previous");for(var o=0;o<s.prev.length;o++)i=K("prev-"+s.prev[o]),t+=' <a href="javascript:;" shortcut="prev,'+s.prev[o]+'">'+i+"</a>";t+="</span>"}if(s.next&&0<s.next.length){t+='&nbsp;<span class="next-buttons">'+K("next");for(var o=0;o<s.next.length;o++)i=K("next-"+s.next[o]),t+=' <a href="javascript:;" shortcut="next,'+s.next[o]+'">'+i+"</a>";t+="</span>"}}if(p.customShortcuts)for(var o=0;o<p.customShortcuts.length;o++){var d=p.customShortcuts[o];t+='&nbsp;<span class="custom-shortcut"><a href="javascript:;" shortcut="custom">'+d.name+"</a></span>"}t+="</div>"}if(p.showCustomValues&&(t+='<div class="customValues"><b>'+(p.customValueLabel||K("custom-values"))+"</b>",p.customValues))for(var o=0;o<p.customValues.length;o++){var l=p.customValues[o];t+='&nbsp;<span class="custom-value"><a href="javascript:;" custom="'+l.value+'">'+l.name+"</a></span>"}return Z(t+="</div></div>")}().hide()).append('<div class="date-range-length-tip"></div>'),Z(p.container).append(m),p.inline?m.addClass("inline-wrapper"):o();p.alwaysOpen&&m.find(".apply-btn").hide();var e=_();if(G(e),p.time.enabled)if(p.startDate&&p.endDate||p.start&&p.end)Y(Q(p.start||p.startDate).toDate(),"time1"),Y(Q(p.end||p.endDate).toDate(),"time2");else{var a=p.defaultEndTime?p.defaultEndTime:e;Y(e,"time1"),Y(a,"time2")}var n="";n=p.singleDate?K("default-single"):p.minDays&&p.maxDays?K("default-range"):p.minDays?K("default-more"):p.maxDays?K("default-less"):K("default-default");m.find(".default-top").html(n.replace(/\%d/,p.minDays).replace(/\%d/,p.maxDays)),p.singleMonth?m.addClass("single-month"):m.addClass("two-months");setTimeout(function(){l(),s=!0},0),m.click(function(e){e.stopPropagation()}),Z(document).on("click.datepicker",U),m.find(".next").click(function(){p.stickyMonths?function(e){var t=H(p.month1),a=H(p.month2);if(q(a))return;if(!p.singleDate&&0<=L(t,a))return;z(t,"month1"),z(a,"month2"),j()}():function(e){var t=Z(e).parents("table").hasClass("month2"),a=t?p.month2:p.month1;if(a=H(a),!p.singleMonth&&!p.singleDate&&!t&&0<=L(a,p.month2)||q(a))return;z(a,t?"month2":"month1"),I()}(this)}),m.find(".prev").click(function(){p.stickyMonths?function(e){var t=R(p.month1),a=R(p.month2);if(q(t))return;if(!p.singleDate&&L(a,t)<=0)return;z(a,"month2"),z(t,"month1"),j()}():function(e){var t=Z(e).parents("table").hasClass("month2"),a=t?p.month2:p.month1;if(a=R(a),t&&L(a,p.month1)<=0||q(a))return;z(a,t?"month2":"month1"),I()}(this)}),m.attr("unselectable","on").css("user-select","none").on("selectstart",function(e){return e.preventDefault(),!1}),m.find(".apply-btn").click(function(){N();var e=W(new Date(p.start))+p.separator+W(new Date(p.end));Z(t).trigger("datepicker-apply",{value:e,date1:new Date(p.start),date2:new Date(p.end)})}),m.find("[custom]").click(function(){var e=Z(this).attr("custom");p.start=!1,p.end=!1,m.find(".day.checked").removeClass("checked"),p.setValue.call(i,e),M(),S(!0),j(),p.autoClose&&N()}),m.find("[shortcut]").click(function(){var e,t=Z(this).attr("shortcut"),a=new Date,n=!1;if(-1!=t.indexOf("day")){var r=parseInt(t.split(",",2)[1],10);n=new Date((new Date).getTime()+864e5*r),a=new Date(a.getTime()+864e5*(0<r?1:-1))}else if(-1!=t.indexOf("week")){var s;for(e=-1!=t.indexOf("prev,")?-1:1,s=1==e?"monday"==p.startOfWeek?1:0:"monday"==p.startOfWeek?0:6,a=new Date(a.getTime()-864e5);a.getDay()!=s;)a=new Date(a.getTime()+864e5*e);n=new Date(a.getTime()+864e5*e*6)}else if(-1!=t.indexOf("month"))e=-1!=t.indexOf("prev,")?-1:1,(n=1==e?H(a):R(a)).setDate(1),(a=H(n)).setDate(1),a=new Date(a.getTime()-864e5);else if(-1!=t.indexOf("year"))e=-1!=t.indexOf("prev,")?-1:1,(n=new Date).setFullYear(a.getFullYear()+e),n.setMonth(0),n.setDate(1),a.setFullYear(a.getFullYear()+e),a.setMonth(11),a.setDate(31);else if("custom"==t){var i=Z(this).html();if(p.customShortcuts&&0<p.customShortcuts.length)for(var o=0;o<p.customShortcuts.length;o++){var d=p.customShortcuts[o];if(d.name==i){var l=[];if((l=d.dates.call())&&2==l.length&&(n=l[0],a=l[1]),l&&1==l.length){var u=l[0];z(u,"month1"),z(H(u),"month2"),I()}break}}}n&&a&&(T(n,a),M())}),m.find(".time1 input[type=range]").on("change touchmove",function(e){var t=e.target,a="hour"==t.name?Z(t).val().replace(/^(\d{1})$/,"0$1"):void 0,n="minute"==t.name?Z(t).val().replace(/^(\d{1})$/,"0$1"):void 0;c("time1",a,n)}),m.find(".time2 input[type=range]").on("change touchmove",function(e){var t=e.target,a="hour"==t.name?Z(t).val().replace(/^(\d{1})$/,"0$1"):void 0,n="minute"==t.name?Z(t).val().replace(/^(\d{1})$/,"0$1"):void 0;c("time2",a,n)})}.call(this),p.alwaysOpen&&t(0),Z(this).data("dateRangePicker",{setStart:function(e){return"string"==typeof e&&(e=Q(e,p.format).toDate()),p.end=!1,C(e),this},setEnd:function(e,t){var a=new Date;return a.setTime(p.start),"string"==typeof e&&(e=Q(e,p.format).toDate()),T(a,e,t),this},setDateRange:function(e,t,a){"string"==typeof e&&"string"==typeof t&&(e=Q(e,p.format).toDate(),t=Q(t,p.format).toDate()),T(e,t,a)},clear:function(){p.start=!1,p.end=!1,m.find(".day.checked").removeClass("checked"),m.find(".day.last-date-selected").removeClass("last-date-selected"),m.find(".day.first-date-selected").removeClass("first-date-selected"),p.setValue.call(i,""),M(),S(),j()},close:N,open:t,redraw:B,getDatePicker:function(){return m},resetMonthsView:G,destroy:function(){Z(n).off(".datepicker"),Z(n).data("dateRangePicker",""),Z(n).data("date-picker-opened",null),m.remove(),Z(window).off("resize.datepicker",o),Z(document).off("click.datepicker",U)}}),Z(window).on("resize.datepicker",o),this;function o(){if(!p.inline){var e=Z(n).offset();if("relative"==Z(p.container).css("position")){var t=Z(p.container).offset(),a=Math.max(0,e.left+m.outerWidth()-Z("body").width()+16);m.css({top:e.top-t.top+Z(n).outerHeight()+4,left:e.left-t.left-a})}else e.left<460?m.css({top:e.top+Z(n).outerHeight()+parseInt(Z("body").css("border-top")||0,10),left:e.left}):m.css({top:e.top+Z(n).outerHeight()+parseInt(Z("body").css("border-top")||0,10),left:e.left+Z(n).width()-m.width()-16})}}function t(e){B(),a(),p.customOpenAnimation?p.customOpenAnimation.call(m.get(0),function(){Z(n).trigger("datepicker-opened",{relatedTarget:m})}):m.slideDown(e,function(){Z(n).trigger("datepicker-opened",{relatedTarget:m})}),Z(n).trigger("datepicker-open",{relatedTarget:m}),I(),l(),o()}function a(){var e=p.getValue.call(i),t=e?e.split(p.separator):"";if(t&&(1==t.length&&p.singleDate||2<=t.length)){var a=p.format;a.match(/Do/)&&(a=a.replace(/Do/,"D"),t[0]=t[0].replace(/(\d+)(th|nd|st)/,"$1"),2<=t.length&&(t[1]=t[1].replace(/(\d+)(th|nd|st)/,"$1"))),s=!1,2<=t.length?T(d(t[0],a,Q.locale(p.language)),d(t[1],a,Q.locale(p.language))):1==t.length&&p.singleDate&&C(d(t[0],a,Q.locale(p.language))),s=!0}}function d(e,t,a){return Q(e,t,a).isValid()?Q(e,t,a).toDate():Q().toDate()}function l(){var e=m.find(".gap").css("margin-left");e&&(e=parseInt(e));var t=m.find(".month1").width(),a=m.find(".gap").width()+(e?2*e:0),n=m.find(".month2").width();m.find(".month-wrapper").width(t+a+n)}function u(e,t){m.find("."+e+" input[type=range].hour-range").val(Q(t).hours()),m.find("."+e+" input[type=range].minute-range").val(Q(t).minutes()),c(e,Q(t).format("HH"),Q(t).format("mm"))}function h(e,t){p[e]=parseInt(Q(parseInt(t)).startOf("day").add(Q(p[e+"Time"]).format("HH"),"h").add(Q(p[e+"Time"]).format("mm"),"m").valueOf())}function c(e,r,s){switch(r&&m.find("."+e+" .hour-val").text(r),s&&m.find("."+e+" .minute-val").text(s),e){case"time1":p.start&&t("start",Q(p.start)),t("startTime",Q(p.startTime||Q().valueOf()));break;case"time2":p.end&&t("end",Q(p.end)),t("endTime",Q(p.endTime||Q().valueOf()))}function t(e,t){var a=t.format("HH"),n=t.format("mm");p[e]=t.startOf("day").add(r||a,"h").add(s||n,"m").valueOf()}M(),S(),j()}function f(e){var t=e;return"week-range"===p.batchMode?t="monday"===p.startOfWeek?Q(parseInt(e)).startOf("isoweek").valueOf():Q(parseInt(e)).startOf("week").valueOf():"month-range"===p.batchMode&&(t=Q(parseInt(e)).startOf("month").valueOf()),t}function v(e){var t=e;return"week-range"===p.batchMode?t="monday"===p.startOfWeek?Q(parseInt(e)).endOf("isoweek").valueOf():Q(parseInt(e)).endOf("week").valueOf():"month-range"===p.batchMode&&(t=Q(parseInt(e)).endOf("month").valueOf()),t}function g(e){if(!e.hasClass("invalid")){var t=e.attr("time");if(e.addClass("checked"),p.singleDate?(p.start=t,p.end=!1):"week"===p.batchMode?"monday"===p.startOfWeek?(p.start=Q(parseInt(t)).startOf("isoweek").valueOf(),p.end=Q(parseInt(t)).endOf("isoweek").valueOf()):(p.end=Q(parseInt(t)).endOf("week").valueOf(),p.start=Q(parseInt(t)).startOf("week").valueOf()):"workweek"===p.batchMode?(p.start=Q(parseInt(t)).day(1).valueOf(),p.end=Q(parseInt(t)).day(5).valueOf()):"weekend"===p.batchMode?(p.start=Q(parseInt(t)).day(6).valueOf(),p.end=Q(parseInt(t)).day(7).valueOf()):"month"===p.batchMode?(p.start=Q(parseInt(t)).startOf("month").valueOf(),p.end=Q(parseInt(t)).endOf("month").valueOf()):p.start&&p.end||!p.start&&!p.end?(p.start=f(t),p.end=!1):p.start&&(p.end=v(t),p.time.enabled&&h("end",p.end)),p.time.enabled&&(p.start&&h("start",p.start),p.end&&h("end",p.end)),!p.singleDate&&p.start&&p.end&&p.start>p.end){var a=p.end;p.end=v(p.start),p.start=f(a),p.time.enabled&&p.swapTime&&(u("time1",p.start),u("time2",p.end))}p.start=parseInt(p.start),p.end=parseInt(p.end),b(),p.start&&!p.end&&(Z(n).trigger("datepicker-first-date-selected",{date1:new Date(p.start)}),y(e)),w(),M(),S(),j(),x()}}function k(e){if(e=parseInt(e,10),p.startDate&&F(e,p.startDate)<0)return!1;if(p.endDate&&0<F(e,p.endDate))return!1;if(p.start&&!p.end&&!p.singleDate){if(0<p.maxDays&&O(e,p.start)>p.maxDays)return!1;if(0<p.minDays&&O(e,p.start)<p.minDays)return!1;if(p.selectForward&&e<p.start)return!1;if(p.selectBackward&&e>p.start)return!1;if(p.beforeShowDay&&"function"==typeof p.beforeShowDay){for(var t=!0,a=e;1<O(a,p.start);){if(!p.beforeShowDay(new Date(a))[0]){t=!1;break}if(Math.abs(a-p.start)<864e5)break;a>p.start&&(a-=864e5),a<p.start&&(a+=864e5)}if(!t)return!1}}return!0}function w(){return m.find(".day.invalid.tmp").removeClass("tmp invalid").addClass("valid"),p.start&&!p.end&&m.find(".day.toMonth.valid").each(function(){k(parseInt(Z(this).attr("time"),10))?Z(this).addClass("valid tmp").removeClass("invalid"):Z(this).addClass("invalid tmp").removeClass("valid")}),!0}function y(e){var t=parseInt(e.attr("time")),a="";if(e.hasClass("has-tooltip")&&e.attr("data-tooltip"))a='<span class="tooltip-content">'+e.attr("data-tooltip")+"</span>";else if(!e.hasClass("invalid"))if(p.singleDate)m.find(".day.hovering").removeClass("hovering"),e.addClass("hovering");else if(m.find(".day").each(function(){var e=parseInt(Z(this).attr("time"));p.start,p.end;e==t?Z(this).addClass("hovering"):Z(this).removeClass("hovering"),p.start&&!p.end&&(p.start<e&&e<=t||p.start>e&&t<=e)?Z(this).addClass("hovering"):Z(this).removeClass("hovering")}),p.start&&!p.end){var n=O(t,p.start);p.hoveringTooltip&&("function"==typeof p.hoveringTooltip?a=p.hoveringTooltip(n,p.start,t):!0===p.hoveringTooltip&&1<n&&(a=n+" "+K("days")))}if(a){var r=e.offset(),s=m.offset(),i=r.left-s.left,o=r.top-s.top;i+=e.width()/2;var d=m.find(".date-range-length-tip"),l=d.css({visibility:"hidden",display:"none"}).html(a).width(),u=d.height();i-=l/2,o-=u,setTimeout(function(){d.css({left:i,top:o,display:"block",visibility:"visible"})},10)}else m.find(".date-range-length-tip").hide()}function b(){m.find(".day.hovering").removeClass("hovering"),m.find(".date-range-length-tip").hide()}function D(e){var t=e.val(),a=e.attr("name"),n=e.parents("table").hasClass("month1")?"month1":"month2",r="month1"===n?"month2":"month1",s=!!p.startDate&&Q(p.startDate),i=!!p.endDate&&Q(p.endDate),o=Q(p[n])[a](t);s&&o.isSameOrBefore(s)&&(o=s.add("month2"===n?1:0,"month")),i&&o.isSameOrAfter(i)&&(o=i.add(p.singleMonth||"month1"!==n?0:-1,"month")),z(o,n),"month1"===n?(p.stickyMonths||Q(o).isSameOrAfter(p[r],"month"))&&z(Q(o).add(1,"month"),r):(p.stickyMonths||Q(o).isSameOrBefore(p[r],"month"))&&z(Q(o).add(-1,"month"),r),I()}function x(){!0===p.singleDate?s&&p.start&&p.autoClose&&N():s&&p.start&&p.end&&p.autoClose&&N()}function M(){var e=Math.ceil((p.end-p.start)/864e5)+1;p.singleDate?p.start&&!p.end?m.find(".drp_top-bar").removeClass("error").addClass("normal"):m.find(".drp_top-bar").removeClass("error").removeClass("normal"):p.maxDays&&e>p.maxDays?(p.start=!1,p.end=!1,m.find(".day").removeClass("checked"),m.find(".drp_top-bar").removeClass("normal").addClass("error").find(".error-top").html(K("less-than").replace("%d",p.maxDays))):p.minDays&&e<p.minDays?(p.start=!1,p.end=!1,m.find(".day").removeClass("checked"),m.find(".drp_top-bar").removeClass("normal").addClass("error").find(".error-top").html(K("more-than").replace("%d",p.minDays))):p.start||p.end?m.find(".drp_top-bar").removeClass("error").addClass("normal"):m.find(".drp_top-bar").removeClass("error").removeClass("normal"),p.singleDate&&p.start&&!p.end||!p.singleDate&&p.start&&p.end?m.find(".apply-btn").removeClass("disabled"):m.find(".apply-btn").addClass("disabled"),p.batchMode&&(p.start&&p.startDate&&F(p.start,p.startDate)<0||p.end&&p.endDate&&0<F(p.end,p.endDate))&&(p.start=!1,p.end=!1,m.find(".day").removeClass("checked"))}function S(e,t){var a;m.find(".start-day").html("..."),m.find(".end-day").html("..."),m.find(".selected-days").hide(),p.start&&m.find(".start-day").html(W(new Date(parseInt(p.start)))),p.end&&m.find(".end-day").html(W(new Date(parseInt(p.end)))),p.start&&p.singleDate?(m.find(".apply-btn").removeClass("disabled"),a=W(new Date(p.start)),p.setValue.call(i,a,W(new Date(p.start)),W(new Date(p.end))),s&&!t&&Z(n).trigger("datepicker-change",{value:a,date1:new Date(p.start)})):p.start&&p.end?(m.find(".selected-days").show().find(".selected-days-num").html(O(p.end,p.start)),m.find(".apply-btn").removeClass("disabled"),a=W(new Date(p.start))+p.separator+W(new Date(p.end)),p.setValue.call(i,a,W(new Date(p.start)),W(new Date(p.end))),s&&!t&&Z(n).trigger("datepicker-change",{value:a,date1:new Date(p.start),date2:new Date(p.end)})):e?m.find(".apply-btn").removeClass("disabled"):m.find(".apply-btn").addClass("disabled")}function O(e,t){return Math.abs(Q(e).diff(Q(t),"d"))+1}function T(e,t,a){if(e.getTime()>t.getTime()){var n=t;t=e,e=n,n=null}var r=!0;if(p.startDate&&F(e,p.startDate)<0&&(r=!1),p.endDate&&0<F(t,p.endDate)&&(r=!1),!r)return z(p.startDate,"month1"),z(H(p.startDate),"month2"),void I();p.start=e.getTime(),p.end=t.getTime(),p.time.enabled&&(u("time1",e),u("time2",t)),(p.stickyMonths||0<F(e,t)&&0===L(e,t))&&(p.lookBehind?e=R(t):t=H(e)),p.stickyMonths&&!1!==p.endDate&&0<L(t,p.endDate)&&(e=R(e),t=R(t)),p.stickyMonths||0===L(e,t)&&(p.lookBehind?e=R(t):t=H(e)),z(e,"month1"),z(t,"month2"),I(),M(),S(!1,a),x()}function C(e){var t=!0;if(p.startDate&&F(e,p.startDate)<0&&(t=!1),p.endDate&&0<F(e,p.endDate)&&(t=!1),t){if(p.start=e.getTime(),p.time.enabled&&u("time1",e),z(e,"month1"),!0!==p.singleMonth)z(H(e),"month2");I(),S(),x()}else z(p.startDate,"month1")}function j(){(p.start||p.end)&&(m.find(".day").each(function(){var e=parseInt(Z(this).attr("time")),t=p.start,a=p.end;p.time.enabled&&(e=Q(e).startOf("day").valueOf(),t=Q(t||Q().valueOf()).startOf("day").valueOf(),a=Q(a||Q().valueOf()).startOf("day").valueOf()),p.start&&p.end&&e<=a&&t<=e||p.start&&!p.end&&Q(t).format("YYYY-MM-DD")==Q(e).format("YYYY-MM-DD")?Z(this).addClass("checked"):Z(this).removeClass("checked"),p.start&&Q(t).format("YYYY-MM-DD")==Q(e).format("YYYY-MM-DD")?Z(this).addClass("first-date-selected"):Z(this).removeClass("first-date-selected"),p.end&&Q(a).format("YYYY-MM-DD")==Q(e).format("YYYY-MM-DD")?Z(this).addClass("last-date-selected"):Z(this).removeClass("last-date-selected")}),m.find(".week-number").each(function(){Z(this).attr("data-start-time")==p.startWeek&&Z(this).addClass("week-number-selected")}))}function z(e,t){var a=function(e,t){var a=(e=Q(e)).get("month"),n='<div class="month-element">'+A(a)+"</div>";if(!p.monthSelect)return n;var r=!!p.startDate&&Q(p.startDate).add(p.singleMonth||"month2"!==t?0:1,"month"),s=!!p.endDate&&Q(p.endDate).add(p.singleMonth||"month1"!==t?0:-1,"month"),i=r&&e.isSame(r,"year")?r.get("month"):0,o=s&&e.isSame(s,"year")?s.get("month"):11,d=Math.min(i,a),l=Math.max(o,a);if(d===l)return n;return P("month",V({minSelectable:i,maxSelectable:o,minVisible:d,maxVisible:l},a,function(e){return A(e)}))}(e=Q(e).toDate(),t),n=function(e,t){var a=(e=Q(e)).get("year"),n='<div class="month-element">'+a+"</div>";if(!p.yearSelect)return n;var r=p.yearSelect&&"function"==typeof p.yearSelect,s=!!p.startDate&&Q(p.startDate).add(p.singleMonth||"month2"!==t?0:1,"month"),i=!!p.endDate&&Q(p.endDate).add(p.singleMonth||"month1"!==t?0:-1,"month"),o=r?p.yearSelect(a):p.yearSelect.slice(),d=s?Math.max(o[0],s.get("year")):Math.min(o[0],a),l=i?Math.min(o[1],i.get("year")):Math.max(o[1],a),u=Math.min(d,a),m=Math.max(l,a);if(u===m)return n;return P("year",V({minSelectable:d,maxSelectable:l,minVisible:u,maxVisible:m},a))}(e,t);m.find("."+t+" .month-name").html(a+" "+n),m.find("."+t+" tbody").html(function(e){var t=[];e.setDate(1);new Date(e.getTime()-864e5);var a,n,r=new Date,s=e.getDay();0===s&&"monday"===p.startOfWeek&&(s=7);if(0<s)for(var i=s;0<i;i--){var o=new Date(e.getTime()-864e5*i);n=k(o.getTime()),p.startDate&&F(o,p.startDate)<0&&(n=!1),p.endDate&&0<F(o,p.endDate)&&(n=!1),t.push({date:o,type:"lastMonth",day:o.getDate(),time:o.getTime(),valid:n})}for(var d=e.getMonth(),i=0;i<40;i++)a=Q(e).add(i,"days").toDate(),n=k(a.getTime()),p.startDate&&F(a,p.startDate)<0&&(n=!1),p.endDate&&0<F(a,p.endDate)&&(n=!1),t.push({date:a,type:a.getMonth()==d?"toMonth":"nextMonth",day:a.getDate(),time:a.getTime(),valid:n});for(var l=[],u=0;u<6&&"nextMonth"!=t[7*u].type;u++){l.push("<tr>");for(var o=0;o<7;o++){var m="monday"==p.startOfWeek?o+1:o;a=t[7*u+m];var h=Q(a.time).format("L")==Q(r).format("L");if(a.extraClass="",a.tooltip="",a.valid&&p.beforeShowDay&&"function"==typeof p.beforeShowDay){var c=p.beforeShowDay(Q(a.time).toDate());a.valid=c[0],a.extraClass=c[1]||"",a.tooltip=c[2]||"",""!==a.tooltip&&(a.extraClass+=" has-tooltip ")}var f={time:a.time,"data-tooltip":a.tooltip,class:"day "+a.type+" "+a.extraClass+" "+(a.valid?"valid":"invalid")+" "+(h?"real-today":"")};0===o&&p.showWeekNumbers&&l.push('<td><div class="week-number" data-start-time="'+a.time+'">'+p.getWeekNumber(a.date)+"</div></td>"),l.push("<td "+$({},p.dayTdAttrs,a)+"><div "+$(f,p.dayDivAttrs,a)+">"+J(a.time,a.day)+"</div></td>")}l.push("</tr>")}return l.join("")}(e)),p[t]=e,w(),m.find(".day").off("click").click(function(e){g(Z(this))}),m.find(".day").off("mouseenter").mouseenter(function(e){y(Z(this))}),m.find(".day").off("mouseleave").mouseleave(function(e){m.find(".date-range-length-tip").hide(),p.singleDate&&b()}),m.find(".week-number").off("click").click(function(e){var t,a,n,r;t=Z(this),r=parseInt(t.attr("data-start-time"),10),p.startWeek?(m.find(".week-number-selected").removeClass("week-number-selected"),a=new Date(r<p.startWeek?r:p.startWeek),n=new Date(r<p.startWeek?p.startWeek:r),p.startWeek=!1,p.start=Q(a).day("monday"==p.startOfWeek?1:0).valueOf(),p.end=Q(n).day("monday"==p.startOfWeek?7:6).valueOf()):(p.startWeek=r,t.addClass("week-number-selected"),a=new Date(r),p.start=Q(a).day("monday"==p.startOfWeek?1:0).valueOf(),p.end=Q(a).day("monday"==p.startOfWeek?7:6).valueOf()),w(),M(),S(),j(),x()}),m.find(".month").off("change").change(function(e){D(Z(this))}),m.find(".year").off("change").change(function(e){D(Z(this))})}function V(e,t,a){var n=[];a=a||function(e){return e};for(var r=e.minVisible;r<=e.maxVisible;r++)n.push({value:r,text:a(r),selected:r===t,disabled:r<e.minSelectable||r>e.maxSelectable});return n}function P(e,t){for(var a,n='<div class="select-wrapper"><select class="'+e+'" name="'+e+'">',r=0,s=t.length;r<s;r++){var i=t[r];n+='<option value="'+i.value+'"'+(i.selected?" selected":"")+(i.disabled?" disabled":"")+">"+i.text+"</option>",i.selected&&(a=i.text)}return n+="</select>"+a+"</div>"}function Y(e,t){m.find("."+t).append("<div><span>"+K("Time")+': <span class="hour-val">00</span>:<span class="minute-val">00</span></span></div><div class="hour"><label>'+K("Hour")+': <input type="range" class="hour-range" name="hour" min="0" max="23"></label></div><div class="minute"><label>'+K("Minute")+': <input type="range" class="minute-range" name="minute" min="0" max="59"></label></div>'),u(t,e)}function A(e){return K("month-name")[e]}function W(e){return Q(e).format(p.format)}function I(){j();var e=parseInt(Q(p.month1).format("YYYYMM")),t=parseInt(Q(p.month2).format("YYYYMM")),a=Math.abs(e-t);1<a&&89!=a?m.addClass("has-gap").removeClass("no-gap").find(".gap").css("visibility","visible"):m.removeClass("has-gap").addClass("no-gap").find(".gap").css("visibility","hidden");var n=m.find("table.month1").height(),r=m.find("table.month2").height();m.find(".gap").height(Math.max(n,r)+10)}function N(){if(!p.alwaysOpen){var e=function(){Z(n).data("date-picker-opened",!1),Z(n).trigger("datepicker-closed",{relatedTarget:m})};p.customCloseAnimation?p.customCloseAnimation.call(m.get(0),e):Z(m).slideUp(p.duration,e),Z(n).trigger("datepicker-close",{relatedTarget:m})}}function B(){z(p.month1,"month1"),z(p.month2,"month2")}function L(e,t){var a=parseInt(Q(e).format("YYYYMM"))-parseInt(Q(t).format("YYYYMM"));return 0<a?1:0===a?0:-1}function F(e,t){var a=parseInt(Q(e).format("YYYYMMDD"))-parseInt(Q(t).format("YYYYMMDD"));return 0<a?1:0===a?0:-1}function H(e){return Q(e).add(1,"months").toDate()}function R(e){return Q(e).add(-1,"months").toDate()}function E(){var e=p.showWeekNumbers?"<th>"+K("week-number")+"</th>":"";return"monday"==p.startOfWeek?e+"<th>"+K("week-1")+"</th><th>"+K("week-2")+"</th><th>"+K("week-3")+"</th><th>"+K("week-4")+"</th><th>"+K("week-5")+"</th><th>"+K("week-6")+"</th><th>"+K("week-7")+"</th>":e+"<th>"+K("week-7")+"</th><th>"+K("week-1")+"</th><th>"+K("week-2")+"</th><th>"+K("week-3")+"</th><th>"+K("week-4")+"</th><th>"+K("week-5")+"</th><th>"+K("week-6")+"</th>"}function q(e){return e=Q(e),!(!p.startDate||!e.endOf("month").isBefore(p.startDate))||!(!p.endDate||!e.startOf("month").isAfter(p.endDate))}function $(e,t,r){var s=Z.extend(!0,{},e);Z.each(t,function(e,t){var a=t(r);for(var n in a)s.hasOwnProperty(n)?s[n]+=a[n]:s[n]=a[n]});var a="";for(var n in s)s.hasOwnProperty(n)&&(a+=n+'="'+s[n]+'" ');return a}function J(e,t){return p.showDateFilter&&"function"==typeof p.showDateFilter?p.showDateFilter(e,t):t}function K(e){var t=e.toLowerCase(),a=e in r?r[e]:t in r?r[t]:null,n=Z.dateRangePickerLanguages.default;return null==a&&(a=e in n?n[e]:t in n?n[t]:""),a}function _(){var e=p.defaultTime?p.defaultTime:new Date;return p.lookBehind?(p.startDate&&L(e,p.startDate)<0&&(e=H(Q(p.startDate).toDate())),p.endDate&&0<L(e,p.endDate)&&(e=Q(p.endDate).toDate())):(p.startDate&&L(e,p.startDate)<0&&(e=Q(p.startDate).toDate()),p.endDate&&0<L(H(e),p.endDate)&&(e=R(Q(p.endDate).toDate()))),p.singleDate&&(p.startDate&&L(e,p.startDate)<0&&(e=Q(p.startDate).toDate()),p.endDate&&0<L(e,p.endDate)&&(e=Q(p.endDate).toDate())),e}function G(e){e||(e=_()),p.lookBehind?(z(R(e),"month1"),z(e,"month2")):(z(e,"month1"),z(H(e),"month2")),p.singleDate&&z(e,"month1"),j(),I()}function U(e){var t,a;t=e,(a=n[0]).contains(t.target)||t.target==a||null!=a.childNodes&&0<=Z.inArray(t.target,a.childNodes)||m.is(":visible")&&N()}}});
 /*
  * @license
  *
@@ -20853,3 +24521,114 @@ $(document).ready(function () {
     table.row('.selected').remove().draw(false);
   });
 });
+
+
+function dateRange(startId,endId,year_s,month_s,day_s,year_e,month_e,day_e,max_start_date){
+    var bindDateRangeValidation = function (f, s, e) {
+                if(!(f instanceof jQuery)){
+                        console.log("Not passing a jQuery object");
+                }
+            
+                var jqForm = f,
+                    startDateId = s,
+                    endDateId = e;
+            
+                var checkDateRange = function (startDate, endDate) {
+                    var isValid = (startDate != "" && endDate != "") ? startDate <= endDate : true;
+                    return isValid;
+                }
+
+                var bindValidator = function () {
+                    var bstpValidate = jqForm.data('bootstrapValidator');
+                    var validateFields = {
+                        startDate: {
+                            validators: {
+                                notEmpty: { message: 'This field is required.' },
+                                callback: {
+                                    message: 'Start Date must less than or equal to End Date.',
+                                    callback: function (startDate, validator, $field) {
+                                        //- return checkDateRange(startDate, $('#' + endDateId).val())
+                                    }
+                                }
+                            }
+                        },
+                        endDate: {
+                            validators: {
+                                notEmpty: { message: 'This field is required.' },
+                                callback: {
+                                    message: 'End Date must greater than or equal to Start Date.',
+                                    callback: function (endDate, validator, $field) {
+                                        return checkDateRange($('#' + startDateId).val(), endDate);
+                                    }
+                                }
+                            }
+                        },
+                        customize: {
+                            validators: {
+                                customize: { message: 'customize.' }
+                            }
+                        }
+                    }
+                    if (!bstpValidate) {
+                        jqForm.bootstrapValidator({
+                            excluded: [':disabled'], 
+                        })
+                    }
+                
+                    jqForm.bootstrapValidator('addField', startDateId, validateFields.startDate);
+                    jqForm.bootstrapValidator('addField', endDateId, validateFields.endDate);
+                
+                };
+
+                var hookValidatorEvt = function () {
+                    var dateBlur = function (e, bundleDateId, action) {
+                        jqForm.bootstrapValidator('revalidateField', e.target.id);
+                    }
+
+                    $('#' + startDateId).on("dp.change dp.update blur", function (e) {
+                        $('#' + endDateId).data("DateTimePicker").setMinDate(e.date);
+                        dateBlur(e, endDateId);
+                    });
+
+                    $('#' + endDateId).on("dp.change dp.update blur", function (e) {
+                        $('#' + startDateId).data("DateTimePicker").setMaxDate(e.date);
+                        dateBlur(e, startDateId);
+                    });
+                }
+
+                bindValidator();
+                hookValidatorEvt();
+            };
+
+
+          
+            $(function () {
+              var sd = new Date(), ed = new Date();
+              var month_new_s = parseInt(month_s)-1
+              var month_new_e = parseInt(month_e)-1
+              console.log(month_new_s);
+              var test = new Date(year_s,month_new_s,day_s);
+              var test2 = new Date(year_e,month_new_e,day_e);
+              console.log("/*/*/*")
+                  console.log(test)
+              $('#'+startId).datetimepicker({ 
+              pickTime: false, 
+              format: "DD/MM/YYYY", 
+              defaultDate: test, 
+              minDate:test,
+              maxDate: max_start_date,
+              });
+          
+              $('#'+endId).datetimepicker({ 
+              pickTime: false, 
+              format: "DD/MM/YYYY", 
+              defaultDate: test2, 
+              maxDate:test2,
+              minDate: test, 
+              });
+
+              //passing 1.jquery form object, 2.start date dom Id, 3.end date dom Id
+              bindDateRangeValidation($("#form"), startId, endId);
+          });
+
+  }

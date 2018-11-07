@@ -163,7 +163,7 @@
     
                 // push cities IDs selected by user
                 $('input.input-in-table:checked').each(function() {
-                    allVals.push( $(this).data("id") );
+                    allVals.push( $(this).closest('tr').data("id") );
                 });
     
                 // check if user selected nothing

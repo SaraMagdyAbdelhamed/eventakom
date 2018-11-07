@@ -65,33 +65,33 @@
                                   </div>
                                   <div class="col-sm-6 col-xs-12">
                                     <div class="master_field">
-                                      <label class="master_label" for="bootstrap_date_start_from">@lang('keywords.startDateFrom')</label>
+                                      <label class="master_label" for="startdate_from">@lang('keywords.startDateFrom')</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="start date from" id="bootstrap_date_start_from" name="startdate_from">
+                                        <input class=" master_input" type="text" placeholder="start date from" id="startdate_from" name="startdate_from">
                                       </div>
                                     </div>
                                   </div>
                                   <div class="col-sm-6 col-xs-12">
                                     <div class="master_field">
-                                      <label class="master_label" for="bootstrap_date_start_to">@lang('keywords.startDateTo')</label>
+                                      <label class="master_label" for="startdate_to">@lang('keywords.startDateTo')</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="start date to" id="bootstrap_date_start_to"  name="startdate_to">
+                                        <input class=" master_input" type="text" placeholder="start date to" id="startdate_to"  name="startdate_to">
                                       </div>
                                     </div>
                                   </div>
                                   <div class="col-sm-6 col-xs-12">
                                     <div class="master_field">
-                                      <label class="master_label" for="bootstrap_date_End_from">@lang('keywords.endDateFrom')</label>
+                                      <label class="master_label" for="enddate_from">@lang('keywords.endDateFrom')</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="End date from" id="bootstrap_date_End_from" name="enddate_from">
+                                        <input class=" master_input" type="text" placeholder="End date from" id="enddate_from" name="enddate_from">
                                       </div>
                                     </div>
                                   </div>
                                   <div class="col-sm-6 col-xs-12">
                                     <div class="master_field">
-                                      <label class="master_label" for="bootstrap_date_End_to">@lang('keywords.endDateTo')</label>
+                                      <label class="master_label" for="enddate_to">@lang('keywords.endDateTo')</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="End date to" id="bootstrap_date_End_to" name="enddate_to">
+                                        <input class=" master_input" type="text" placeholder="End date to" id="enddate_to" name="enddate_to">
                                       </div>
                                     </div>
                                   </div>
@@ -543,7 +543,7 @@
                                     <div class="master_field">
                                       <label class="master_label" for="bootstrap_date_start_from">@lang('keywords.startDateFrom')</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="start date from" id="bootstrap_date_start_from" name="startdate_from">
+                                        <input class=" master_input" type="text" placeholder="start date from" id="bootstrap_date_start_from" name="startdate_from">
                                       </div>
                                     </div>
                                   </div>
@@ -551,7 +551,7 @@
                                     <div class="master_field">
                                       <label class="master_label" for="bootstrap_date_start_to">@lang('keywords.startDateTo')</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="start date to" id="bootstrap_date_start_to"  name="startdate_to">
+                                        <input class=" master_input" type="text" placeholder="start date to" id="bootstrap_date_start_to"  name="startdate_to">
                                       </div>
                                     </div>
                                   </div>
@@ -559,7 +559,7 @@
                                     <div class="master_field">
                                       <label class="master_label" for="bootstrap_date_End_from">@lang('keywords.endDateFrom')</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="End date from" id="bootstrap_date_End_from" name="enddate_from">
+                                        <input class=" master_input" type="text" placeholder="End date from" id="bootstrap_date_End_from" name="enddate_from">
                                       </div>
                                     </div>
                                   </div>
@@ -567,7 +567,7 @@
                                     <div class="master_field">
                                       <label class="master_label" for="bootstrap_date_End_to">@lang('keywords.endDateTo')</label>
                                       <div class="bootstrap-timepicker">
-                                        <input class="datepicker master_input" type="text" placeholder="End date to" id="bootstrap_date_End_to" name="enddate_to">
+                                        <input class=" master_input" type="text" placeholder="End date to" id="bootstrap_date_End_to" name="enddate_to">
                                       </div>
                                     </div>
                                   </div>
@@ -958,9 +958,8 @@
       });
   </script>
   <script type="text/javascript">
-      $(function () {
-        $('.datepicker').datepicker({autoclose: true});
-      });
+      dateRange('startdate_from', 'startdate_to');
+      dateRange('enddate_from', 'enddate_to');
     </script>
     <script type="text/javascript">
       var swiper = new Swiper('.slideperview .swiper-container', {
@@ -1272,6 +1271,30 @@
        return false;
    });
 
-      });
-    </script>
-@endsection @endsection
+  });
+</script>
+
+{{-- Check Image before uploading --}}
+<script>
+  $(document).ready(function(){
+    $('#user_img').on('change', function() {
+      checkImageSize('#user_img', 5120, '#add_user_submit', '#add_error_msg');
+    });
+  });
+
+  function checkImageSize(input, maxSize, submitBtnId, error_msg_id) {
+    // size of the image
+    var imageSizeInMB = ($(input)[0].files[0].size) / 1024;
+
+    if (imageSizeInMB <= maxSize) {
+      $(submitBtnId).prop('disabled', false);
+      $(error_msg_id).text("Image size is perfect!").css('color', 'blue');
+    } else {
+      $(submitBtnId).prop('disabled', true);
+      $(error_msg_id).text("Image max size is 5MB (5120KB).").css('color', 'red');
+    }      
+  }
+</script>
+
+@endsection 
+@endsection

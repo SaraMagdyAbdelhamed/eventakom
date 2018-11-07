@@ -62,33 +62,33 @@
                 </div>
                 <div class="col-sm-6 col-xs-12">
                   <div class="master_field">
-                    <label class="master_label" for="bootstrap_date_start_from">@lang('keywords.startDateFrom')</label>
+                    <label class="master_label" for="start_from">@lang('keywords.startDateFrom')</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="start date from" id="bootstrap_date_start_from" name="start_from" />
+                      <input class=" master_input" type="text" placeholder="start date from" id="start_from" name="start_from" />
                     </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-xs-12">
                   <div class="master_field">
-                    <label class="master_label" for="bootstrap_date_start_to">@lang('keywords.startDateTo')</label>
+                    <label class="master_label" for="start_to">@lang('keywords.startDateTo')</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="start date from" id="bootstrap_date_start_from" name="start_to">
+                      <input class=" master_input" type="text" placeholder="start date from" id="start_to" name="start_to">
                     </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-xs-12">
                   <div class="master_field">
-                    <label class="master_label" for="bootstrap_date_End_from">@lang('keywords.endDateFrom')</label>
+                    <label class="master_label" for="end_from">@lang('keywords.endDateFrom')</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="set end date from" id="bootstrap_date_End_from" name="end_from">
+                      <input class=" master_input" type="text" placeholder="set end date from" id="end_from" name="end_from">
                     </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-xs-12">
                   <div class="master_field">
-                    <label class="master_label" for="bootstrap_date_End_to">@lang('keywords.endDateTo')</label>
+                    <label class="master_label" for="end_to">@lang('keywords.endDateTo')</label>
                     <div class="bootstrap-timepicker">
-                      <input class="datepicker master_input" type="text" placeholder="set end date to" id="bootstrap_date_End_to" name="end_to">
+                      <input class=" master_input" type="text" placeholder="set end date to" id="end_to" name="end_to">
                     </div>
                   </div>
                 </div>
@@ -153,6 +153,9 @@
   $(document).ready(function(){
     $('#menu_3').addClass('openedmenu');
     $('#sub_3_1').addClass('pure-active');
+    
+    dateRange('start_from', 'start_to');
+    dateRange('end_from', 'end_to');
   });
 </script>
 
@@ -166,7 +169,7 @@
     $('input.input-in-table:checked').each(function() {
         allVals.push( $(this).closest('tr').data("id") );
     });
-console.log(allVals);
+
     // check if user selected nothing
     if(allVals.length <= 0) {
     confirm('إختر عميل علي الاقل لتستطيع حذفه');
@@ -272,9 +275,7 @@ console.log(allVals);
 
 <script>
   $(document).ready(function(){
-    $(function () {
-        $('.datepicker').datepicker({autoclose: true});
-      });
+
 
     var swiper = new Swiper('.slideperview .swiper-container', {
       pagination: '.swiper-pagination',

@@ -109,8 +109,10 @@
                                             {{-- Input: Arabic Image --}}
                                             <div class="file-select-name" id="noFile">من فضلك اضف صورة</div>
                                             <input class="chooseFile" type="file" name="image_ar" id="image_ar" Required>
+                                            
                                         </div>
                                         </div>
+                                        <span class="master_message inherit" id="image_ar_error"></span>
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-xs-12">
@@ -143,8 +145,10 @@
                                         {{-- Input: English Image --}}
                                         <div class="file-select-name" id="noFile">please Offer image</div>
                                         <input class="chooseFile" type="file" name="image_en" id="image_en" Required>
+                                        
                                     </div>
                                     </div>
+                                    <span class="master_message inherit" id="image_en_error"></span>    
                                 </div>
                                 </div>
                                 <div class="col-sm-4 col-xs-12">
@@ -387,7 +391,7 @@
 
             // push IDs selected by user
             $('input.input-in-table:checked').each(function() {
-                allVals.push( $(this).data("id") );
+                allVals.push( $(this).closest('tr').data("id") );
             });
 
             // check if user selected nothing
@@ -584,6 +588,42 @@
         });
     });
 </script>
+
+{{-- Check Image before uploading --}}
+<script>
+var image_size1 = 0;    // arabic image size
+var image_size2 = 0;    // english image size
+
+$(document).ready(function(){
+    $('#image_ar').on('change', function() {
+        image_size1 = this.files[0].size / 1024;
+        checkImageSize('#image_ar', 1024, '#addSubmit', '#image_ar_error');
+    });
+
+    $('#image_en').on('change', function() {
+        image_size2 = this.files[0].size / 1024;
+        checkImageSize('#image_en', 1024, '#addSubmit', '#image_en_error');
+    });
+});
+
+function checkImageSize(input, maxSize, submitBtnId, error_msg_id) {
+    // size of the image
+    var imageSizeInMB = ($(input)[0].files[0].size) / 1024;
+
+    if (imageSizeInMB <= maxSize && image_size1 <= maxSize && image_size2 <= maxSize) {
+        $(submitBtnId).prop('disabled', false);
+    } else {
+        $(submitBtnId).prop('disabled', true);
+    }      
+
+    if (imageSizeInMB <= maxSize) {
+        $(error_msg_id).text("Image size is perfect!").css('color', 'blue');
+    } else {
+        $(error_msg_id).text("Image max size is 5MB (5120KB).").css('color', 'red');
+    }
+}
+</script>
+
 {{-- End Scripts --}}
 
 @endsection

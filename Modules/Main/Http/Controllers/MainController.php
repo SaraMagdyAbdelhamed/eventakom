@@ -401,8 +401,8 @@ class MainController extends Controller
         $this->validate($request, [
             'arabic'  =>  'required',
             'english'  =>  'required',
-            'logoAr'  =>  'required|image|mimes:jpeg,jpg,png|max:5000',
-            'logoEn'  =>  'required|image|mimes:jpeg,jpg,png|max:5000'
+            'logoAr'  =>  'required|image|mimes:jpeg,jpg,png|max:10',
+            'logoEn'  =>  'required|image|mimes:jpeg,jpg,png|max:10'
         ],[
             'arabic.required'   => 'اسم الراعي باللغة العربية غير موجود ، برجاء كتابته ثم المحاولة مجددا',
             'english.required'  => 'Sponsor name is required, please type it and try again!',

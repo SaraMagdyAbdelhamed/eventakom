@@ -213,6 +213,7 @@ class UsersController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+        
         $user = Users::find($id);
         if ($request->hasFile('image')) {
             $destinationPath = 'backend_users';
