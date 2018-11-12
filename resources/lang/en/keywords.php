@@ -239,9 +239,9 @@
 		'duplicatedBevents'=>'You have already selected this Event!',
 		//shop and dine
         'shop_and_dine'=>'Shop And Dine',
-        'serial_no'=>'SerialNo ',
-        'shop_photo'=>'PlacePhoto',
-        'shop_name'=>'PlaceName ',
+        'serial_no'=>'Serial No ',
+        'shop_photo'=>'Place Photo',
+        'shop_name'=>'Place Name ',
         'shop_phone'=>'Phone ',
         'shop_status'=>'Status',
         'shop_actions'=>'Actions',

@@ -42,6 +42,7 @@ class ShopsController extends Controller
 
         return view('shops::shops.index', $data);
     }
+
     public function add()
     {
 
@@ -267,6 +268,8 @@ class ShopsController extends Controller
         if (isset($request['video'])) {
             ShopMedia::where('shop_id', $id)->where('type', 2)->delete();
             foreach ($request['video'] as $key => $value) {
+            $value = str_replace('watch?v=', 'embed/', $value);
+
                 if ($value != null) {
                     $shop_media = ShopMedia::create([
                         "shop_id" => $shop->id,
@@ -274,7 +277,8 @@ class ShopsController extends Controller
                         "type" => 2,
                     ]);
                     if ($request['video_ar'][$key] != null) {
-                        Helper::add_localization(21, 'link', $shop_media->id, $request['video_ar'][$key], 2);
+                        $value_ar = str_replace('watch?v=', 'embed/', $request['video_ar'][$key]);
+                        Helper::add_localization(21, 'link', $shop_media->id, $value_ar, 2);
                     } else {
                         Helper::add_localization(21, 'link', $shop_media->id, $value, 2);
                     }
@@ -307,5 +311,11 @@ class ShopsController extends Controller
             }
         }
         return redirect()->route('shops');
+    }
+
+    public function view(Shop $shop) {
+
+        return view('shops::shops.view')
+            ->with('shop', $shop);
     }
 }

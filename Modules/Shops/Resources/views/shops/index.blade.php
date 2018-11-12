@@ -81,7 +81,20 @@
                         @else
                         <td><span class="cellcontent"><i class = "fa icon-in-table-false fa-times"></i></span></td>
                         @endif
-                        <td><span class="cellcontent"><a href= "#shop_{{$value['id']}}" ,  class= "action-btn bgcolor--main color--white " ><i class = "fa  fa-eye"></i></a><a href= "{{route('edit_shop',$value['id'])}}" ,  class= "action-btn bgcolor--fadegreen color--white "><i class = "fa  fa-pencil"></i></a><a   class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white "><i class = "fa  fa-trash-o"></i></a></span></td>
+                        <td>
+                          <span class="cellcontent">
+                            <a href="{{ route('view_shop', ['shop' => $value['id']]) }}" class= "action-btn bgcolor--main color--white " >
+                              <i class = "fa  fa-eye"></i>
+                            </a>
+                            
+                            <a href= "{{route('edit_shop',$value['id'])}}" ,  class= "action-btn bgcolor--fadegreen color--white ">
+                              <i class = "fa  fa-pencil"></i>
+                            </a>
+                            <a class= "btn-warning-confirm action-btn bgcolor--fadebrown color--white ">
+                              <i class = "fa  fa-trash-o"></i>
+                            </a>
+                          </span>
+                        </td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -92,130 +105,7 @@
           </div>
     </div><br>    
 </div>
-@foreach($shops as $key => $value)
-<div class="remodal" data-remodal-id="shop_{{$value['id']}}" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-  <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-  <div>
-    <div class="row">
-      <div class="col-xs-12"></div>
-      <h3>{{$value['name']}}</h3>
-      <div class="col-xs-12">
-        <form>
-          <div class="tabs--wrapper">
-            <div class="clearfix"></div>
-            <ul class="tabs">
-              <li id="info_{{$value['id']}}">@lang('keywords.info')</li>
-              <li id="media_{{$value['id']}}">@lang('keywords.media')</li>
-            </ul>
-            <ul class="tab__content">
-              <li class="tab__content_item active" id="info_{{$value['id']}}-content">
-                <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                  <div class="full-table">
-                    <table class="verticaltable table-master">
-                      <tr>
-                        <th><span class="cellcontent">@lang('keywords.shop_name')</span></th>
-                        <td><span class="cellcontent">{{$value['name']}}</span></td>
-                      </tr>
-                      <tr>
-                        <th><span class="cellcontent">@lang('keywords.shop_phone')</span></th>
-                        <td><span class="cellcontent">{{$value['phone']}}</span></td>
-                      </tr>
-                      <tr>
-                        <th><span class="cellcontent">@lang('keywords.website')</span></th>
-                        <td><span class="cellcontent">&lt;a href = &quot;#.html&quot;&gt;{{$value['website']}}&lt;/a&gt;</span></td>
-                      </tr>
-                      <tr>
-                        <th><span class="cellcontent">@lang('keywords.opening_days')</span></th>
-                        <td><span class="cellcontent">
-                          @foreach($value['shop_day'] as $day)
-                          {{$day['name']}},
-                          @endforeach
-                        </span></td>
-                      </tr>
-                      <tr>
-                        <th><span class="cellcontent">@lang('keywords.other_info')</span></th>
-                        <td><span class="cellcontent">{{$value['info']}}</span></td>
-                      </tr>
-                      {{-- <tr>
-                        <th><span class="cellcontent">Branches</span></th>
-                        <td><span class="cellcontent">
-                      @foreach($value['shop_branch'] as $branch)
-                      {{$branch['branch']}},
-                      @endforeach
-                    </span></td>
-                      </tr>
-                      <tr>
-                        <th><span class="cellcontent">from</span></th>
-                        <td><span class="cellcontent">12:00PM</span></td>
-                      </tr>
-                      <tr>
-                        <th><span class="cellcontent">to</span></th>
-                        <td><span class="cellcontent">12:00AM</span></td>
-                      </tr> --}}
-                      <tr>
-                        <th><span class="cellcontent">@lang('keywords.shop_status')</span></th>
-                        @if($value['is_active'])
-                        <td><span class="cellcontent">&lt;i class = &quot;fa icon-in-table-true fa-check&quot;&gt;&lt;/i&gt;</span></td>
-                        @else
-                        <td><span class="cellcontent">&lt;i class = &quot;fa icon-in-table-true fa-times&quot;&gt;&lt;/i&gt;</span></td>
-                        @endif
-                      </tr>
-                    </table>
-                    
-                  </div>
-                  <div class="clearfix"></div>
-                </div>
-              </li>
-              <li class="tab__content_item" id="media_{{$value['id']}}-content">
-                <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                  <div class="col-xs-12">
-                    <h5 class="text-left">@lang('keywords.images')</h5>
-                  </div>
-                  <div class="col-xs-12">
-                    <div class="slideperview" id="slider--3">
-                      <div class="swiper-container">
-                        <div class="swiper-wrapper">    
-                          @foreach($value['shop_media'] as $image)           
-                            @if($image['type'] ==1)      
-                             <div class="swiper-slide"><img class="full-size" src="{{ \App::isLocale('en') ? $image['link'] : \Helper::localization(21, 'link', $image['id'], 2, $image['link'] ) }}"></div>
-                            @endif
-                          @endforeach
-                        </div>
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-button-next swiper-button-white"></div>
-                        <div class="swiper-button-prev swiper-button-white"> </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="col-xs-12">
-                  <h5 class="text-left">@lang('keywords.videos')</h5>
-                </div>
-                @foreach($value['shop_media'] as $video)          
-                 @if($image['type'] ==2)
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                  <iframe width="100%" height="350" src="{{ \App::isLocale('en') ? $image['link'] : \Helper::localization(21, 'link', $image['id'], 2, $image['link'] ) }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                  </div>
-                </div>
-                @endif
-                @endforeach
-                {{-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                  <iframe width="100%" height="350" src="https://www.youtube.com/embed/tMe0vwZ13fw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                  </div>
-                </div> --}}
-              </li>
-            </ul>
-          </div>
-          <button class="remodal-confirm" data-remodal-action="confirm">@lang('keywords.cancel')</button>
-        </form>
-      </div>
-    </div>
-  </div>
-  </div>
-  @endforeach           
+        
 
 @endsection
 

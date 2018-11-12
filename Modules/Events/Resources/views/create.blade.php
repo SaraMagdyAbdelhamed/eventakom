@@ -635,18 +635,18 @@
 
   });
 
-    $(function () {
-      $(".select2").select2();
-    });
+  $(function () {
+    $(".select2").select2();
+  });
 
-    var listAr = [];
-    var listEn = [];
-    var check = false;
-    var img;
-    var reader=new FileReader();
-    function updateIndexList(){
-    
-    }
+  var listAr = [];
+  var listEn = [];
+  var check = false;
+  var img;
+  var reader=new FileReader();
+  function updateIndexList(){
+  
+  }
 
   function closebtn(index,value) {
     if(value==1){
