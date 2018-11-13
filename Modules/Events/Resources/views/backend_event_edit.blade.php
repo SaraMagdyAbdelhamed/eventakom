@@ -57,7 +57,7 @@
               <div class="master_field">
                 <label class="master_label" for="Event_name">@lang('keywords.eventName')</label>
                 <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required 
-                  id="Event_name" name="english_event_name" value="{{ $event->name ? : '' }}">
+                  maxlength="100"  id="Event_name" name="english_event_name" value="{{ $event->name ? : '' }}">
                 @if ($errors->has('event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('event_name') }}</span>
                 @endif
@@ -70,7 +70,7 @@
               <div class="master_field">
                 <label class="master_label" for="description">@lang('keywords.description')</label>
                 <textarea class="master_input" id="description" placeholder="Description" Required 
-                  name="english_description">{{ $event->description ? : '' }}</textarea>
+                  maxlength="250"  name="english_description">{{ $event->description ? : '' }}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
                 @endif
@@ -91,7 +91,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">@lang('keywords.address')</label>
-                <input class="master_input" id="searchInput" type="text" placeholder="ex:CFC" min="0" max="50" Required id="location" name="address" value="{{ $event->address }}">
+                <input class="master_input" id="searchInput" type="text" placeholder="ex:CFC" maxlength="50" Required 
+                  id="location" name="address" value="{{ $event->address }}">
                 @if ($errors->has('address'))
                   <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
                 @endif
@@ -104,7 +105,7 @@
               <div class="master_field">
                 <label class="master_label" for="venue">@lang('keywords.venue')</label>
                 <input class="master_input" type="text" placeholder="ex:CFC" Required 
-                  id="venue" name="english_venu" value="{{ $event->venue ? : '' }}">
+                  maxlength="50"  id="venue" name="english_venu" value="{{ $event->venue ? : '' }}">
                 @if ($errors->has('english_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_venu') }}</span>
                 @endif
@@ -224,7 +225,8 @@
             <div class="col-sm-6 col-xs-12">
               <div class="master_field">
                 <label class="master_label mandatory" for="category">@lang('keywords.category')</label>
-                <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" name="categories[]">
+                <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder"
+                  style="width:100%;" name="categories[]" required>
 
                   @if ( isset($categories) && !empty($categories) )
                       @foreach ($categories as $category)
@@ -267,7 +269,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">اسم الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" name="arabic_event_name" value="{{ \Helper::localization('events', 'name', $event->id, 2) }}">
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required id="Event_name" maxlength="100"
+                  name="arabic_event_name" value="{{ \Helper::localization('events', 'name', $event->id, 2) }}">
                 @if ($errors->has('arabic_event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_event_name') }}</span>
                 @endif
@@ -279,7 +282,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">وصف الحدث</label>
-                <textarea class="master_input" id="description" placeholder="Description" Required name="arabic_description">{{ \Helper::localization('events', 'description', $event->id, 2) }}</textarea>
+                <textarea class="master_input" id="description" placeholder="Description" Required maxlength="250"
+                  name="arabic_description">{{ \Helper::localization('events', 'description', $event->id, 2) }}</textarea>
                 @if ($errors->has('arabic_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_description') }}</span>
                 @endif
@@ -291,7 +295,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">مكان الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="arabic_venu" value="{{ \Helper::localization('events', 'venue', $event->id, 2) }}">
+                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="arabic_venu" maxlength="50"
+                  value="{{ \Helper::localization('events', 'venue', $event->id, 2) }}">
                 @if ($errors->has('arabic_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_venu') }}</span>
                 @endif
@@ -449,48 +454,40 @@
             {{-- 1st Youtube vedio in Arabic --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_en">Edit YouTube video (1) Link in Arabic</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" 
+                <label class="master_label" for="YouTube_video_ar1">Edit YouTube video (1) Link in Arabic</label>
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
                     name="youtube_ar_1" value="{{ isset($youtube_links[0]) ? $youtube_links[0]->link : '' }}">
-                @if ($errors->has('youtube_ar_1'))
-                  <span class="master_message inherit">{{ $errors->first('youtube_ar_1') }}</span>
-                @endif
+                  <span class="master_message inherit" id="yl_1"></span>
               </div>
             </div>
 
             {{-- 1st Youtube video in English --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_ar">Add YouTube video (1) Link in English</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" 
+                <label class="master_label" for="YouTube_video_en1">Add YouTube video (1) Link in English</label>
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
                     name="youtube_en_1" value="{{ isset($youtube_links[1]) ? $youtube_links[1]->link : '' }}">
-                @if ($errors->has('youtube_en_1'))
-                  <span class="master_message inherit">{{ $errors->first('youtube_en_1') }}</span>
-                @endif
+                  <span class="master_message inherit" id="yl_2"></span>
               </div>
             </div>
 
             {{-- 2nd Youtube video in Arabic --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_en">Add YouTube video (2) Link in Arabic</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en" 
+                <label class="master_label" for="YouTube_video_ar2">Add YouTube video (2) Link in Arabic</label>
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2" 
                     name="youtube_ar_2" value="{{ isset($youtube_links[2]) ? $youtube_links[2]->link : '' }}">
-                @if ($errors->has('youtube_ar_2'))
-                  <span class="master_message inherit">{{ $errors->first('youtube_ar_2') }}</span>
-                @endif
+                  <span class="master_message inherit" id="yl_3"></span>
               </div>
             </div>
 
             {{-- 2nd Youtube video in English --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label" for="YouTube_video_ar">Add YouTube video (2) Link in English</label>
-                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar" 
+                <label class="master_label" for="YouTube_video_en2">Add YouTube video (2) Link in English</label>
+                <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2" 
                     name="youtube_en_2" value="{{ isset($youtube_links[3]) ? $youtube_links[3]->link : '' }}">
-                @if ($errors->has('youtube_en_2'))
-                  <span class="master_message inherit">{{ $errors->first('youtube_en_2') }}</span>
-                @endif
+                  <span class="master_message inherit" id="yl_4"></span>
               </div>
             </div>
             <div class="col-xs-12">
@@ -565,231 +562,353 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-    $(function () {
-      $(".select2").select2();
-    });
 
-    var listAr = [];
-    var listEn = [];
-    var check = false;
-    var img;
-    var reader=new FileReader();
-    function updateIndexList(){
-    
-    }
-
-    function closebtn(index,value) {
-      if(value==1){
-        listAr.splice(index,1);
-        $.each(listAr,function(id,value){
-          value.index = id;
-        });
-        check = true;
-        $("#file-1").prop('disabled', false);
-        updateList();
-      }
-      if(value==2){
-        listEn.splice(index,1);
-        $.each(listEn,function(id,value){
-          value.index = id;
-        });
-        check = true;
-        $("#file-2").prop('disabled', false);
-        updateList2();
-      }
-    }
-
-    updateList = function() {
-      let input = document.getElementById('file-1');
-      let output = document.getElementById('fileList');
-      let files1 = input.files; 
-      if(check==true){
-        
-        output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-        for (var i = 0; i < listAr.length; i++) {
-        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-                            '<span class="uploader__file-list__thumbnail">'+
-                            '<img class="thumbnail" id="img_" src="+list.img+">'+
-                            '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
-                            '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
-                            '<span class="uploader__file-list__button">'+'</span>'+
-                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
-                            '</button>'+'</span>'+'</li>';
-                      
-                      
-      }
-      output.innerHTML += '</ul>';
-      check = false;
-      }
-      else{
-        if(files1.length > 5){
-        alert("max no. 5 images");
-        return;
-      }
-      for (var i = 0; i < files1.length; i++) {
-        var file = files1[i];
-        
-            listAr.push({'name':file.name,'size':file.size,'index':listAr.length});
-    
-        }
-    
-      output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-      for (var i = 0; i < listAr.length; i++) {
-        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-                            '<span class="uploader__file-list__thumbnail">'+
-                            '<img class="thumbnail" id="img_" src="+list.img+">'+
-                            '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
-                            '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
-                            '<span class="uploader__file-list__button">'+'</span>'+
-                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
-                            '</button>'+'</span>'+'</li>';
-      }
-      output.innerHTML += '</ul>';
-      }
-    
-      if(listAr.length == 5){
-          $("#file-1").prop('disabled', true);
-        }
-      
-      }
-    
-    updateList2 = function(){
-      let input = document.getElementById('file-2');
-      let output = document.getElementById('fileList2');
-      let files2 = input.files; 
-      if(check==true){
-        output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-      for (var i = 0; i < listEn.length; i++) {
-        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-        '<span class="uploader__file-list__thumbnail">'+
-        '<img class="thumbnail" id="img_" src="+list.img+">'+'</span>'+
-        '<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
-        '<span class="uploader__file-list__size">' +(listEn[i].size)/1000 +'KB'+
-        '</span>'+'<span class="uploader__file-list__button">'+'</span>'+
-        '<span class="uploader__file-list__button" id="delete" >'+''
-        +'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+'</span>'+'</li>';
-      }
-      output.innerHTML += '</ul>';
-      check=false;
-    
-      }
-      else{
-        if(files2.length > 5){
-          alert("max no. 5 images");
-          return;
-        }
-        for (var j = 0; j < files2.length; j++) {
-        var file = files2[j];
-        listEn.push({'name':file.name,'size':file.size,'index':listEn.length});
-        if(listEn.length == 5){
-          $("#file-2").prop("disabled",true);
-        }
-        }  
-      output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-      for (var i = 0; i < listEn.length; i++) {
-        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-        '<span class="uploader__file-list__thumbnail">'+
-        '<img class="thumbnail" id="img_" src="+list.img+">'+'</span>'+
-        '<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
-        '<span class="uploader__file-list__size">' +(listEn[i].size)/1000 +'KB'+
-        '</span>'+'<span class="uploader__file-list__button">'+'</span>'+
-        '<span class="uploader__file-list__button" id="delete" >'+''
-        +'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+'</span>'+'</li>';
-      }
-      output.innerHTML += '</ul>';
-      }
-      if(listEn.length == 5){
-          $("#file-2").prop("disabled",true);
-        }
-        
-      }
-    
-    
-    $(document).ready(function(){
-      $("#finish1").click(function(){
-        var filesDraged0 = document.getElementById('fileinput0');
-        var filesMore0 = document.getElementById('secondaryfileinput0');
-        var filesDraged1 = document.getElementById("fileinput1");
-        var filesMore1 = document.getElementById("secondaryfileinput1");
-          var filesDragedAr = filesDraged0.files; 
-          var filesDragedEn = filesDraged1.files;
-          var filesMoreAr = filesMore0.files;
-          var filesMoreEn = filesMore1.files;
-    
-          var filesListAr=[];
-          var filesListEn=[];
-          //Arabic Files
-        $.each(filesDragedAr,function(index,element){
-          filesListAr.push(element.name);
-        });
-        if(filesMoreAr.length > 0){
-          $.each(filesMoreAr,function(index,element){
-            filesListAr.push(element.name);
-          })
-        }
-        console.log(filesListAr);
-        //English Files /*****/
-        $.each(filesDragedEn,function(index,element){
-          filesListEn.push(element.name);
-        });
-        console.log("engish");
-        console.log(filesDragedEn)
-        if(filesMoreEn.length>0){
-          $.each(filesMoreEn,function(index,element){
-            filesListEn.push(element.name);
-          })
-        }
-        console.log(filesListEn)
-        var form = $("#horizontal-pill-steps").serializeArray();
-        var form_data = {};
-        console.log(form);
-        $.each(form,function(index,element){
-          form_data[element.name] = element.value;
-        })
-        if(form_data.active_event == undefined && form_data.big_event == undefined){
-          //big_event & active event =false (API)
-          console.log("2 undefined")
-        }
-      else if(form_data.active_event == undefined){
-          // active_event = false (API)
-          console.log("active undefined")
-        }
-      else if(form_data.big_event == undefined){
-          //big_event = false (API)
-          console.log("big undefined")
-        }
-        else{
-          // 2= true
-          console.log("2 ~undefined")
-        }
-      });
-    })
-    
+    var test_test =0;
     var form = $("#horizontal-pill-steps").show();
     form.steps({
       headerTag: "h3",
       bodyTag: "fieldset",
       transitionEffect: "slideLeft",
-    });
+      onStepChanging:function test(event, currentIndex, newIndex){    
+        if (currentIndex > newIndex) {
+            return true;
+        }
+        if (currentIndex < newIndex) {
+            form.find(".body:eq(" + newIndex + ") span.error").remove();
+            form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
+        }
+        form.validate().settings.ignore = ":disabled,:hidden";
+        return form.valid();
+      },
+      
+      onFinishing:function test3(e){
 
-    
-    $(function() {
-      $('input, select').on('change', function(event) {
-        var $element = $(event.target),
-          $container = $element.closest('.example');
-    
-        if (!$element.data('tagsinput'))
-          return;
-    
-        var val = $element.val();
-        if (val === null)
-          val = "null";
-        $('code', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
-        $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
-      }).trigger('change');
-    });
+        // TODO: check youtube links & image size 
+        if( test_test == 0 && !checkAllYoutubeLinks() && !checkTotalImageSize() ){
+          var form = $(this);
+          form.submit();
+        }
+        else{
+          e.preventDefault();
+          
+          $("#finish1").attr("disabled", "disabled")
+          // alert_fun();
+          alert("Attention, some fields are not valid, please check them.");
+        }   
+      },
+        
+      }).validate({
+        errorPlacement: function errorPlacement(error, element) { element.after(error); },
+      });
+
+    // constrain start and end date
+    dateRange('start_date', 'end_date');
+
+
+    /** check youtube links **/
+    var errors = [0, 0, 0, 0];
+
+    $("#YouTube_video_en1").focusout(function() {
+      var value = $(this).val();
+      
+      checkYoutubeLink(this, value, "#yl_2") ? errors[0] = 0 : errors[0] = 1;
+    }); 
+
+    $("#YouTube_video_en2").focusout(function() {
+      var value = $(this).val();
+      
+      checkYoutubeLink(this, value, "#yl_4") ? errors[1] = 0 : errors[1] = 1;
+    }); 
+
+    $("#YouTube_video_ar1").focusout(function() {
+      var value = $(this).val();
+      
+      checkYoutubeLink(this, value, "#yl_1") ? errors[2] = 0 : errors[2] = 1;
+    }); 
+
+    $("#YouTube_video_ar2").focusout(function() {
+      var value = $(this).val();
+      
+      checkYoutubeLink(this, value, "#yl_3") ? errors[3] = 0 : errors[3] = 1;
+    }); 
+
+    function checkAllYoutubeLinks() {
+      return errors.includes(1);
+    }
+
+    function checkYoutubeLink(id, value, error_msg) {
+      var con = value.search("https://www.youtube.com/watch?");
+
+      if ( !con ) {
+        $(error_msg).text('Valid youtube link..')
+        .attr('style', 'color: blue !important; text-transform: lowercase !important;');
+
+        return true;
+      } else {
+        $(error_msg).text('Invalid youtube link, ex: https://www.youtube.com/watch?2bdsfds1')
+        .attr('style', 'color: red !important; text-transform: lowercase !important;');
+
+        return false;
+      }
+    }
+    /** end **/
+
+    /** check image size **/
+    let checkPoint = [0, 0];
+
+    function checkTotalImageSize() {
+      
+      let imgMaxSize = 1024;
+      let imagesAr = document.getElementById('file-1').files;   // arabic images
+      let imagesEn = document.getElementById('file-2').files;   // english images
+
+      // check arabic images
+      for ( i=0; i < imagesAr.length; i++ ) {
+        imgSize = imagesAr[i].size / 1000;
+
+        if ( imgSize > imgMaxSize ) {
+          checkPoint[0] = 1;
+        }
+      }
+
+      // check english images
+      for ( i=0; i < imagesEn.length; i++ ) {
+        imgSize = imagesEn[i].size / 1000;
+
+        if ( imgSize > imgMaxSize ) {
+          checkPoint[1] = 1;
+        }
+      }
+
+      return checkPoint.includes(1);
+    }
+    /** end **/
 
   });
+
+  $(function () {
+    $(".select2").select2();
+  });
+
+  var listAr = [];
+  var listEn = [];
+  var check = false;
+  var img;
+  var reader=new FileReader();
+  function updateIndexList(){
+  
+  }
+
+  function closebtn(index,value) {
+    if(value==1){
+      listAr.splice(index,1);
+      $.each(listAr,function(id,value){
+        value.index = id;
+      });
+      check = true;
+      $("#file-1").prop('disabled', false);
+      updateList();
+    }
+    if(value==2){
+      listEn.splice(index,1);
+      $.each(listEn,function(id,value){
+        value.index = id;
+      });
+      check = true;
+      $("#file-2").prop('disabled', false);
+      updateList2();
+    }
+  }
+
+  updateList = function() {
+    let input = document.getElementById('file-1');
+    let output = document.getElementById('fileList');
+    let files1 = input.files; 
+    if(check==true){
+      
+      output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+      for (var i = 0; i < listAr.length; i++) {
+        var imgMaxSize = 1024;
+        var imgSize = (listAr[i].size)/1000;
+
+        if (imgSize > imgMaxSize) {
+          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list" style="color:red !important;">'+
+                              '<span class="uploader__file-list__thumbnail">'+
+                              '<img class="thumbnail" id="img_" src="+list.img+">'+
+                              '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                              '<span class="uploader__file-list__size">' + imgSize +'KB'+'</span>'+
+                              '<span class="uploader__file-list__button">'+'</span>'+
+                              '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                              '</button>'+'</span>'+'</li>';
+          $('#finish1').attr('disabled', "disabled");
+        } else {
+          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list" style="color:blue !important;">'+
+                              '<span class="uploader__file-list__thumbnail">'+
+                              '<img class="thumbnail" id="img_" src="+list.img+">'+
+                              '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                              '<span class="uploader__file-list__size">' + imgSize +'KB'+'</span>'+
+                              '<span class="uploader__file-list__button">'+'</span>'+
+                              '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                              '</button>'+'</span>'+'</li>';
+        }
+
+        
+                    
+                    
+    }
+    output.innerHTML += '</ul>';
+    check = false;
+    }
+    else{
+      if(files1.length > 5){
+      alert("max no. 5 images");
+      return;
+    }
+    for (var i = 0; i < files1.length; i++) {
+      var file = files1[i];
+      
+          listAr.push({'name':file.name,'size':file.size,'index':listAr.length});
+  
+      }
+  
+    output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+    for (var i = 0; i < listAr.length; i++) {
+      var imgMaxSize = 1024;
+      var imgSize = (listAr[i].size)/1000;
+
+      if (imgSize > imgMaxSize) {
+        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list" style="color:red !important;">'+
+                            '<span class="uploader__file-list__thumbnail">'+
+                            '<img class="thumbnail" id="img_" src="+list.img+">'+
+                            '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                            '<span class="uploader__file-list__size">' + imgSize +'KB'+'</span>'+
+                            '<span class="uploader__file-list__button">'+'</span>'+
+                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                            '</button>'+'</span>'+'</li>';
+        $('#finish1').attr('disabled', "disabled");
+      } else {
+        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list" style="color:blue !important;">'+
+                            '<span class="uploader__file-list__thumbnail">'+
+                            '<img class="thumbnail" id="img_" src="+list.img+">'+
+                            '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
+                            '<span class="uploader__file-list__size">' + imgSize +'KB'+'</span>'+
+                            '<span class="uploader__file-list__button">'+'</span>'+
+                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
+                            '</button>'+'</span>'+'</li>';
+      }
+    }
+    output.innerHTML += '</ul>';
+    }
+  
+    if(listAr.length == 5){
+        $("#file-1").prop('disabled', true);
+      }
+    
+    }
+  
+  updateList2 = function(){
+    let input = document.getElementById('file-2');
+    let output = document.getElementById('fileList2');
+    let files2 = input.files; 
+    if(check==true){
+      output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+    for (var i = 0; i < listAr.length; i++) {
+      var imgMaxSize = 1024;
+      var imgSize = (listEn[i].size)/1000;
+
+      if (imgSize > imgMaxSize) {
+        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list" style="color:red !important;">'+
+                            '<span class="uploader__file-list__thumbnail">'+
+                            '<img class="thumbnail" id="img_" src="+list.img+">'+
+                            '</span>'+'<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
+                            '<span class="uploader__file-list__size">' + imgSize +'KB'+'</span>'+
+                            '<span class="uploader__file-list__button">'+'</span>'+
+                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+
+                            '</button>'+'</span>'+'</li>';
+        $('#finish1').attr('disabled', "disabled");
+      } else {
+        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list" style="color:blue !important;">'+
+                            '<span class="uploader__file-list__thumbnail">'+
+                            '<img class="thumbnail" id="img_" src="+list.img+">'+
+                            '</span>'+'<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
+                            '<span class="uploader__file-list__size">' + imgSize +'KB'+'</span>'+
+                            '<span class="uploader__file-list__button">'+'</span>'+
+                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+
+                            '</button>'+'</span>'+'</li>';
+      }
+    }
+    output.innerHTML += '</ul>';
+    check=false;
+  
+    }
+    else{
+      if(files2.length > 5){
+        alert("max no. 5 images");
+        return;
+      }
+      for (var j = 0; j < files2.length; j++) {
+      var file = files2[j];
+      listEn.push({'name':file.name,'size':file.size,'index':listEn.length});
+      if(listEn.length == 5){
+        $("#file-2").prop("disabled",true);
+      }
+      }  
+    output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+    for (var i = 0; i < listAr.length; i++) {
+      var imgMaxSize = 1024;
+      var imgSize = (listEn[i].size)/1000;
+
+      if (imgSize > imgMaxSize) {
+        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list" style="color:red !important;">'+
+                            '<span class="uploader__file-list__thumbnail">'+
+                            '<img class="thumbnail" id="img_" src="+list.img+">'+
+                            '</span>'+'<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
+                            '<span class="uploader__file-list__size">' + imgSize +'KB'+'</span>'+
+                            '<span class="uploader__file-list__button">'+'</span>'+
+                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+
+                            '</button>'+'</span>'+'</li>';
+        $('#finish1').attr('disabled', "disabled");
+      } else {
+        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list" style="color:blue !important;">'+
+                            '<span class="uploader__file-list__thumbnail">'+
+                            '<img class="thumbnail" id="img_" src="+list.img+">'+
+                            '</span>'+'<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
+                            '<span class="uploader__file-list__size">' + imgSize +'KB'+'</span>'+
+                            '<span class="uploader__file-list__button">'+'</span>'+
+                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+
+                            '</button>'+'</span>'+'</li>';
+      }
+    }
+    output.innerHTML += '</ul>';
+    }
+    if(listEn.length == 5){
+        $("#file-2").prop("disabled",true);
+      }
+      
+    }
+  
+
+  
+  
+
+  
+
+  $(function() {
+    $('input, select').on('change', function(event) {
+      var $element = $(event.target),
+        $container = $element.closest('.example');
+  
+      if (!$element.data('tagsinput'))
+        return;
+  
+      var val = $element.val();
+      if (val === null)
+        val = "null";
+      $('code', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
+      $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+    }).trigger('change');
+  });
+
   
   $(function () {
     $(".timepicker").timepicker({showInputs: false});
@@ -808,27 +927,20 @@
 </script>
 
 <script>
-
-  $(document).ready(function(){
-
-    $('.paid-details').fadeOut();
-
-    $('label[for="radbtn_3_paid"]').on('click' , function(){
-          $('#paid').prop('checked', true);
-          $('.paid-details').fadeIn();
-        });
-        
-        $('label[for="radbtn_2_free"]').on('click' , function(){
-          $('#free').prop('checked', true);
-          $('.paid-details').fadeOut();
-        });
-
-        @if( $event->is_paid == 1 )
-          $('.paid-details').fadeIn();
-        @endif
-  });
+  $( document ).ready(function() {
+      
+      
+      $('.paid-details').fadeOut();
+      
+      $('label[for="radbtn_3_paid"]').on('click' , function(){
+        $('.paid-details').fadeIn(100);
+      });
+      
+      $('label[for="radbtn_2_free"]').on('click' , function(){
+        $('.paid-details').fadeOut();
+      });
     
-    
+    });
 </script>
 
 {{-- Prevent Enter key from submitting form --}}
@@ -847,11 +959,37 @@
 {{-- Click on finish button triggers a hidden submit button --}}
 <script>
   
-  $(document).ready(function() {
-    $("#finish1").click(function(){
-      $("#submitButton").trigger('click');
+  // $(document).ready(function() {
+  //   $("#finish1").click(function(){
+  //     $("#submitButton").trigger('click');
+  //   });
+  // });
+</script>
+
+
+
+{{-- Check Image before uploading --}}
+<script>
+  $(document).ready(function(){
+    $('#user_img').on('change', function() {
+      checkImageSize('#user_img', 5120, '#add_user_submit', '#add_error_msg');
     });
   });
+
+  function checkImageSize(input, maxSize, submitBtnId, error_msg_id) {
+    // size of the image
+    var imageSizeInMB = ($(input)[0].files[0].size) / 1024;
+
+    if (imageSizeInMB <= maxSize) {
+      $(submitBtnId).prop('disabled', false);
+      $(error_msg_id).text("Image size is perfect!").css('color', 'blue');
+    } else {
+      $(submitBtnId).prop('disabled', true);
+      $(error_msg_id).text("Image max size is 5MB (5120KB).").css('color', 'red');
+    }      
+  }
 </script>
+
+
 
 @endsection

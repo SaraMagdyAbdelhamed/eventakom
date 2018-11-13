@@ -277,7 +277,7 @@
             var id      = $(this).data("id");
             var english = $(this).data("en");
             var arabic  = $(this).data("arabic");
-console.log(english);
+
             $('#hiddenID').val(id);
             $('#edit_id_ar').val(arabic);
             $('#edit_id_en').val(english);

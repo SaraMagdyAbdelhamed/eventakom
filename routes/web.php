@@ -191,6 +191,7 @@ Route::middleware(['auth', 'Rule:Super Admin,Admin'])->group( function($lang = n
     Route::get('/shops', '\Modules\Shops\Http\Controllers\ShopsController@index')->name('shops');
     Route::get('/add_shop', '\Modules\Shops\Http\Controllers\ShopsController@add')->name('add_shop');
     Route::get('/edit_shop/{id}', '\Modules\Shops\Http\Controllers\ShopsController@edit')->name('edit_shop');
+    Route::get('/view_shop/{shop}', '\Modules\Shops\Http\Controllers\ShopsController@view')->name('view_shop');
     Route::get('/shop_destroy/{id}', '\Modules\Shops\Http\Controllers\ShopsController@destroy')->name('shop_destroy');
     Route::post('/shop_destroy_all', '\Modules\Shops\Http\Controllers\ShopsController@destroy_all')->name('shop_destroy_all');
 

@@ -78,45 +78,46 @@ class EventsController extends Controller
         // dd($_FILES);
 
         // Validate incoming request inputs with the following validation rules.
-        $this->validate($request, [
-            'english_event_name' => 'required|min:2|max:100',
-            'english_description' => 'required|min:2|max:250',
-            'lat' => 'required',
-            'lng' => 'required',
-            'english_venu' => 'required|min:2|max:50',
-            'english_hashtags' => 'required',
-            'gender' => 'required',
-            'age_range' => 'required',
-            'start_date' => 'required',
-            'start_time' => 'required',
-            'end_date' => 'required',
-            'end_time' => 'required',
-            'categories' => 'required',
+        // $this->validate($request, [
+        //     'english_event_name' => 'required|min:2|max:100',
+        //     'english_description' => 'required|min:2|max:250',
+        //     'lat' => 'required',
+        //     'lng' => 'required',
+        //     'english_venu' => 'required|min:2|max:50',
+        //     'english_hashtags' => 'required',
+        //     'gender' => 'required',
+        //     'age_range' => 'required',
+        //     'start_date' => 'required',
+        //     'start_time' => 'required',
+        //     'end_date' => 'required',
+        //     'end_time' => 'required',
+        //     'categories' => 'required',
 
-            'arabic_event_name' => ($request->arabic_event_name ? 'min:2|max:100' : ''),
-            'arabic_description' => ($request->arabic_description ? 'min:2|max:250' : ''),
-            // 'arabic_venu' => 'required|',
-            // 'arabic_hashtags' => 'required|',
+        //     'arabic_event_name' => ($request->arabic_event_name ? 'min:2|max:100' : ''),
+        //     'arabic_description' => ($request->arabic_description ? 'sometimes|min:2|max:250' : ''),
+        //     // 'arabic_venu' => 'required|',
+        //     // 'arabic_hashtags' => 'required|',
 
-            'is_paid' => 'required',
-            'price' => ($request->price ? 'sometimes|numeric' : ''),
-            'currency' => ($request->currency ? 'sometimes|numeric' : ''),
-            'number_of_tickets' => ($request->number_of_tickets ? 'numeric' : ''),
+        //     'is_paid' => 'required',
+        //     'price' => ($request->price ? 'sometimes|numeric' : ''),
+        //     'currency' => ($request->currency ? 'sometimes|numeric' : ''),
+        //     'number_of_tickets' => ($request->number_of_tickets ? 'numeric' : ''),
 
-            'website' => 'required',
-            'email' => 'required',
-            'code_number' => 'required',
-            'mobile_number' => 'required',
+        //     'website' => 'required',
+        //     'email' => 'required',
+        //     'code_number' => 'required',
+        //     'mobile_number' => 'required',
 
-            // 'youtube_ar_1' => 'required|',
-            // 'youtube_en_1' => 'required|',
-            // 'youtube_ar_2' => 'required|',
-            // 'youtube_en_2' => 'required|',
-            // 'arabic_images'         => 'max:5',
-            // 'arabic_images.*'       => 'max:5',
-            // 'english_images'        => 'max:5',
-            // 'english_images.*'      => 'max:5'
-        ]);
+        //     // 'youtube_ar_1' => 'required|',
+        //     // 'youtube_en_1' => 'required|',
+        //     // 'youtube_ar_2' => 'required|',
+        //     // 'youtube_en_2' => 'required|',
+        //     // 'arabic_images'         => 'max:5',
+        //     // 'arabic_images.*'       => 'max:5',
+        //     // 'english_images'        => 'max:5',
+        //     // 'english_images.*'      => 'max:5'
+        // ]);
+
 
         // Insert Event in events table
         try {
@@ -143,8 +144,8 @@ class EventsController extends Controller
 
             $event->is_paid = $request->is_paid;
 
-            $event->website = $request->website;
-            $event->email = $request->email;
+            $event->website = $request->website ? : '';
+            $event->email = $request->email ? : '';
             $event->code = $request->code_number;
             $event->mobile = $request->mobile_number;
             $event->created_by = Auth::id();
@@ -353,45 +354,45 @@ class EventsController extends Controller
         // dd($_FILES);
 
         // Validate incoming request inputs with the following validation rules.
-        $this->validate($request, [
-            'english_event_name' => 'required|min:2|max:100',
-            'english_description' => 'required|min:2|max:250',
-            'lat' => 'required',
-            'lng' => 'required',
-            'english_venu' => 'required|min:2|max:50',
-            'english_hashtags' => 'required',
-            'gender' => 'required',
-            'age_range' => 'required',
-            'start_date' => 'required',
-            'start_time' => 'required',
-            'end_date' => 'required',
-            'end_time' => 'required',
-            'categories' => 'required',
+        // $this->validate($request, [
+        //     'english_event_name' => 'required|min:2|max:100',
+        //     'english_description' => 'required|min:2|max:250',
+        //     'lat' => 'required',
+        //     'lng' => 'required',
+        //     'english_venu' => 'required|min:2|max:50',
+        //     'english_hashtags' => 'required',
+        //     'gender' => 'required',
+        //     'age_range' => 'required',
+        //     'start_date' => 'required',
+        //     'start_time' => 'required',
+        //     'end_date' => 'required',
+        //     'end_time' => 'required',
+        //     'categories' => 'required',
 
-            'arabic_event_name' => ($request->arabic_event_name ? 'min:2|max:100' : ''),
-            'arabic_description' => ($request->arabic_description ? 'sometimes|min:2|max:250' : ''),
-            // 'arabic_venu' => 'required|',
-            // 'arabic_hashtags' => 'required|',
+        //     'arabic_event_name' => ($request->arabic_event_name ? 'min:2|max:100' : ''),
+        //     'arabic_description' => ($request->arabic_description ? 'sometimes|min:2|max:250' : ''),
+        //     // 'arabic_venu' => 'required|',
+        //     // 'arabic_hashtags' => 'required|',
 
-            'is_paid' => 'required',
-            'price' => ($request->price ? 'sometimes|numeric' : ''),
-            'currency' => ($request->currency ? 'sometimes|numeric' : ''),
-            'number_of_tickets' => ($request->number_of_tickets ? 'numeric' : ''),
+        //     'is_paid' => 'required',
+        //     'price' => ($request->price ? 'sometimes|numeric' : ''),
+        //     'currency' => ($request->currency ? 'sometimes|numeric' : ''),
+        //     'number_of_tickets' => ($request->number_of_tickets ? 'numeric' : ''),
 
-            'website' => 'required',
-            'email' => 'required',
-            'code_number' => 'required',
-            'mobile_number' => 'required',
+        //     'website' => 'required',
+        //     'email' => 'required',
+        //     'code_number' => 'required',
+        //     'mobile_number' => 'required',
 
-            // 'youtube_ar_1' => 'required|',
-            // 'youtube_en_1' => 'required|',
-            // 'youtube_ar_2' => 'required|',
-            // 'youtube_en_2' => 'required|',
-            // 'arabic_images'         => 'max:5',
-            // 'arabic_images.*'       => 'max:5',
-            // 'english_images'        => 'max:5',
-            // 'english_images.*'      => 'max:5'
-        ]);
+        //     // 'youtube_ar_1' => 'required|',
+        //     // 'youtube_en_1' => 'required|',
+        //     // 'youtube_ar_2' => 'required|',
+        //     // 'youtube_en_2' => 'required|',
+        //     // 'arabic_images'         => 'max:5',
+        //     // 'arabic_images.*'       => 'max:5',
+        //     // 'english_images'        => 'max:5',
+        //     // 'english_images.*'      => 'max:5'
+        // ]);
 
         // Insert Event in events table
         try {
@@ -418,8 +419,8 @@ class EventsController extends Controller
 
             $event->is_paid = $request->is_paid;
 
-            $event->website = $request->website;
-            $event->email = $request->email;
+            $event->website = $request->website ? : '';
+            $event->email = $request->email ? : '';
             $event->code = $request->code_number;
             $event->mobile = $request->mobile_number;
             $event->updated_by = Auth::id();
