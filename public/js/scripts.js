@@ -24632,3 +24632,15 @@ function dateRange(startId,endId,year_s,month_s,day_s,year_e,month_e,day_e,max_s
           });
 
   }
+
+  function alert_msg(title,msg){
+    swal({
+      title:title,
+      text: msg,
+      showCancelButton: false,
+      confirmButtonColor: '#281160',
+      closeOnConfirm: true
+    },
+    function(){
+    });
+}

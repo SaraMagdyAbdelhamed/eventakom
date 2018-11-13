@@ -45,8 +45,8 @@
                 {{-- Place Name --}}
                 <div class="col-xs-6">
                 <div class="master_field">
-                    <label class="master_label" for="Place_name">@lang('keywords.placeName')</label>
-                    <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name" value="{{ old('place_name') }}">
+                    <label class="master_label mandatory" for="Place_name">@lang('keywords.placeName')</label>
+                    <input class="master_input " maxlength="100" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name" value="{{ old('place_name') }}" require>
                     @if ($errors->has('place_name'))
                         <span class="master_message color--fadegreen">{{ $errors->first('place_name') }}</span>
                     @endif
@@ -57,7 +57,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label mandatory" for="Place_Category">@lang('keywords.placeCategories')</label>
-                    <select class="master_input select2" name="place_categories[]"  
+                    <select class="master_input select2" name="place_categories[]" require
                             id="Place_Category" multiple="multiple" data-placeholder="choose an option.." style="width:100%;" >
                         @if ( isset($categories) && !empty($categories) )
                             @foreach ($categories as $category)
@@ -88,8 +88,8 @@
                 {{-- Phone Number --}}
                 <div class="col-xs-6">
                 <div class="master_field">
-                    <label class="master_label" for="Phone_number">@lang('keywords.Phone')</label>
-                    <input class="master_input" type="number" placeholder="0020123456789"  id="Phone_number" name="phone_number" value="{{ old('phone_number') }}">
+                    <label class="master_label mandatory" for="Phone_number">@lang('keywords.Phone')</label>
+                    <input class="master_input " type="number" placeholder="0020123456789"  id="Phone_number" name="phone_number" value="{{ old('phone_number') }}" require>
                     @if ($errors->has('phone_number'))
                         <span class="master_message color--fadegreen">{{ $errors->first('phone_number') }}</span>
                     @endif
@@ -338,9 +338,9 @@
             <fieldset>
             <div class="row">
                 <div class="col-xs-6">
-                <div class="master_field">
-                    <label class="master_label" for="Place_name">@lang('keywords.placeName')</label>
-                    <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" />
+                <div class="master_field ">
+                    <label class="master_label mandatory" for="Place_name">@lang('keywords.placeName')</label>
+                    <input class="master_input" type="text" maxlength="100" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" require />
                     @if ($errors->has('place_name_ar'))
                         <span class="master_message color--fadegreen">{{ $errors->first('place_name_ar') }}</span>
                     @endif
@@ -377,9 +377,30 @@
                     @endif
                 </div>
                 </div>
+
+                <div class="col-sm-6 col-xs-12">
+                <div class="master_field">
+                    <label class="master_label" for="YouTube_video_en">add youtube video link(2) in English</label>
+                    <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en" id="YouTube_video_en" value="{{ old('youtube_en') }}" />
+                    @if ($errors->has('youtube_en'))
+                        <span class="master_message color--fadegreen">{{ $errors->first('youtube_en') }}</span>
+                    @endif
+                </div>
+                </div>
+
                 <div class="col-sm-6 col-xs-12">
                 <div class="master_field">
                     <label class="master_label" for="YouTube_video_ar">add youtube video link in Arabic</label>
+                    <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar" id="YouTube_video_ar" value="{{ old('youtube_ar') }}">
+                    @if ($errors->has('youtube_ar'))
+                        <span class="master_message color--fadegreen">{{ $errors->first('youtube_ar') }}</span>
+                    @endif
+                </div>
+                </div>
+
+                  <div class="col-sm-6 col-xs-12">
+                <div class="master_field">
+                    <label class="master_label" for="YouTube_video_ar">add youtube video link(2) in Arabic</label>
                     <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar" id="YouTube_video_ar" value="{{ old('youtube_ar') }}">
                     @if ($errors->has('youtube_ar'))
                         <span class="master_message color--fadegreen">{{ $errors->first('youtube_ar') }}</span>

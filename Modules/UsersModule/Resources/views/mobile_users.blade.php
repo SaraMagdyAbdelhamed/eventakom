@@ -238,8 +238,9 @@
                       </div>
                     </div>
                   <br>
-                  <button class="remodal-cancel" type="cancel">@lang('keywords.cancel')</button>
-                  <button class="remodal-confirm" type="submit">@lang('keywords.save')</button>
+
+                  <button class="remodal-cancel" (data-remodal-action="cancel")>@lang('keywords.cancel')</button>
+                  <button class="remodal-confirm" (data-remodal-action="confirm") >@lang('keywords.save')</button>
                 </form>
               </div>
               @endforeach
