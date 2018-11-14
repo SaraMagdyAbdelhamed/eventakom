@@ -54,19 +54,19 @@
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="Place_name">@lang('keywords.shop_name')</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name" value="{{$shop['name']}}"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name" value="{{$shop['name']}}"><span class="master_message color--fadegreen"></span>
                             </div>
                           </div>
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="Place_name">@lang('keywords.shop_name_arabic')</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" value="{{Helper::localization('shops', 'name', $shop['id'], 2)}}"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" value="{{Helper::localization('shops', 'name', $shop['id'], 2)}}"><span class="master_message color--fadegreen"></span>
                             </div>
                           </div>
                            <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Place_address">@lang('keywords.shop_address')</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="shop_address" name="place_address" value="{{$shop['address']}}"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="shop_address" name="place_address" value="{{$shop['address']}}"><span class="master_message color--fadegreen"></span>
                             </div>
                           </div>
                           <div class="col-md-2 col-xs-1"> 
@@ -79,37 +79,37 @@
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Phone_number">@lang('keywords.shop_phone')</label>
-                              <input class="master_input" type="tel" placeholder="0020123456789" Required id="Phone_number" name="phone" value="{{$shop['phone']}}"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="tel" placeholder="0020123456789" Required id="Phone_number" name="phone" value="{{$shop['phone']}}"><span class="master_message color--fadegreen"></span>
                             </div>
                           </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Website">@lang('keywords.website')</label>
-                              <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website" value="{{$shop['website']}}"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website" value="{{$shop['website']}}"><span class="master_message color--fadegreen"></span>
                             </div>
                           </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">@lang('keywords.other_info')</label>
-                              <textarea class="master_input" name="info" id="Other_info" placeholder="Other info" Required >{{$shop['info']}}</textarea><span class="master_message inherit">message content</span>
+                              <textarea class="master_input" name="info" id="Other_info" placeholder="Other info" Required >{{$shop['info']}}</textarea><span class="master_message inherit"></span>
                             </div>
                           </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">@lang('keywords.other_info_arabic')</label>
-                              <textarea class="master_input" name="info_ar" id="Other_info_ar" placeholder="Other info" >{{Helper::localization('shops', 'info', $shop['id'], 2)}}</textarea><span class="master_message inherit">message content</span>
+                              <textarea class="master_input" name="info_ar" id="Other_info_ar" placeholder="Other info" >{{Helper::localization('shops', 'info', $shop['id'], 2)}}</textarea><span class="master_message inherit"></span>
                             </div>
                           </div>
                           <div class="col-xs-4" hidden>
                             <div class="master_field">
                               <label class="master_label" for="shop_long">Longtiuide</label>
-                              <input class="master_input" name="shop_long" id="shop_long" placeholder="shop_long" type="text"><span class="master_message inherit">message content</span>
+                              <input class="master_input" name="shop_long" id="shop_long" placeholder="shop_long" type="text"><span class="master_message inherit"></span>
                             </div>
                           </div>
                           <div class="col-xs-4" hidden>
                             <div class="master_field">
                               <label class="master_label" for="shop_lat">Lat</label>
-                              <input class="master_input" name="shop_lat" id="shop_lat" placeholder="shop_lat" type="text"><span class="master_message inherit">message content</span>
+                              <input class="master_input" name="shop_lat" id="shop_lat" placeholder="shop_lat" type="text"><span class="master_message inherit"></span>
                             </div>
                           </div>
                           <div class="col-sm-12 col-xs-12">
@@ -184,19 +184,19 @@
                             <div class="col-sm-2 col-xs-4">
                               <div class="master_field">
                                 <label class="master_label" for="branches_1">@lang('keywords.branch_name') {{$i}} </label>
-                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1" name="branch_name[{{$i}}]" value="{{$branch['branch']}}"><span class="master_message color--fadegreen">message</span>
+                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1" name="branch_name[{{$i}}]" value="{{$branch['branch']}}"><span class="master_message color--fadegreen"></span>
                               </div>
                             </div>
                             <div class="col-sm-3 col-xs-4">
                               <div class="master_field">
                                 <label class="master_label" for="branches_1">@lang('keywords.branch_name'){{$i}} @lang('keywords.in_ar')</label>
-                                <input class="master_input" type="text" placeholder="branch 1 name"  id="branches_1" name="branch_name_ar[{{$i}}]" value="{{Helper::localization('shop_branches', 'branch', $branch['id'], 2)}}"><span class="master_message color--fadegreen">message</span>
+                                <input class="master_input" type="text" placeholder="branch 1 name"  id="branches_1" name="branch_name_ar[{{$i}}]" value="{{Helper::localization('shop_branches', 'branch', $branch['id'], 2)}}"><span class="master_message color--fadegreen"></span>
                               </div>
                             </div>
                             <div class="col-sm-3 col-xs-4">
                               <div class="master_field">
                                 <label class="master_label" for="branches_1">@lang('keywords.branch_address') {{$i}}</label>
-                                <input class="master_input" type="text" placeholder="branch 1 address" Required id="branches_1" name="branch_address[{{$i}}]" value="{{$branch['address']}}"><span class="master_message color--fadegreen">message</span>
+                                <input class="master_input" type="text" placeholder="branch 1 address" Required id="branches_1" name="branch_address[{{$i}}]" value="{{$branch['address']}}"><span class="master_message color--fadegreen"></span>
                               </div>
                             </div>
                             <div class="col-sm-2 col-xs-6">
@@ -204,7 +204,7 @@
                                 <label class="master_label" for="start_time">@lang('keywords.branch_start') {{$i}}</label>
                                 <div class="bootstrap-timepicker">
                                   <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time"name="branch_start[{{$i}}]">
-                                </div><span class="master_message inherit">message content</span>
+                                </div><span class="master_message inherit"></span>
                               </div>
                             </div>
                             <div class="col-sm-2 col-xs-6">
@@ -212,19 +212,19 @@
                                 <label class="master_label" for="end_time">@lang('keywords.branch_end') {{$i}}</label>
                                 <div class="bootstrap-timepicker">
                                   <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="branch_end[{{$i}}]">
-                                </div><span class="master_message inherit">message content</span>
+                                </div><span class="master_message inherit"></span>
                               </div>
                             </div>
                             <div class="col-xs-4" hidden>
                             <div class="master_field">
                               <label class="master_label" for="branch_long">Longtiuide</label>
-                              <input class="master_input" name="branch_long[{{$i}}]" id="branch_long_{{$i}}" placeholder="shop_long" type="text"><span class="master_message inherit">message content</span>
+                              <input class="master_input" name="branch_long[{{$i}}]" id="branch_long_{{$i}}" placeholder="shop_long" type="text"><span class="master_message inherit"></span>
                             </div>
                           </div>
                           <div class="col-xs-4" hidden>
                             <div class="master_field">
                               <label class="master_label" for="branch_lat">Lat</label>
-                              <input class="master_input" name="branch_lat[{{$i}}]" id="branch_lat_{{$i}}" placeholder="branch_lat" type="text"><span class="master_message inherit">message content</span>
+                              <input class="master_input" name="branch_lat[{{$i}}]" id="branch_lat_{{$i}}" placeholder="branch_lat" type="text"><span class="master_message inherit"></span>
                             </div>
                           </div>
                             <?php $i++; ?>
@@ -254,20 +254,20 @@
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="Place_name">Place name</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name"><span class="master_message color--fadegreen"></span>
                             </div>
                           </div>
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">Other info</label>
-                              <textarea class="master_input" name="textarea" id="Other_info" placeholder="Other info" Required></textarea><span class="master_message inherit">message content</span>
+                              <textarea class="master_input" name="textarea" id="Other_info" placeholder="Other info" Required></textarea><span class="master_message inherit"></span>
                             </div>
                           </div>
                           <div class="branch-container-ar">
                             <div class="col-sm-6 col-xs-12">
                               <div class="master_field">
                                 <label class="master_label" for="branches_1">branch 1 name</label>
-                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1"><span class="master_message color--fadegreen">validation message will be here</span>
+                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1"><span class="master_message color--fadegreen"></span>
                               </div>
                             </div>
                           </div>
@@ -282,25 +282,29 @@
                           <div class="col-sm-6 col-xs-12">
                             <div class="master_field">
                               <label class="master_label" for="YouTube_video_1_en">@lang('keywords.you_tube') (1) @lang('keywords.in_en')</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1" name="video[1]"><span class="master_message inherit">message content</span>
+                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1" name="video[1]" value="{{ count($shop->shop_media) ? $shop->shop_media()->first()->getYoutubeLinks()[0] : '' }}">
+                              <span class="master_message inherit"></span>
                             </div>
                           </div>
                           <div class="col-sm-6 col-xs-12"> 
                             <div class="master_field">
                               <label class="master_label" for="YouTube_video_1_ar">@lang('keywords.you_tube') (1) @lang('keywords.in_ar')</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1_ar" name="video_ar[1]"><span class="master_message inherit">message content</span>
+                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1_ar" name="video_ar[1]" value="{{ \Helper::getYoutubeLinks($shop->id, 2)[0] }}">
+                              <span class="master_message inherit"></span>
                             </div>
                           </div>
                           <div class="col-sm-6 col-xs-12">
                             <div class="master_field">
                               <label class="master_label" for="video_2">@lang('keywords.you_tube') (2) @lang('keywords.in_en')</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2" name="video[2]"><span class="master_message inherit">message content</span>
+                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2" name="video[2]" value="{{ count($shop->shop_media) ? $shop->shop_media()->first()->getYoutubeLinks()[1] : '' }}">
+                              <span class="master_message inherit"></span>
                             </div>
                           </div>
                           <div class="col-sm-6 col-xs-12"> 
                             <div class="master_field">
                               <label class="master_label" for="video_2_ar">@lang('keywords.you_tube') (2) @lang('keywords.in_ar')</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2_ar" name="video_ar[2]"><span class="master_message inherit">message content</span>
+                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2_ar" name="video_ar[2]"  value="{{ \Helper::getYoutubeLinks($shop->id, 2)[1] }}">
+                              <span class="master_message inherit"></span>
                             </div>
                           </div>
                           <div class="col-sm-6 col-xs-12 text-center"> 
@@ -593,13 +597,13 @@
        //   assignAutoCompl("branch_address_"+i,"#branch_long_"+i,"#branch_lat_"+i);
        // }
       var nextCount = currentCount +1;
-       $('#mbranch').append("<div class='branch-container'>  <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+"@lang('keywords.in_ar')</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name'  id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_address')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_address_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>@lang('keywords.branch_start') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>@lang('keywords.branch_end') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'>message content</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" long</label><input class='master_input' type='text' placeholder='branch "+nextCount+" long'  id='branch_long_"+nextCount+"' name='branch_long["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" lat</label><input class='master_input' type='text' placeholder='branch "+nextCount+" lat'  id='branch_lat_"+nextCount+"' name='branch_lat["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div></div> ");
+       $('#mbranch').append("<div class='branch-container'>  <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+"@lang('keywords.in_ar')</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name'  id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_address')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_address_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>@lang('keywords.branch_start') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'></span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>@lang('keywords.branch_end') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'></span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" long</label><input class='master_input' type='text' placeholder='branch "+nextCount+" long'  id='branch_long_"+nextCount+"' name='branch_long["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" lat</label><input class='master_input' type='text' placeholder='branch "+nextCount+" lat'  id='branch_lat_"+nextCount+"' name='branch_lat["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div></div> ");
       
 
       assignAutoCompl("branch_address_"+nextCount,"#branch_long_"+nextCount,"#branch_lat_"+nextCount);
        // var currentCountAr =$('.branch-container-ar').length;
        // var nextCount = currentCountAr + 1 ;
-       // $('.branch-container-ar:last').after(" <div class='branch-container-ar'> <div class='col-sm-6 col-xs-12'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch "+nextCount+" name</label><input class='master_input' type='text' placeholder='branch " + nextCount + " name' Required id='branches_"+nextCount+"'><span class='master_message color--fadegreen'>validation message will be here</span></div></div></div> ");
+       // $('.branch-container-ar:last').after(" <div class='branch-container-ar'> <div class='col-sm-6 col-xs-12'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch "+nextCount+" name</label><input class='master_input' type='text' placeholder='branch " + nextCount + " name' Required id='branches_"+nextCount+"'><span class='master_message color--fadegreen'></span></div></div></div> ");
       
       
       

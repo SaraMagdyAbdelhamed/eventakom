@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  *  Author: Ahmed Yacoub
  *  Email: ahmed.yacoub@outlook.com
@@ -7,21 +7,18 @@
 
 namespace App\Helpers;
 
-use Session;
-use Auth;
-use App\Users;
 use App\Entity;
 use App\EntityLocalization;
 use App\Notification;
-use App\NotificationPush;
-use Illuminate\Database\Eloquent\Model;
-use PHPUnit\Framework\Constraint\Exception;
+use App\Users;
+use Auth;
+use Session;
 
 class Helper
 {
 
     // helps binding locale prefix [en, ar] to view url
-    // example: /en/about   
+    // example: /en/about
     // @param   $routeName      url 2nd segment []
     public static function route($routeName)
     {
@@ -52,7 +49,7 @@ class Helper
 
     // convert UTC to user's local timezone
     // @param   $timestamp      UTC timestamp
-    // @param   $format         timestamp format    ex: d/m/y   or  H:m:i 
+    // @param   $format         timestamp format    ex: d/m/y   or  H:m:i
     public static function getUserLocalTimezone($timestamp = null, $format = 'h:m A - M d Y')
     {
         return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $timestamp, 'GMT')->setTimeZone(Helper::getUserTimezone())->format($format);
@@ -64,19 +61,62 @@ class Helper
      *  @param  $field_name     field in `entity_localizations` table.      ex: 'body'
      *  @param  $item_id        field in `entity_localizations` table.      ex: 1
      *  @param  $lang_id        field in `entity_localizations` table.      ex: 2
-     * 
+     *
      *  Example:    Helper::localization('fixed_pages', 'name', '1', '2')
      *  expected result     'عن الشركة'
      */
-    public static function localization($table_name, $field_name, $item_id, $lang_id=2, $default = null)
+    public static function localization($table_name, $field_name, $item_id, $lang_id = 2, $default = null)
     {
-        $localization = Entity::where('table_name', 'like', '%'.$table_name.'%')->with(['localizations' => function ($q) use ($field_name, $item_id, $lang_id) {
+        $localization = Entity::where('table_name', 'like', '%' . $table_name . '%')->with(['localizations' => function ($q) use ($field_name, $item_id, $lang_id) {
             $q->where('field', $field_name)->where('item_id', $item_id)->where('lang_id', $lang_id);
         }])->first();
 
-
         $result = isset($localization->localizations[0]) ? $localization->localizations[0]->value : $default;
         return $result;
+    }
+
+    /**
+     *  Returns a collection of all related links
+     *  @param String $item_id shops.id
+     *  @param Int    $lang_id lang id (1=>English, 2=>Arabic)
+     */
+    public static function getLinks($item_id, $lang_id)
+    {
+        $localization = EntityLocalization::where('field', 'link')
+                                            ->where('item_id', $item_id)
+                                            ->where('lang_id', $lang_id)
+                                            ->where('value', 'NOT LIKE', '%youtube%')
+                                            ->get();
+        return $localization;
+    }
+
+    /**
+     *  Returns a collection of youtube links
+     *  @param String $item_id shops.id
+     *  @param Int    $lang_id lang id (1=>English, 2=>Arabic)
+     */
+    public static function getYoutubeLinks($item_id, $lang_id)
+    {
+        $links_arr = ['', ''];
+
+        $localization = EntityLocalization::where('field', 'link')
+            ->where('item_id', $item_id)
+            ->where('lang_id', $lang_id)
+            ->where('value', 'LIKE', '%youtube%')
+            ->get();
+
+        if (count($localization) > 0) {
+
+            if (isset($localization[0])) {
+                $links_arr[0] = $localization[0]->value;
+            }
+
+            if (isset($localization[1])) {
+                $links_arr[1] = $localization[1]->value;
+            }
+
+        }
+        return $links_arr;
     }
 
     /**
@@ -85,7 +125,7 @@ class Helper
      *  @param  $field_name     field in `entity_localizations` table.      ex: 'body'
      *  @param  $item_id        field in `entity_localizations` table.      ex: 1
      *  @param  $lang_id        field in `entity_localizations` table.      ex: 2
-     * 
+     *
      *  Example:    Helper::localization('fixed_pages', 'name', '1', '2')
      *  expected result     'عن الشركة'
      */
@@ -102,7 +142,7 @@ class Helper
      *  @param  $item_id        field in `entity_localizations` table.      ex: 1
      *  @param  $lang_id        field in `entity_localizations` table.      ex: 2
      *  @param  $new_value      field in `entity_localizations` table.      ex: 'محتوي جديد'
-     * 
+     *
      *  Example:    Helper::localization('fixed_pages', 'name', '1', '2', 'محتوي جديد')
      *  expected result     save 'محتوي جديد' in this record as a new value.
      */
@@ -110,11 +150,11 @@ class Helper
     {
         $entity_id = Entity::where('table_name', $table_name)->first()->id; // get entity_id
         $localization = EntityLocalization::where('entity_id', $entity_id)
-                                            ->where('field', $field_name)
-                                            ->where('item_id', $item_id)
-                                            ->where('lang_id', $lang_id)->first();
+            ->where('field', $field_name)
+            ->where('item_id', $item_id)
+            ->where('lang_id', $lang_id)->first();
 
-        if($localization != NULL) {
+        if ($localization != null) {
             $localization->value = $new_value;
             $localization->save();
         } else {
@@ -124,7 +164,7 @@ class Helper
 
     /**
      *  Add new localization into `entity_localization` table
-     *  @param  $entity_id  
+     *  @param  $entity_id
      *  @param  $field
      *  @param  $item_id
      *  @param  $value
@@ -184,7 +224,7 @@ class Helper
             "ٌ" => '',
             "ۖ" => '',
             "ۗ" => '',
-            "ـ" => ''
+            "ـ" => '',
         ];
         foreach ($arr as $key => $val) {
             $cleaned_text = str_replace($key, $val, $text);
@@ -193,7 +233,6 @@ class Helper
         return $text;
 
     }
-
 
     public static function CleanStriptagText($text)
     {
@@ -231,46 +270,48 @@ class Helper
     }
 
     public static function hasRule($rule_array)
-    {    
+    {
         $user = Auth::user();
         foreach ($rule_array as $key => $rule_name) {
-        $user_rule = $user->rules()->get();
-        
-        foreach ($user_rule as $v) {
-           if ($v->name == $rule_name ) {
-               return true;
+            $user_rule = $user->rules()->get();
+
+            foreach ($user_rule as $v) {
+                if ($v->name == $rule_name) {
+                    return true;
+                }
             }
-        }
-         
+
         }
         return false;
     }
 
-    public static function is_day($obj, $day_id) {
+    public static function is_day($obj, $day_id)
+    {
         return $result = count($obj->days()->where('day_id', $day_id)->get()) > 0 ? true : false;
     }
 
-    public static function get_day_start_end($obj, $day_id) {
+    public static function get_day_start_end($obj, $day_id)
+    {
         $day = $obj->days()->where('day_id', $day_id)->first();
 
-        if( $day != NULL ) {
+        if ($day != null) {
             return ['start' => $day->pivot->from, 'end' => $day->pivot->to];
-        } 
+        }
         return '';
     }
-     
+
     public static function hisEvent($event_id)
-    {     
-        $event  = \App\EventMobile::find($event_id);
-        if($event->created_by == Auth::id()){
-          return true;  
+    {
+        $event = \App\EventMobile::find($event_id);
+        if ($event->created_by == Auth::id()) {
+            return true;
         }
         return false;
-     }
+    }
 
-
-     public static function ListNotifications(){
-        $notifications = Notification::whereNull('user_id')->where('notification_type_id',8)->orderBy('created_at','DESC')->get();
+    public static function ListNotifications()
+    {
+        $notifications = Notification::whereNull('user_id')->where('notification_type_id', 8)->orderBy('created_at', 'DESC')->get();
         return $notifications;
-     }
+    }
 }
