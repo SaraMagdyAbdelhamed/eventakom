@@ -52,6 +52,14 @@
 
                                 @endif
 
+                                @if ( count(\Helper::getLinks($shop->id, 2)) > 0 )
+                                    @foreach (\Helper::getLinks($shop->id, 2) as $link)
+                                        <div class="swiper-slide">
+                                            <img class="full-size img_slider" src="{{ asset( $link->value ) }}">
+                                        </div>
+                                    @endforeach
+                                @endif
+
                             </div>
                             <div class="swiper-pagination"></div>
                             <div class="swiper-button-next swiper-button-white"></div>
