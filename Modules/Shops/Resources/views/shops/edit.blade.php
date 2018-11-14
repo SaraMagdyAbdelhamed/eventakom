@@ -281,26 +281,26 @@
                           </div>
                           <div class="col-sm-6 col-xs-12">
                             <div class="master_field">
-                              <label class="master_label" for="YouTube_video_1_en">@lang('keywords.you_tube') (1) @lang('keywords.in_en')</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1" name="video[1]"><span class="master_message inherit">message content</span>
+                              <label class="master_label"  for="YouTube_video_1_en">@lang('keywords.you_tube') (1) @lang('keywords.in_en')</label>
+                              <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1" name="video[1]"><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-sm-6 col-xs-12"> 
                             <div class="master_field">
                               <label class="master_label" for="YouTube_video_1_ar">@lang('keywords.you_tube') (1) @lang('keywords.in_ar')</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1_ar" name="video_ar[1]"><span class="master_message inherit">message content</span>
+                              <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1_ar" name="video_ar[1]"><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-sm-6 col-xs-12">
                             <div class="master_field">
                               <label class="master_label" for="video_2">@lang('keywords.you_tube') (2) @lang('keywords.in_en')</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2" name="video[2]"><span class="master_message inherit">message content</span>
+                              <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2" name="video[2]"><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-sm-6 col-xs-12"> 
                             <div class="master_field">
                               <label class="master_label" for="video_2_ar">@lang('keywords.you_tube') (2) @lang('keywords.in_ar')</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2_ar" name="video_ar[2]"><span class="master_message inherit">message content</span>
+                              <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2_ar" name="video_ar[2]"><span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-sm-6 col-xs-12 text-center"> 
@@ -341,7 +341,7 @@
 <!--***************************UI*************************-->
 <script type="text/javascript">
        
-       var listAr = [];
+    var listAr = [];
     var listEn = [];
     var check = false;
     var img;
@@ -618,6 +618,7 @@
 
 </script><!--End UI-->
 
+<!--*******************************UI************************-->
 <script type="text/javascript">
     var form = $("#horizontal-pill-steps").show();
     form.steps({
@@ -650,7 +651,12 @@
             });
  
 </script><!--End UI-->
-
+<!--********************************UI**************************-->
+<script type="text/javascript">
+    $(function(){
+      get_images();
+    })
+</script><!--End UI-->
 
     <script type="text/javascript">
       $(function() {

@@ -24634,6 +24634,7 @@ function dateRange(startId,endId,year_s,month_s,day_s,year_e,month_e,day_e,max_s
   }
 
   function delete_selected(id){
+    console.log(id)
     var table = $(id).DataTable();
     table.rows('.selected').remove().draw( false )
     $("#select-all").prop('checked',false);

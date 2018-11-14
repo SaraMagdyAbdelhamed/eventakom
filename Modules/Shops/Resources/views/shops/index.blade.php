@@ -128,6 +128,7 @@
             closeOnConfirm: false
           },
            function(isConfirm){
+             
         if (isConfirm){
          $.ajax({
            type:'GET',
