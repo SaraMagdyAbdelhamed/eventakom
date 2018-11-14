@@ -46,7 +46,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label mandatory" for="Place_name">@lang('keywords.placeName')</label>
-                    <input class="master_input " maxlength="100" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name" value="{{ old('place_name') }}" require>
+                    <input class="master_input " maxlength="100" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name" value="{{ old('place_name') }}" required>
                     @if ($errors->has('place_name'))
                         <span class="master_message color--fadegreen">{{ $errors->first('place_name') }}</span>
                     @endif
@@ -57,7 +57,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label mandatory" for="Place_Category">@lang('keywords.placeCategories')</label>
-                    <select class="master_input select2" name="place_categories[]" require
+                    <select class="master_input select2" name="place_categories[]" required
                             id="Place_Category" multiple="multiple" data-placeholder="choose an option.." style="width:100%;" >
                         @if ( isset($categories) && !empty($categories) )
                             @foreach ($categories as $category)
@@ -81,7 +81,7 @@
                 <div class="col-xs-6">
                 <div class="master_field" >
                     <label class="master_label" for="Address_name">@lang('keywords.address')</label>
-                    <input class="master_input" type="text" placeholder="ex:CFC" Required id="searchInput" name="address" value="" />
+                    <input class="master_input" type="text" placeholder="ex:CFC" required id="searchInput" name="address" value="" />
                 </div>
                 </div>
 
@@ -89,7 +89,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label mandatory" for="Phone_number">@lang('keywords.Phone')</label>
-                    <input class="master_input " type="number" placeholder="0020123456789"  id="Phone_number" name="phone_number" value="{{ old('phone_number') }}" require>
+                    <input class="master_input " type="number" placeholder="0020123456789"  id="Phone_number" name="phone_number" value="{{ old('phone_number') }}" required>
                     @if ($errors->has('phone_number'))
                         <span class="master_message color--fadegreen">{{ $errors->first('phone_number') }}</span>
                     @endif
