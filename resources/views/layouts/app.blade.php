@@ -315,7 +315,7 @@
     </div>
     <!-- =============== APP MAIN SCRIPTS ===============-->
     
-    <script type="text/javascript" src="{{ asset('js/scripts.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/scripts.js') }}"></script>
     
     <!-- =============== PAGE VENDOR SCRIPTS ===============-->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/tinymce/4.3.4/tinymce.min.js"></script>

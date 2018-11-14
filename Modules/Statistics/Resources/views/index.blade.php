@@ -18,38 +18,38 @@
                   </div>
                 </div>
                 <div class="all-statistics">
-                  <div class="col-md-4 col-xs-6">
-                    <div class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-users"></i></span>
-                      <div class="stat-box-content inherit"><span class="stat-box-text">@lang('keywords.Number of all users')</span><span class="stat-box-number">{{$allUsers_no}}</span></div>
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div title="@lang('keywords.Number of all users')" class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-users"></i></span>
+                      <div  class="stat-box-content inherit"><span class="stat-box-text">@lang('keywords.Number of all users')</span><span class="stat-box-number">{{$allUsers_no}}</span></div>
                     </div>
                   </div>
-                  <div class="col-md-4 col-xs-6">
-                    <div class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-male"></i></span>
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div title="@lang('keywords.Number of male users')" class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-male"></i></span>
                       <div class="stat-box-content inherit"><span class="stat-box-text">@lang('keywords.Number of male users')</span><span class="stat-box-number">{{$maleUsers_no}}</span></div>
                     </div>
                   </div>
-                  <div class="col-md-4 col-xs-6">
-                    <div class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-female"></i></span>
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div title="@lang('keywords.Number of Female users')" class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-female"></i></span>
                       <div class="stat-box-content inherit"><span class="stat-box-text">@lang('keywords.Number of Female users')</span><span class="stat-box-number">{{$femaleUsers_no}}</span></div>
                     </div>
                   </div>
-                  <div class="col-md-4 col-xs-6">
-                    <div class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-user"></i></span>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div title="@lang('keywords.Number of users less than 15 years')" class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-user"></i></span>
                       <div class="stat-box-content inherit"><span class="stat-box-text">@lang('keywords.Number of users less than 15 years')</span><span class="stat-box-number">{{$kids}}</span></div>
                     </div>
                   </div>
-                  <div class="col-md-4 col-xs-6">
-                    <div class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-user"></i></span>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div title="@lang('keywords.Number of users 15-18 years')" class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-user"></i></span>
                       <div class="stat-box-content inherit"><span class="stat-box-text">@lang('keywords.Number of users 15-18 years')</span><span class="stat-box-number">{{$age15_18}}</span></div>
                     </div>
                   </div>
-                  <div class="col-md-4 col-xs-6">
-                    <div class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-user"></i></span>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div title="@lang('keywords.Number of users 18-25 years')" class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-user"></i></span>
                       <div class="stat-box-content inherit"><span class="stat-box-text">@lang('keywords.Number of users 18-25 years')</span><span class="stat-box-number">{{$age18_25}}</span></div>
                     </div>
                   </div>
-                  <div class="col-md-4 col-xs-6">
-                    <div class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-user"></i></span>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div title="@lang('keywords.Number of users more than 25 years')" class="stat-box margin--small-top-bottom inherit bshadow--0 inherit"><span class="stat-box-icon inherit inherit"><i class="fa fa fa-user"></i></span>
                       <div class="stat-box-content inherit"><span class="stat-box-text">@lang('keywords.Number of users more than 25 years')</span><span class="stat-box-number">{{$age25_120}}</span></div>
                     </div>
                   </div>

@@ -24,7 +24,7 @@
           <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>@lang('keywords.filter')</a></div>
           <div class="bottomActions__btns">
             <a class="master-btn" href="#" id="deleteSelected">@lang('keywords.deleteSelected')</a>
-            <a class="master-btn" href="{{ route('event_backend.add') }}">@lang('keywords.addNew')</a>
+            <!-- <a class="master-btn" href="{{ route('event_backend.add') }}">@lang('keywords.addNew')</a> -->
           </div>
           <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
             <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>

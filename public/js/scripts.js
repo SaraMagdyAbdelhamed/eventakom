@@ -14379,7 +14379,7 @@ else if (typeof define === 'function' && define.amd) {
   "use strict";
 
   function b(b, c) {
-    this.itemsArray = [], this.$element = a(b), this.$element.hide(), this.isSelect = "SELECT" === b.tagName, this.multiple = this.isSelect && b.hasAttribute("multiple"), this.objectItems = c && c.itemValue, this.placeholderText = b.hasAttribute("placeholder") ? this.$element.attr("placeholder") : "", this.inputSize = Math.max(1, this.placeholderText.length), this.$container = a('<div class="bootstrap-tagsinput"></div>'), this.$input = a('<input id="hash" maxlength="12" minLength ="3" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container), this.$element.before(this.$container), this.build(c)
+    this.itemsArray = [], this.$element = a(b), this.$element.hide(), this.isSelect = "SELECT" === b.tagName, this.multiple = this.isSelect && b.hasAttribute("multiple"), this.objectItems = c && c.itemValue, this.placeholderText = b.hasAttribute("placeholder") ? this.$element.attr("placeholder") : "", this.inputSize = Math.max(1, this.placeholderText.length), this.$container = a('<div class="bootstrap-tagsinput"></div>'), this.$input = a('<input onchange="count_hash()" id="hash" onclick="count_click()"  maxlength="12" minLength ="3" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container), this.$element.before(this.$container), this.build(c)
   }
 
   function c(a, b) {
@@ -21077,7 +21077,7 @@ if("undefined"==typeof jQuery)throw new Error("BootstrapValidator requires jQuer
                         e = a(window);
                     i.width = i.component ? i.component.outerWidth() : i.element.outerWidth(), d.top = d.top + i.element.outerHeight(), "up" === i.options.direction ? b = "top" : "bottom" === i.options.direction ? b = "bottom" : "auto" === i.options.direction && (b = d.top + i.widget.height() > e.height() + e.scrollTop() && i.widget.height() + i.element.outerHeight() < d.top ? "top" : "bottom"), "top" === b ? (d.bottom = e.height() - d.top + i.element.outerHeight() + 3, i.widget.addClass("top").removeClass("bottom")) : (d.top += 1, i.widget.addClass("bottom").removeClass("top")), void 0 !== i.options.width && i.widget.width(i.options.width), "left" === i.options.orientation && (i.widget.addClass("left-oriented"), d.left = d.left - i.widget.width() + 20), J() && (c = "fixed", d.top -= e.scrollTop(), d.left -= e.scrollLeft()), e.width() < d.left + i.widget.outerWidth() ? (d.right = e.width() - d.left - i.width, d.left = "auto", i.widget.addClass("pull-right")) : (d.right = "auto", i.widget.removeClass("pull-right")), i.widget.css("top" === b ? {
                         position: c,
-                        bottom: ((d.bottom)+80),
+                        bottom: ((d.bottom)+80+122),
                         top: "auto",
                         left: d.left,
                         right: d.right
@@ -24632,3 +24632,23 @@ function dateRange(startId,endId,year_s,month_s,day_s,year_e,month_e,day_e,max_s
           });
 
   }
+
+  function delete_selected(id){
+    console.log(id)
+    var table = $(id).DataTable();
+    table.rows('.selected').remove().draw( false )
+    $("#select-all").prop('checked',false);
+    $("#select-all-2").prop('checked',true);
+  }
+
+  function alert_msg(title,msg){
+    swal({
+      title:title,
+      text: msg,
+      showCancelButton: false,
+      confirmButtonColor: '#281160',
+      closeOnConfirm: true
+    },
+    function(){
+    });
+}

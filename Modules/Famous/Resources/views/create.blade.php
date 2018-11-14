@@ -45,8 +45,8 @@
                 {{-- Place Name --}}
                 <div class="col-xs-6">
                 <div class="master_field">
-                    <label class="master_label" for="Place_name">@lang('keywords.placeName')</label>
-                    <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name" value="{{ old('place_name') }}">
+                    <label class="master_label mandatory" for="Place_name">@lang('keywords.placeName')</label>
+                    <input class="master_input " maxlength="100" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name" value="{{ old('place_name') }}" require>
                     @if ($errors->has('place_name'))
                         <span class="master_message color--fadegreen">{{ $errors->first('place_name') }}</span>
                     @endif
@@ -57,7 +57,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label mandatory" for="Place_Category">@lang('keywords.placeCategories')</label>
-                    <select class="master_input select2" name="place_categories[]"  
+                    <select class="master_input select2" name="place_categories[]" require
                             id="Place_Category" multiple="multiple" data-placeholder="choose an option.." style="width:100%;" >
                         @if ( isset($categories) && !empty($categories) )
                             @foreach ($categories as $category)
@@ -88,8 +88,8 @@
                 {{-- Phone Number --}}
                 <div class="col-xs-6">
                 <div class="master_field">
-                    <label class="master_label" for="Phone_number">@lang('keywords.Phone')</label>
-                    <input class="master_input" type="number" placeholder="0020123456789"  id="Phone_number" name="phone_number" value="{{ old('phone_number') }}">
+                    <label class="master_label mandatory" for="Phone_number">@lang('keywords.Phone')</label>
+                    <input class="master_input " type="number" placeholder="0020123456789"  id="Phone_number" name="phone_number" value="{{ old('phone_number') }}" require>
                     @if ($errors->has('phone_number'))
                         <span class="master_message color--fadegreen">{{ $errors->first('phone_number') }}</span>
                     @endif
@@ -338,9 +338,9 @@
             <fieldset>
             <div class="row">
                 <div class="col-xs-6">
-                <div class="master_field">
-                    <label class="master_label" for="Place_name">@lang('keywords.placeName')</label>
-                    <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" />
+                <div class="master_field ">
+                    <label class="master_label mandatory" for="Place_name">@lang('keywords.placeName')</label>
+                    <input class="master_input" type="text" maxlength="100" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" require />
                     @if ($errors->has('place_name_ar'))
                         <span class="master_message color--fadegreen">{{ $errors->first('place_name_ar') }}</span>
                     @endif
@@ -371,16 +371,37 @@
                 <div class="col-sm-6 col-xs-12">
                 <div class="master_field">
                     <label class="master_label" for="YouTube_video_en">add youtube video link in English</label>
-                    <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en" id="YouTube_video_en" value="{{ old('youtube_en') }}" />
+                    <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en" id="YouTube_video_en" value="{{ old('youtube_en') }}" />
                     @if ($errors->has('youtube_en'))
                         <span class="master_message color--fadegreen">{{ $errors->first('youtube_en') }}</span>
                     @endif
                 </div>
                 </div>
+
+                <div class="col-sm-6 col-xs-12">
+                <div class="master_field">
+                    <label class="master_label" for="YouTube_video_en">add youtube video link(2) in English</label>
+                    <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en" id="YouTube_video_en" value="{{ old('youtube_en') }}" />
+                    @if ($errors->has('youtube_en'))
+                        <span class="master_message color--fadegreen">{{ $errors->first('youtube_en') }}</span>
+                    @endif
+                </div>
+                </div>
+
                 <div class="col-sm-6 col-xs-12">
                 <div class="master_field">
                     <label class="master_label" for="YouTube_video_ar">add youtube video link in Arabic</label>
-                    <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar" id="YouTube_video_ar" value="{{ old('youtube_ar') }}">
+                    <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar" id="YouTube_video_ar" value="{{ old('youtube_ar') }}">
+                    @if ($errors->has('youtube_ar'))
+                        <span class="master_message color--fadegreen">{{ $errors->first('youtube_ar') }}</span>
+                    @endif
+                </div>
+                </div>
+
+                  <div class="col-sm-6 col-xs-12">
+                <div class="master_field">
+                    <label class="master_label" for="YouTube_video_ar">add youtube video link(2) in Arabic</label>
+                    <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar" id="YouTube_video_ar" value="{{ old('youtube_ar') }}">
                     @if ($errors->has('youtube_ar'))
                         <span class="master_message color--fadegreen">{{ $errors->first('youtube_ar') }}</span>
                     @endif
@@ -394,7 +415,7 @@
                   <div class="main-section">
                     <div id="fileList"></div>
                     <div class="form-group">
-                      <input class="inputfile inputfile-1" id="file-1" type="file" name="arabic_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList()">
+                      <input class="inputfile inputfile-1" id="file-1" type="file" name="arabic_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-1','fileList','Ar')" accept=".jpg,.png,.jpeg">
                       <label for="file-1"><span>Choose a file</span></label>
                     </div>
                   </div>
@@ -408,7 +429,7 @@
                   <div class="main-section">
                     <div id="fileList2"></div>
                     <div class="form-group">
-                      <input class="inputfile inputfile-1" id="file-2" type="file" name="english_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList2()">
+                      <input class="inputfile inputfile-1" id="file-2" type="file" name="english_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-2','fileList2','en')" accept=".jpg,.png,.jpeg">
                       <label for="file-2"><span>Choose a file</span></label>
                     </div>
                   </div>
@@ -425,6 +446,252 @@
         </div>
     </div><br>
 </div>
+<!--***************************UI*******************************-->
+<script type="text/javascript">
+    var listAr = [];
+    var listEn = [];
+    var check = false;
+    var img;
+    var imgMaxSize = 1024;
+    var error;
+    var reader=new FileReader();
+    function updateIndexList(){
+
+    }
+    function closebtn(index,value){
+     
+      if(value==1){
+        listAr.splice(index,1);
+        $.each(listAr,function(id,value,){
+          value.index = id;
+        });
+        check = true;
+        $("#file-1").prop('disabled', false);
+        updateList('file-1','fileList',"Ar");
+      }
+      if(value==2){
+        listEn.splice(index,1);
+        $.each(listEn,function(id,value){
+          value.index = id;
+        });
+        check = true;
+        $("#file-2").prop('disabled', false);
+        updateList("file-2","fileList2","en");
+      }
+      }
+    //check image size
+    function checkImageSize(listAr,listEn){
+      error=0;
+      let newList=listAr.concat(listEn)
+
+      $.each(newList,function(index,element){
+            if(element.class == 'red-class'){
+              error+=1;
+            }
+          });
+          if(error>0){
+            let test_ = document.getElementById("file-1").files;
+            
+            alert_msg('error','Check')
+          }
+          else{
+            
+            $("#horizontal-pill-steps").submit();
+          }
+    }
+
+    function updateList (inputID,outputID,listName) {
+   
+        let input = document.getElementById(inputID);
+        let output = document.getElementById(outputID);
+        let files1 = input.files;
+
+      if(listName =='Ar'){
+            if (check == true) {
+            output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+            for (var i = 0; i < listAr.length; i++) {
+                output.innerHTML += `<li  class="${listAr[i].class} js-uploader__file-list uploader__file-list">
+                                <span class="uploader__file-list__thumbnail">
+                                <img class="thumbnail" id="img_" src="${listAr[i].image}">
+                                </span><span class="uploader__file-list__text hidden-xs">${listAr[i].name}</span>
+                                <span class="uploader__file-list__size hidden-xs">${(listAr[i].size) / 1000} KB</span>
+                                <span class="uploader__file-list__button"></span>
+                                <span class="uploader__file-list__button" id="delete" ><a id="close" onclick="closebtn(${listAr[i].index},1)" class="uploader__icon-button fa fa-times" >
+                                </a></span></li>`;
+            }
+            output.innerHTML += '</ul>';
+            check = false;
+        }
+        else {
+            if (files1.length > 5) {
+                alert("max no. 5 images");
+                return;
+            }
+
+            if (window.File && window.FileList && window.FileReader) {
+                    if (files1.length == 5) {
+                $(`#${inputID}`).prop('disabled', true);
+            }
+                for (var i = 0; i < files1.length; i++) {
+                    var file = files1[i];
+                    var imgReaderAr = new FileReader();
+                    imgReaderAr.addEventListener("load", function (event) {
+                        var imgFileAr = event.target;
+                        if(file.size/1000 > imgMaxSize){
+                            listAr.push({
+                              'name': file.name,
+                              'size': file.size,
+                              'index': listAr.length,
+                              'image': imgFileAr.result,
+                              'class':'red-class',
+                          });
+                        }
+                        else{
+                          listAr.push({
+                              'name': file.name,
+                              'size': file.size,
+                              'index': listAr.length,
+                              'image': imgFileAr.result,
+                              'class':'upload',
+                          });
+                        }
+
+                        output.innerHTML = '<ul  class="js-uploader__file-list uploader__file-list" >';
+                        for (var i = 0; i < listAr.length; i++) {
+                            output.innerHTML += `<li class="${listAr[i].class} js-uploader__file-list uploader__file-list">
+                                <span class="uploader__file-list__thumbnail">
+                                <img class="thumbnail" id="img_" src="${listAr[i].image}">
+                                </span><span class="uploader__file-list__text hidden-xs">${listAr[i].name}</span>
+                                <span class="uploader__file-list__size hidden-xs">${(listAr[i].size) / 1000} KB</span>
+                                <span class="uploader__file-list__button"></span>
+                                <span class="uploader__file-list__button" id="delete" ><a id="close" onclick="closebtn(${listAr[i].index},1)" class="uploader__icon-button fa fa-times" >
+                                </a></span></li>`;
+                        }
+                        output.innerHTML += '</ul>';
+                    });
+                    //Read the image
+                    imgReaderAr.readAsDataURL(file);
+                }
+            }
+              $(`#${inputID}`).val('');
+            if (listAr.length == 4) {
+                $(`#${inputID}`).prop('disabled', true);
+            }
+        }
+      }
+      //English Images
+      if(listName == 'en'){
+          if (check == true) {
+            output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+            for (var i = 0; i < listEn.length; i++) {
+                output.innerHTML += `<li  class="${listEn[i].class} js-uploader__file-list uploader__file-list">
+                                <span class="uploader__file-list__thumbnail">
+                                <img class="thumbnail" id="img_" src="${listEn[i].image}">
+                                </span><span class="uploader__file-list__text hidden-xs">${listEn[i].name}</span>
+                                <span class="uploader__file-list__size hidden-xs">${(listEn[i].size) / 1000} KB</span>
+                                <span class="uploader__file-list__button"></span>
+                                <span class="uploader__file-list__button" id="delete" ><a id="close" onclick="closebtn(${listEn[i].index},2)" class="uploader__icon-button fa fa-times" >
+                                </a></span></li>`;
+            }
+            output.innerHTML += '</ul>';
+            check = false;
+        }
+        else {
+            if (files1.length > 5) {
+                alert("max no. 5 images");
+                return;
+            }
+
+            if (window.File && window.FileList && window.FileReader) {
+                    if (files1.length == 5) {
+                $(`#${inputID}`).prop('disabled', true);
+            }
+                for (var i = 0; i < files1.length; i++) {
+                    var file = files1[i];
+                    var imgReaderEn = new FileReader();
+                    imgReaderEn.addEventListener("load", function (event) {
+                        var imgFileEn = event.target;
+                        if(file.size/1000 > imgMaxSize){
+                            listEn.push({
+                              'name': file.name,
+                              'size': file.size,
+                              'index': listEn.length,
+                              'image': imgFileEn.result,
+                              'class':'red-class',
+                          });
+                        }
+                        else{
+                          listEn.push({
+                              'name': file.name,
+                              'size': file.size,
+                              'index': listEn.length,
+                              'image': imgFileEn.result,
+                              'class':'upload',
+                          });
+                        }
+
+                        output.innerHTML = '<ul  class="js-uploader__file-list uploader__file-list" >';
+                        for (var i = 0; i < listEn.length; i++) {
+                            output.innerHTML += `<li class="${listEn[i].class} js-uploader__file-list uploader__file-list">
+                                <span class="uploader__file-list__thumbnail">
+                                <img class="thumbnail" id="img_" src="${listEn[i].image}">
+                                </span><span class="uploader__file-list__text hidden-xs">${listEn[i].name}</span>
+                                <span class="uploader__file-list__size hidden-xs">${(listEn[i].size) / 1000} KB</span>
+                                <span class="uploader__file-list__button"></span>
+                                <span class="uploader__file-list__button" id="delete" ><a id="close" onclick="closebtn(${listEn[i].index},2)" class="uploader__icon-button fa fa-times" >
+                                </a></span></li>`;
+                        }
+                        output.innerHTML += '</ul>';
+                    });
+                    //Read the image
+                    imgReaderEn.readAsDataURL(file);
+                }
+            }
+              $(`#${inputID}`).val('');
+            if (listEn.length == 4) {
+                $(`#${inputID}`).prop('disabled', true);
+            }
+        }
+      }
+    }
+</script><!--End UI-->
+
+<!--***************************UI*******************************-->
+<script type="text/javascript">
+    $(function(){
+        var form = $("#horizontal-pill-steps").show();
+    form.steps({
+      headerTag: "h3",
+      bodyTag: "fieldset",
+      transitionEffect: "slideLeft",
+      onStepChanging:function test(event, currentIndex, newIndex){
+        console.log(newIndex)
+        if(newIndex == 2){
+        }
+         if (currentIndex > newIndex)
+                    {
+                        return true;
+                    }
+                    if (currentIndex < newIndex)
+                    {
+                        form.find(".body:eq(" + newIndex + ") span.error").remove();
+                        form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
+                    }
+                    form.validate().settings.ignore = ":disabled,:hidden";
+                    return form.valid();
+      },
+      
+       onFinishing:function test3(e){
+         checkImageSize(listAr,listEn);
+       },
+      
+    }).validate({
+                errorPlacement: function errorPlacement(error, element) { element.after(error); },
+            });
+    })
+</script><!--End UI-->
+
+
 
 <script type="text/javascript">
 
@@ -433,12 +700,7 @@
             $(".select2").select2();
         });
 
-        var form = $("#horizontal-pill-steps").show();
-        form.steps({
-        headerTag: "h3",
-        bodyTag: "fieldset",
-        transitionEffect: "slideLeft",
-        });
+       
 
         $(function () {
             $('.datepicker').datepicker({autoclose: true});
@@ -455,157 +717,18 @@
     
 </script>
 
-<script>
-    $(document).ready(function(){
-        var listAr = [];
-    var listEn = [];
-    var check = false;
-    var img;
-    var reader=new FileReader();
-    function updateIndexList(){
+<script type="text/javascript">
     
-    }
-
-    function closebtn(index,value) {
-      if(value==1){
-        listAr.splice(index,1);
-        $.each(listAr,function(id,value){
-          value.index = id;
-        });
-        check = true;
-        $("#file-1").prop('disabled', false);
-        updateList();
-      }
-      if(value==2){
-        listEn.splice(index,1);
-        $.each(listEn,function(id,value){
-          value.index = id;
-        });
-        check = true;
-        $("#file-2").prop('disabled', false);
-        updateList2();
-      }
-    }
-
-    updateList = function() {
-      let input = document.getElementById('file-1');
-      let output = document.getElementById('fileList');
-      let files1 = input.files; 
-      if(check==true){
-        
-        output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-        for (var i = 0; i < listAr.length; i++) {
-        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-                            '<span class="uploader__file-list__thumbnail">'+
-                            '<img class="thumbnail" id="img_" src="+list.img+">'+
-                            '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
-                            '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
-                            '<span class="uploader__file-list__button">'+'</span>'+
-                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
-                            '</button>'+'</span>'+'</li>';
-                      
-                      
-      }
-      output.innerHTML += '</ul>';
-      check = false;
-      }
-      else{
-        if(files1.length > 5){
-        alert("max no. 5 images");
-        return;
-      }
-      for (var i = 0; i < files1.length; i++) {
-        var file = files1[i];
-        
-            listAr.push({'name':file.name,'size':file.size,'index':listAr.length});
-    
-        }
-    
-      output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-      for (var i = 0; i < listAr.length; i++) {
-        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-                            '<span class="uploader__file-list__thumbnail">'+
-                            '<img class="thumbnail" id="img_" src="+list.img+">'+
-                            '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
-                            '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
-                            '<span class="uploader__file-list__button">'+'</span>'+
-                            '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
-                            '</button>'+'</span>'+'</li>';
-      }
-      output.innerHTML += '</ul>';
-      }
-    
-      if(listAr.length == 5){
-          $("#file-1").prop('disabled', true);
-        }
-      
-      }
-    
-    updateList2 = function(){
-      let input = document.getElementById('file-2');
-      let output = document.getElementById('fileList2');
-      let files2 = input.files; 
-      if(check==true){
-        output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-      for (var i = 0; i < listEn.length; i++) {
-        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-        '<span class="uploader__file-list__thumbnail">'+
-        '<img class="thumbnail" id="img_" src="+list.img+">'+'</span>'+
-        '<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
-        '<span class="uploader__file-list__size">' +(listEn[i].size)/1000 +'KB'+
-        '</span>'+'<span class="uploader__file-list__button">'+'</span>'+
-        '<span class="uploader__file-list__button" id="delete" >'+''
-        +'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+'</span>'+'</li>';
-      }
-      output.innerHTML += '</ul>';
-      check=false;
-    
-      }
-      else{
-        if(files2.length > 5){
-          alert("max no. 5 images");
-          return;
-        }
-        for (var j = 0; j < files2.length; j++) {
-        var file = files2[j];
-        listEn.push({'name':file.name,'size':file.size,'index':listEn.length});
-        if(listEn.length == 5){
-          $("#file-2").prop("disabled",true);
-        }
-        }  
-      output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-      for (var i = 0; i < listEn.length; i++) {
-        output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-        '<span class="uploader__file-list__thumbnail">'+
-        '<img class="thumbnail" id="img_" src="+list.img+">'+'</span>'+
-        '<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
-        '<span class="uploader__file-list__size">' +(listEn[i].size)/1000 +'KB'+
-        '</span>'+'<span class="uploader__file-list__button">'+'</span>'+
-        '<span class="uploader__file-list__button" id="delete" >'+''
-        +'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+'</span>'+'</li>';
-      }
-      output.innerHTML += '</ul>';
-      }
-      if(listEn.length == 5){
-          $("#file-2").prop("disabled",true);
-        }
-        
-      }
-    
-  
-    
-    
-    });
 </script>
 
 {{-- Submit form onClick on finish --}}
-<script>
+<!-- <script>
   $(document).ready(function() {
     $("#finish1").click(function(){
       $("#submitButton").trigger('click');
     });
   });
-</script>
+</script> -->
 
 {{-- disable checkbox fields --}}
 <script>

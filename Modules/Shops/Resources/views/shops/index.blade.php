@@ -21,7 +21,7 @@
         <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
             <div class="full-table">
               {{-- <div class="filter__btns"><a class="filter-btn master-btn" href="#filter-users"><i class="fa fa-filter"></i>filters</a></div> --}}
-              <div class="bottomActions__btns"><a class="master-btn btn-warning-cancel-all" >@lang('keywords.delete_selected_shops')</a><a class="master-btn" href="{{route('add_shop')}}">@lang('keywords.add_new_shop')</a>
+              <div class="bottomActions__btns"><a class="master-btn btn-warning-cancel-all" >@lang('keywords.delete_selected_shops')</a>
               </div>
               {{-- <div class="remodal" data-remodal-id="filter-users" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
                 <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
@@ -128,6 +128,7 @@
             closeOnConfirm: false
           },
            function(isConfirm){
+             
         if (isConfirm){
          $.ajax({
            type:'GET',

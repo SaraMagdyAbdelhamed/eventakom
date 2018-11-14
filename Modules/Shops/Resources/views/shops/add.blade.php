@@ -53,15 +53,26 @@
                       <fieldset>
                         <div class="row">
                           <div class="col-xs-6">
+<<<<<<< HEAD
                             <div class="master_field">
                               <label class="master_label" for="Place_name">@lang('keywords.shop_name')</label>
                               <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name"><span class="master_message color--fadegreen"></span>
+=======
+                            <div class="master_field ">
+                              <label class="master_label mandatory" for="Place_name">@lang('keywords.shop_name')</label>
+                              <input class="master_input" type="text" placeholder="ex:city stars" require id="Place_name" name="place_name"><span class="master_message color--fadegreen">validation message will be here</span>
+>>>>>>> 04f7a276678248ffecd6a594898de3a88c494629
                             </div>
                           </div>
                           <div class="col-xs-6">
                             <div class="master_field">
+<<<<<<< HEAD
                               <label class="master_label" for="Place_name">@lang('keywords.shop_name_arabic')</label>
                               <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar"><span class="master_message color--fadegreen"></span>
+=======
+                              <label class="master_label mandatory" for="Place_name">@lang('keywords.shop_name_arabic')</label>
+                              <input class="master_input" require type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar"><span class="master_message color--fadegreen">validation message will be here</span>
+>>>>>>> 04f7a276678248ffecd6a594898de3a88c494629
                             </div>
                           </div>
                            <div class="col-xs-5">
@@ -86,19 +97,31 @@
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Website">@lang('keywords.website')</label>
+<<<<<<< HEAD
                               <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website"><span class="master_message color--fadegreen"></span>
+=======
+                              <input class="master_input" type="url" placeholder="www.domain.com"  id="Website" name="website"><span class="master_message color--fadegreen">validation message will be here</span>
+>>>>>>> 04f7a276678248ffecd6a594898de3a88c494629
                             </div>
                           </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">@lang('keywords.other_info')</label>
+<<<<<<< HEAD
                               <textarea class="master_input" name="info" id="Other_info" placeholder="Other info" Required></textarea><span class="master_message inherit"></span>
+=======
+                              <textarea class="master_input" maxlength="140" name="info" id="Other_info" placeholder="Other info" ></textarea><span class="master_message inherit">message content</span>
+>>>>>>> 04f7a276678248ffecd6a594898de3a88c494629
                             </div>
                           </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">@lang('keywords.other_info_arabic')</label>
+<<<<<<< HEAD
                               <textarea class="master_input" name="info_ar" id="Other_info_ar" placeholder="Other info" ></textarea><span class="master_message inherit"></span>
+=======
+                              <textarea class="master_input" maxlength="140" name="info_ar" id="Other_info_ar" placeholder="Other info" ></textarea><span class="master_message inherit">message content</span>
+>>>>>>> 04f7a276678248ffecd6a594898de3a88c494629
                             </div>
                           </div>
                           <div class="col-xs-4" hidden>
@@ -115,7 +138,7 @@
                           </div>
                           <div class="col-sm-12 col-xs-12">
                             <div class="master_field">
-                              <label class="master_label">@lang('keywords.opening_days')</label>
+                              <label class="master_label mandatory">@lang('keywords.opening_days')</label>
                               <div class="funkyradio">
                                 <input type="checkbox" name="days[1]" id="Opening_days_1">
                                 <label for="Opening_days_1">@lang('keywords.saturday')</label>
@@ -201,8 +224,8 @@
                         <div class="row">
                           <div class="col-xs-6">
                             <div class="master_field">
-                              <label class="master_label" for="Place_name">Place name</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <label class="master_label mandatory" for="Place_name">Place name</label>
+                              <input class="master_input" type="text" placeholder="ex:city stars" require id="Place_name"><span class="master_message color--fadegreen">validation message will be here</span>
                             </div>
                           </div>
                           <div class="col-xs-6">
