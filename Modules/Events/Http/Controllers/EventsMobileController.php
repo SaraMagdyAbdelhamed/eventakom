@@ -2,6 +2,7 @@
 
 namespace Modules\Events\Http\Controllers;
 
+use Carbon\Carbon;
 use Session;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -64,7 +65,7 @@ class EventsMobileController extends Controller
     }
 
     public function event_filter(Request $request)
-    {
+    {dd(1);
         if (isset($request->categories)) {
             $data['current_events'] = $events = EventMobile::whereHas('categories', function ($q) use ($request) {
                 $q->whereIn('event_categories.interest_id', $request->categories);
@@ -78,8 +79,8 @@ class EventsMobileController extends Controller
                     $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
                 } elseif (isset($request->startdate_from) && isset($request->startdate_to)) {
 
-                    $from_date = date('Y-m-d', strtotime($request->startdate_from));
-                    $to_date = date('Y-m-d', strtotime($request->startdate_to));
+                    $from_date = Carbon::parse($request->startdate_from);
+                    $to_date = Carbon::parse($request->startdate_to);
                     $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
 
                 }

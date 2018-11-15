@@ -654,7 +654,7 @@
 
           $.ajax(
           {
-              url: "{{ route('event_backend.destroySelected') }}",
+              url: "{{ route('fa.deleteSelected') }}",
               type: 'POST',
               dataType: "JSON",
               data: {

@@ -2,19 +2,17 @@
 
 namespace Modules\Famous\Http\Controllers;
 
+use App\FamousAttraction;
+use App\FamousAttractionMedia;
+use App\FamousCategory;
 use Helper;
-use Session;
-
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\FamousCategory;
-use App\FamousAttraction;
-use App\FamousAttractionMedia;
+use Session;
 
 class FamousController extends Controller
 {
@@ -27,7 +25,7 @@ class FamousController extends Controller
     public function index()
     {
         $data['attractions'] = FamousAttraction::all();
-        $data['categories']  = FamousCategory::all();
+        $data['categories'] = FamousCategory::all();
         return view('famous::list', $data);
     }
 
@@ -51,11 +49,11 @@ class FamousController extends Controller
     {
         // dd($request->all());
         $this->validate($request, [
-            'place_name'  => 'required|max:100',
-            'lat'         => 'required',
-            'lng'         => 'required',
-            'place_categories'  => 'required',
-            'other_info'  => ($request->other_info ? 'max:140' : ''),
+            'place_name' => 'required|max:100',
+            'lat' => 'required',
+            'lng' => 'required',
+            'place_categories' => 'required',
+            'other_info' => ($request->other_info ? 'max:140' : ''),
         ]);
 
         // Insert English values
@@ -63,14 +61,14 @@ class FamousController extends Controller
             // Add new famous attraction
             $famous = new FamousAttraction;
 
-            $famous->name       = $request->place_name;
-            $famous->address    = $request->address;
-            $famous->longtuide  = $request->lng;
-            $famous->latitude   = $request->lat;
-            $famous->website    = $request->website;
-            $famous->phone      = $request->phone_number;
-            $famous->info       = $request->other_info;
-            $famous->is_active  = $request->is_active ? 1 : 0;
+            $famous->name = $request->place_name;
+            $famous->address = $request->address;
+            $famous->longtuide = $request->lng;
+            $famous->latitude = $request->lat;
+            $famous->website = $request->website;
+            $famous->phone = $request->phone_number;
+            $famous->info = $request->other_info;
+            $famous->is_active = $request->is_active ? 1 : 0;
             $famous->save();
 
             // Attach new categories
@@ -79,59 +77,59 @@ class FamousController extends Controller
             }
 
             // Attach days
-            $days  = array();
+            $days = array();
             $start = array();
-            $end  = array();
-            
-            if($request->sat) {
-                $days[]     = $request->sat;
-                $start[]    = $request->sat_start;
-                $end[]      = $request->sat_end;
+            $end = array();
+
+            if ($request->sat) {
+                $days[] = $request->sat;
+                $start[] = $request->sat_start;
+                $end[] = $request->sat_end;
             }
-            if($request->sun) {
+            if ($request->sun) {
                 $days[] = $request->sun;
-                $start[]    = $request->sun_start;
-                $end[]      = $request->sun_end;
+                $start[] = $request->sun_start;
+                $end[] = $request->sun_end;
             }
-            if($request->mon) {
+            if ($request->mon) {
                 $days[] = $request->mon;
-                $start[]    = $request->mon_start;
-                $end[]      = $request->mon_end;
+                $start[] = $request->mon_start;
+                $end[] = $request->mon_end;
             }
-            if($request->tue) {
+            if ($request->tue) {
                 $days[] = $request->tue;
-                $start[]    = $request->tue_start;
-                $end[]      = $request->tue_end;
+                $start[] = $request->tue_start;
+                $end[] = $request->tue_end;
             }
-            if($request->wed) {
+            if ($request->wed) {
                 $days[] = $request->wed;
-                $start[]    = $request->wed_start;
-                $end[]      = $request->wed_end;
+                $start[] = $request->wed_start;
+                $end[] = $request->wed_end;
             }
-            if($request->thu) {
+            if ($request->thu) {
                 $days[] = $request->thu;
-                $start[]    = $request->thu_start;
-                $end[]      = $request->thu_end;
+                $start[] = $request->thu_start;
+                $end[] = $request->thu_end;
             }
-            if($request->fri) {
+            if ($request->fri) {
                 $days[] = $request->fri;
-                $start[]    = $request->fri_start;
-                $end[]      = $request->fri_end;
+                $start[] = $request->fri_start;
+                $end[] = $request->fri_end;
             }
-            
-            if( count($days) > 0 ) {
+
+            if (count($days) > 0) {
                 for ($i = 0; $i < count($days); $i++) {
-                    $famous->days()->attach( [$days[$i] => [ 'from'=>$start[$i], 'to'=>$end[$i] ]] );
+                    $famous->days()->attach([$days[$i] => ['from' => $start[$i], 'to' => $end[$i]]]);
                 }
             }
 
             // Attach media
             $famous->media()->createMany([
-                ['media' => ($request->youtube_en ? : ''), 'type' => 2],
-                ['media' => ($request->youtube_ar ? : ''), 'type' => 2],
+                ['media' => ($request->youtube_en ?: ''), 'type' => 2],
+                ['media' => ($request->youtube_ar ?: ''), 'type' => 2],
             ]);
 
-                        // Check if there is any images or files and move them to public/events
+            // Check if there is any images or files and move them to public/events
             // Arabic Event Images
             if ($request->hasfile('arabic_images')) {
 
@@ -152,9 +150,9 @@ class FamousController extends Controller
                         $media->type = 1;
                         $media->save();
                     }
-                }                
+                }
             }
-            
+
             // English Event Images
             if ($request->hasfile('english_images')) {
 
@@ -179,7 +177,7 @@ class FamousController extends Controller
 
             }
 
-        } catch(\Exception $ex){
+        } catch (\Exception $ex) {
             dd($ex);
             Session::flash('warning', 'English error!');
             return redirect()->back();
@@ -187,11 +185,11 @@ class FamousController extends Controller
 
         // Insert Arabic values
         try {
-            Helper::add_localization(19, 'name', $famous->id, ($request->place_name_ar ? : 'بدون اسم'), 2);
-            Helper::add_localization(19, 'address', $famous->id, ($request->place_address_ar ? : 'بدون عنوان'), 2);
-            Helper::add_localization(19, 'other_info', $famous->id, ($request->other_info_ar ? : 'بدون معلومات اضافية'), 2);
+            Helper::add_localization(19, 'name', $famous->id, ($request->place_name_ar ?: 'بدون اسم'), 2);
+            Helper::add_localization(19, 'address', $famous->id, ($request->place_address_ar ?: 'بدون عنوان'), 2);
+            Helper::add_localization(19, 'other_info', $famous->id, ($request->other_info_ar ?: 'بدون معلومات اضافية'), 2);
 
-        } catch(\Exception $ex){
+        } catch (\Exception $ex) {
             Session::flash('warning', 'Arabic Error!');
             return redirect()->back();
         }
@@ -209,45 +207,45 @@ class FamousController extends Controller
     {
         $famous = FamousAttraction::find($request->id);
         $categories = '';
-        $days   = '';
-        $start  = '';
-        $end    = '';
+        $days = '';
+        $start = '';
+        $end = '';
         $keyword = '';
 
         // Get categories
-        foreach($famous->categories as $cat) {
+        foreach ($famous->categories as $cat) {
             // Concatinate all categories
-            $categories .= ($request->lang == 'en' ? $cat->name.' ' :  \Helper::localization('fa_categories', 'name', $cat->id, 2, $cat->name).' ' );
+            $categories .= ($request->lang == 'en' ? $cat->name . ' ' : \Helper::localization('fa_categories', 'name', $cat->id, 2, $cat->name) . ' ');
         }
 
         // Get available days
-        foreach($famous->days as $day) {
+        foreach ($famous->days as $day) {
             // Concatinate all available days
-            $days   .= ($request->lang == 'en' ? $day->name.', ' :  \Helper::localization('days', 'name', $day->id, 2, $day->name).' ، ' );
-            $start  .= ($request->lang == 'en' ? $day->name.': '. $day->pivot->from.' ,  ' : \Helper::localization('days', 'name', $day->id, 2, $day->name).': '.$day->pivot->from.'   ،   ' );
-            $end    .= ($request->lang == 'en' ? $day->name.': '.$day->pivot->to.' ,  ' : \Helper::localization('days', 'name', $day->id, 2, $day->name).': '.$day->pivot->to.'   ،   ' );
+            $days .= ($request->lang == 'en' ? $day->name . ', ' : \Helper::localization('days', 'name', $day->id, 2, $day->name) . ' ، ');
+            $start .= ($request->lang == 'en' ? $day->name . ': ' . $day->pivot->from . ' ,  ' : \Helper::localization('days', 'name', $day->id, 2, $day->name) . ': ' . $day->pivot->from . '   ،   ');
+            $end .= ($request->lang == 'en' ? $day->name . ': ' . $day->pivot->to . ' ,  ' : \Helper::localization('days', 'name', $day->id, 2, $day->name) . ': ' . $day->pivot->to . '   ،   ');
         }
 
         // get media
         $keyword = $request->lang == 'en' ? '%english%' : '%arabic%';
-        $image   = $famous->media()->where('type', 1)->where('media', 'like', $keyword)->first() ? $famous->media()->where('type', 1)->where('media', 'like', $keyword)->first()->media : '';
+        $image = $famous->media()->where('type', 1)->where('media', 'like', $keyword)->first() ? $famous->media()->where('type', 1)->where('media', 'like', $keyword)->first()->media : '';
         $youtube_ar = $famous->media()->where('type', 2)->first() ? $famous->media()->where('type', 2)->first()->media : '';
         $youtube_en = $famous->media()->where('type', 2)->orderBy('id', 'DESC')->first() ? $famous->media()->where('type', 2)->orderBy('id', 'DESC')->first()->media : '';
 
         $row = [
-            'id'        => $famous->id,
-            'name'      => $request->lang == 'en' ? $famous->name : \Helper::localization('famous_attractions', 'name', $famous->id, 2, $famous->name),
-            'address'   => $request->lang == 'en' ? $famous->address : \Helper::localization('famous_attractions', 'address', $famous->id, 2, $famous->name),
-            'lng'       => $famous->longtuide,
-            'lat'       => $famous->latitude,
-            'website'   => $famous->website,
-            'phone'     => $famous->phone,
-            'days'      => $days,
-            'start'     => $start,
-            'end'       => $end,
-            'info'      => $request->lang == 'en' ? $famous->info : \Helper::localization('famous_attractions', 'other_info', $famous->id, 2, $famous->info),
+            'id' => $famous->id,
+            'name' => $request->lang == 'en' ? $famous->name : \Helper::localization('famous_attractions', 'name', $famous->id, 2, $famous->name),
+            'address' => $request->lang == 'en' ? $famous->address : \Helper::localization('famous_attractions', 'address', $famous->id, 2, $famous->name),
+            'lng' => $famous->longtuide,
+            'lat' => $famous->latitude,
+            'website' => $famous->website,
+            'phone' => $famous->phone,
+            'days' => $days,
+            'start' => $start,
+            'end' => $end,
+            'info' => $request->lang == 'en' ? $famous->info : \Helper::localization('famous_attractions', 'other_info', $famous->id, 2, $famous->info),
             'is_active' => $famous->is_active,
-            'categories'=> $categories,
+            'categories' => $categories,
             'image' => asset($image),
             'youtube_ar' => $youtube_ar,
             'youtube_en' => $youtube_en,
@@ -265,17 +263,16 @@ class FamousController extends Controller
         $data['famous'] = FamousAttraction::find($id);
 
         // redirect back if not found!
-        if ( $data['famous'] == NULL ) {
+        if ($data['famous'] == null) {
             Session::flash('warning', 'Not found! غير موجود');
             return redirect('/attractions');
         }
 
-        $data['image_ar']   = $data['famous']->media()->where('type', 1)->where('media', 'like', '%arabic%')->first() ? $data['famous']->media()->where('type', 1)->where('media', 'like', '%arabic%')->first()->media : '';
-        $data['image_en']   = $data['famous']->media()->where('type', 1)->where('media', 'like', '%english%')->first() ? $data['famous']->media()->where('type', 1)->where('media', 'like', '%english%')->first()->media : '';
+        $data['image_ar'] = $data['famous']->media()->where('type', 1)->where('media', 'like', '%arabic%')->first() ? $data['famous']->media()->where('type', 1)->where('media', 'like', '%arabic%')->first()->media : '';
+        $data['image_en'] = $data['famous']->media()->where('type', 1)->where('media', 'like', '%english%')->first() ? $data['famous']->media()->where('type', 1)->where('media', 'like', '%english%')->first()->media : '';
 
         $data['youtube_ar'] = $data['famous']->media()->where('type', 2)->first() ? $data['famous']->media()->where('type', 2)->first()->media : '';
         $data['youtube_en'] = $data['famous']->media()->where('type', 2)->orderBy('id', 'DESC')->first() ? $data['famous']->media()->where('type', 2)->orderBy('id', 'DESC')->first()->media : '';
-
 
         return view('famous::edit', $data);
     }
@@ -289,11 +286,11 @@ class FamousController extends Controller
     {
         // dd($request->all());
         $this->validate($request, [
-            'place_name'  => 'required|max:100',
-            'lat'         => 'required',
-            'lng'         => 'required',
-            'place_categories'  => 'required',
-            'other_info'  => ($request->other_info ? 'max:140' : ''),
+            'place_name' => 'required|max:100',
+            'lat' => 'required',
+            'lng' => 'required',
+            'place_categories' => 'required',
+            'other_info' => ($request->other_info ? 'max:140' : ''),
         ]);
 
         // Update English values
@@ -301,14 +298,14 @@ class FamousController extends Controller
             // Add new famous attraction
             $famous = FamousAttraction::find($request->id);
 
-            $famous->name       = $request->place_name;
-            $famous->address    = $request->address;
-            $famous->longtuide  = $request->lng;
-            $famous->latitude   = $request->lat;
-            $famous->website    = $request->website;
-            $famous->phone      = $request->phone_number;
-            $famous->info       = $request->other_info;
-            $famous->is_active  = $request->is_active ? 1 : 0;
+            $famous->name = $request->place_name;
+            $famous->address = $request->address;
+            $famous->longtuide = $request->lng;
+            $famous->latitude = $request->lat;
+            $famous->website = $request->website;
+            $famous->phone = $request->phone_number;
+            $famous->info = $request->other_info;
+            $famous->is_active = $request->is_active ? 1 : 0;
             $famous->save();
 
             // Attach new categories
@@ -319,60 +316,60 @@ class FamousController extends Controller
 
             // Attach days
             $famous->days()->detach();
-            $days  = array();
+            $days = array();
             $start = array();
-            $end  = array();
-            
-            if($request->sat) {
-                $days[]     = $request->sat;
-                $start[]    = $request->sat_start;
-                $end[]      = $request->sat_end;
+            $end = array();
+
+            if ($request->sat) {
+                $days[] = $request->sat;
+                $start[] = $request->sat_start;
+                $end[] = $request->sat_end;
             }
-            if($request->sun) {
+            if ($request->sun) {
                 $days[] = $request->sun;
-                $start[]    = $request->sun_start;
-                $end[]      = $request->sun_end;
+                $start[] = $request->sun_start;
+                $end[] = $request->sun_end;
             }
-            if($request->mon) {
+            if ($request->mon) {
                 $days[] = $request->mon;
-                $start[]    = $request->mon_start;
-                $end[]      = $request->mon_end;
+                $start[] = $request->mon_start;
+                $end[] = $request->mon_end;
             }
-            if($request->tue) {
+            if ($request->tue) {
                 $days[] = $request->tue;
-                $start[]    = $request->tue_start;
-                $end[]      = $request->tue_end;
+                $start[] = $request->tue_start;
+                $end[] = $request->tue_end;
             }
-            if($request->wed) {
+            if ($request->wed) {
                 $days[] = $request->wed;
-                $start[]    = $request->wed_start;
-                $end[]      = $request->wed_end;
+                $start[] = $request->wed_start;
+                $end[] = $request->wed_end;
             }
-            if($request->thu) {
+            if ($request->thu) {
                 $days[] = $request->thu;
-                $start[]    = $request->thu_start;
-                $end[]      = $request->thu_end;
+                $start[] = $request->thu_start;
+                $end[] = $request->thu_end;
             }
-            if($request->fri) {
+            if ($request->fri) {
                 $days[] = $request->fri;
-                $start[]    = $request->fri_start;
-                $end[]      = $request->fri_end;
+                $start[] = $request->fri_start;
+                $end[] = $request->fri_end;
             }
-            
-            if( count($days) > 0 ) {
+
+            if (count($days) > 0) {
                 for ($i = 0; $i < count($days); $i++) {
-                    $famous->days()->attach( [$days[$i] => [ 'from'=>$start[$i], 'to'=>$end[$i] ]] );
+                    $famous->days()->attach([$days[$i] => ['from' => $start[$i], 'to' => $end[$i]]]);
                 }
             }
 
             // Attach media
             $famous->media()->where('type', 2)->delete();
             $famous->media()->createMany([
-                ['media' => ($request->youtube_en ? : ''), 'type' => 2],
-                ['media' => ($request->youtube_ar ? : ''), 'type' => 2],
+                ['media' => ($request->youtube_en ?: ''), 'type' => 2],
+                ['media' => ($request->youtube_ar ?: ''), 'type' => 2],
             ]);
 
-                        // Check if there is any images or files and move them to public/events
+            // Check if there is any images or files and move them to public/events
             // Arabic Event Images
             if ($request->hasfile('arabic_images')) {
 
@@ -396,15 +393,15 @@ class FamousController extends Controller
                         $media->type = 1;
                         $media->save();
                     }
-                }                
+                }
             }
-            
+
             // English Event Images
             if ($request->hasfile('english_images')) {
 
                 // delete old images if new exists
                 $famous->media()->where('type', 1)->where('media', 'like', '%english%')->delete();
-                
+
                 // Setup every image
                 foreach ($request->file('english_images') as $image) {
                     $name = time() . '_' . $image->getClientOriginalName();
@@ -426,7 +423,7 @@ class FamousController extends Controller
 
             }
 
-        } catch(\Exception $ex){
+        } catch (\Exception $ex) {
             dd($ex);
             Session::flash('warning', 'English error!');
             return redirect()->back();
@@ -434,11 +431,11 @@ class FamousController extends Controller
 
         // Update Arabic values
         try {
-            Helper::edit_entity_localization('famous_attractions', 'name', $famous->id, 2, ($request->place_name_ar ? : 'بدون اسم'));
-            Helper::edit_entity_localization('famous_attractions', 'address', $famous->id, 2, ($request->place_address_ar ? : 'بدون عنوان'));
-            Helper::edit_entity_localization('famous_attractions', 'other_info', $famous->id, 2, ($request->other_info_ar ? : 'بدون معلومات اضافية'));
+            Helper::edit_entity_localization('famous_attractions', 'name', $famous->id, 2, ($request->place_name_ar ?: 'بدون اسم'));
+            Helper::edit_entity_localization('famous_attractions', 'address', $famous->id, 2, ($request->place_address_ar ?: 'بدون عنوان'));
+            Helper::edit_entity_localization('famous_attractions', 'other_info', $famous->id, 2, ($request->other_info_ar ?: 'بدون معلومات اضافية'));
 
-        } catch(\Exception $ex){
+        } catch (\Exception $ex) {
             Session::flash('warning', 'Arabic Error!');
             return redirect()->back();
         }
@@ -468,14 +465,13 @@ class FamousController extends Controller
         // delete famous attraction
         $famous->delete();
 
-        Session::flash('success', 'Deleted successfully! تم الحذف بنجاح');
         return response()->json(['success' => 'deleted!']);
     }
 
     public function destroySelected(Request $request)
     {
-        foreach($request->ids as $id) {
-            $famous = FamousAttraction::find(id);
+        foreach ($request->ids as $id) {
+            $famous = FamousAttraction::find($id);
 
             // detach categories
             $famous->categories()->detach();
@@ -489,43 +485,41 @@ class FamousController extends Controller
             // delete famous attraction
             $famous->delete();
 
-            Session::flash('success', 'Deleted successfully! تم الحذف بنجاح');
-            return response()->json(['success' => 'deleted!']);
         }
+        return response()->json(['success' => 'deleted!']);
     }
 
-    public function filter(Request $request) {
+    public function filter(Request $request)
+    {
         // dd($request->all());
 
-        $categories = array(); 
+        $categories = array();
         $categories = $request->place_categories;
 
         // create new object
         $data['attractions'] = new FamousAttraction;
 
         // search by category
-        if( $categories ){
-            $data['attractions'] = $data['attractions']->whereHas('categories', function($q) use($categories) {
+        if ($categories) {
+            $data['attractions'] = $data['attractions']->whereHas('categories', function ($q) use ($categories) {
                 $q->whereIn('fa_categories.id', $categories);
             });
         }
 
         // dd($data['attractions']->get());
         // search by active
-        if( $request->is_active && $request->is_inActive ) {
+        if ($request->is_active && $request->is_inActive) {
             $data['attractions'] = $data['attractions'];
-        }
-        else if( $request->is_active ) {
+        } else if ($request->is_active) {
             $data['attractions'] = $data['attractions']->where('is_active', 1);
-        } 
-        else if ( $request->is_inActive ) {
+        } else if ($request->is_inActive) {
             // search by inactive
             $data['attractions'] = $data['attractions']->where('is_active', 0);
         }
 
-        $data['categories']  = FamousCategory::all();
+        $data['categories'] = FamousCategory::all();
 
-        if($data['attractions'] != NULL) {
+        if ($data['attractions'] != null) {
             $data['attractions'] = $data['attractions']->get();
         } else {
             $data['attractions'] = $data['attractions']->all();

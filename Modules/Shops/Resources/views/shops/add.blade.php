@@ -92,13 +92,15 @@
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">@lang('keywords.other_info')</label>
-                              <textarea class="master_input" maxlength="140" name="info" id="Other_info" placeholder="Other info" ></textarea><span class="master_message inherit">message content</span>
+                              <textarea class="master_input" maxlength="140" name="info" id="Other_info" placeholder="Other info" ></textarea>
+                              <span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">@lang('keywords.other_info_arabic')</label>
-                              <textarea class="master_input" maxlength="140" name="info_ar" id="Other_info_ar" placeholder="Other info" ></textarea><span class="master_message inherit">message content</span>
+                              <textarea class="master_input" maxlength="140" name="info_ar" id="Other_info_ar" placeholder="Other info" ></textarea>
+                              <span class="master_message inherit">message content</span>
                             </div>
                           </div>
                           <div class="col-xs-4" hidden>

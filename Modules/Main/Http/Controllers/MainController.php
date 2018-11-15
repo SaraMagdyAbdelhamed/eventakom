@@ -521,7 +521,7 @@ class MainController extends Controller
 
     public function sponsor_delete(Request $request) {
         try {
-            Sponsor::find($request->id)->delete();
+            
         } catch(\Exception $ex) {
             Session::flash('warning', 'can not delete this record.');
             return response()->json(['error', 'can not delete this record.']);
@@ -532,7 +532,9 @@ class MainController extends Controller
 
     public function sponsor_deleteSelected(Request $request) {
         try {
-            Sponsor::whereIn('id', $request->id)->delete();
+            foreach($request->ids as $id) {
+                Sponsor::find($id)->delete();
+            }
         } catch(\Exception $ex) {
             Session::flash('warning', 'can not delete those records.');
             return response()->json(['error', 'can not delete those records.']);

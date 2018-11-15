@@ -42,7 +42,7 @@
                         <tr data-id="{{ $sponsor->id }}">
                             <td><span class="cellcontent" data-id="{{ $sponsor->id }}"></span></td>
                             <td><span class="cellcontent">{{ $loop->index + 1 }}</span></td>
-                            <td><span class="cellcontent"><img src="{{ \App::isLocale('ar') ?  asset($sponsor->logo_ar ? $sponsor->logo_ar : '') : asset($sponsor->logo_en ? $sponsor->logo_en : '') }}" class = " img-in-table" alt="@lang('keywords.noImage')"></span></td>
+                            <td><span class="cellcontent"><img src="{{ \App::isLocale('ar') ?  asset($sponsor->logo_ar ? $sponsor->logo_ar : '') : asset($sponsor->logo_en ? $sponsor->logo_en : '') }}" class = " img-in-table" ></span></td>
                             <td><span class="cellcontent">{{ App::isLocale('en') ? $sponsor->name : Helper::localization('sponsors', 'name', $sponsor->id, 2) }}</span></td>
                             <td>
                                 <span class="cellcontent">
@@ -227,6 +227,8 @@
             $('input.input-in-table:checked').each(function() {
                 allVals.push( $(this).closest('tr').data("id") );
             });
+
+            console.log(allVals);
 
             // check if user selected nothing
             if(allVals.length <= 0) {
