@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Input;
 
 class ShopsController extends Controller
 {
@@ -82,6 +81,8 @@ class ShopsController extends Controller
 
     public function add_shop(Request $request)
     {
+        $images_en = explode('-', $request->images);
+        $images_ar = explode('-', $request->images_ar);
 
         // is_active
         if (isset($request['is_active'])) {
@@ -91,42 +92,122 @@ class ShopsController extends Controller
         }
 
         $shop = Shop::create([
-            "name"      => $request['place_name'],
-            "phone"     => $request['phone'],
-            "website"   => $request['website'],
-            "info"      => $request['info'],
-            "address"   => $request['place_address'],
+            "name" => $request['place_name'],
+            "phone" => $request['phone'],
+            "website" => $request['website'],
+            "info" => $request['info'],
+            "address" => $request['place_address'],
             "longitude" => $request['shop_long'],
-            "latitude"  => $request['shop_lat'],
+            "latitude" => $request['shop_lat'],
             "is_active" => $is_active,
         ]);
 
-        if (isset($request['images'])) {
-            foreach ($request->images as $key => $file) {
+        // Images
+        if (count($images_ar) > 0 || count($images_en) > 0) {
 
-                $destinationPath = 'shops_images';
-                $fileNameToStore = $destinationPath . '/' . time() . rand(111, 999) . '.' . $file->getClientOriginalExtension();
-                // dd($fileNameToStore);
-                Input::file('images')[$key]->move($destinationPath, $fileNameToStore);
-                $shop->update(["photo" => $fileNameToStore]);
-                $shop_media = ShopMedia::create([
-                    "shop_id" => $shop->id,
-                    "link" => $fileNameToStore,
-                    "type" => 1,
-                ]);
-                if ($request['images_ar'][$key] != null) {
-                    $destinationPath = 'shops_images';
-                    $fileNameToStore = $destinationPath . '/' . time() . rand(111, 999) . '.' . $file->getClientOriginalExtension();
-                    // dd($fileNameToStore);
-                    Input::file('images_ar')[$key]->move($destinationPath, $fileNameToStore);
-                    Helper::add_localization(21, 'link', $shop->id, $fileNameToStore, 2);
-                } else {
-                    Helper::add_localization(21, 'link', $shop->id, $fileNameToStore, 2);
+            $mainImage = '';
+
+            // update English images.
+            if (count($images_en) > 0) {
+
+                // add new images
+                foreach ($images_en as $image) {
+
+                    // check if image exist
+                    if (strpos($image, 'shops_images') !== false) {
+                        // search for its name
+                        preg_match('/shops_images\/(.*)/', $image, $match);
+
+                        if (count($match) > 0) {
+                            $name = $match[0];
+
+                            ShopMedia::create([
+                                'shop_id' => $shop->id,
+                                'link' => $name,
+                                'type' => 1,
+                            ]);
+                        }
+
+                    }
+                    // check if image is new
+                    if (strpos($image, 'base64') !== false) {
+                        // get image extension
+                        preg_match('/image\/(.*)\;/', $image, $match);
+
+                        if (count($match) > 0) {
+                            $ext = $match[1];
+                            $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
+                            $image = str_replace(' ', '+', $image);
+                            $imageName = 'shops_images/' . time() . rand(111, 999) . '.' . $ext;
+                            \File::put(public_path() . '/' . $imageName, base64_decode($image));
+
+                            ShopMedia::create([
+                                "shop_id" => $shop->id,
+                                "link" => $imageName,
+                                "type" => 1,
+                            ]);
+
+                        }
+                    }
+                }
+
+            }
+
+            // update Arabic images.
+            if (count($images_ar) > 0) {
+
+                // add new images
+                foreach ($images_ar as $image) {
+
+                    // check if image exist
+                    if (strpos($image, 'shops_images') !== false) {
+                        // search for its name
+                        preg_match('/shops_images\/(.*)/', $image, $match);
+
+                        if (count($match) > 0) {
+                            $name = $match[0];
+
+                            Helper::add_localization(21, 'link', $shop->id, $name, 2);
+                        }
+
+                    }
+                    // check if image is new
+                    if (strpos($image, 'base64') !== false) {
+                        // get image extension
+                        preg_match('/image\/(.*)\;/', $image, $match);
+
+                        if (count($match) > 0) {
+                            $ext = $match[1];
+                            $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
+                            $image = str_replace(' ', '+', $image);
+                            $imageName = 'shops_images/' . time() . rand(111, 999) . '.' . $ext;
+                            \File::put(public_path() . '/' . $imageName, base64_decode($image));
+
+                            Helper::add_localization(21, 'link', $shop->id, $imageName, 2);
+                        }
+                    }
                 }
             }
-        } else {
-            $shop->update(["photo" => "img/default.jpg"]);
+
+            // update main shop image
+            if (count($images_en) > 0 && count($images_ar) > 0) { 
+                // add first English image
+                $mainImage = ShopMedia::where('shop_id', $shop->id)->first()->link;
+            } else if (count($images_en) > 0) { 
+
+                // add first English image
+                $mainImage = ShopMedia::where('shop_id', $shop->id)->first()->photo;
+            } else if (count($images_ar) > 0) { 
+                // add first Arabic image
+                $mainImage = Helper::localization('shop_media', 'link', $shop->id, 2);
+            }
+
+            $shop->update([
+                'photo' => $mainImage,
+            ]);
+
         }
+
         // dd($request->all());
         if (isset($request['place_name_ar'])) {
             Helper::add_localization(10, 'name', $shop->id, $request['place_name_ar'], 2);
@@ -211,6 +292,9 @@ class ShopsController extends Controller
 
     public function edit_shop(Request $request, $id)
     {
+        $images_en = explode('-', $request->images);
+        $images_ar = explode('-', $request->images_ar);
+
         if (isset($request['is_active'])) {
             $is_active = 1;
         } else {
@@ -227,16 +311,19 @@ class ShopsController extends Controller
             "latitude" => $request['shop_lat'],
             "is_active" => $is_active,
         ]);
+
         if (isset($request['place_name_ar'])) {
             Helper::edit_entity_localization('shops', 'name', $shop->id, 2, $request['place_name_ar']);
         } else {
             Helper::edit_entity_localization('shops', 'name', $shop->id, 2, $request['place_name']);
         }
+
         if (isset($request['info_ar'])) {
             Helper::edit_entity_localization('shops', 'info', $shop->id, 2, $request['info_ar']);
         } else {
             Helper::edit_entity_localization('shops', 'info', $shop->id, 2, $request['info']);
         }
+
         if (isset($request['days'])) {
             ShopDay::where('shop_id', $id)->delete();
             foreach ($request['days'] as $key => $value) {
@@ -246,35 +333,93 @@ class ShopsController extends Controller
                 ]);
             }
         }
-        if (isset($request['images'])) {
 
-            if ( count($request->images) > 0 ) {
+        // Images
+        if (count($images_ar) > 0 || count($images_en) > 0) {
+
+            // update English images.
+            if (count($images_en) > 0) {
+                // delete old ones
                 $shop->shop_media()->delete();
+
+                // add new images
+                foreach ($images_en as $image) {
+
+                    // check if image exist
+                    if (strpos($image, 'shops_images') !== false) {
+                        // search for its name
+                        preg_match('/shops_images\/(.*)/', $image, $match);
+
+                        if (count($match) > 0) {
+                            $name = $match[0];
+
+                            ShopMedia::create([
+                                'shop_id' => $shop->id,
+                                'link' => $name,
+                                'type' => 1,
+                            ]);
+                        }
+
+                    }
+                    // check if image is new
+                    if (strpos($image, 'base64') !== false) {
+                        // get image extension
+                        preg_match('/image\/(.*)\;/', $image, $match);
+
+                        if (count($match) > 0) {
+                            $ext = $match[1];
+                            $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
+                            $image = str_replace(' ', '+', $image);
+                            $imageName = 'shops_images/' . time() . rand(111, 999) . '.' . $ext;
+                            \File::put(public_path() . '/' . $imageName, base64_decode($image));
+
+                            ShopMedia::create([
+                                "shop_id" => $shop->id,
+                                "link" => $imageName,
+                                "type" => 1,
+                            ]);
+
+                        }
+                    }
+                }
+
             }
 
-            if ( count($request->images_ar) > 0 ) {
+            // update Arabic images.
+            if (count($images_ar) > 0) {
+                // delete old ones
                 Helper::remove_localization(21, 'link', $shop->id, 2);
-            }
-            foreach ($request->images as $key => $file) {
-                
-                $destinationPath = 'shops_images';
-                $fileNameToStore = $destinationPath . '/' . time() . rand(111, 999) . '.' . $file->getClientOriginalExtension();
-                // dd($fileNameToStore);
-                Input::file('images')[$key]->move($destinationPath, $fileNameToStore);
-                $shop->update(["photo" => $fileNameToStore]);
-                $shop_media = ShopMedia::create([
-                    "shop_id" => $shop->id,
-                    "link" => $fileNameToStore,
-                    "type" => 1,
-                ]);
-                if ($request['images_ar'][$key] != null) {
-                    $destinationPath = 'shops_images';
-                    $fileNameToStore = $destinationPath . '/' . time() . rand(111, 999) . '.' . $file->getClientOriginalExtension();
-                    // dd($fileNameToStore);
-                    Input::file('images_ar')[$key]->move($destinationPath, $fileNameToStore);
-                    Helper::add_localization(21, 'link', $shop->id, $fileNameToStore, 2);
-                } else {
-                    Helper::add_localization(21, 'link', $shop->id, $fileNameToStore, 2);
+
+                // add new images
+                foreach ($images_ar as $image) {
+
+                    // check if image exist
+                    if (strpos($image, 'shops_images') !== false) {
+                        // search for its name
+                        preg_match('/shops_images\/(.*)/', $image, $match);
+
+                        if (count($match) > 0) {
+                            $name = $match[0];
+
+                            Helper::add_localization(21, 'link', $shop->id, $name, 2);
+                        }
+
+                    }
+                    // check if image is new
+                    if (strpos($image, 'base64') !== false) {
+                        // get image extension
+                        preg_match('/image\/(.*)\;/', $image, $match);
+
+                        if (count($match) > 0) {
+                            $ext = $match[1];
+                            $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
+                            $image = str_replace(' ', '+', $image);
+                            $imageName = 'shops_images/' . time() . rand(111, 999) . '.' . $ext;
+                            \File::put(public_path() . '/' . $imageName, base64_decode($image));
+
+                            Helper::add_localization(21, 'link', $shop->id, $imageName, 2);
+                        }
+                    }
                 }
             }
         }
@@ -282,7 +427,7 @@ class ShopsController extends Controller
         if (isset($request['video'])) {
             ShopMedia::where('shop_id', $id)->where('type', 2)->delete();
             foreach ($request['video'] as $key => $value) {
-            $value = str_replace('watch?v=', 'embed/', $value);
+                $value = str_replace('watch?v=', 'embed/', $value);
 
                 if ($value != null) {
                     $shop_media = ShopMedia::create([
@@ -327,7 +472,8 @@ class ShopsController extends Controller
         return redirect()->route('shops');
     }
 
-    public function view(Shop $shop) {
+    public function view(Shop $shop)
+    {
 
         return view('shops::shops.view')
             ->with('shop', $shop);

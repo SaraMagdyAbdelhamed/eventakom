@@ -53,26 +53,15 @@
                       <fieldset>
                         <div class="row">
                           <div class="col-xs-6">
-<<<<<<< HEAD
-                            <div class="master_field">
-                              <label class="master_label" for="Place_name">@lang('keywords.shop_name')</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name"><span class="master_message color--fadegreen"></span>
-=======
                             <div class="master_field ">
                               <label class="master_label mandatory" for="Place_name">@lang('keywords.shop_name')</label>
                               <input class="master_input" type="text" placeholder="ex:city stars" require id="Place_name" name="place_name"><span class="master_message color--fadegreen">validation message will be here</span>
->>>>>>> 04f7a276678248ffecd6a594898de3a88c494629
                             </div>
                           </div>
                           <div class="col-xs-6">
                             <div class="master_field">
-<<<<<<< HEAD
-                              <label class="master_label" for="Place_name">@lang('keywords.shop_name_arabic')</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar"><span class="master_message color--fadegreen"></span>
-=======
                               <label class="master_label mandatory" for="Place_name">@lang('keywords.shop_name_arabic')</label>
                               <input class="master_input" require type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar"><span class="master_message color--fadegreen">validation message will be here</span>
->>>>>>> 04f7a276678248ffecd6a594898de3a88c494629
                             </div>
                           </div>
                            <div class="col-xs-5">
@@ -97,31 +86,19 @@
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Website">@lang('keywords.website')</label>
-<<<<<<< HEAD
-                              <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website"><span class="master_message color--fadegreen"></span>
-=======
                               <input class="master_input" type="url" placeholder="www.domain.com"  id="Website" name="website"><span class="master_message color--fadegreen">validation message will be here</span>
->>>>>>> 04f7a276678248ffecd6a594898de3a88c494629
                             </div>
                           </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">@lang('keywords.other_info')</label>
-<<<<<<< HEAD
-                              <textarea class="master_input" name="info" id="Other_info" placeholder="Other info" Required></textarea><span class="master_message inherit"></span>
-=======
                               <textarea class="master_input" maxlength="140" name="info" id="Other_info" placeholder="Other info" ></textarea><span class="master_message inherit">message content</span>
->>>>>>> 04f7a276678248ffecd6a594898de3a88c494629
                             </div>
                           </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Other_info">@lang('keywords.other_info_arabic')</label>
-<<<<<<< HEAD
-                              <textarea class="master_input" name="info_ar" id="Other_info_ar" placeholder="Other info" ></textarea><span class="master_message inherit"></span>
-=======
                               <textarea class="master_input" maxlength="140" name="info_ar" id="Other_info_ar" placeholder="Other info" ></textarea><span class="master_message inherit">message content</span>
->>>>>>> 04f7a276678248ffecd6a594898de3a88c494629
                             </div>
                           </div>
                           <div class="col-xs-4" hidden>
@@ -280,8 +257,10 @@
                               <div class="main-section">
                                 <div id="fileList"></div>
                                 <div class="form-group">
-                                  <input class="inputfile inputfile-1" id="file-1" type="file" name="images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList()">
+                                  <input class="inputfile inputfile-1" id="file-1" type="file" name="images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-1','fileList','Ar')" accept=".jpg,.png,.jpeg" />
                                   <label for="file-1"><span >Choose a file</span></label>
+                                  <input type="hidden" name="images" id="hidden_images_en">
+
                                 </div>
                               </div>
                             </div>
@@ -292,8 +271,9 @@
                               <div class="main-section">
                                 <div id="fileList2"></div>
                                 <div class="form-group">
-                                  <input class="inputfile inputfile-1" id="file-2" type="file" name="images_ar[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList2()">
+                                  <input class="inputfile inputfile-1" id="file-2" type="file" name="images_ar[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-2','fileList2','en')" accept=".jpg,.png,.jpeg" />
                                   <label for="file-2"><span>Choose a file</span></label>
+                                  <input type="hidden" name="images_ar" id="hidden_images_ar">
                                 </div>
                               </div>
                             </div>
@@ -309,266 +289,360 @@
 
 
 @section('js')
+<!--***************************UI*************************-->
 <script type="text/javascript">
-      var listAr = [];
-      var listEn = [];
-      var check = false;
-      var img;
-      var reader=new FileReader();
-      function updateIndexList(){
-      
-      }
-      function closebtn(index,value){
-        if(value==1){
-          listAr.splice(index,1);
-          $.each(listAr,function(id,value){
-            value.index = id;
-          });
-          check = true;
-          $("#file-1").prop('disabled', false);
-          updateList();
-        }
-        if(value==2){
-          listEn.splice(index,1);
-          $.each(listEn,function(id,value){
-            value.index = id;
-          });
-          check = true;
-          $("#file-2").prop('disabled', false);
-          updateList2();
-        }
-          
-        }
-       updateList = function() {
-        let input = document.getElementById('file-1');
-        let output = document.getElementById('fileList');
-        let files1 = input.files; 
-        if(check==true){
-          
-          output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-          for (var i = 0; i < listAr.length; i++) {
-          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-                              '<span class="uploader__file-list__thumbnail">'+
-                              '<img class="thumbnail" id="img_" src="+list.img+">'+
-                              '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
-                              '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
-                              '<span class="uploader__file-list__button">'+'</span>'+
-                              '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
-                              '</button>'+'</span>'+'</li>';
-                        
-                        
-        }
-        output.innerHTML += '</ul>';
-        check = false;
-        }
-        else{
-          if(files1.length > 5){
-          alert("max no. 5 images");
-          return;
-         }
-        for (var i = 0; i < files1.length; i++) {
-          var file = files1[i];
-           
-              listAr.push({'name':file.name,'size':file.size,'index':listAr.length});
-      
-          }
-      
-        output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-        for (var i = 0; i < listAr.length; i++) {
-          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-                              '<span class="uploader__file-list__thumbnail">'+
-                              '<img class="thumbnail" id="img_" src="+list.img+">'+
-                              '</span>'+'<span class="uploader__file-list__text">'+listAr[i].name+'</span>'+
-                              '<span class="uploader__file-list__size">' +(listAr[i].size)/1000 +'KB'+'</span>'+
-                              '<span class="uploader__file-list__button">'+'</span>'+
-                              '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
-                              '</button>'+'</span>'+'</li>';
-        }
-        output.innerHTML += '</ul>';
-        }
-      
-        if(listAr.length == 5){
-            $("#file-1").prop('disabled', true);
-          }
-         
-        }
-      
-        updateList2 = function(){
-        let input = document.getElementById('file-2');
-        let output = document.getElementById('fileList2');
-        let files2 = input.files; 
-        if(check==true){
-           output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-        for (var i = 0; i < listEn.length; i++) {
-          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-          '<span class="uploader__file-list__thumbnail">'+
-          '<img class="thumbnail" id="img_" src="+list.img+">'+'</span>'+
-          '<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
-          '<span class="uploader__file-list__size">' +(listEn[i].size)/1000 +'KB'+
-          '</span>'+'<span class="uploader__file-list__button">'+'</span>'+
-          '<span class="uploader__file-list__button" id="delete" >'+''
-          +'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+'</span>'+'</li>';
-        }
-        output.innerHTML += '</ul>';
-        check=false;
-      
-        }
-        else{
-          if(files2.length > 5){
-             alert("max no. 5 images");
-            return;
-          }
-          for (var j = 0; j < files2.length; j++) {
-          var file = files2[j];
-          listEn.push({'name':file.name,'size':file.size,'index':listEn.length});
-          if(listEn.length == 5){
-            $("#file-2").prop("disabled",true);
-          }
-          }  
-        output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-        for (var i = 0; i < listEn.length; i++) {
-          output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
-          '<span class="uploader__file-list__thumbnail">'+
-          '<img class="thumbnail" id="img_" src="+list.img+">'+'</span>'+
-          '<span class="uploader__file-list__text">'+listEn[i].name+'</span>'+
-          '<span class="uploader__file-list__size">' +(listEn[i].size)/1000 +'KB'+
-          '</span>'+'<span class="uploader__file-list__button">'+'</span>'+
-          '<span class="uploader__file-list__button" id="delete" >'+''
-          +'<button id="close" onclick="closebtn('+listEn[i].index+','+2+')" class="uploader__icon-button fa fa-times" >'+'</span>'+'</li>';
-        }
-        output.innerHTML += '</ul>';
-        }
-        if(listEn.length == 5){
-            $("#file-2").prop("disabled",true);
-          }
-          
-        }
-      
-      
-    </script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<script type="text/javascript">
-      $(document).ready(function(){
-        "use strict";
-        $('.btn-warning-confirm').click(function(){
-          swal({
-            title: "Are you sure?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#281160',
-            confirmButtonText: 'Yes, delete it!',
-            closeOnConfirm: false
-          },
-          function(){
-            swal("Deleted!", "Your imaginary file has been deleted!", "success");
-          });
+       
+    var listAr = [];
+    var listEn = [];
+    var check = false;
+    var img;
+    var imgMaxSize = 1024;
+    var error;
+    var reader=new FileReader();
+    function updateIndexList(){
+
+    }
+    function closebtn(index,value){
+     
+      if(value==1){
+        listAr.splice(index,1);
+        $.each(listAr,function(id,value,){
+          value.index = id;
         });
-      });
-      
-    </script>
-    <script type="text/javascript">
-      var form = $("#horizontal-pill-steps").show();
-      form.steps({
-        headerTag: "h3",
-        bodyTag: "fieldset",
-        transitionEffect: "slideLeft",
-            onStepChanging: function (event, currentIndex, newIndex)
-    {
-        // Allways allow previous action even if the current form is not valid!
-        if (currentIndex > newIndex)
-        {
-            return true;
-        }
-        
-        // Needed in some cases if the user went back (clean up)
-        if (currentIndex < newIndex)
-        {
-            // To remove error styles
-            form.find(".body:eq(" + newIndex + ") span.error").remove();
-            form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
-        }
-        form.validate().settings.ignore = ":disabled,:hidden";
-        return form.valid();
-    },
-     onStepChanged: function (event, currentIndex, priorIndex)
-    {
-        // // Used to skip the "Warning" step if the user is old enough.
-        // if (currentIndex === 2 && Number($("#age-2").val()) >= 18)
-        // {
-        //     form.steps("next");
-        // }
-        // Used to skip the "Warning" step if the user is old enough and wants to the previous step.
-        if (currentIndex === 2 && priorIndex === 3)
-        {
-            form.steps("previous");
-        }
-    },
-        onFinishing: function (event, currentIndex)
-        {
-           // alert("Submitted!");
+        check = true;
+        $("#file-1").prop('disabled', false);
+        updateList('file-1','fileList',"Ar");
+      }
+      if(value==2){
+        listEn.splice(index,1);
+        $.each(listEn,function(id,value){
+          value.index = id;
+        });
+        check = true;
+        $("#file-2").prop('disabled', false);
+        updateList("file-2","fileList2","en");
+      }
+      }
+    //check image size
+    function checkImageSize(listAr,listEn){
+      error=0;
+      let newList=listAr.concat(listEn)
+
+      $.each(newList,function(index,element){
+            if(element.class == 'red-class'){
+              error+=1;
+            }
+          });
+          if(error>0){
+            let test_ = document.getElementById("file-1").files;
             
-  
-        
-      
+            alert_msg('Error','Some inputs are invalid, please make sure to use valid input data!');
+          } 
+          else{
+            
+            $("#horizontal-pill-steps").submit();
+          }
+    }
 
-           
-            var form = $(this);
+    function updateList (inputID,outputID,listName) {
+   
+        let input = document.getElementById(inputID);
+        let output = document.getElementById(outputID);
+        let files1 = input.files;
 
-             form.submit();
+      if(listName =='Ar'){
+            if (check == true) {
+            output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+            for (var i = 0; i < listAr.length; i++) {
+                output.innerHTML += `<li  class="${listAr[i].class} js-uploader__file-list uploader__file-list">
+                                <span class="uploader__file-list__thumbnail">
+                                <img class="thumbnail" id="img_" src="${listAr[i].image}">
+                                </span><span class="uploader__file-list__text hidden-xs">${listAr[i].name}</span>
+                                <span class="uploader__file-list__size hidden-xs">${(listAr[i].size) / 1000} KB</span>
+                                <span class="uploader__file-list__button"></span>
+                                <span class="uploader__file-list__button" id="delete" ><a id="close" onclick="closebtn(${listAr[i].index},1)" class="uploader__icon-button fa fa-times" >
+                                </a></span></li>`;
+            }
+            output.innerHTML += '</ul>';
+            check = false;
         }
-      });
+        else {
+            if (files1.length > 5) {
+                alert("max no. 5 images");
+                return;
+            }
+
+            if (window.File && window.FileList && window.FileReader) {
+                    if (files1.length == 5) {
+                $(`#${inputID}`).prop('disabled', true);
+            }
+                for (var i = 0; i < files1.length; i++) {
+                    var file = files1[i];
+                    var imgReaderAr = new FileReader();
+                    imgReaderAr.addEventListener("load", function (event) {
+                        var imgFileAr = event.target;
+                        if(file.size/1000 > imgMaxSize){
+                            listAr.push({
+                              'name': file.name,
+                              'size': file.size,
+                              'index': listAr.length,
+                              'image': imgFileAr.result,
+                              'class':'red-class',
+                          });
+                        }
+                        else{
+                          listAr.push({
+                              'name': file.name,
+                              'size': file.size,
+                              'index': listAr.length,
+                              'image': imgFileAr.result,
+                              'class':'upload',
+                          });
+                        }
+
+                        output.innerHTML = '<ul  class="js-uploader__file-list uploader__file-list" >';
+                        for (var i = 0; i < listAr.length; i++) {
+                            output.innerHTML += `<li class="${listAr[i].class} js-uploader__file-list uploader__file-list">
+                                <span class="uploader__file-list__thumbnail">
+                                <img class="thumbnail" id="img_" src="${listAr[i].image}">
+                                </span><span class="uploader__file-list__text hidden-xs">${listAr[i].name}</span>
+                                <span class="uploader__file-list__size hidden-xs">${(listAr[i].size) / 1000} KB</span>
+                                <span class="uploader__file-list__button"></span>
+                                <span class="uploader__file-list__button" id="delete" ><a id="close" onclick="closebtn(${listAr[i].index},1)" class="uploader__icon-button fa fa-times" >
+                                </a></span></li>`;
+                        }
+                        output.innerHTML += '</ul>';
+                    });
+                    //Read the image
+                    imgReaderAr.readAsDataURL(file);
+                }
+            }
+              $(`#${inputID}`).val('');
+            if (listAr.length == 4) {
+                $(`#${inputID}`).prop('disabled', true);
+            }
+        }
+      }
+      //English Images
+      if(listName == 'en'){
+          if (check == true) {
+            output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+            for (var i = 0; i < listEn.length; i++) {
+                output.innerHTML += `<li  class="${listEn[i].class} js-uploader__file-list uploader__file-list">
+                                <span class="uploader__file-list__thumbnail">
+                                <img class="thumbnail" id="img_" src="${listEn[i].image}">
+                                </span><span class="uploader__file-list__text hidden-xs">${listEn[i].name}</span>
+                                <span class="uploader__file-list__size hidden-xs">${(listEn[i].size) / 1000} KB</span>
+                                <span class="uploader__file-list__button"></span>
+                                <span class="uploader__file-list__button" id="delete" ><a id="close" onclick="closebtn(${listEn[i].index},2)" class="uploader__icon-button fa fa-times" >
+                                </a></span></li>`;
+            }
+            output.innerHTML += '</ul>';
+            check = false;
+        }
+        else {
+            if (files1.length > 5) {
+                alert("max no. 5 images");
+                return;
+            }
+
+            if (window.File && window.FileList && window.FileReader) {
+                    if (files1.length == 5) {
+                $(`#${inputID}`).prop('disabled', true);
+            }
+                for (var i = 0; i < files1.length; i++) {
+                    var file = files1[i];
+                    var imgReaderEn = new FileReader();
+                    imgReaderEn.addEventListener("load", function (event) {
+                        var imgFileEn = event.target;
+                        if(file.size/1000 > imgMaxSize){
+                            listEn.push({
+                              'name': file.name,
+                              'size': file.size,
+                              'index': listEn.length,
+                              'image': imgFileEn.result,
+                              'class':'red-class',
+                          });
+                        }
+                        else{
+                          listEn.push({
+                              'name': file.name,
+                              'size': file.size,
+                              'index': listEn.length,
+                              'image': imgFileEn.result,
+                              'class':'upload',
+                          });
+                        }
+
+                        output.innerHTML = '<ul  class="js-uploader__file-list uploader__file-list" >';
+                        for (var i = 0; i < listEn.length; i++) {
+                            output.innerHTML += `<li class="${listEn[i].class} js-uploader__file-list uploader__file-list">
+                                <span class="uploader__file-list__thumbnail">
+                                <img class="thumbnail" id="img_" src="${listEn[i].image}">
+                                </span><span class="uploader__file-list__text hidden-xs">${listEn[i].name}</span>
+                                <span class="uploader__file-list__size hidden-xs">${(listEn[i].size) / 1000} KB</span>
+                                <span class="uploader__file-list__button"></span>
+                                <span class="uploader__file-list__button" id="delete" ><a id="close" onclick="closebtn(${listEn[i].index},2)" class="uploader__icon-button fa fa-times" >
+                                </a></span></li>`;
+                        }
+                        output.innerHTML += '</ul>';
+                    });
+                    //Read the image
+                    imgReaderEn.readAsDataURL(file);
+                }
+            }
+              $(`#${inputID}`).val('');
+            if (listEn.length == 4) {
+                $(`#${inputID}`).prop('disabled', true);
+            }
+        }
+      }
+    }
+    
+
+    //add index 
+    function add_index(list){
+        $.each(list,function(id,value){
+          value.index = id;
+        })
+        console.log(list)
+        show_image(listEn,"fileList2","en");
+        show_image(listAr,"fileList","ar");
+    }
+    //draw images
+    function show_image(list,output_section,ref){
+      let value;
+      switch(ref){
+          case 'ar':
+                value=1;
+                break;
+          case 'en':
+              value=2;
+              break;
+      }
+                  let output = document.getElementById(output_section);
+                   output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
+                            for (var i = 0; i < list.length; i++) {
+                                output.innerHTML += `<li class="js-uploader__file-list uploader__file-list">
+                                    <span class="uploader__file-list__thumbnail">
+                                    <img class="thumbnail" id="img_" src="${list[i].image}">
+                                    </span><span class="uploader__file-list__text hidden-xs">${list[i].name}</span>
+                                    <span class="uploader__file-list__size hidden-xs">${(list[i].size) / 1000} KB</span>
+                                    <span class="uploader__file-list__button"></span>
+                                    <span class="uploader__file-list__button" id="delete" ><a id="close" onclick="closebtn(${list[i].index},${value})" class="uploader__icon-button fa fa-times" >
+                                    </a></span></li>`;
+                            }
+                            output.innerHTML += '</ul>';
+    }
+
+  
+
+</script><!--End UI-->
+
+<!--*******************************UI************************-->
+<script type="text/javascript">
+    var form = $("#horizontal-pill-steps").show();
+    form.steps({
+      headerTag: "h3",
+      bodyTag: "fieldset",
+      transitionEffect: "slideLeft",
+      onStepChanging:function test(event, currentIndex, newIndex){
+        console.log(newIndex)
+        if(newIndex == 2){
+        }
+         if (currentIndex > newIndex)
+                    {
+                        return true;
+                    }
+                    if (currentIndex < newIndex)
+                    {
+                        form.find(".body:eq(" + newIndex + ") span.error").remove();
+                        form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
+                    }
+                    form.validate().settings.ignore = ":disabled,:hidden";
+                    return form.valid();
+      },
       
-    </script>
-    <script type="text/javascript">
-      $(function() {
-        $('input, select').on('change', function(event) {
-          var $element = $(event.target),
-            $container = $element.closest('.example');
+       onFinishing:function test3(e){
+        var englishList = '';
+        var arabicList  = '';
+
+        for(i=0; i<listEn.length; i++) {
+          englishList += '-' + listEn[i].image;
+        }
+
+        for(i=0; i<listAr.length; i++) {
+          arabicList += '-' + listAr[i].image;
+        }
+
+        // append image list to hidden inputs
+        $("#hidden_images_en").val(englishList);
+        $("#hidden_images_ar").val(arabicList);
+        
+        // Check all images size
+        checkImageSize(listAr,listEn);
+
+       },
       
-          if (!$element.data('tagsinput'))
-            return;
-      
-          var val = $element.val();
-          if (val === null)
-            val = "null";
-          $('code', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
-          $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
-        }).trigger('change');
-      });
-      
-      
-      
-      
-    </script>
-     <script type="text/javascript">
-      $(function () {
-        $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
-      });
-    </script>
-    <script type="text/javascript">
-      (function(){
-        var options = {};
-        $('.js-uploader__box').uploader(options);
-      }());
-      
-    </script>
+    }).validate({
+        errorPlacement: function errorPlacement(error, element) { element.after(error); },
+    });
+ 
+</script><!--End UI-->
+
+<script type="text/javascript">
+  $(function() {
+    $('input, select').on('change', function(event) {
+      var $element = $(event.target),
+        $container = $element.closest('.example');
+  
+      if (!$element.data('tagsinput'))
+        return;
+  
+      var val = $element.val();
+      if (val === null)
+        val = "null";
+      $('code', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
+      $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+    }).trigger('change');
+  });
+  
+  
+  
+  
+</script>
+
+<script type="text/javascript">
+  $(function () {
+    $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
+  });
+</script>
+
+<script type="text/javascript">
+  (function(){
+    var options = {};
+    $('.js-uploader__box').uploader(options);
+  }());
+  
+</script>
     
     <script type="text/javascript">
-      var currentCount =0;
-       var nextCount = 0 ;
+      // var currentCount =0;
+      //  var nextCount = 0 ;
+      
       $('.add-more-branch').on('click' , function(){
-       currentCount +=1;
-       nextCount = currentCount ;
-       $('#mbranch').append(" <div class='branch-container'>	<div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+"@lang('keywords.in_ar')</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name'  id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_address')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_address_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>@lang('keywords.branch_start') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'></span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>@lang('keywords.branch_end') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'></span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" long</label><input class='master_input' type='text' placeholder='branch "+nextCount+" long'  id='branch_long_"+nextCount+"' name='branch_long["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" lat</label><input class='master_input' type='text' placeholder='branch "+nextCount+" lat'  id='branch_lat_"+nextCount+"' name='branch_lat["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div></div> ");
+       var currentCount =$('.branch-container').length;
+       // for (var i = 1 ; i<= currentCount ; i++) {
+       //   assignAutoCompl("branch_address_"+i,"#branch_long_"+i,"#branch_lat_"+i);
+       // }
+      var nextCount = currentCount +1;
+       $('#mbranch').append("<div class='branch-container'>  <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+"@lang('keywords.in_ar')</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name'  id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_address')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_address_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>@lang('keywords.branch_start') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'></span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>@lang('keywords.branch_end') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'></span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" long</label><input class='master_input' type='text' placeholder='branch "+nextCount+" long'  id='branch_long_"+nextCount+"' name='branch_long["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" lat</label><input class='master_input' type='text' placeholder='branch "+nextCount+" lat'  id='branch_lat_"+nextCount+"' name='branch_lat["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div></div> ");
       
 
-      ////get map 
-   assignAutoCompl("branch_address_"+nextCount,"#branch_long_"+nextCount,"#branch_lat_"+nextCount);
-      // initMap();
+      assignAutoCompl("branch_address_"+nextCount,"#branch_long_"+nextCount,"#branch_lat_"+nextCount);
        // var currentCountAr =$('.branch-container-ar').length;
        // var nextCount = currentCountAr + 1 ;
-       // $('.branch-container-ar:last').after(" <div class='branch-container-ar'>	<div class='col-sm-6 col-xs-12'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch "+nextCount+" name</label><input class='master_input' type='text' placeholder='branch " + nextCount + " name' Required id='branches_"+nextCount+"'><span class='master_message color--fadegreen'>validation message will be here</span></div></div></div> ");
+       // $('.branch-container-ar:last').after(" <div class='branch-container-ar'> <div class='col-sm-6 col-xs-12'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch "+nextCount+" name</label><input class='master_input' type='text' placeholder='branch " + nextCount + " name' Required id='branches_"+nextCount+"'><span class='master_message color--fadegreen'></span></div></div></div> ");
       
       
       
@@ -576,10 +650,10 @@
          $('.datepicker').datepicker({autoclose: true});
          $(".timepicker").timepicker({showInputs: false});
        });
-        
-
-      });
-        
+            });
+      
+      
+      
       
     </script>
     <script type="text/javascript">
@@ -593,8 +667,7 @@
         $(".timepicker").timepicker({showInputs: false});
       });
     </script>
-
-          <script>
+     <script>
       // This example requires the Places library. Include the libraries=places
       // parameter when you first load the API. For example:
       // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
@@ -632,9 +705,9 @@ var shop_long;
         });
 
 
-
+         
       }
-      function assignAutoCompl(_id , long , lat)
+        function assignAutoCompl(_id , long , lat)
       {
           // document.getElementById(_id).hidden = false;
           var _autocomplete = new google.maps.places.Autocomplete(document.getElementById(_id));
@@ -666,5 +739,4 @@ var shop_long;
           });
       }
     </script>
-  
 @endsection

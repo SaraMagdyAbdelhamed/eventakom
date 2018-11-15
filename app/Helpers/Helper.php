@@ -83,10 +83,10 @@ class Helper
     public static function getLinks($item_id, $lang_id)
     {
         $localization = EntityLocalization::where('field', 'link')
-                                            ->where('item_id', $item_id)
-                                            ->where('lang_id', $lang_id)
-                                            ->where('value', 'NOT LIKE', '%youtube%')
-                                            ->get();
+            ->where('item_id', $item_id)
+            ->where('lang_id', $lang_id)
+            ->where('value', 'NOT LIKE', '%youtube%')
+            ->get();
         return $localization;
     }
 
