@@ -375,7 +375,7 @@
             <h3>@lang('keywords.media')</h3>
             <fieldset>
             <div class="row">
-                <div class="col-sm-6 col-xs-12">
+                <!-- <div class="col-sm-6 col-xs-12">
                 <div class="master_field">
                     <label class="master_label" for="YouTube_video_en">add youtube video link in English</label>
                     <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en" id="YouTube_video_en" value="{{ $youtube_en ? : '' }}" />
@@ -383,8 +383,17 @@
                         <span class="master_message color--fadegreen">{{ $errors->first('youtube_en') }}</span>
                     @endif
                 </div>
-                </div>
+                </div> -->
+
                 <div class="col-sm-6 col-xs-12">
+                          <div class="master_field">
+                              <label class="master_label" for="YouTube_video_en">Add youtube video link in English</label>
+                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
+                              name="youtube_en_1" value="{{ isset($youtube_links[1]) ? $youtube_links[1]->link : '' }}">
+                            <span class="master_message inherit" id="yl_2"></span>
+                          </div>
+                          </div>
+                <!-- <div class="col-sm-6 col-xs-12">
                 <div class="master_field">
                     <label class="master_label" for="YouTube_video_ar">add youtube video link in Arabic</label>
                     <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar" id="YouTube_video_ar" value="{{ $youtube_ar ? : '' }}">
@@ -392,22 +401,18 @@
                         <span class="master_message color--fadegreen">{{ $errors->first('youtube_ar') }}</span>
                     @endif
                 </div>
-                </div>
+                </div> -->
 
-                {{-- Arabic images --}}
-            <div class="col-sm-6 col-xs-12 text-center">
-                <img src="{{ $image_ar ? asset($image_ar) : '' }}" alt="">
-                <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
-                <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                  <div class="main-section">
-                    <div id="fileList"></div>
-                    <div class="form-group">
-                      <input class="inputfile inputfile-1" id="file-1" type="file" name="arabic_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-1','fileList','Ar')" accept=".jpg,.png,.jpeg">
-                      <label for="file-1"><span>Choose a file</span></label>
-                    </div>
-                  </div>
-                </div>
-            </div>
+                        <div class="col-xs-6">
+                            <div class="master_field">
+                              <label class="master_label" for="YouTube_video_ar1">Add youtube video link in Arabic</label>
+                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
+                                  name="youtube_ar_1" value="{{ isset($youtube_links[0]) ? $youtube_links[0]->link : '' }}">
+                                <span class="master_message inherit" id="yl_1"></span>
+                            </div>
+                          </div>
+
+           
     
               {{-- English images --}}
             <div class="col-sm-6 col-xs-12 text-center">
@@ -419,6 +424,21 @@
                     <div class="form-group">
                       <input class="inputfile inputfile-1" id="file-2" type="file" name="english_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-2','fileList2','en')" accept=".jpg,.png,.jpeg">
                       <label for="file-2"><span>Choose a file</span></label>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            {{-- Arabic images --}}
+            <div class="col-sm-6 col-xs-12 text-center">
+                <img src="{{ $image_ar ? asset($image_ar) : '' }}" alt="">
+                <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
+                <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                  <div class="main-section">
+                    <div id="fileList"></div>
+                    <div class="form-group">
+                      <input class="inputfile inputfile-1" id="file-1" type="file" name="arabic_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-1','fileList','Ar')" accept=".jpg,.png,.jpeg">
+                      <label for="file-1"><span>Choose a file</span></label>
                     </div>
                   </div>
                 </div>
@@ -438,7 +458,7 @@
 <!--***************************UI*******************************-->
 <script type="text/javascript">
          
-         var listAr = [];
+    var listAr = [];
     var listEn = [];
     var check = false;
     var img;
@@ -480,13 +500,10 @@
             }
           });
           if(error>0){
-            let test_ = document.getElementById("file-1").files;
-            
-            alert_msg('error','Check')
+            return true;
           }
           else{
-            
-            $("#horizontal-pill-steps").submit();
+            return false;
           }
     }
 
@@ -497,6 +514,7 @@
         let files1 = input.files;
 
       if(listName =='Ar'){
+          console.log("arabic")
             if (check == true) {
             output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
             for (var i = 0; i < listAr.length; i++) {
@@ -571,6 +589,7 @@
       }
       //English Images
       if(listName == 'en'){
+          console.log("english")
           if (check == true) {
             output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
             for (var i = 0; i < listEn.length; i++) {
@@ -738,7 +757,12 @@
       },
       
        onFinishing:function test3(e){
-         checkImageSize(listAr,listEn);
+        if((! checkImageSize(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
+           $("#horizontal-pill-steps").submit();
+         }
+         else{
+          alert_msg("ERROR","Check Uploaded Images or Youtube Links")
+         }
        },
       
     }).validate({
@@ -746,7 +770,102 @@
             });
     })
 </script><!--End UI-->
+<script type="text/javascript">
+   var errors = [0, 0, 0, 0];
+    $(function(){
+       /** check youtube links **/
+   
+      $("#YouTube_video_en1").focusout(function() {
+        var value = $(this).val();
+        if(value){
+          checkYoutubeLink(this, value, "#yl_2") ? errors[0] = 0 : errors[0] = 1;
+        }
+        else{
+          errors[0] = 0;
+          $("#yl_2").empty()
 
+        }
+      }); 
+
+      $("#YouTube_video_en2").focusout(function() {
+        var value = $(this).val();
+        if(value){
+          checkYoutubeLink(this, value, "#yl_4") ? errors[1] = 0 : errors[1] = 1;
+        }
+        else{
+          errors[1] = 0;
+          $("#yl_4").empty()
+
+        }
+      }); 
+
+      $("#YouTube_video_ar1").focusout(function() {
+        var value = $(this).val();
+        if(value){
+          checkYoutubeLink(this, value, "#yl_1") ? errors[2] = 0 : errors[2] = 1;
+        }
+        else{
+          
+          errors[2] = 0;
+          $("#yl_1").empty()
+        }
+      }); 
+
+      $("#YouTube_video_ar2").focusout(function() {
+        var value = $(this).val();
+        if(value){
+          checkYoutubeLink(this, value, "#yl_3") ? errors[3] = 0 : errors[3] = 1;
+        }
+        else{
+          errors[3] = 0;
+          $("#yl_3").empty()
+
+        }
+      }); 
+
+      function checkAllYoutubeLinks() {
+        return errors.includes(1);
+      }
+
+      function checkYoutubeLink(id, value, error_msg) {
+        var con = value.search("https://www.youtube.com/watch?");
+
+        if ( !con ) {
+          $(error_msg).text('Valid youtube link..')
+          .attr('style', 'color: blue !important; text-transform: lowercase !important;');
+
+          return true;
+        } else {
+          $(error_msg).text('Invalid youtube link, ex: https://www.youtube.com/watch?2bdsfds1')
+          .attr('style', 'color: #8a1f11!important; text-transform: lowercase !important;');
+          return false;
+        }
+      }
+/** end **/
+  })
+    function checkAllYoutubeLinks() {
+      return errors.includes(1);
+    }
+</script><!--End UI-->
+
+<!--check YoutubeLinks-->
+<script type="text/javascript">
+    function checkYoutubeLink(id, value, error_msg) {
+      var con = value.search("https://www.youtube.com/watch?");
+
+      if ( !con ) {
+        $(error_msg).text('Valid youtube link..')
+        .attr('style', 'color: blue !important; text-transform: lowercase !important;');
+
+        return true;
+      } else {
+        $(error_msg).text('Invalid youtube link, ex: https://www.youtube.com/watch?2bdsfds1')
+        .attr('style', 'color: #8a1f11!important; text-transform: lowercase !important;');
+
+        return false;
+      }
+    }
+</script>
 <!--*****************************UI**********************-->
 <script type="text/javascript">
     $(function(){

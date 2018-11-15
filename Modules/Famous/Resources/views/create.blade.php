@@ -46,7 +46,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label mandatory" for="Place_name">@lang('keywords.placeName')</label>
-                    <input class="master_input " maxlength="100" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name" value="{{ old('place_name') }}" require>
+                    <input class="master_input " maxlength="100" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name" value="{{ old('place_name') }}" required>
                     @if ($errors->has('place_name'))
                         <span class="master_message color--fadegreen">{{ $errors->first('place_name') }}</span>
                     @endif
@@ -57,7 +57,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label mandatory" for="Place_Category">@lang('keywords.placeCategories')</label>
-                    <select class="master_input select2" name="place_categories[]" require
+                    <select class="master_input select2" name="place_categories[]" required
                             id="Place_Category" multiple="multiple" data-placeholder="choose an option.." style="width:100%;" >
                         @if ( isset($categories) && !empty($categories) )
                             @foreach ($categories as $category)
@@ -81,7 +81,7 @@
                 <div class="col-xs-6">
                 <div class="master_field" >
                     <label class="master_label" for="Address_name">@lang('keywords.address')</label>
-                    <input class="master_input" type="text" placeholder="ex:CFC" Required id="searchInput" name="address" value="" />
+                    <input class="master_input" type="text" placeholder="ex:CFC" required id="searchInput" name="address" value="" />
                 </div>
                 </div>
 
@@ -89,7 +89,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label mandatory" for="Phone_number">@lang('keywords.Phone')</label>
-                    <input class="master_input " type="number" placeholder="0020123456789"  id="Phone_number" name="phone_number" value="{{ old('phone_number') }}" require>
+                    <input class="master_input " type="number" placeholder="0020123456789"  id="Phone_number" name="phone_number" value="{{ old('phone_number') }}" required>
                     @if ($errors->has('phone_number'))
                         <span class="master_message color--fadegreen">{{ $errors->first('phone_number') }}</span>
                     @endif
@@ -371,42 +371,39 @@
                 <div class="col-sm-6 col-xs-12">
                 <div class="master_field">
                     <label class="master_label" for="YouTube_video_en">add youtube video link in English</label>
-                    <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en" id="YouTube_video_en" value="{{ old('youtube_en') }}" />
-                    @if ($errors->has('youtube_en'))
-                        <span class="master_message color--fadegreen">{{ $errors->first('youtube_en') }}</span>
-                    @endif
+                    <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
+                    name="youtube_en_1" value="{{ isset($youtube_links[1]) ? $youtube_links[1]->link : '' }}">
+                  <span class="master_message inherit" id="yl_2"></span>
                 </div>
                 </div>
 
-                <div class="col-sm-6 col-xs-12">
-                <div class="master_field">
-                    <label class="master_label" for="YouTube_video_en">add youtube video link(2) in English</label>
-                    <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en" id="YouTube_video_en" value="{{ old('youtube_en') }}" />
-                    @if ($errors->has('youtube_en'))
-                        <span class="master_message color--fadegreen">{{ $errors->first('youtube_en') }}</span>
-                    @endif
-                </div>
-                </div>
+               
+            <div class="col-xs-6">
+              <div class="master_field">
+                <label class="master_label" for="YouTube_video_en2">@lang('keywords.YouTube-en-2')</label>
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2" 
+                    name="youtube_en_2" value="{{ isset($youtube_links[3]) ? $youtube_links[3]->link : '' }}">
+                  <span class="master_message inherit" id="yl_4"></span>
+              </div>
+            </div>
 
-                <div class="col-sm-6 col-xs-12">
-                <div class="master_field">
-                    <label class="master_label" for="YouTube_video_ar">add youtube video link in Arabic</label>
-                    <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar" id="YouTube_video_ar" value="{{ old('youtube_ar') }}">
-                    @if ($errors->has('youtube_ar'))
-                        <span class="master_message color--fadegreen">{{ $errors->first('youtube_ar') }}</span>
-                    @endif
-                </div>
-                </div>
+            <div class="col-xs-6">
+              <div class="master_field">
+                <label class="master_label" for="YouTube_video_ar1">@lang('keywords.YouTube-ar-1')</label>
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
+                    name="youtube_ar_1" value="{{ isset($youtube_links[0]) ? $youtube_links[0]->link : '' }}">
+                  <span class="master_message inherit" id="yl_1"></span>
+              </div>
+            </div>
 
-                  <div class="col-sm-6 col-xs-12">
-                <div class="master_field">
-                    <label class="master_label" for="YouTube_video_ar">add youtube video link(2) in Arabic</label>
-                    <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar" id="YouTube_video_ar" value="{{ old('youtube_ar') }}">
-                    @if ($errors->has('youtube_ar'))
-                        <span class="master_message color--fadegreen">{{ $errors->first('youtube_ar') }}</span>
-                    @endif
-                </div>
-                </div>
+                  <div class="col-xs-6">
+              <div class="master_field">
+                <label class="master_label" for="YouTube_video_ar2">@lang('keywords.YouTube-ar-2')</label>
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2" 
+                    name="youtube_ar_2" value="{{ isset($youtube_links[2]) ? $youtube_links[2]->link : '' }}">
+                  <span class="master_message inherit" id="yl_3"></span>
+              </div>
+            </div>
 
                 {{-- Arabic images --}}
             <div class="col-sm-6 col-xs-12 text-center">
@@ -481,23 +478,21 @@
       }
     //check image size
     function checkImageSize(listAr,listEn){
-      error=0;
-      let newList=listAr.concat(listEn)
+        error=0;
+        let newList=listAr.concat(listEn)
 
-      $.each(newList,function(index,element){
-            if(element.class == 'red-class'){
-              error+=1;
-            }
-          });
-          if(error>0){
-            let test_ = document.getElementById("file-1").files;
-            
-            alert_msg('error','Check')
-          }
-          else{
-            
-            $("#horizontal-pill-steps").submit();
-          }
+        $.each(newList,function(index,element){
+             if(element.class == 'red-class'){
+               error+=1;
+             }
+           });
+           if(error>0){
+             return true;
+           
+           }
+           else{
+             return false;
+           }
     }
 
     function updateList (inputID,outputID,listName) {
@@ -682,7 +677,12 @@
       },
       
        onFinishing:function test3(e){
-         checkImageSize(listAr,listEn);
+        if((! checkImageSize(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
+           $("#horizontal-pill-steps").submit();
+         }
+         else{
+          alert_msg("ERROR","Check Uploaded Images or Youtube Links")
+         }
        },
       
     }).validate({
@@ -691,7 +691,102 @@
     })
 </script><!--End UI-->
 
+<script type="text/javascript">
+   var errors = [0, 0, 0, 0];
+    $(function(){
+       /** check youtube links **/
+   
+      $("#YouTube_video_en1").focusout(function() {
+        var value = $(this).val();
+        if(value){
+          checkYoutubeLink(this, value, "#yl_2") ? errors[0] = 0 : errors[0] = 1;
+        }
+        else{
+          errors[0] = 0;
+          $("#yl_2").empty()
 
+        }
+      }); 
+
+      $("#YouTube_video_en2").focusout(function() {
+        var value = $(this).val();
+        if(value){
+          checkYoutubeLink(this, value, "#yl_4") ? errors[1] = 0 : errors[1] = 1;
+        }
+        else{
+          errors[1] = 0;
+          $("#yl_4").empty()
+
+        }
+      }); 
+
+      $("#YouTube_video_ar1").focusout(function() {
+        var value = $(this).val();
+        if(value){
+          checkYoutubeLink(this, value, "#yl_1") ? errors[2] = 0 : errors[2] = 1;
+        }
+        else{
+          
+          errors[2] = 0;
+          $("#yl_1").empty()
+        }
+      }); 
+
+      $("#YouTube_video_ar2").focusout(function() {
+        var value = $(this).val();
+        if(value){
+          checkYoutubeLink(this, value, "#yl_3") ? errors[3] = 0 : errors[3] = 1;
+        }
+        else{
+          errors[3] = 0;
+          $("#yl_3").empty()
+
+        }
+      }); 
+
+      function checkAllYoutubeLinks() {
+        return errors.includes(1);
+      }
+
+      function checkYoutubeLink(id, value, error_msg) {
+        var con = value.search("https://www.youtube.com/watch?");
+
+        if ( !con ) {
+          $(error_msg).text('Valid youtube link..')
+          .attr('style', 'color: blue !important; text-transform: lowercase !important;');
+
+          return true;
+        } else {
+          $(error_msg).text('Invalid youtube link, ex: https://www.youtube.com/watch?2bdsfds1')
+          .attr('style', 'color: #8a1f11!important; text-transform: lowercase !important;');
+          return false;
+        }
+      }
+/** end **/
+  })
+    function checkAllYoutubeLinks() {
+      return errors.includes(1);
+    }
+</script><!--End UI-->
+
+<!--check YoutubeLinks-->
+<script type="text/javascript">
+    function checkYoutubeLink(id, value, error_msg) {
+      var con = value.search("https://www.youtube.com/watch?");
+
+      if ( !con ) {
+        $(error_msg).text('Valid youtube link..')
+        .attr('style', 'color: blue !important; text-transform: lowercase !important;');
+
+        return true;
+      } else {
+        $(error_msg).text('Invalid youtube link, ex: https://www.youtube.com/watch?2bdsfds1')
+        .attr('style', 'color: #8a1f11!important; text-transform: lowercase !important;');
+
+        return false;
+      }
+    }
+</script>
 
 <script type="text/javascript">
 

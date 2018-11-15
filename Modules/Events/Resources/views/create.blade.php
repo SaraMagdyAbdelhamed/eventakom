@@ -431,32 +431,30 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar1">@lang('keywords.YouTube-ar-1')</label>
-                <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" name="youtube_ar_1" value="{{ old('youtube_ar_1') }}">
-                @if ($errors->has('youtube_ar_1'))
-                  <span class="master_message inherit" style="color: red;" id="yl_1">{{ $errors->first('youtube_ar_1') }}</span>
-                @endif
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
+                    name="youtube_ar_1" value="{{ isset($youtube_links[0]) ? $youtube_links[0]->link : '' }}">
+                  <span class="master_message inherit" id="yl_1"></span>
               </div>
             </div>
 
             {{-- 1st Youtube video in English --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label " for="YouTube_video_en1">@lang('keywords.YouTube-en-1')</label>
-                <input class="master_input" type="url" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" name="youtube_en_1" value="{{ old('youtube_en_1') }}">
-                @if ($errors->has('youtube_en_1'))
-                  <span class="master_message inherit" style="color: red;" id="yl_2">{{ $errors->first('youtube_en_1') }}</span>
-                @endif
+                <label class="master_label" for="YouTube_video_en1">@lang('keywords.YouTube-en-1')</label>
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
+                    name="youtube_en_1" value="{{ isset($youtube_links[1]) ? $youtube_links[1]->link : '' }}">
+                  <span class="master_message inherit" id="yl_2"></span>
               </div>
             </div>
 
+
             {{-- 2nd Youtube video in Arabic --}}
-            <div class="col-xs-6">
+             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar2">@lang('keywords.YouTube-ar-2')</label>
-                <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2" name="youtube_ar_2" value="{{ old('youtube_ar_2') }}">
-                @if ($errors->has('youtube_ar_2'))
-                  <span class="master_message inherit" style="color: red;" id="yl_3">{{ $errors->first('youtube_ar_2') }}</span>
-                @endif
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2" 
+                    name="youtube_ar_2" value="{{ isset($youtube_links[2]) ? $youtube_links[2]->link : '' }}">
+                  <span class="master_message inherit" id="yl_3"></span>
               </div>
             </div>
 
@@ -464,10 +462,9 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en2">@lang('keywords.YouTube-en-2')</label>
-                <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" type="url" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2" name="youtube_en_2" value="{{ old('youtube_en_2') }}">
-                @if ($errors->has('youtube_en_2'))
-                  <span class="master_message inherit" style="color: red;" id="yl_4">{{ $errors->first('youtube_en_2') }}</span>
-                @endif
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2" 
+                    name="youtube_en_2" value="{{ isset($youtube_links[3]) ? $youtube_links[3]->link : '' }}">
+                  <span class="master_message inherit" id="yl_4"></span>
               </div>
             </div>
             <div class="col-xs-12">
@@ -563,13 +560,11 @@
              }
            });
            if(error>0){
-             let test_ = document.getElementById("file-1").files;
-             
-             alert_msg('Error','Check The Uploaded Images')
+             return true;
+           
            }
            else{
-             
-             $("#horizontal-pill-steps").submit();
+             return false;
            }
       }
      updateList = function (inputID,outputID,listName) {
@@ -754,12 +749,10 @@
         
          if (currentIndex > newIndex)
                     {
-                      console.log("awel 7aga")
                         return true;
                     }
                     if (currentIndex < newIndex)
                     {
-                        console.log("tany 7aga")
                         form.find(".body:eq(" + newIndex + ") span.error").remove();
                         form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
                     }
@@ -768,10 +761,14 @@
       },
       
        onFinishing:function test3(e){
-         checkImageSize_(listAr,listEn);
+         if((! checkImageSize_(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
+           $("#horizontal-pill-steps").submit();
+         }
+         else{
+          alert_msg("ERROR","Check Uploaded Images or Youtube Links")
+         }
        },
        
-      
     }).validate({
                 errorPlacement: function errorPlacement(error, element) { element.after(error); },
             });
@@ -780,6 +777,105 @@
  
 </script> <!--End Script (UI)-->
 
+<!--**********************UI********************-->
+<script type="text/javascript">
+   var errors = [0, 0, 0, 0];
+    $(function(){
+       /** check youtube links **/
+   
+      $("#YouTube_video_en1").focusout(function() {
+        console.log("yyyy")
+        var value = $(this).val();
+        if(value){
+          checkYoutubeLink(this, value, "#yl_2") ? errors[0] = 0 : errors[0] = 1;
+        }
+        else{
+          errors[0] = 0;
+          $("#yl_2").empty()
+
+        }
+      }); 
+
+      $("#YouTube_video_en2").focusout(function() {
+        var value = $(this).val();
+        if(value){
+          checkYoutubeLink(this, value, "#yl_4") ? errors[1] = 0 : errors[1] = 1;
+        }
+        else{
+          errors[1] = 0;
+          $("#yl_4").empty()
+
+        }
+      }); 
+
+      $("#YouTube_video_ar1").focusout(function() {
+        var value = $(this).val();
+        if(value){
+          checkYoutubeLink(this, value, "#yl_1") ? errors[2] = 0 : errors[2] = 1;
+        }
+        else{
+          
+          errors[2] = 0;
+          $("#yl_1").empty()
+        }
+      }); 
+
+      $("#YouTube_video_ar2").focusout(function() {
+        var value = $(this).val();
+        if(value){
+          checkYoutubeLink(this, value, "#yl_3") ? errors[3] = 0 : errors[3] = 1;
+        }
+        else{
+          errors[3] = 0;
+          $("#yl_3").empty()
+
+        }
+      }); 
+
+      function checkAllYoutubeLinks() {
+        return errors.includes(1);
+      }
+
+      function checkYoutubeLink(id, value, error_msg) {
+        console.log("check youtube link")
+        var con = value.search("https://www.youtube.com/watch?");
+
+        if ( !con ) {
+          $(error_msg).text('Valid youtube link..')
+          .attr('style', 'color: blue !important; text-transform: lowercase !important;');
+
+          return true;
+        } else {
+          $(error_msg).text('Invalid youtube link, ex: https://www.youtube.com/watch?2bdsfds1')
+          .attr('style', 'color: #8a1f11!important; text-transform: lowercase !important;');
+          return false;
+        }
+      }
+/** end **/
+  })
+    function checkAllYoutubeLinks() {
+      return errors.includes(1);
+    }
+</script><!--End UI-->
+
+<!--check YoutubeLinks-->
+<script type="text/javascript">
+    function checkYoutubeLink(id, value, error_msg) {
+      var con = value.search("https://www.youtube.com/watch?");
+
+      if ( !con ) {
+        $(error_msg).text('Valid youtube link..')
+        .attr('style', 'color: blue !important; text-transform: lowercase !important;');
+
+        return true;
+      } else {
+        $(error_msg).text('Invalid youtube link, ex: https://www.youtube.com/watch?2bdsfds1')
+        .attr('style', 'color: #8a1f11!important; text-transform: lowercase !important;');
+
+        return false;
+      }
+    }
+</script>
 
 <script type="text/javascript">
     $(function () {
@@ -859,48 +955,6 @@
   // });
 </script>
 
-<script>
-    // $(document).ready(function(){
-    //   $("#YouTube_video_en1").focusout(function() {
-    //     var value = $(this).val();
-        
-    //     checkYoutubeLink(this, value);
-    //   }); 
-
-    //   $("#YouTube_video_en2").focusout(function() {
-    //     var value = $(this).val();
-        
-    //     checkYoutubeLink(this, value);
-    //   }); 
-
-    //   $("#YouTube_video_ar1").focusout(function() {
-    //     var value = $(this).val();
-        
-    //     checkYoutubeLink(this, value);
-    //   }); 
-
-    //   $("#YouTube_video_ar2").focusout(function() {
-    //     var value = $(this).val();
-        
-    //     checkYoutubeLink(this, value);
-    //   }); 
-
-    //   function checkAllYoutubeLinks() {
-
-    //   }
-
-    //   function checkYoutubeLink(id, value) {
-    //     console.log("youtube_link")
-    //     var con = value.search("https://www.youtube.com/watch?");
-
-    //     if ( !con ) {
-    //       console.log('You may pass! have a good day.')
-    //     } else {
-    //       $("#yl_1").text('Invalid youtube link..');
-    //     }
-    //   }
-    // });
-</script>
 
 {{-- Check Image before uploading --}}
 <script>
