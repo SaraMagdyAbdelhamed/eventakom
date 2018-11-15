@@ -53,26 +53,15 @@
                       <fieldset>
                         <div class="row">
                           <div class="col-xs-6">
-<<<<<<< HEAD
                             <div class="master_field ">
                               <label class="master_label mandatory" for="Place_name">@lang('keywords.shop_name')</label>
                               <input class="master_input" type="text" placeholder="ex:city stars" require id="Place_name" name="place_name"><span class="master_message color--fadegreen">validation message will be here</span>
-=======
-                            <div class="master_field">
-                              <label class="master_label" for="Place_name">@lang('keywords.shop_name')</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name"><span class="master_message color--fadegreen"></span>
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
                             </div>
                           </div>
                           <div class="col-xs-6">
                             <div class="master_field">
-<<<<<<< HEAD
                               <label class="master_label mandatory" for="Place_name">@lang('keywords.shop_name_arabic')</label>
                               <input class="master_input" require type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar"><span class="master_message color--fadegreen">validation message will be here</span>
-=======
-                              <label class="master_label" for="Place_name">@lang('keywords.shop_name_arabic')</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar"><span class="master_message color--fadegreen"></span>
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
                             </div>
                           </div>
                            <div class="col-xs-5">
@@ -307,11 +296,7 @@
                               <div class="main-section">
                                 <div id="fileList"></div>
                                 <div class="form-group">
-<<<<<<< HEAD
                                   <input class="inputfile inputfile-1" id="file-1" type="file" name="images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-1','fileList','Ar')" accept=".jpg,.png,.jpeg" />
-=======
-                                  <input class="inputfile inputfile-1" id="file-1" type="file" name="images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-1','fileList','Ar')" accept=".png,.jpg,.jpeg">
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
                                   <label for="file-1"><span >Choose a file</span></label>
                                   <input type="hidden" name="images" id="hidden_images_en">
 
@@ -343,15 +328,9 @@
 
 
 @section('js')
-<<<<<<< HEAD
 <!--***************************UI*************************-->
 <script type="text/javascript">
        
-=======
-
-<!--***************************UI*******************************-->
-<script type="text/javascript">
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
     var listAr = [];
     var listEn = [];
     var check = false;
@@ -385,7 +364,6 @@
       }
     //check image size
     function checkImageSize(listAr,listEn){
-<<<<<<< HEAD
       error=0;
       let newList=listAr.concat(listEn)
 
@@ -403,23 +381,6 @@
             
             $("#horizontal-pill-steps").submit();
           }
-=======
-        error=0;
-        let newList=listAr.concat(listEn)
-
-        $.each(newList,function(index,element){
-             if(element.class == 'red-class'){
-               error+=1;
-             }
-           });
-           if(error>0){
-             return true;
-           
-           }
-           else{
-             return false;
-           }
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
     }
 
     function updateList (inputID,outputID,listName) {
@@ -443,7 +404,6 @@
             }
             output.innerHTML += '</ul>';
             check = false;
-<<<<<<< HEAD
         }
         else {
             if (files1.length > 5) {
@@ -704,337 +664,6 @@
   }());
   
 </script>
-=======
-        }
-        else {
-            if (files1.length > 5) {
-                alert("max no. 5 images");
-                return;
-            }
-
-            if (window.File && window.FileList && window.FileReader) {
-                    if (files1.length == 5) {
-                $(`#${inputID}`).prop('disabled', true);
-            }
-                for (var i = 0; i < files1.length; i++) {
-                    var file = files1[i];
-                    var imgReaderAr = new FileReader();
-                    imgReaderAr.addEventListener("load", function (event) {
-                        var imgFileAr = event.target;
-                        if(file.size/1000 > imgMaxSize){
-                            listAr.push({
-                              'name': file.name,
-                              'size': file.size,
-                              'index': listAr.length,
-                              'image': imgFileAr.result,
-                              'class':'red-class',
-                          });
-                        }
-                        else{
-                          listAr.push({
-                              'name': file.name,
-                              'size': file.size,
-                              'index': listAr.length,
-                              'image': imgFileAr.result,
-                              'class':'upload',
-                          });
-                        }
-
-                        output.innerHTML = '<ul  class="js-uploader__file-list uploader__file-list" >';
-                        for (var i = 0; i < listAr.length; i++) {
-                            output.innerHTML += `<li class="${listAr[i].class} js-uploader__file-list uploader__file-list">
-                                <span class="uploader__file-list__thumbnail">
-                                <img class="thumbnail" id="img_" src="${listAr[i].image}">
-                                </span><span class="uploader__file-list__text hidden-xs">${listAr[i].name}</span>
-                                <span class="uploader__file-list__size hidden-xs">${(listAr[i].size) / 1000} KB</span>
-                                <span class="uploader__file-list__button"></span>
-                                <span class="uploader__file-list__button" id="delete" ><a id="close" onclick="closebtn(${listAr[i].index},1)" class="uploader__icon-button fa fa-times" >
-                                </a></span></li>`;
-                        }
-                        output.innerHTML += '</ul>';
-                    });
-                    //Read the image
-                    imgReaderAr.readAsDataURL(file);
-                }
-            }
-              $(`#${inputID}`).val('');
-            if (listAr.length == 4) {
-                $(`#${inputID}`).prop('disabled', true);
-            }
-        }
-      }
-      //English Images
-      if(listName == 'en'){
-          if (check == true) {
-            output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
-            for (var i = 0; i < listEn.length; i++) {
-                output.innerHTML += `<li  class="${listEn[i].class} js-uploader__file-list uploader__file-list">
-                                <span class="uploader__file-list__thumbnail">
-                                <img class="thumbnail" id="img_" src="${listEn[i].image}">
-                                </span><span class="uploader__file-list__text hidden-xs">${listEn[i].name}</span>
-                                <span class="uploader__file-list__size hidden-xs">${(listEn[i].size) / 1000} KB</span>
-                                <span class="uploader__file-list__button"></span>
-                                <span class="uploader__file-list__button" id="delete" ><a id="close" onclick="closebtn(${listEn[i].index},2)" class="uploader__icon-button fa fa-times" >
-                                </a></span></li>`;
-            }
-            output.innerHTML += '</ul>';
-            check = false;
-        }
-        else {
-            if (files1.length > 5) {
-                alert("max no. 5 images");
-                return;
-            }
-
-            if (window.File && window.FileList && window.FileReader) {
-                    if (files1.length == 5) {
-                $(`#${inputID}`).prop('disabled', true);
-            }
-                for (var i = 0; i < files1.length; i++) {
-                    var file = files1[i];
-                    var imgReaderEn = new FileReader();
-                    imgReaderEn.addEventListener("load", function (event) {
-                        var imgFileEn = event.target;
-                        if(file.size/1000 > imgMaxSize){
-                            listEn.push({
-                              'name': file.name,
-                              'size': file.size,
-                              'index': listEn.length,
-                              'image': imgFileEn.result,
-                              'class':'red-class',
-                          });
-                        }
-                        else{
-                          listEn.push({
-                              'name': file.name,
-                              'size': file.size,
-                              'index': listEn.length,
-                              'image': imgFileEn.result,
-                              'class':'upload',
-                          });
-                        }
-
-                        output.innerHTML = '<ul  class="js-uploader__file-list uploader__file-list" >';
-                        for (var i = 0; i < listEn.length; i++) {
-                            output.innerHTML += `<li class="${listEn[i].class} js-uploader__file-list uploader__file-list">
-                                <span class="uploader__file-list__thumbnail">
-                                <img class="thumbnail" id="img_" src="${listEn[i].image}">
-                                </span><span class="uploader__file-list__text hidden-xs">${listEn[i].name}</span>
-                                <span class="uploader__file-list__size hidden-xs">${(listEn[i].size) / 1000} KB</span>
-                                <span class="uploader__file-list__button"></span>
-                                <span class="uploader__file-list__button" id="delete" ><a id="close" onclick="closebtn(${listEn[i].index},2)" class="uploader__icon-button fa fa-times" >
-                                </a></span></li>`;
-                        }
-                        output.innerHTML += '</ul>';
-                    });
-                    //Read the image
-                    imgReaderEn.readAsDataURL(file);
-                }
-            }
-              $(`#${inputID}`).val('');
-            if (listEn.length == 4) {
-                $(`#${inputID}`).prop('disabled', true);
-            }
-        }
-      }
-    }
-</script><!--End UI-->
-
-<!--***************************UI*******************************-->
-<script type="text/javascript">
-    $(function(){
-        var form = $("#horizontal-pill-steps").show();
-    form.steps({
-      headerTag: "h3",
-      bodyTag: "fieldset",
-      transitionEffect: "slideLeft",
-      onStepChanging:function test(event, currentIndex, newIndex){
-        console.log(newIndex)
-        if(newIndex == 2){
-        }
-         if (currentIndex > newIndex)
-                    {
-                        return true;
-                    }
-                    if (currentIndex < newIndex)
-                    {
-                        form.find(".body:eq(" + newIndex + ") span.error").remove();
-                        form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
-                    }
-                    form.validate().settings.ignore = ":disabled,:hidden";
-                    return form.valid();
-      },
-      
-       onFinishing:function test3(e){
-        if((! checkImageSize(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
-           $("#horizontal-pill-steps").submit();
-         }
-         else{
-          alert_msg("ERROR","Check Uploaded Images or Youtube Links")
-         }
-       },
-      
-    }).validate({
-                errorPlacement: function errorPlacement(error, element) { element.after(error); },
-            });
-    })
-</script><!--End UI-->
-
-<script type="text/javascript">
-   var errors = [0, 0, 0, 0];
-    $(function(){
-       /** check youtube links **/
-   
-      $("#YouTube_video_en1").focusout(function() {
-        var value = $(this).val();
-        if(value){
-          checkYoutubeLink(this, value, "#yl_2") ? errors[0] = 0 : errors[0] = 1;
-        }
-        else{
-          errors[0] = 0;
-          $("#yl_2").empty()
-
-        }
-      }); 
-
-      $("#YouTube_video_en2").focusout(function() {
-        var value = $(this).val();
-        if(value){
-          checkYoutubeLink(this, value, "#yl_4") ? errors[1] = 0 : errors[1] = 1;
-        }
-        else{
-          errors[1] = 0;
-          $("#yl_4").empty()
-
-        }
-      }); 
-
-      $("#YouTube_video_ar1").focusout(function() {
-        var value = $(this).val();
-        if(value){
-          checkYoutubeLink(this, value, "#yl_1") ? errors[2] = 0 : errors[2] = 1;
-        }
-        else{
-          
-          errors[2] = 0;
-          $("#yl_1").empty()
-        }
-      }); 
-
-      $("#YouTube_video_ar2").focusout(function() {
-        var value = $(this).val();
-        if(value){
-          checkYoutubeLink(this, value, "#yl_3") ? errors[3] = 0 : errors[3] = 1;
-        }
-        else{
-          errors[3] = 0;
-          $("#yl_3").empty()
-
-        }
-      }); 
-
-      function checkAllYoutubeLinks() {
-        return errors.includes(1);
-      }
-
-      function checkYoutubeLink(id, value, error_msg) {
-        var con = value.search("https://www.youtube.com/watch?");
-
-        if ( !con ) {
-          $(error_msg).text('Valid youtube link..')
-          .attr('style', 'color: blue !important; text-transform: lowercase !important;');
-
-          return true;
-        } else {
-          $(error_msg).text('Invalid youtube link, ex: https://www.youtube.com/watch?2bdsfds1')
-          .attr('style', 'color: #8a1f11!important; text-transform: lowercase !important;');
-          return false;
-        }
-      }
-/** end **/
-  })
-    function checkAllYoutubeLinks() {
-      return errors.includes(1);
-    }
-</script><!--End UI-->
-
-<!--check YoutubeLinks-->
-<script type="text/javascript">
-    function checkYoutubeLink(id, value, error_msg) {
-      var con = value.search("https://www.youtube.com/watch?");
-
-      if ( !con ) {
-        $(error_msg).text('Valid youtube link..')
-        .attr('style', 'color: blue !important; text-transform: lowercase !important;');
-
-        return true;
-      } else {
-        $(error_msg).text('Invalid youtube link, ex: https://www.youtube.com/watch?2bdsfds1')
-        .attr('style', 'color: #8a1f11!important; text-transform: lowercase !important;');
-
-        return false;
-      }
-    }
-</script>
-
-
-
-
-<script type="text/javascript">
-      $(document).ready(function(){
-        "use strict";
-        $('.btn-warning-confirm').click(function(){
-          swal({
-            title: "Are you sure?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#281160',
-            confirmButtonText: 'Yes, delete it!',
-            closeOnConfirm: false
-          },
-          function(){
-            swal("Deleted!", "Your imaginary file has been deleted!", "success");
-          });
-        });
-      });
-      
-    </script>
-
-    <script type="text/javascript">
-      $(function() {
-        $('input, select').on('change', function(event) {
-          var $element = $(event.target),
-            $container = $element.closest('.example');
-      
-          if (!$element.data('tagsinput'))
-            return;
-      
-          var val = $element.val();
-          if (val === null)
-            val = "null";
-          $('code', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
-          $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
-        }).trigger('change');
-      });
-      
-      
-      
-      
-    </script>
-     <script type="text/javascript">
-      $(function () {
-        $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
-      });
-    </script>
-    <script type="text/javascript">
-      (function(){
-        var options = {};
-        $('.js-uploader__box').uploader(options);
-      }());
-      
-    </script>
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
     
     <script type="text/javascript">
       // var currentCount =0;
