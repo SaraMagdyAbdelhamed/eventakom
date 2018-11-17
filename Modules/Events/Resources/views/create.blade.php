@@ -257,7 +257,7 @@
             {{-- Arabic Event Name --}}
             <div class="col-xs-6">
               <div class="master_field">
-                <label class="master_label mandatory" for="Event_name">اسم الحدث</label>
+                <label class="master_label required" for="Event_name">اسم الحدث</label>
                 <input class="master_input" minlength="2" maxlength="100" type="text" placeholder="ex:Redbull fl shar3" id="Event_name" name="arabic_event_name" required value="{{ old('arabic_event_name') }}">
                 @if ($errors->has('arabic_event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_event_name') }}</span>
@@ -282,7 +282,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">مكان الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" id="venue" maxlength="2" maxlength="50" name="arabic_venu" required value="{{ old('arabic_venu') }}" />
+                <input class="master_input" type="text" placeholder="ex:CFC" id="venue" maxlength="100" maxlength="50" name="arabic_venu" required value="{{ old('arabic_venu') }}" />
                 @if ($errors->has('arabic_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_venu') }}</span>
                 @endif

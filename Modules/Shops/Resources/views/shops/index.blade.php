@@ -60,7 +60,7 @@
                   <thead>
                     <tr class="bgcolor--gray_mm color--gray_d">
                       <th><span class="cellcontent">&lt;input type=&quot;checkbox&quot; data-click-state=&quot;0&quot; name=&quot;select-all&quot; id=&quot;select-all&quot; /&gt;</span></th>
-                      <th><span class="cellcontent">@lang('keywords.serial_no')</span></th>
+                      <th><span class="cellcontent">@lang('keywords.serialNo')</span></th>
                       <th><span class="cellcontent">@lang('keywords.shop_photo')</span></th>
                       <th><span class="cellcontent">@lang('keywords.shop_name')</span></th>
                       <th><span class="cellcontent">@lang('keywords.shop_phone')</span></th>
@@ -72,7 +72,7 @@
                     @foreach($shops as $key=>$value)
                     <tr data-shop-id={{$value['id']}}>
                         <td><span class="cellcontent"></span></td>
-                        <td><span class="cellcontent">{{$value['id']}}</span></td>
+                        <td><span class="cellcontent">{{$key + 1}}</span></td>
                         <td><span class="cellcontent"><img src = "{{ \App::isLocale('en') ? str_replace('\\', '', asset($value['photo']) ) : asset( \Helper::localization('shop_media', 'link', $value['id'], 2, str_replace('\\', '', asset($value['photo']) ) ) ) }}" , class = " img-in-table"></span></td>
                         <td><span class="cellcontent">{{$value['name']}}</span></td>
                         <td><span class="cellcontent">{{$value['phone']}}</span></td>
