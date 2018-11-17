@@ -26,320 +26,320 @@
     </div>
 </div>
 <!-- =============== Custom Content ===========-==========-->
-              <div class="row">
-                <div class="col-xs-12">
-                  <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
-                    <div class="add-mode">@lang('keywords.editing_mode')</div>
-                    <div class="row">
-                      <div class="col-xs-12">
-                        <div class="text-xs-center">         
-                          <div class="text-wraper">
-                            <h3 class="cover-inside-title  ">@lang('keywords.shop_and_dine')</h3>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="cover--actions"><span></span>
-                      </div>
-                    </div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
+      <div class="add-mode">@lang('keywords.editing_mode')</div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="text-xs-center">         
+            <div class="text-wraper">
+              <h3 class="cover-inside-title  ">@lang('keywords.shop_and_dine')</h3>
+            </div>
+          </div>
+        </div>
+        <div class="cover--actions"><span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+      <form id="horizontal-pill-steps" action="{{URL('edit_shop_data/'.$shop['id'])}}" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+        {{ csrf_field() }}
+        <h3>@lang('keywords.info') </h3>
+        <fieldset>
+          <div class="row">
+              <div class="col-xs-6">
+                <div class="master_field">
+                  <label class="master_label" for="Place_name">@lang('keywords.shop_name')</label>
+                  <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name" value="{{$shop['name']}}"><span class="master_message color--fadegreen"></span>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="master_field">
+                  <label class="master_label" for="Place_name">@lang('keywords.shop_name_arabic')</label>
+                  <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" value="{{Helper::localization('shops', 'name', $shop['id'], 2)}}"><span class="master_message color--fadegreen"></span>
+                </div>
+              </div>
+              <div class="col-xs-4">
+                  <div class="master_field">
+                    <label class="master_label" for="Place_address">@lang('keywords.shop_address')</label>
+                    <input class="master_input" type="text" placeholder="ex:city stars" Required id="shop_address" name="place_address" value="{{$shop['address']}}"><span class="master_message color--fadegreen"></span>
+                  </div>
+              </div>
+              <div class="col-md-2 col-xs-1"> 
+                  <br>
+                  <br>
+                  <a class="bradius--no border-btn master-btn" type="button" href="#mapModal">Map</a>
+              </div>
+              <div class="col-xs-4">
+                  <div class="master_field">
+                      <label class="master_label" for="Phone_number">@lang('keywords.shop_phone')</label>
+                      <input class="master_input" type="tel" placeholder="0020123456789" Required id="Phone_number" name="phone" value="{{$shop['phone']}}"><span class="master_message color--fadegreen"></span>
+                  </div>
+              </div>
+              <div class="col-xs-4">
+                <div class="master_field">
+                  <label class="master_label" for="Website">@lang('keywords.website')</label>
+                  <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website" value="{{$shop['website']}}"><span class="master_message color--fadegreen"></span>
+                </div>
+              </div>
+              <div class="col-xs-4">
+                <div class="master_field">
+                  <label class="master_label" for="Other_info">@lang('keywords.other_info')</label>
+                  <textarea class="master_input" name="info" id="Other_info" placeholder="Other info" Required >{{$shop['info']}}</textarea><span class="master_message inherit"></span>
+                </div>
+              </div>
+              <div class="col-xs-4">
+                <div class="master_field">
+                  <label class="master_label" for="Other_info">@lang('keywords.other_info_arabic')</label>
+                  <textarea class="master_input" name="info_ar" id="Other_info_ar" placeholder="Other info" >{{Helper::localization('shops', 'info', $shop['id'], 2)}}</textarea><span class="master_message inherit"></span>
+                </div>
+              </div>
+              <div class="col-xs-4" hidden>
+                <div class="master_field">
+                  <label class="master_label" for="shop_long">Longtiuide</label>
+                  <input class="master_input" name="shop_long" id="shop_long" placeholder="shop_long" type="text"><span class="master_message inherit"></span>
+                </div>
+              </div>
+              <div class="col-xs-4" hidden>
+                <div class="master_field">
+                  <label class="master_label" for="shop_lat">Lat</label>
+                  <input class="master_input" name="shop_lat" id="shop_lat" placeholder="shop_lat" type="text"><span class="master_message inherit"></span>
+                </div>
+              </div>
+              <div class="col-sm-12 col-xs-12">
+                <div class="master_field">
+                  <?php $days=[];?>
+                  @foreach($shop['shop_day'] as $day)
+                  <?php $days[]=$day['day_id'];?>
+                  @endforeach
+                  <label class="master_label">@lang('keywords.opening_days')</label>
+                  <div class="funkyradio">
+                    @if(in_array(1, $days))
+                    <input type="checkbox" name="days[1]" id="Opening_days_1" checked>
+                    @else
+                    <input type="checkbox" name="days[1]" id="Opening_days_1" >
+                    @endif
+                    <label for="Opening_days_1">@lang('keywords.saturday')</label>
+                  </div>
+                  <div class="funkyradio">
+                    @if(in_array(2, $days))
+                    <input type="checkbox" name="days[2]" id="Opening_days_2" checked>
+                    @else
+                    <input type="checkbox" name="days[2]" id="Opening_days_2" >
+                    @endif
+                    <label for="Opening_days_2">@lang('keywords.sunday')</label>
+                  </div>
+                  <div class="funkyradio">
+                    @if(in_array(3, $days))
+                    <input type="checkbox" name="days[3]" id="Opening_days_3" checked>
+                    @else
+                    <input type="checkbox" name="days[3]" id="Opening_days_3" >
+                    @endif
+                    <label for="Opening_days_3">@lang('keywords.monday')</label>
+                  </div>
+                  <div class="funkyradio">
+                    @if(in_array(4, $days))
+                    <input type="checkbox" name="days[4]" id="Opening_days_4" checked>
+                    @else
+                    <input type="checkbox" name="days[4]" id="Opening_days_4" >
+                    @endif
+                    <label for="Opening_days_4">@lang('keywords.tuesday')</label>
+                  </div>
+                  <div class="funkyradio">
+                    @if(in_array(5, $days))
+                    <input type="checkbox" name="days[5]" id="Opening_days_5" checked>
+                    @else
+                    <input type="checkbox" name="days[5]" id="Opening_days_5" >
+                    @endif
+                    <label for="Opening_days_5">@lang('keywords.wednesday')</label>
+                  </div>
+                  <div class="funkyradio">
+                    @if(in_array(6, $days))
+                    <input type="checkbox" name="days[6]" id="Opening_days_6" checked>
+                    @else
+                    <input type="checkbox" name="days[6]" id="Opening_days_6" >
+                    @endif
+                    <label for="Opening_days_6">@lang('keywords.thursday')</label>
+                  </div>
+                  <div class="funkyradio">
+                   @if(in_array(7, $days))
+                    <input type="checkbox" name="days[7]" id="Opening_days_7" checked>
+                    @else
+                    <input type="checkbox" name="days[7]" id="Opening_days_7" >
+                    @endif
+                    <label for="Opening_days_7">@lang('keywords.friday')</label>
                   </div>
                 </div>
-                <div class="col-xs-12">
-                  <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                    <form id="horizontal-pill-steps" action="{{URL('edit_shop_data/'.$shop['id'])}}" method="post" enctype="multipart/form-data" accept-charset="utf-8">
-                      {{ csrf_field() }}
-                      <h3>@lang('keywords.info') </h3>
-                      <fieldset>
-                        <div class="row">
-                            <div class="col-xs-6">
-                              <div class="master_field">
-                                <label class="master_label" for="Place_name">@lang('keywords.shop_name')</label>
-                                <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name" value="{{$shop['name']}}"><span class="master_message color--fadegreen"></span>
-                              </div>
-                            </div>
-                            <div class="col-xs-6">
-                              <div class="master_field">
-                                <label class="master_label" for="Place_name">@lang('keywords.shop_name_arabic')</label>
-                                <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" value="{{Helper::localization('shops', 'name', $shop['id'], 2)}}"><span class="master_message color--fadegreen"></span>
-                              </div>
-                            </div>
-                            <div class="col-xs-4">
-                                <div class="master_field">
-                                  <label class="master_label" for="Place_address">@lang('keywords.shop_address')</label>
-                                  <input class="master_input" type="text" placeholder="ex:city stars" Required id="shop_address" name="place_address" value="{{$shop['address']}}"><span class="master_message color--fadegreen"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-xs-1"> 
-                                <br>
-                                <br>
-                                <a class="bradius--no border-btn master-btn" type="button" href="#mapModal">Map</a>
-                            </div>
-                            <div class="col-xs-4">
-                                <div class="master_field">
-                                    <label class="master_label" for="Phone_number">@lang('keywords.shop_phone')</label>
-                                    <input class="master_input" type="tel" placeholder="0020123456789" Required id="Phone_number" name="phone" value="{{$shop['phone']}}"><span class="master_message color--fadegreen"></span>
-                                </div>
-                            </div>
-                          <div class="col-xs-4">
-                            <div class="master_field">
-                              <label class="master_label" for="Website">@lang('keywords.website')</label>
-                              <input class="master_input" type="url" placeholder="www.domain.com" Required id="Website" name="website" value="{{$shop['website']}}"><span class="master_message color--fadegreen"></span>
-                            </div>
-                          </div>
-                          <div class="col-xs-4">
-                            <div class="master_field">
-                              <label class="master_label" for="Other_info">@lang('keywords.other_info')</label>
-                              <textarea class="master_input" name="info" id="Other_info" placeholder="Other info" Required >{{$shop['info']}}</textarea><span class="master_message inherit"></span>
-                            </div>
-                          </div>
-                          <div class="col-xs-4">
-                            <div class="master_field">
-                              <label class="master_label" for="Other_info">@lang('keywords.other_info_arabic')</label>
-                              <textarea class="master_input" name="info_ar" id="Other_info_ar" placeholder="Other info" >{{Helper::localization('shops', 'info', $shop['id'], 2)}}</textarea><span class="master_message inherit"></span>
-                            </div>
-                          </div>
-                          <div class="col-xs-4" hidden>
-                            <div class="master_field">
-                              <label class="master_label" for="shop_long">Longtiuide</label>
-                              <input class="master_input" name="shop_long" id="shop_long" placeholder="shop_long" type="text"><span class="master_message inherit"></span>
-                            </div>
-                          </div>
-                          <div class="col-xs-4" hidden>
-                            <div class="master_field">
-                              <label class="master_label" for="shop_lat">Lat</label>
-                              <input class="master_input" name="shop_lat" id="shop_lat" placeholder="shop_lat" type="text"><span class="master_message inherit"></span>
-                            </div>
-                          </div>
-                          <div class="col-sm-12 col-xs-12">
-                            <div class="master_field">
-                              <?php $days=[];?>
-                              @foreach($shop['shop_day'] as $day)
-                              <?php $days[]=$day['day_id'];?>
-                              @endforeach
-                              <label class="master_label">@lang('keywords.opening_days')</label>
-                              <div class="funkyradio">
-                                @if(in_array(1, $days))
-                                <input type="checkbox" name="days[1]" id="Opening_days_1" checked>
-                                @else
-                                <input type="checkbox" name="days[1]" id="Opening_days_1" >
-                                @endif
-                                <label for="Opening_days_1">@lang('keywords.saturday')</label>
-                              </div>
-                              <div class="funkyradio">
-                                @if(in_array(2, $days))
-                                <input type="checkbox" name="days[2]" id="Opening_days_2" checked>
-                                @else
-                                <input type="checkbox" name="days[2]" id="Opening_days_2" >
-                                @endif
-                                <label for="Opening_days_2">@lang('keywords.sunday')</label>
-                              </div>
-                              <div class="funkyradio">
-                                @if(in_array(3, $days))
-                                <input type="checkbox" name="days[3]" id="Opening_days_3" checked>
-                                @else
-                                <input type="checkbox" name="days[3]" id="Opening_days_3" >
-                                @endif
-                                <label for="Opening_days_3">@lang('keywords.monday')</label>
-                              </div>
-                              <div class="funkyradio">
-                                @if(in_array(4, $days))
-                                <input type="checkbox" name="days[4]" id="Opening_days_4" checked>
-                                @else
-                                <input type="checkbox" name="days[4]" id="Opening_days_4" >
-                                @endif
-                                <label for="Opening_days_4">@lang('keywords.tuesday')</label>
-                              </div>
-                              <div class="funkyradio">
-                                @if(in_array(5, $days))
-                                <input type="checkbox" name="days[5]" id="Opening_days_5" checked>
-                                @else
-                                <input type="checkbox" name="days[5]" id="Opening_days_5" >
-                                @endif
-                                <label for="Opening_days_5">@lang('keywords.wednesday')</label>
-                              </div>
-                              <div class="funkyradio">
-                                @if(in_array(6, $days))
-                                <input type="checkbox" name="days[6]" id="Opening_days_6" checked>
-                                @else
-                                <input type="checkbox" name="days[6]" id="Opening_days_6" >
-                                @endif
-                                <label for="Opening_days_6">@lang('keywords.thursday')</label>
-                              </div>
-                              <div class="funkyradio">
-                               @if(in_array(7, $days))
-                                <input type="checkbox" name="days[7]" id="Opening_days_7" checked>
-                                @else
-                                <input type="checkbox" name="days[7]" id="Opening_days_7" >
-                                @endif
-                                <label for="Opening_days_7">@lang('keywords.friday')</label>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="branch-container">
-                            <?php $i=1; ?>
-                            @foreach($shop['shop_branch'] as $branch)
-
-                            <div class="col-sm-2 col-xs-4">
-                              <div class="master_field">
-                                <label class="master_label" for="branches_1">@lang('keywords.branch_name') {{$i}} </label>
-                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1" name="branch_name[{{$i}}]" value="{{$branch['branch']}}"><span class="master_message color--fadegreen"></span>
-                              </div>
-                            </div>
-                            <div class="col-sm-3 col-xs-4">
-                              <div class="master_field">
-                                <label class="master_label" for="branches_1">@lang('keywords.branch_name'){{$i}} @lang('keywords.in_ar')</label>
-                                <input class="master_input" type="text" placeholder="branch 1 name"  id="branches_1" name="branch_name_ar[{{$i}}]" value="{{Helper::localization('shop_branches', 'branch', $branch['id'], 2)}}"><span class="master_message color--fadegreen"></span>
-                              </div>
-                            </div>
-                            <div class="col-sm-3 col-xs-4">
-                              <div class="master_field">
-                                <label class="master_label" for="branches_1">@lang('keywords.branch_address') {{$i}}</label>
-                                <input class="master_input" type="text" placeholder="branch 1 address" Required id="branches_1" name="branch_address[{{$i}}]" value="{{$branch['address']}}"><span class="master_message color--fadegreen"></span>
-                              </div>
-                            </div>
-                            <div class="col-sm-2 col-xs-6">
-                              <div class="master_field">
-                                <label class="master_label" for="start_time">@lang('keywords.branch_start') {{$i}}</label>
-                                <div class="bootstrap-timepicker">
-                                  <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time"name="branch_start[{{$i}}]">
-                                </div><span class="master_message inherit"></span>
-                              </div>
-                            </div>
-                            <div class="col-sm-2 col-xs-6">
-                              <div class="master_field">
-                                <label class="master_label" for="end_time">@lang('keywords.branch_end') {{$i}}</label>
-                                <div class="bootstrap-timepicker">
-                                  <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="branch_end[{{$i}}]">
-                                </div><span class="master_message inherit"></span>
-                              </div>
-                            </div>
-                            <div class="col-xs-4" hidden>
-                            <div class="master_field">
-                              <label class="master_label" for="branch_long">Longtiuide</label>
-                              <input class="master_input" name="branch_long[{{$i}}]" id="branch_long_{{$i}}" placeholder="shop_long" type="text"><span class="master_message inherit"></span>
-                            </div>
-                          </div>
-                          <div class="col-xs-4" hidden>
-                            <div class="master_field">
-                              <label class="master_label" for="branch_lat">Lat</label>
-                              <input class="master_input" name="branch_lat[{{$i}}]" id="branch_lat_{{$i}}" placeholder="branch_lat" type="text"><span class="master_message inherit"></span>
-                            </div>
-                          </div>
-                            <?php $i++; ?>
-                            @endforeach
-                          </div>
-                          <div id="mbranch">
-                            
-                          </div>
-                          <div class="col-sm-12 col-xs-12">
-                            <button class="add-more-branch btn-block master-btn bgcolor--gray_mm"><i class="fa fa-plus color--main"></i><span class="color--main">@lang('keywords.add_branch')</span></button>
-                          </div>
-                          <div class="col-xs-6">
-                            <div class="master_field">
-                              <label class="master_label" for="active_place">@lang('keywords.shop_active')</label>
-                              @if($shop->is_active)
-                              <input  type="checkbox" checked  name="is_active">
-                              @else
-                              <input type="checkbox"   name="is_active">
-                              @endif
-                            </div>
-                          </div>
-                        </div>
-                      </fieldset>
-                      {{-- <h3>Info in Arabic</h3>
-                      <fieldset>
-                        <div class="row">
-                          <div class="col-xs-6">
-                            <div class="master_field">
-                              <label class="master_label" for="Place_name">Place name</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name"><span class="master_message color--fadegreen"></span>
-                            </div>
-                          </div>
-                          <div class="col-xs-6">
-                            <div class="master_field">
-                              <label class="master_label" for="Other_info">Other info</label>
-                              <textarea class="master_input" name="textarea" id="Other_info" placeholder="Other info" Required></textarea><span class="master_message inherit"></span>
-                            </div>
-                          </div>
-                          <div class="branch-container-ar">
-                            <div class="col-sm-6 col-xs-12">
-                              <div class="master_field">
-                                <label class="master_label" for="branches_1">branch 1 name</label>
-                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1"><span class="master_message color--fadegreen"></span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </fieldset> --}}
-                      <h3>@lang('keywords.media')</h3>
-                      <fieldset>
-                        <div class="row">
-                          <div class="col-xs-12">
-                            <h4>add youtube video link</h4>
-                          </div>
-                          <div class="col-sm-6 col-xs-12">
-                          <div class="master_field">
-                              <label class="master_label" for="YouTube_video_en">@lang('keywords.you_tube') (1) @lang('keywords.in_en')</label>
-                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
-                              name="youtube_en_1" value="{{ isset($youtube_links[1]) ? $youtube_links[1]->link : '' }}">
-                            <span class="master_message inherit" id="yl_2"></span>
-                          </div>
-                          </div>
-                            <div class="col-xs-6">
-                            <div class="master_field">
-                              <label class="master_label" for="YouTube_video_ar1">@lang('keywords.you_tube') (1) @lang('keywords.in_ar')</label>
-                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
-                                  name="youtube_ar_1" value="{{ isset($youtube_links[0]) ? $youtube_links[0]->link : '' }}">
-                                <span class="master_message inherit" id="yl_1"></span>
-                            </div>
-                          </div>
-                           <div class="col-xs-6">
-                            <div class="master_field">
-                              <label class="master_label" for="YouTube_video_en2">@lang('keywords.you_tube') (2) @lang('keywords.in_en')</label>
-                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2" 
-                                  name="youtube_en_2" value="{{ isset($youtube_links[3]) ? $youtube_links[3]->link : '' }}">
-                                <span class="master_message inherit" id="yl_4"></span>
-                            </div>
-                          </div>
-                            <div class="col-xs-6">
-                            <div class="master_field">
-                              <label class="master_label" for="YouTube_video_ar2">@lang('keywords.YouTube-ar-2')</label>
-                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2" 
-                                  name="youtube_ar_2" value="{{ isset($youtube_links[2]) ? $youtube_links[2]->link : '' }}">
-                                <span class="master_message inherit" id="yl_3"></span>
-                            </div>
-                          </div>
-                          <div class="col-sm-6 col-xs-12 text-center"> 
-                          <h4>@lang('keywords.upload_image') (@lang('keywords.max_img')) @lang('keywords.in_en')</h4>
-                          <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                            <div class="main-section">
-                              <div id="fileList2"></div>
-                              <div class="form-group">
-                                <input class="inputfile inputfile-1" id="file-2" type="file" name="images_ar[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-2','fileList2','en')" accept=".jpg,.png,.jpeg">
-                                <label for="file-2"><span> Choose a file</span></label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                          <div class="col-sm-6 col-xs-12 text-center"> 
-                            <h4>@lang('keywords.upload_image') (@lang('keywords.max_img')) @lang('keywords.in_ar')</h4>
-                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                              <div class="main-section">
-                                <div id="fileList"></div>
-                                <div class="form-group">
-                                  <input class="inputfile inputfile-1" id="file-2" type="file" name="images_ar[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-2','fileList2','en')" accept=".jpg,.png,.jpeg">
-                                  <label for="file-2"><span> Choose a file</span></label>
-                                  <input type="hidden" name="images_ar" id="hidden_images_ar">
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                         
-                        </div>
-                      </fieldset>
-                    </form>
-                  </div>
-                </div><br>
               </div>
+            <div class="branch-container">
+              <?php $i=1; ?>
+              @foreach($shop['shop_branch'] as $branch)
+
+              <div class="col-sm-2 col-xs-4">
+                <div class="master_field">
+                  <label class="master_label" for="branches_1">@lang('keywords.branch_name') {{$i}} </label>
+                  <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1" name="branch_name[{{$i}}]" value="{{$branch['branch']}}"><span class="master_message color--fadegreen"></span>
+                </div>
+              </div>
+              <div class="col-sm-3 col-xs-4">
+                <div class="master_field">
+                  <label class="master_label" for="branches_1">@lang('keywords.branch_name'){{$i}} @lang('keywords.in_ar')</label>
+                  <input class="master_input" type="text" placeholder="branch 1 name"  id="branches_1" name="branch_name_ar[{{$i}}]" value="{{Helper::localization('shop_branches', 'branch', $branch['id'], 2)}}"><span class="master_message color--fadegreen"></span>
+                </div>
+              </div>
+              <div class="col-sm-3 col-xs-4">
+                <div class="master_field">
+                  <label class="master_label" for="branches_1">@lang('keywords.branch_address') {{$i}}</label>
+                  <input class="master_input" type="text" placeholder="branch 1 address" Required id="branches_1" name="branch_address[{{$i}}]" value="{{$branch['address']}}"><span class="master_message color--fadegreen"></span>
+                </div>
+              </div>
+              <div class="col-sm-2 col-xs-6">
+                <div class="master_field">
+                  <label class="master_label" for="start_time">@lang('keywords.branch_start') {{$i}}</label>
+                  <div class="bootstrap-timepicker">
+                    <input class="timepicker master_input" type="text" placeholder="start time" Required id="start_time"name="branch_start[{{$i}}]">
+                  </div><span class="master_message inherit"></span>
+                </div>
+              </div>
+              <div class="col-sm-2 col-xs-6">
+                <div class="master_field">
+                  <label class="master_label" for="end_time">@lang('keywords.branch_end') {{$i}}</label>
+                  <div class="bootstrap-timepicker">
+                    <input class="timepicker master_input" type="text" placeholder="end time" Required id="end_time" name="branch_end[{{$i}}]">
+                  </div><span class="master_message inherit"></span>
+                </div>
+              </div>
+              <div class="col-xs-4" hidden>
+              <div class="master_field">
+                <label class="master_label" for="branch_long">Longtiuide</label>
+                <input class="master_input" name="branch_long[{{$i}}]" id="branch_long_{{$i}}" placeholder="shop_long" type="text"><span class="master_message inherit"></span>
+              </div>
+            </div>
+            <div class="col-xs-4" hidden>
+              <div class="master_field">
+                <label class="master_label" for="branch_lat">Lat</label>
+                <input class="master_input" name="branch_lat[{{$i}}]" id="branch_lat_{{$i}}" placeholder="branch_lat" type="text"><span class="master_message inherit"></span>
+              </div>
+            </div>
+              <?php $i++; ?>
+              @endforeach
+            </div>
+            <div id="mbranch">
+
+            </div>
+            <div class="col-sm-12 col-xs-12">
+              <button class="add-more-branch btn-block master-btn bgcolor--gray_mm"><i class="fa fa-plus color--main"></i><span class="color--main">@lang('keywords.add_branch')</span></button>
+            </div>
+            <div class="col-xs-6">
+              <div class="master_field">
+                <label class="master_label" for="active_place">@lang('keywords.shop_active')</label>
+                @if($shop->is_active)
+                <input  type="checkbox" checked  name="is_active">
+                @else
+                <input type="checkbox"   name="is_active">
+                @endif
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        {{-- <h3>Info in Arabic</h3>
+        <fieldset>
+          <div class="row">
+            <div class="col-xs-6">
+              <div class="master_field">
+                <label class="master_label" for="Place_name">Place name</label>
+                <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name"><span class="master_message color--fadegreen"></span>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="master_field">
+                <label class="master_label" for="Other_info">Other info</label>
+                <textarea class="master_input" name="textarea" id="Other_info" placeholder="Other info" Required></textarea><span class="master_message inherit"></span>
+              </div>
+            </div>
+            <div class="branch-container-ar">
+              <div class="col-sm-6 col-xs-12">
+                <div class="master_field">
+                  <label class="master_label" for="branches_1">branch 1 name</label>
+                  <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1"><span class="master_message color--fadegreen"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset> --}}
+        <h3>@lang('keywords.media')</h3>
+        <fieldset>
+          <div class="row">
+            <div class="col-xs-12">
+              <h4>add youtube video link</h4>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+            <div class="master_field">
+                <label class="master_label" for="YouTube_video_en">@lang('keywords.you_tube') (1) @lang('keywords.in_en')</label>
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
+                name="youtube_en_1" value="{{ isset($youtube_links[1]) ? $youtube_links[1]->link : '' }}">
+              <span class="master_message inherit" id="yl_2"></span>
+            </div>
+            </div>
+              <div class="col-xs-6">
+              <div class="master_field">
+                <label class="master_label" for="YouTube_video_ar1">@lang('keywords.you_tube') (1) @lang('keywords.in_ar')</label>
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
+                    name="youtube_ar_1" value="{{ isset($youtube_links[0]) ? $youtube_links[0]->link : '' }}">
+                  <span class="master_message inherit" id="yl_1"></span>
+              </div>
+            </div>
+             <div class="col-xs-6">
+              <div class="master_field">
+                <label class="master_label" for="YouTube_video_en2">@lang('keywords.you_tube') (2) @lang('keywords.in_en')</label>
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2" 
+                    name="youtube_en_2" value="{{ isset($youtube_links[3]) ? $youtube_links[3]->link : '' }}">
+                  <span class="master_message inherit" id="yl_4"></span>
+              </div>
+            </div>
+              <div class="col-xs-6">
+              <div class="master_field">
+                <label class="master_label" for="YouTube_video_ar2">@lang('keywords.YouTube-ar-2')</label>
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2" 
+                    name="youtube_ar_2" value="{{ isset($youtube_links[2]) ? $youtube_links[2]->link : '' }}">
+                  <span class="master_message inherit" id="yl_3"></span>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xs-12 text-center"> 
+            <h4>@lang('keywords.upload_image') (@lang('keywords.max_img')) @lang('keywords.in_en')</h4>
+            <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+              <div class="main-section">
+                <div id="fileList2"></div>
+                <div class="form-group">
+                  <input class="inputfile inputfile-1" id="file-2" type="file" name="images_ar[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-2','fileList2','en')" accept=".jpg,.png,.jpeg">
+                  <label for="file-2"><span> Choose a file</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+            <div class="col-sm-6 col-xs-12 text-center"> 
+              <h4>@lang('keywords.upload_image') (@lang('keywords.max_img')) @lang('keywords.in_ar')</h4>
+               <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
+                <div class="main-section">
+                  <div id="fileList"></div>
+                  <div class="form-group">
+                    <input class="inputfile inputfile-1" id="file-2" type="file" name="images_ar[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-2','fileList2','en')" accept=".jpg,.png,.jpeg">
+                    <label for="file-2"><span> Choose a file</span></label>
+                    <input type="hidden" name="images_ar" id="hidden_images_ar">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div><br>
+</div>
 
 @endsection
 
