@@ -6,28 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Shop extends Model
 {
-   protected $id = 'id';
+    protected $id = 'id';
     protected $table = 'shops';
-    protected $fillable = ['name', 'photo', 'phone', 'website', 'is_active', 'info','address','latitude','longitude'];
+    protected $fillable = ['name', 'photo', 'phone', 'website', 'is_active', 'info', 'address', 'latitude', 'longitude'];
     public $timestamps = false;
 
     public function shop_branch()
     {
-    	return $this->hasMany('App\ShopBranch','shop_id');
+        return $this->hasMany('App\ShopBranch', 'shop_id');
     }
 
-     public function shop_day()
+    public function shop_day()
     {
-    	return $this->hasMany('App\ShopDay','shop_id');
+        return $this->hasMany('App\ShopDay', 'shop_id');
     }
 
-     public function shop_media()
+    public function shop_media()
     {
-        return $this->hasMany('App\ShopMedia','shop_id');
+        return $this->hasMany('App\ShopMedia', 'shop_id');
     }
 
     public function days()
     {
-        return $this->belongsToMany('App\Day','shop_days','shop_id','day_id');
+        return $this->belongsToMany('App\Day', 'shop_days', 'shop_id', 'day_id');
     }
 }

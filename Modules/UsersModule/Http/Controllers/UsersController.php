@@ -12,6 +12,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use Validator;
+use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
 
@@ -178,6 +179,7 @@ class UsersController extends Controller
         $user->save();
         $user->rules()->attach([$request->rule, 1]);
 
+        Session::flash('success', 'User added successfully!');
         return redirect()->back();
     }
 

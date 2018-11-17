@@ -375,48 +375,50 @@
             <h3>@lang('keywords.media')</h3>
             <fieldset>
             <div class="row">
-                <!-- <div class="col-sm-6 col-xs-12">
-                <div class="master_field">
-                    <label class="master_label" for="YouTube_video_en">add youtube video link in English</label>
-                    <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en" id="YouTube_video_en" value="{{ $youtube_en ? : '' }}" />
-                    @if ($errors->has('youtube_en'))
-                        <span class="master_message color--fadegreen">{{ $errors->first('youtube_en') }}</span>
-                    @endif
-                </div>
-                </div> -->
+                <div class="col-sm-6 col-xs-12">
+                    <div class="master_field">
+                        <label class="master_label" for="YouTube_video_en">add youtube video link in English (1)</label>
+                        <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en_1" id="YouTube_video_en" 
+                            value="{{ isset($youtube_en[0]) ? $youtube_en[0]->media : '' }}" />
+                        @if ($errors->has('youtube_en'))
+                            <span class="master_message color--fadegreen">{{ $errors->first('youtube_en') }}</span>
+                        @endif
+                    </div>
+                </div> 
 
                 <div class="col-sm-6 col-xs-12">
-                          <div class="master_field">
-                              <label class="master_label" for="YouTube_video_en">Add youtube video link in English</label>
-                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
-                              name="youtube_en_1" value="{{ isset($youtube_links[1]) ? $youtube_links[1]->link : '' }}">
-                            <span class="master_message inherit" id="yl_2"></span>
-                          </div>
-                          </div>
-                <!-- <div class="col-sm-6 col-xs-12">
-                <div class="master_field">
-                    <label class="master_label" for="YouTube_video_ar">add youtube video link in Arabic</label>
-                    <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar" id="YouTube_video_ar" value="{{ $youtube_ar ? : '' }}">
-                    @if ($errors->has('youtube_ar'))
-                        <span class="master_message color--fadegreen">{{ $errors->first('youtube_ar') }}</span>
-                    @endif
+                    <div class="master_field">
+                        <label class="master_label" for="YouTube_video_en">Add youtube video link in English (2)</label>
+                        <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
+                            name="youtube_en_2" value="{{ isset($youtube_en[1]) ? $youtube_en[1]->media : '' }}">
+                    <span class="master_message inherit" id="yl_2"></span>
+                    </div>
                 </div>
-                </div> -->
+                
+                <div class="col-sm-6 col-xs-12">
+                    <div class="master_field">
+                        <label class="master_label" for="YouTube_video_ar">add youtube video link in Arabic (1)</label>
+                        <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar_1" id="YouTube_video_ar" 
+                            value="{{ !empty($youtube_ar[0]) ? $youtube_ar[0] : '' }}">
+                        @if ($errors->has('youtube_ar'))
+                            <span class="master_message color--fadegreen">{{ $errors->first('youtube_ar') }}</span>
+                        @endif
+                    </div>
+                </div>
 
-                        <div class="col-xs-6">
-                            <div class="master_field">
-                              <label class="master_label" for="YouTube_video_ar1">Add youtube video link in Arabic</label>
-                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
-                                  name="youtube_ar_1" value="{{ isset($youtube_links[0]) ? $youtube_links[0]->link : '' }}">
-                                <span class="master_message inherit" id="yl_1"></span>
-                            </div>
-                          </div>
+                <div class="col-xs-6">
+                    <div class="master_field">
+                        <label class="master_label" for="YouTube_video_ar1">Add youtube video link in Arabic (2)</label>
+                        <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
+                            name="youtube_ar_2" value="{{ !empty($youtube_ar[1]) ? $youtube_ar[1] : '' }}">
+                        <span class="master_message inherit" id="yl_1"></span>
+                    </div>
+                </div>
 
            
     
               {{-- English images --}}
             <div class="col-sm-6 col-xs-12 text-center">
-                <img src="{{ $image_en ? asset($image_en) : '' }}" alt="">
                 <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
                 <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                   <div class="main-section">
@@ -424,6 +426,7 @@
                     <div class="form-group">
                       <input class="inputfile inputfile-1" id="file-2" type="file" name="english_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-2','fileList2','en')" accept=".jpg,.png,.jpeg">
                       <label for="file-2"><span>Choose a file</span></label>
+                      <input type="hidden" name="images_en" id="images_en">
                     </div>
                   </div>
                 </div>
@@ -431,7 +434,6 @@
 
             {{-- Arabic images --}}
             <div class="col-sm-6 col-xs-12 text-center">
-                <img src="{{ $image_ar ? asset($image_ar) : '' }}" alt="">
                 <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
                 <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                   <div class="main-section">
@@ -439,6 +441,7 @@
                     <div class="form-group">
                       <input class="inputfile inputfile-1" id="file-1" type="file" name="arabic_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-1','fileList','Ar')" accept=".jpg,.png,.jpeg">
                       <label for="file-1"><span>Choose a file</span></label>
+                      <input type="hidden" name="images_ar", id="images_ar">
                     </div>
                   </div>
                 </div>
@@ -514,7 +517,6 @@
         let files1 = input.files;
 
       if(listName =='Ar'){
-          console.log("arabic")
             if (check == true) {
             output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
             for (var i = 0; i < listAr.length; i++) {
@@ -666,32 +668,29 @@
     
    //get  images from database
     function get_images(){
-      listAr.push({
-                                'name': 'test1',
-                                'size': '25',
-                                'image': '../../../img/avaters/male.jpg',
-                                'id':'55'
-      },
-      {
-                                'name': 'test1',
-                                'size': '25',
-                                'image': '../../../img/avaters/female.jpg',
-                                'id':'25',
-      }
-      )
-       listEn.push({
-                                'name': 'test1',
-                                'size': '25',
-                                'image': '../../../img/avaters/male.jpg',
-                                'id':'11'
-      },
-      {
-                                'name': 'test1',
-                                'size': '25',
-                                'image': '../../../img/avaters/female.jpg',
-                                'id':'111'
-      }
-      );
+      
+      @if( count($images_en) > 0 )
+        @foreach($images_en as $image)
+            listEn.push({
+                'name': '{{ "English image #" . ++$loop->index }}',
+                'size': '',
+                'image': '{{ asset($image->media) }}',
+                'id': '{{ $image->id }}'
+            });
+        @endforeach
+      @endif
+
+      @if( count($images_ar) > 0 )
+        @foreach($images_ar as $image)
+            listAr.push({
+                'name': '{{ "Arabic image #" . ++$loop->index }}',
+                'size': '',
+                'image': '{{ asset($image->value) }}',
+                'id': '{{ $image->id }}'
+            });
+        @endforeach
+      @endif
+      
       add_index(listAr);
       add_index(listEn);
     }
@@ -740,7 +739,7 @@
       bodyTag: "fieldset",
       transitionEffect: "slideLeft",
       onStepChanging:function test(event, currentIndex, newIndex){
-        console.log(newIndex)
+
         if(newIndex == 2){
         }
          if (currentIndex > newIndex)
@@ -758,6 +757,24 @@
       
        onFinishing:function test3(e){
         if((! checkImageSize(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
+
+            var images_ar = '';
+            var images_en = '';
+
+            // concatinate base64 strings
+            for(i=0; i<listAr.length; i++) {
+                images_ar += '-' + listAr[i].image;
+            }
+
+            // concatinate base64 strings
+            for(i=0; i<listEn.length; i++) {
+                images_en += '-' + listEn[i].image;
+            }
+
+            // append image list to hidden inputs
+            $("#images_ar").val(images_ar);
+            $("#images_en").val(images_en);
+
            $("#horizontal-pill-steps").submit();
          }
          else{

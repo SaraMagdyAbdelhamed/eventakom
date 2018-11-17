@@ -281,14 +281,8 @@
                           </div>
                           <!-- <div class="col-sm-6 col-xs-12">
                             <div class="master_field">
-<<<<<<< HEAD
-                              <label class="master_label" for="YouTube_video_1_en">@lang('keywords.you_tube') (1) @lang('keywords.in_en')</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" id="video_1" name="video[1]" value="{{ count($shop->shop_media) ? $shop->shop_media()->first()->getYoutubeLinks()[0] : '' }}">
-                              <span class="master_message inherit"></span>
-=======
                               <label class="master_label"  for="YouTube_video_1_en">@lang('keywords.you_tube') (1) @lang('keywords.in_en')</label>
                               <input class="master_input"  type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1" name="video[1]"><span class="master_message inherit">message content</span>
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
                             </div>
                           </div> -->
 
@@ -340,20 +334,6 @@
                               <label class="master_label" for="video_2_ar">@lang('keywords.you_tube') (2) @lang('keywords.in_ar')</label>
                               <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" id="video_2_ar" name="video_ar[2]" value="{{ \Helper::getYoutubeLinks($shop->id, 2)[1] }}">
                               <span class="master_message inherit"></span>
-<<<<<<< HEAD
-                            </div>
-                          </div>
-                          <div class="col-sm-6 col-xs-12 text-center"> 
-                            <h4>@lang('keywords.upload_image') (@lang('keywords.max_img')) @lang('keywords.in_en')</h4>
-                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                              <div class="main-section">
-                                <div id="fileList"></div>
-                                <div class="form-group">
-                                  <input class="inputfile inputfile-1" id="file-1" type="file" name="" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-1','fileList','Ar')" accept=".jpg,.png,.jpeg">
-                                  <label for="file-1"><span >Choose a file</span></label>
-                                  <input type="hidden" name="images" id="hidden_images_en">
-                                </div>
-=======
                               <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2_ar" name="video_ar[2]"><span class="master_message inherit">message content</span>
                             </div>
                           </div> -->
@@ -376,7 +356,6 @@
                               <div class="form-group">
                                 <input class="inputfile inputfile-1" id="file-2" type="file" name="images_ar[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-2','fileList2','en')" accept=".jpg,.png,.jpeg">
                                 <label for="file-2"><span> Choose a file</span></label>
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
                               </div>
                             </div>
                           </div>
@@ -445,22 +424,6 @@
       error=0;
         let newList=listAr.concat(listEn)
 
-<<<<<<< HEAD
-      $.each(newList,function(index,element){
-            if(element.class == 'red-class'){
-              error+=1;
-            }
-          });
-          if(error>0){
-            let test_ = document.getElementById("file-1").files;
-            
-            alert_msg('Error','Some inputs are invalid, please make sure to use valid input data!');
-          } 
-          else{
-            
-            $("#horizontal-pill-steps").submit();
-          }
-=======
         $.each(newList,function(index,element){
              if(element.class == 'red-class'){
                error+=1;
@@ -473,7 +436,6 @@
            else{
              return false;
            }
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
     }
 
     function updateList (inputID,outputID,listName) {
@@ -729,33 +691,12 @@
       },
       
        onFinishing:function test3(e){
-<<<<<<< HEAD
-        var englishList = '';
-        var arabicList  = '';
-
-        for(i=0; i<listEn.length; i++) {
-          englishList += '-' + listEn[i].image;
-        }
-
-        for(i=0; i<listAr.length; i++) {
-          arabicList += '-' + listAr[i].image;
-        }
-
-        // append image list to hidden inputs
-        $("#hidden_images_en").val(englishList);
-        $("#hidden_images_ar").val(arabicList);
-        
-        // Check all images size
-        checkImageSize(listAr,listEn);
-
-=======
         if((! checkImageSize(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
            $("#horizontal-pill-steps").submit();
          }
          else{
           alert_msg("ERROR","Check Uploaded Images or Youtube Links")
          }
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
        },
       
     }).validate({
