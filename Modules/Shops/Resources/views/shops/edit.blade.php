@@ -1,32 +1,31 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="remodal" data-remodal-id="mapModal" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-      <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-      <div>
-        <div class="row">
-          <div class="col-lg-12">
-            <h3>Map</h3>
-          </div>
-          <div class="col-xs-12">
-            <form>
-              <div class="tabs--wrapper">
-                <div class="mapouter">
-                  <div class="gmap_canvas">
-                    <iframe id="gmap_canvas" width="600" height="500" src="https://maps.google.com/maps?q={{$shop['address']}}&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"><a href="https://www.embedgooglemap.net"></a></iframe>
-                  </div>
+    <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
+    <div>
+      <div class="row">
+        <div class="col-lg-12">
+          <h3>Map</h3>
+        </div>
+        <div class="col-xs-12">
+          <form>
+            <div class="tabs--wrapper">
+              <div class="mapouter">
+                <div class="gmap_canvas">
+                  <iframe id="gmap_canvas" width="600" height="500" src="https://maps.google.com/maps?q={{$shop['address']}}&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"><a href="https://www.embedgooglemap.net"></a></iframe>
                 </div>
-              </div><br>
-              <div class="col-xs-12">
-                <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
-                <button class="remodal-confirm" data-remodal-action="confirm">OK</button>
               </div>
-            </form>
-          </div>
+            </div><br>
+            <div class="col-xs-12">
+              <button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
+              <button class="remodal-confirm" data-remodal-action="confirm">OK</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-              <!-- =============== Custom Content ===========-==========-->
+</div>
+<!-- =============== Custom Content ===========-==========-->
               <div class="row">
                 <div class="col-xs-12">
                   <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
@@ -51,37 +50,35 @@
                       <h3>@lang('keywords.info') </h3>
                       <fieldset>
                         <div class="row">
-                          <div class="col-xs-6">
-                            <div class="master_field">
-                              <label class="master_label" for="Place_name">@lang('keywords.shop_name')</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name" value="{{$shop['name']}}"><span class="master_message color--fadegreen"></span>
+                            <div class="col-xs-6">
+                              <div class="master_field">
+                                <label class="master_label" for="Place_name">@lang('keywords.shop_name')</label>
+                                <input class="master_input" type="text" placeholder="ex:city stars" Required id="Place_name" name="place_name" value="{{$shop['name']}}"><span class="master_message color--fadegreen"></span>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col-xs-6">
-                            <div class="master_field">
-                              <label class="master_label" for="Place_name">@lang('keywords.shop_name_arabic')</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" value="{{Helper::localization('shops', 'name', $shop['id'], 2)}}"><span class="master_message color--fadegreen"></span>
+                            <div class="col-xs-6">
+                              <div class="master_field">
+                                <label class="master_label" for="Place_name">@lang('keywords.shop_name_arabic')</label>
+                                <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" value="{{Helper::localization('shops', 'name', $shop['id'], 2)}}"><span class="master_message color--fadegreen"></span>
+                              </div>
                             </div>
-                          </div>
-                           <div class="col-xs-4">
-                            <div class="master_field">
-                              <label class="master_label" for="Place_address">@lang('keywords.shop_address')</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" Required id="shop_address" name="place_address" value="{{$shop['address']}}"><span class="master_message color--fadegreen"></span>
+                            <div class="col-xs-4">
+                                <div class="master_field">
+                                  <label class="master_label" for="Place_address">@lang('keywords.shop_address')</label>
+                                  <input class="master_input" type="text" placeholder="ex:city stars" Required id="shop_address" name="place_address" value="{{$shop['address']}}"><span class="master_message color--fadegreen"></span>
+                                </div>
                             </div>
-                          </div>
-                          <div class="col-md-2 col-xs-1"> 
-                          <br>
-                          <br>
-                          <a class="bradius--no border-btn master-btn" type="button" href="#mapModal">Map</a>
-                          </div>
-                        
-                          
-                          <div class="col-xs-4">
-                            <div class="master_field">
-                              <label class="master_label" for="Phone_number">@lang('keywords.shop_phone')</label>
-                              <input class="master_input" type="tel" placeholder="0020123456789" Required id="Phone_number" name="phone" value="{{$shop['phone']}}"><span class="master_message color--fadegreen"></span>
+                            <div class="col-md-2 col-xs-1"> 
+                                <br>
+                                <br>
+                                <a class="bradius--no border-btn master-btn" type="button" href="#mapModal">Map</a>
                             </div>
-                          </div>
+                            <div class="col-xs-4">
+                                <div class="master_field">
+                                    <label class="master_label" for="Phone_number">@lang('keywords.shop_phone')</label>
+                                    <input class="master_input" type="tel" placeholder="0020123456789" Required id="Phone_number" name="phone" value="{{$shop['phone']}}"><span class="master_message color--fadegreen"></span>
+                                </div>
+                            </div>
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Website">@lang('keywords.website')</label>
@@ -279,19 +276,6 @@
                           <div class="col-xs-12">
                             <h4>add youtube video link</h4>
                           </div>
-                          <!-- <div class="col-sm-6 col-xs-12">
-                            <div class="master_field">
-<<<<<<< HEAD
-                              <label class="master_label" for="YouTube_video_1_en">@lang('keywords.you_tube') (1) @lang('keywords.in_en')</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" id="video_1" name="video[1]" value="{{ count($shop->shop_media) ? $shop->shop_media()->first()->getYoutubeLinks()[0] : '' }}">
-                              <span class="master_message inherit"></span>
-=======
-                              <label class="master_label"  for="YouTube_video_1_en">@lang('keywords.you_tube') (1) @lang('keywords.in_en')</label>
-                              <input class="master_input"  type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1" name="video[1]"><span class="master_message inherit">message content</span>
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
-                            </div>
-                          </div> -->
-
                           <div class="col-sm-6 col-xs-12">
                           <div class="master_field">
                               <label class="master_label" for="YouTube_video_en">@lang('keywords.you_tube') (1) @lang('keywords.in_en')</label>
@@ -300,15 +284,6 @@
                             <span class="master_message inherit" id="yl_2"></span>
                           </div>
                           </div>
-
-                          <!-- <div class="col-sm-6 col-xs-12"> 
-                            <div class="master_field">
-                              <label class="master_label" for="YouTube_video_1_ar">@lang('keywords.you_tube') (1) @lang('keywords.in_ar')</label>
-                              <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1_ar" name="video_ar[1]" value="{{ \Helper::getYoutubeLinks($shop->id, 2)[0] }}">
-                              <span class="master_message inherit">message content</span>
-                            </div>
-                          </div> -->
-
                             <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="YouTube_video_ar1">@lang('keywords.you_tube') (1) @lang('keywords.in_ar')</label>
@@ -317,15 +292,6 @@
                                 <span class="master_message inherit" id="yl_1"></span>
                             </div>
                           </div>
-
-                          <!-- <div class="col-sm-6 col-xs-12">
-                            <div class="master_field">
-                              <label class="master_label" for="video_2">@lang('keywords.you_tube') (2) @lang('keywords.in_en')</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" id="video_2" name="video[2]" value="{{ count($shop->shop_media) ? $shop->shop_media()->first()->getYoutubeLinks()[1] : '' }}">
-                              <span class="master_message inherit"></span>
-                            </div>
-                          </div> -->
-
                            <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="YouTube_video_en2">@lang('keywords.you_tube') (2) @lang('keywords.in_en')</label>
@@ -334,30 +300,6 @@
                                 <span class="master_message inherit" id="yl_4"></span>
                             </div>
                           </div>
-
-                          <!-- <div class="col-sm-6 col-xs-12"> 
-                            <div class="master_field">
-                              <label class="master_label" for="video_2_ar">@lang('keywords.you_tube') (2) @lang('keywords.in_ar')</label>
-                              <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" id="video_2_ar" name="video_ar[2]" value="{{ \Helper::getYoutubeLinks($shop->id, 2)[1] }}">
-                              <span class="master_message inherit"></span>
-<<<<<<< HEAD
-                            </div>
-                          </div>
-                          <div class="col-sm-6 col-xs-12 text-center"> 
-                            <h4>@lang('keywords.upload_image') (@lang('keywords.max_img')) @lang('keywords.in_en')</h4>
-                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                              <div class="main-section">
-                                <div id="fileList"></div>
-                                <div class="form-group">
-                                  <input class="inputfile inputfile-1" id="file-1" type="file" name="" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-1','fileList','Ar')" accept=".jpg,.png,.jpeg">
-                                  <label for="file-1"><span >Choose a file</span></label>
-                                  <input type="hidden" name="images" id="hidden_images_en">
-                                </div>
-=======
-                              <input class="master_input" title="please Enter valid Youtube Link" pattern="^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2_ar" name="video_ar[2]"><span class="master_message inherit">message content</span>
-                            </div>
-                          </div> -->
-
                             <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="YouTube_video_ar2">@lang('keywords.YouTube-ar-2')</label>
@@ -366,9 +308,7 @@
                                 <span class="master_message inherit" id="yl_3"></span>
                             </div>
                           </div>
-                          
                           <div class="col-sm-6 col-xs-12 text-center"> 
-                          
                           <h4>@lang('keywords.upload_image') (@lang('keywords.max_img')) @lang('keywords.in_en')</h4>
                           <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                             <div class="main-section">
@@ -376,7 +316,6 @@
                               <div class="form-group">
                                 <input class="inputfile inputfile-1" id="file-2" type="file" name="images_ar[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-2','fileList2','en')" accept=".jpg,.png,.jpeg">
                                 <label for="file-2"><span> Choose a file</span></label>
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
                               </div>
                             </div>
                           </div>
@@ -444,8 +383,6 @@
     function checkImageSize(listAr,listEn){
       error=0;
         let newList=listAr.concat(listEn)
-
-<<<<<<< HEAD
       $.each(newList,function(index,element){
             if(element.class == 'red-class'){
               error+=1;
@@ -460,20 +397,6 @@
             
             $("#horizontal-pill-steps").submit();
           }
-=======
-        $.each(newList,function(index,element){
-             if(element.class == 'red-class'){
-               error+=1;
-             }
-           });
-           if(error>0){
-             return true;
-           
-           }
-           else{
-             return false;
-           }
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
     }
 
     function updateList (inputID,outputID,listName) {
@@ -729,7 +652,7 @@
       },
       
        onFinishing:function test3(e){
-<<<<<<< HEAD
+
         var englishList = '';
         var arabicList  = '';
 
@@ -748,14 +671,7 @@
         // Check all images size
         checkImageSize(listAr,listEn);
 
-=======
-        if((! checkImageSize(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
-           $("#horizontal-pill-steps").submit();
-         }
-         else{
-          alert_msg("ERROR","Check Uploaded Images or Youtube Links")
-         }
->>>>>>> 109f18cb82e489aa08698bf5ba5fc7ef1ca4ac02
+
        },
       
     }).validate({
