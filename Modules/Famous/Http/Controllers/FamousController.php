@@ -48,6 +48,10 @@ class FamousController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
+        $images_ar = explode('-', $request->images_ar);
+        $images_en = explode('-', $request->images_en);
+        dd([$images_ar, $images_en]);
+
         $this->validate($request, [
             'place_name' => 'required|max:100',
             'lat' => 'required',
@@ -125,56 +129,122 @@ class FamousController extends Controller
 
             // Attach media
             $famous->media()->createMany([
-                ['media' => ($request->youtube_en ?: ''), 'type' => 2],
-                ['media' => ($request->youtube_ar ?: ''), 'type' => 2],
+                ['media' => ($request->youtube_en_1 ? : ''), 'type' => 2],
+                ['media' => ($request->youtube_en_2 ? : ''), 'type' => 2],
             ]);
 
+            /**
+             *  OLD METHOD TO STORE IMAGES
+             */
             // Check if there is any images or files and move them to public/events
             // Arabic Event Images
-            if ($request->hasfile('arabic_images')) {
+            // if ($request->hasfile('arabic_images')) {
 
-                // Setup every image
-                foreach ($request->file('arabic_images') as $image) {
-                    $name = time() . '_' . $image->getClientOriginalName();
-                    $image->move('famous_images/arabic', $name);
-                    $data_arabic[] = 'famous_images/arabic/' . $name;
+            //     // Setup every image
+            //     foreach ($request->file('arabic_images') as $image) {
+            //         $name = time() . '_' . $image->getClientOriginalName();
+            //         $image->move('famous_images/arabic', $name);
+            //         $data_arabic[] = 'famous_images/arabic/' . $name;
+            //     }
+
+            //     /** Arabic Images **/
+            //     if (isset($data_arabic) && !empty($data_arabic)) {
+            //         foreach ($data_arabic as $img_ar) {
+            //             $media = new FamousAttractionMedia;
+
+            //             $media->famous_attraction_id = $famous->id;
+            //             $media->media = $img_ar;
+            //             $media->type = 1;
+            //             $media->save();
+            //         }
+            //     }
+            // }
+
+            // // English Event Images
+            // if ($request->hasfile('english_images')) {
+
+            //     // Setup every image
+            //     foreach ($request->file('english_images') as $image) {
+            //         $name = time() . '_' . $image->getClientOriginalName();
+            //         $image->move('famous_images/english', $name);
+            //         $data_english[] = 'famous_images/english/' . $name;
+            //     }
+
+            //     /** English Images **/
+            //     if (isset($data_english) && !empty($data_english)) {
+            //         foreach ($data_english as $img_en) {
+            //             $media = new FamousAttractionMedia;
+
+            //             $media->famous_attraction_id = $famous->id;
+            //             $media->media = $img_en;
+            //             $media->type = 1;
+            //             $media->save();
+            //         }
+            //     }
+
+            // }
+
+            /**
+             *  NEW METHOD TO STORE BASE64 IMAGES
+             */
+            // Images
+            if (count($images_ar) > 0 || count($images_en) > 0) {
+
+                // update English images.
+                if (count($images_en) > 0) {
+
+                    // add new images
+                    foreach ($images_en as $image) {
+
+                        // check if image is new
+                        if (strpos($image, 'base64') !== false) {
+                            // get image extension
+                            preg_match('/image\/(.*)\;/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $ext = $match[1];
+                                $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
+                                $image = str_replace(' ', '+', $image);
+                                $imageName = 'famous_images/english/' . time() . '.' . $ext;
+                                \File::put(public_path() . '/' . $imageName, base64_decode($image));
+
+                                // store link in db
+                                $media = new FamousAttractionMedia;
+                                $media->famous_attraction_id = $famous->id;
+                                $media->media = $imageName;
+                                $media->type = 1;
+                                $media->save();
+
+                            }
+                        }
+                    }
+
                 }
 
-                /** Arabic Images **/
-                if (isset($data_arabic) && !empty($data_arabic)) {
-                    foreach ($data_arabic as $img_ar) {
-                        $media = new FamousAttractionMedia;
+                // update Arabic images.
+                if (count($images_ar) > 0) {
 
-                        $media->famous_attraction_id = $famous->id;
-                        $media->media = $img_ar;
-                        $media->type = 1;
-                        $media->save();
+                    // add new images
+                    foreach ($images_ar as $image) {
+
+                        // check if image is new
+                        if (strpos($image, 'base64') !== false) {
+                            // get image extension
+                            preg_match('/image\/(.*)\;/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $ext = $match[1];
+                                $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
+                                $image = str_replace(' ', '+', $image);
+                                $imageName = 'famous_images/arabic/' . time() . '.' . $ext;
+                                \File::put(public_path() . '/' . $imageName, base64_decode($image));
+
+                               // store link in db
+                               Helper::add_localization(19, 'link', $famous->id, ($imageName ? : ''), 2);
+                            }
+                        }
                     }
                 }
-            }
-
-            // English Event Images
-            if ($request->hasfile('english_images')) {
-
-                // Setup every image
-                foreach ($request->file('english_images') as $image) {
-                    $name = time() . '_' . $image->getClientOriginalName();
-                    $image->move('famous_images/english', $name);
-                    $data_english[] = 'famous_images/english/' . $name;
-                }
-
-                /** English Images **/
-                if (isset($data_english) && !empty($data_english)) {
-                    foreach ($data_english as $img_en) {
-                        $media = new FamousAttractionMedia;
-
-                        $media->famous_attraction_id = $famous->id;
-                        $media->media = $img_en;
-                        $media->type = 1;
-                        $media->save();
-                    }
-                }
-
             }
 
         } catch (\Exception $ex) {
@@ -185,9 +255,12 @@ class FamousController extends Controller
 
         // Insert Arabic values
         try {
-            Helper::add_localization(19, 'name', $famous->id, ($request->place_name_ar ?: 'بدون اسم'), 2);
-            Helper::add_localization(19, 'address', $famous->id, ($request->place_address_ar ?: 'بدون عنوان'), 2);
-            Helper::add_localization(19, 'other_info', $famous->id, ($request->other_info_ar ?: 'بدون معلومات اضافية'), 2);
+            Helper::add_localization(19, 'name', $famous->id, ($request->place_name_ar ? : 'بدون اسم'), 2);
+            Helper::add_localization(19, 'address', $famous->id, ($request->place_address_ar ? : 'بدون عنوان'), 2);
+            Helper::add_localization(19, 'other_info', $famous->id, ($request->other_info_ar ? : 'بدون معلومات اضافية'), 2);
+
+            Helper::add_localization(19, 'link', $famous->id, ($request->youtube_ar_1 ? : ''), 2);
+            Helper::add_localization(19, 'link', $famous->id, ($request->youtube_ar_2 ? : ''), 2);
 
         } catch (\Exception $ex) {
             Session::flash('warning', 'Arabic Error!');
@@ -211,6 +284,10 @@ class FamousController extends Controller
         $start = '';
         $end = '';
         $keyword = '';
+        $images_ar = [];
+        $images_en = [];
+        $youtube_ar = [];
+        $youtube_en = [];
 
         // Get categories
         foreach ($famous->categories as $cat) {
@@ -228,9 +305,45 @@ class FamousController extends Controller
 
         // get media
         $keyword = $request->lang == 'en' ? '%english%' : '%arabic%';
-        $image = $famous->media()->where('type', 1)->where('media', 'like', $keyword)->first() ? $famous->media()->where('type', 1)->where('media', 'like', $keyword)->first()->media : '';
-        $youtube_ar = $famous->media()->where('type', 2)->first() ? $famous->media()->where('type', 2)->first()->media : '';
-        $youtube_en = $famous->media()->where('type', 2)->orderBy('id', 'DESC')->first() ? $famous->media()->where('type', 2)->orderBy('id', 'DESC')->first()->media : '';
+
+        $images_ar_array = Helper::getLinks($famous->id, 2);
+        $images_en_array = $famous->media()->where('type', 1)->first() ? $famous->media()->where('type', 1)->get() : [];
+
+        $youtube_ar_array = Helper::getYoutubeLinks($famous->id, 2);
+        $youtube_en_array = $famous->media()->where('type', 2)->first() ? $famous->media()->where('type', 2)->get() : [];
+
+        if( count($youtube_ar_array) > 0 ) {
+            foreach($youtube_ar_array as $video) {
+                $youtube_ar[] = $video;
+            }
+        } else {
+            $youtube_ar = ['', ''];
+        }
+
+        if(count($youtube_en_array) > 0) {
+            foreach($youtube_en_array as $video) {
+                $youtube_en[] = $video->media;
+            }
+        } else {
+            $youtube_en = ['', ''];
+        }
+
+        if(count($images_ar_array) > 0) {
+            foreach($images_ar_array as $image) {
+                $images_ar[] = asset($image->value);
+            }
+        } else {
+            $images_ar = ['', ''];
+        }
+        
+        if(count($images_en_array) > 0 ) {
+            foreach($images_en_array as $image) {
+                $images_en[] = asset($image->media);
+            }
+        } else {
+            $images_en = ['', ''];
+        }
+
 
         $row = [
             'id' => $famous->id,
@@ -246,7 +359,8 @@ class FamousController extends Controller
             'info' => $request->lang == 'en' ? $famous->info : \Helper::localization('famous_attractions', 'other_info', $famous->id, 2, $famous->info),
             'is_active' => $famous->is_active,
             'categories' => $categories,
-            'image' => asset($image),
+            'images_ar'  => $images_ar,
+            'images_en'  => $images_en,
             'youtube_ar' => $youtube_ar,
             'youtube_en' => $youtube_en,
         ];
@@ -268,12 +382,12 @@ class FamousController extends Controller
             return redirect('/attractions');
         }
 
-        $data['image_ar'] = $data['famous']->media()->where('type', 1)->where('media', 'like', '%arabic%')->first() ? $data['famous']->media()->where('type', 1)->where('media', 'like', '%arabic%')->first()->media : '';
-        $data['image_en'] = $data['famous']->media()->where('type', 1)->where('media', 'like', '%english%')->first() ? $data['famous']->media()->where('type', 1)->where('media', 'like', '%english%')->first()->media : '';
+        $data['images_ar'] = Helper::getLinks($id, 2);
+        $data['images_en'] = $data['famous']->media()->where('type', 1)->first() ? $data['famous']->media()->where('type', 1)->get() : '';
 
-        $data['youtube_ar'] = $data['famous']->media()->where('type', 2)->first() ? $data['famous']->media()->where('type', 2)->first()->media : '';
-        $data['youtube_en'] = $data['famous']->media()->where('type', 2)->orderBy('id', 'DESC')->first() ? $data['famous']->media()->where('type', 2)->orderBy('id', 'DESC')->first()->media : '';
-
+        $data['youtube_ar'] = Helper::getYoutubeLinks($data['famous']->id, 2);
+        $data['youtube_en'] = $data['famous']->media()->where('type', 2)->first() ? $data['famous']->media()->where('type', 2)->get() : '';
+        // dd([$data['images_ar'], $data['images_en']]);
         return view('famous::edit', $data);
     }
 
@@ -285,6 +399,9 @@ class FamousController extends Controller
     public function update(Request $request)
     {
         // dd($request->all());
+        $images_en = explode('-', $request->images_en);
+        $images_ar = explode('-', $request->images_ar);
+
         $this->validate($request, [
             'place_name' => 'required|max:100',
             'lat' => 'required',
@@ -365,62 +482,165 @@ class FamousController extends Controller
             // Attach media
             $famous->media()->where('type', 2)->delete();
             $famous->media()->createMany([
-                ['media' => ($request->youtube_en ?: ''), 'type' => 2],
-                ['media' => ($request->youtube_ar ?: ''), 'type' => 2],
+                ['media' => ($request->youtube_en_1 ? : ''), 'type' => 2],
+                ['media' => ($request->youtube_en_2 ? : ''), 'type' => 2],
             ]);
 
-            // Check if there is any images or files and move them to public/events
-            // Arabic Event Images
-            if ($request->hasfile('arabic_images')) {
+            /**
+             *  OLD METHOD TO STORE IMAGES
+             */
+            // // Check if there is any images or files and move them to public/events
+            // // Arabic Event Images
+            // if ($request->hasfile('arabic_images')) {
 
-                // delete old images if new exists
-                $famous->media()->where('type', 1)->where('media', 'like', '%arabic%')->delete();
+            //     // delete old images if new exists
+            //     $famous->media()->where('type', 1)->where('media', 'like', '%arabic%')->delete();
 
-                // Setup every image
-                foreach ($request->file('arabic_images') as $image) {
-                    $name = time() . '_' . $image->getClientOriginalName();
-                    $image->move('famous_images/arabic', $name);
-                    $data_arabic[] = 'famous_images/arabic/' . $name;
+            //     // Setup every image
+            //     foreach ($request->file('arabic_images') as $image) {
+            //         $name = time() . '_' . $image->getClientOriginalName();
+            //         $image->move('famous_images/arabic', $name);
+            //         $data_arabic[] = 'famous_images/arabic/' . $name;
+            //     }
+
+            //     /** Arabic Images **/
+            //     if (isset($data_arabic) && !empty($data_arabic)) {
+            //         foreach ($data_arabic as $img_ar) {
+            //             $media = new FamousAttractionMedia;
+
+            //             $media->famous_attraction_id = $famous->id;
+            //             $media->media = $img_ar;
+            //             $media->type = 1;
+            //             $media->save();
+            //         }
+            //     }
+            // }
+
+            // // English Event Images
+            // if ($request->hasfile('english_images')) {
+
+            //     // delete old images if new exists
+            //     $famous->media()->where('type', 1)->where('media', 'like', '%english%')->delete();
+
+            //     // Setup every image
+            //     foreach ($request->file('english_images') as $image) {
+            //         $name = time() . '_' . $image->getClientOriginalName();
+            //         $image->move('famous_images/english', $name);
+            //         $data_english[] = 'famous_images/english/' . $name;
+            //     }
+
+            //     /** English Images **/
+            //     if (isset($data_english) && !empty($data_english)) {
+            //         foreach ($data_english as $img_en) {
+            //             $media = new FamousAttractionMedia;
+
+            //             $media->famous_attraction_id = $famous->id;
+            //             $media->media = $img_en;
+            //             $media->type = 1;
+            //             $media->save();
+            //         }
+            //     }
+
+            // }
+
+            /**
+             *  NEW METHOD TO STORE BASE64 STRING IMAGES
+             */
+            // Images
+            if (count($images_ar) > 0 || count($images_en) > 0) {
+
+                // update English images.
+                if (count($images_en) > 0) {
+
+                    // delete old media
+                    $famous->media()->delete();
+
+                    // add new images
+                    foreach ($images_en as $image) {
+
+                        // check if image exist
+                        if (strpos($image, 'famous_images') !== false) {
+
+                            // search for its name
+                            preg_match('/famous_images\/english\/(.*)/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $name = $match[0];
+
+                                // store link in db
+                                $media = new FamousAttractionMedia;
+                                $media->famous_attraction_id = $famous->id;
+                                $media->media = $name;
+                                $media->type = 1;
+                                $media->save();
+                            }
+
+                        }
+                    
+                        // check if image is new
+                        if (strpos($image, 'base64') !== false) {
+                            // get image extension
+                            preg_match('/image\/(.*)\;/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $ext = $match[1];
+                                $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
+                                $image = str_replace(' ', '+', $image);
+                                $imageName = 'famous_images/english/' . time() . '.' . $ext;
+                                \File::put(public_path() . '/' . $imageName, base64_decode($image));
+
+                                // store link in db
+                                $media = new FamousAttractionMedia;
+                                $media->famous_attraction_id = $famous->id;
+                                $media->media = $imageName;
+                                $media->type = 1;
+                                $media->save();
+
+                            }
+                        }
+                    }
+
                 }
 
-                /** Arabic Images **/
-                if (isset($data_arabic) && !empty($data_arabic)) {
-                    foreach ($data_arabic as $img_ar) {
-                        $media = new FamousAttractionMedia;
+                // update Arabic images.
+                if (count($images_ar) > 0) {
+                    // delete old ones
+                    Helper::remove_localization(19, 'link', $famous->id, 2);
 
-                        $media->famous_attraction_id = $famous->id;
-                        $media->media = $img_ar;
-                        $media->type = 1;
-                        $media->save();
+                    // add new images
+                    foreach ($images_ar as $image) {                            
+                        // check if image exist
+                        if (strpos($image, 'famous_images') !== false) {
+                            // search for its name
+                            preg_match('/famous_images\/arabic\/(.*)/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $name = $match[0];
+
+                                // store link in db
+                               Helper::add_localization(19, 'link', $famous->id, ($name ? : ''), 2);
+                            }
+
+                        }
+
+                        // check if image is new
+                        if (strpos($image, 'base64') !== false) {
+                            // get image extension
+                            preg_match('/image\/(.*)\;/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $ext = $match[1];
+                                $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
+                                $image = str_replace(' ', '+', $image);
+                                $imageName = 'famous_images/arabic/' . time() . '.' . $ext;
+                                \File::put(public_path() . '/' . $imageName, base64_decode($image));
+
+                               // store link in db
+                               Helper::add_localization(19, 'link', $famous->id, ($imageName ? : ''), 2);
+                            }
+                        }
                     }
                 }
-            }
-
-            // English Event Images
-            if ($request->hasfile('english_images')) {
-
-                // delete old images if new exists
-                $famous->media()->where('type', 1)->where('media', 'like', '%english%')->delete();
-
-                // Setup every image
-                foreach ($request->file('english_images') as $image) {
-                    $name = time() . '_' . $image->getClientOriginalName();
-                    $image->move('famous_images/english', $name);
-                    $data_english[] = 'famous_images/english/' . $name;
-                }
-
-                /** English Images **/
-                if (isset($data_english) && !empty($data_english)) {
-                    foreach ($data_english as $img_en) {
-                        $media = new FamousAttractionMedia;
-
-                        $media->famous_attraction_id = $famous->id;
-                        $media->media = $img_en;
-                        $media->type = 1;
-                        $media->save();
-                    }
-                }
-
             }
 
         } catch (\Exception $ex) {
@@ -431,9 +651,12 @@ class FamousController extends Controller
 
         // Update Arabic values
         try {
-            Helper::edit_entity_localization('famous_attractions', 'name', $famous->id, 2, ($request->place_name_ar ?: 'بدون اسم'));
-            Helper::edit_entity_localization('famous_attractions', 'address', $famous->id, 2, ($request->place_address_ar ?: 'بدون عنوان'));
-            Helper::edit_entity_localization('famous_attractions', 'other_info', $famous->id, 2, ($request->other_info_ar ?: 'بدون معلومات اضافية'));
+            Helper::edit_entity_localization('famous_attractions', 'name', $famous->id, 2, ($request->place_name_ar ? : 'بدون اسم'));
+            Helper::edit_entity_localization('famous_attractions', 'address', $famous->id, 2, ($request->place_address_ar ? : 'بدون عنوان'));
+            Helper::edit_entity_localization('famous_attractions', 'other_info', $famous->id, 2, ($request->other_info_ar ? : 'بدون معلومات اضافية'));
+
+            Helper::add_localization(19, 'link', $famous->id, ($request->youtube_ar_1 ? : ''), 2);
+            Helper::add_localization(19, 'link', $famous->id, ($request->youtube_ar_2 ? : ''), 2);
 
         } catch (\Exception $ex) {
             Session::flash('warning', 'Arabic Error!');

@@ -414,6 +414,7 @@
                     <div class="form-group">
                       <input class="inputfile inputfile-1" id="file-1" type="file" name="arabic_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-1','fileList','Ar')" accept=".jpg,.png,.jpeg">
                       <label for="file-1"><span>Choose a file</span></label>
+                      <input type="hidden" name="images_ar" id="images_ar">
                     </div>
                   </div>
                 </div>
@@ -428,6 +429,7 @@
                     <div class="form-group">
                       <input class="inputfile inputfile-1" id="file-2" type="file" name="english_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-2','fileList2','en')" accept=".jpg,.png,.jpeg">
                       <label for="file-2"><span>Choose a file</span></label>
+                      <input type="hidden" name="images_en", id="images_en">
                     </div>
                   </div>
                 </div>
@@ -678,6 +680,23 @@
       
        onFinishing:function test3(e){
         if((! checkImageSize(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
+            var images_ar = '';
+            var images_en = '';
+
+            // concatinate base64 strings
+            for(i=0; i<listAr.length; i++) {
+                images_ar += '-' + listAr[i].image;
+            }
+
+            // concatinate base64 strings
+            for(i=0; i<listEn.length; i++) {
+                images_en += '-' + listEn[i].image;
+            }
+
+            // append image list to hidden inputs
+            $("#images_ar").val(images_ar);
+            $("#images_en").val(images_en);
+        
            $("#horizontal-pill-steps").submit();
          }
          else{

@@ -261,32 +261,7 @@
             <div class="container-fluid">
 
               {{-- Start alert messages --}}
-              <div class="col-lg-12 text-center">
-                @if (Session::has('success'))
-                  <div class="alert text-center" style="background-color: #2ecc71; color: white; padding: 10px; margin-top: 20px;">
-                    <b>{{ Session::get('success') }}</b>
-                  </div>
-                @endif
-
-                @if (Session::has('warning'))
-                  <div class="alert text-center" style="background-color: #f39c12; color: white; padding: 10px; margin-top: 20px;">
-                    <b>{{ Session::get('warning') }}</b>
-                  </div>
-                @endif
-
-                @if (Session::has('error'))
-                  <div class="alert text-center" style="background-color: #c0392b; color: white; padding: 10px; margin-top: 20px;">
-                    <b>{{ Session::get('error') }}</b>
-                  </div>
-                @endif
-
-                @foreach ($errors->all() as $error)
-                    <div class="alert alert-danger text-center" style="background-color: #c0392b; color: white; padding: 10px; margin-top: 20px;">
-                      <b>{{ $error }}</b>
-                    </div>
-                @endforeach
-
-              </div>
+              @include('layouts.alerts')
               {{-- End alert --}}
 
               {{-- yield data --}}

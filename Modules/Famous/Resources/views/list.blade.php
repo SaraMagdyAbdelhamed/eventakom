@@ -359,163 +359,7 @@
                         <td><span class="cellcontent" id="other_info"></span></td>
                       </tr>
                     </table>
-                    <div class="remodal log-custom" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-                      <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-                      <div>
-                        <h2 class="title">title of the changing log in</h2>
-                        <div class="log-content">
-                          <div class="log-container">
-                            <table class="log-table">
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <th>log title</th>
-                                <th>user</th>
-                                <th>time</th>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>January</td>
-                                <td>$100</td>
-                                <td>$100</td>
-                              </tr>
-                              <tr class="log-row" data-link="https://www.google.com.eg/">
-                                <td>February</td>
-                                <td>$80</td>
-                                <td>$80</td>
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                   
                   </div>
                   <div class="clearfix"></div>
                 </div>
@@ -526,15 +370,16 @@
                     <h5 class="text-left">images</h5>
                   </div>
                   <div class="col-xs-12">
-                    <div class="slideperview" id="slider--3">
-                      <div class="swiper-container">
-                        <img class="full-size" id="image_modal">
+                      <div class="slideperview" id="slider--3">
+                          <div class="swiper-container">
+                          <div class="swiper-wrapper">
 
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-button-next swiper-button-white"></div>
-                        <div class="swiper-button-prev swiper-button-white"> </div>
+                          </div>
+                          <div class="swiper-pagination"></div>
+                          <div class="swiper-button-next swiper-button-white"></div>
+                          <div class="swiper-button-prev swiper-button-white"> </div>
+                          </div>
                       </div>
-                    </div>
                   </div>
                   <div class="clearfix"></div>
                 </div>
@@ -543,12 +388,12 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                      <iframe id="youtube_ar" width="420" height="315" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                      <iframe id="youtube_1" width="420" height="315" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                   <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
-                      <iframe id="youtube_en" width="420" height="315" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                      <iframe id="youtube_2" width="420" height="315" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                   </div>
                 </div>
               </li>
@@ -696,7 +541,7 @@
 
             // On success, set retrieved data to edit input fields
             success: function (data)
-            { console.log(data);
+            { 
 
                 // Get data from JSON object & assign it to the HTML elements.
                 $("#place_title").text(data.name);
@@ -717,7 +562,15 @@
                     $("#is_active").addClass('fa icon-in-table-false fa-times');
                 }
 
-                $("#image_modal").attr("src", data.image);
+                @if( App::isLocale('en') )
+                  for(i=0; i<data.images_en.length; i++) {
+                    $(".swiper-wrapper").append('<img class="full-size img_slider" src="' + data.images_en[i] + '">');
+                  }
+                @else
+                  for(i=0; i<data.images_ar.length; i++) {
+                    $(".swiper-wrapper").append('<img class="full-size img_slider" src="' + data.images_ar[i] + '">');
+                  }
+                @endif
 
                 // get youtube URLs from JSON object
                 var youtube_ar = data.youtube_ar;
@@ -726,21 +579,39 @@
                 // change youtube URL that it was copied & pasted from browser URL to the embeded format.
                 // the difference between the regular youtube URL and youtube embedded URL in just in `watch?v=` 
                 // so we will replace it with the `embed/` keyword to be embedded in the HTML elements.
-                var youtube_ar_embed = youtube_ar.replace('watch?v=', 'embed/');
-                var youtube_en_embed = youtube_en.replace('watch?v=', 'embed/');
 
                 // set formated youtube URLs to the HTML elements.
-                $("#youtube_ar").attr("src", youtube_ar_embed);
-                $("#youtube_en").attr("src", youtube_en_embed);
+                @if( App::isLocale('en') )
+                  $("#youtube_1").attr("src", youtube_en[0].replace('watch?v=', 'embed/'));
+                  $("#youtube_2").attr("src", youtube_en[1].replace('watch?v=', 'embed/'));
+                @else 
+                  $("#youtube_1").attr("src", youtube_ar[0].replace('watch?v=', 'embed/'));
+                  $("#youtube_2").attr("src", youtube_ar[1].replace('watch?v=', 'embed/'));  
+                @endif
 
             },
                 error: function(response) {
-                console.log( response.responseJSON );
             }
         });
 
 
     });
+</script>
+
+<script type="text/javascript">
+  var swiper = new Swiper('.slideperview .swiper-container', {
+      pagination: '.swiper-pagination',
+      slidesPerView: 4,
+      paginationClickable: true,
+      spaceBetween: 5,
+      nextButton: '.swiper-button-next',
+      prevButton: '.swiper-button-prev',
+      autoplay: 2500,
+      keyboardControl: true,
+      loop: true,
+      autoplayDisableOnInteraction: false,
+      mousewheelControl: false,
+  });
 </script>
 {{-- End Scripts --}}
 

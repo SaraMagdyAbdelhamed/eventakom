@@ -101,43 +101,53 @@
                         <table class="verticaltable table-master">
                         <tr>
                             <th><span class="cellcontent">@lang('keywords.placeName')</span></th>
-                            <td><span class="cellcontent">El batraa jordan</span></td>
+                            <td><span class="cellcontent">{{ $shop->name ? : '' }}</span></td>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <th><span class="cellcontent">@lang('keywords.placeCategories')</span></th>
-                            <td><span class="cellcontent">historical</span></td>
-                        </tr>
+                            <td><span class="cellcontent">{{ $shop-> }}</span></td>
+                        </tr> --}}
                         <tr>
                             <th><span class="cellcontent">@lang('keywords.placePhone')</span></th>
-                            <td><span class="cellcontent">0123456789</span></td>
+                            <td><span class="cellcontent">{{ $shop->phone ? : '' }}</span></td>
                         </tr>
                         <tr>
-                            <th><span class="cellcontent">@lang('keywords.email')</span></th>
-                            <td><span class="cellcontent">&lt;a href = &quot;#.html&quot;&gt;www.google.com&lt;/a&gt;</span></td>
+                            <th><span class="cellcontent">@lang('keywords.website')</span></th>
+                            <td>
+                                <span class="cellcontent">
+                                    <a href="{{ $shop->website ? : '' }}">{{ $shop->website ? : '' }}</a>
+                                </span>
+                            </td>
                         </tr>
                         <tr>
                             <th><span class="cellcontent">@lang('keywords.openday')</span></th>
-                            <td><span class="cellcontent">sat,sun,mon,tue</span></td>
+                            <td>
+                                <span class="cellcontent">
+                                    @foreach (@$shop->days as $day)
+                                        {{ $day->name }}
+                                    @endforeach
+                                </span>
+                            </td>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <th><span class="cellcontent">@lang('keywords.Startdate/time')</span></th>
                             <td><span class="cellcontent">12:00PM</span></td>
                         </tr>
                         <tr>
                             <th><span class="cellcontent">@lang('keywords.End date/time')</span></th>
                             <td><span class="cellcontent">12:00AM</span></td>
-                        </tr>
+                        </tr> --}}
                         <tr>
                             <th><span class="cellcontent">@lang('keywords.status')</span></th>
-                            <td><span class="cellcontent">&lt;i class = &quot;fa icon-in-table-true fa-check&quot;&gt;&lt;/i&gt;</span></td>
+                            <td><i class ="fa icon-in-table-true {{ $shop->is_active ? 'fa-check' : 'fa-times' }}"></td>
                         </tr>
                         <tr>
                             <th><span class="cellcontent">@lang('keywords.otherInfo')</span></th>
-                            <td><span class="cellcontent">other info other info</span></td>
+                            <td><span class="cellcontent">{{ $shop->info ? : '' }}</span></td>
                         </tr>
                         <tr>
                             <th><span class="cellcontent">@lang('keywords.address')</span></th>
-                            <td><span class="cellcontent">jordan</span></td>
+                            <td><span class="cellcontent">{{ $shop->address ? : '' }}</span></td>
                         </tr>
                         </table>
 

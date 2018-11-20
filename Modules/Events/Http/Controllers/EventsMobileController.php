@@ -65,10 +65,26 @@ class EventsMobileController extends Controller
     }
 
     public function event_filter(Request $request)
-    {dd(1);
+    {
+        if (isset($request->startdate_from) && !empty($request->startdate_from)) {
+            $request->startdate_from = str_replace('/', '-', $request->startdate_from);
+        }
+
+        if (isset($request->startdate_to) && !empty($request->startdate_to)) {
+            $request->startdate_to = str_replace('/', '-', $request->startdate_to);
+        }
+
+        if (isset($request->enddate_from) && !empty($request->enddate_from)) {
+            $request->enddate_from = str_replace('/', '-', $request->enddate_from);
+        }
+
+        if (isset($request->enddate_to) && !empty($request->enddate_to)) {
+            $request->enddate_to = str_replace('/', '-', $request->enddate_to);
+        }
+
         if (isset($request->categories)) {
             $data['current_events'] = $events = EventMobile::whereHas('categories', function ($q) use ($request) {
-                $q->whereIn('event_categories.interest_id', $request->categories);
+                $q->whereIn('interests.id', $request->categories);
                 $q->where('is_backend', '=', 0);
                 $q->where('event_status_id', 2);
 
@@ -76,12 +92,12 @@ class EventsMobileController extends Controller
 
                     $from_date = date('Y-m-d', strtotime($request->startdate_from));
                     $to_date = Carbon::now()->format('Y-m-d');
-                    $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
+                    $q->whereBetween('start_datetime', array($from_date, $to_date));
                 } elseif (isset($request->startdate_from) && isset($request->startdate_to)) {
 
                     $from_date = Carbon::parse($request->startdate_from);
                     $to_date = Carbon::parse($request->startdate_to);
-                    $q->whereBetween('start_datetime', array($from_date, $to_date))->get();
+                    $q->whereBetween('start_datetime', array($from_date, $to_date));
 
                 }
 
@@ -90,15 +106,15 @@ class EventsMobileController extends Controller
                     $from_date = Carbon::now()->format('Y-m-d');
                     $to_date = date('Y-m-d', strtotime($request->endtdate_to));
 
-                    $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
+                    $q->whereBetween('end_datetime', array($from_date, $to_date));
                 } elseif (isset($request->enddate_from) && isset($request->enddate_to)) {
 
                     $from_date = date('Y-m-d', strtotime($request->enddate_from));
                     $to_date = date('Y-m-d', strtotime($request->enddate_to));
-                    $q->whereBetween('end_datetime', array($from_date, $to_date))->get();
+                    $q->whereBetween('end_datetime', array($from_date, $to_date));
 
                 }
-                $q->whereIn('event_categories.interest_id', $request->categories);
+
                 $q->select('events.*');
                 if (isset($request->status)) {
                     $q->whereIn('is_active', $request->status);
@@ -564,25 +580,31 @@ class EventsMobileController extends Controller
     {
         $id = $request['event_id'];
         $rejected = EventMobile::find($id);
-        $rejected->update(['event_status_id' => 3, 'rejection_reason' => $request['reason']]);
+        $rejected->update([
+            'event_status_id' => 3, 
+            'rejection_reason' => $request['reason']
+        ]);
+
       // arabic rejection reson "instead of these 5 lines later we can create function in EntityLocalization model takes these 4 parameters and return 1"
         $reason_ar = new EntityLocalization;
         $reason_ar->entity_id = 4;
         $reason_ar->field = 'rejection_reason';
         $reason_ar->item_id = $id;
         $reason_ar->value = $request['reason_ar'];
+
         if ($rejected->save() && $reason_ar->save()) {
+
             $response = array(
                 'status' => 'success',
                 'msg' => 'Event rejected successfully',
             );
-       //send Notification to Event Owner
+
+            //send Notification to Event Owner
             $event_owner = $rejected->user;
             if ($event_owner) {
                 $notification_message['en'] = 'YOUR EVENT IS Rejected';
                 $notification_message['ar'] = 'لم يتم الموافقة على الحدث';
-                $notifcation = $this->NotifcationService->save_notification($notification_message, 4, 4, $rejected->id);
-                $this->NotifcationService->PushToSingleUser($event_owner, $notifcation);
+                $notifcation = $this->NotifcationService->save_notification($notification_message, 4, 4, $rejected->id, $event_owner->id);
             }
 
       //  return Response::json($response);

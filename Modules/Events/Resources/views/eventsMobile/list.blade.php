@@ -1249,18 +1249,27 @@
 
        //ajax submit
 
-        $('#reject_form').on('submit', function(e) {
-       e.preventDefault(); 
-       var _token = '{{csrf_token()}}';
-       var reason_ar = $('#ID_No-12').val();
-       var reason = $('#ID_No-15').val();
-       var event_id = $('#eventID').val();
+      $('#reject_form').on('submit', function(e) {
+
+        e.preventDefault(); 
+        var _token = '{{csrf_token()}}';
+        var reason_ar = $('#ID_No-12').val();
+        var reason = $('#ID_No-15').val();
+        var event_id = gEventId;
        $.ajax({
            type: "POST",
-           url: '{{ url('event_reject') }}',
+           url: "{{ url('event_reject') }}",
            data: {_token: _token ,reason_ar:reason_ar, reason:reason, event_id:event_id},
            success: function( msg ) {
-               $("#reject_form").append("<div>"+msg.msg+"</div>");
+            swal({
+            title: "Success",
+            text: msg.msg,
+            type: "success",
+            showCancelButton: true,
+            confirmButtonColor: '#281160',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnConfirm: false
+          });
 
            // document.getElementById('reject-submit').disabled = true;   
                window.location.replace("{{ url('events/mobile') }}");
