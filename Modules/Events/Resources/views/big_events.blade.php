@@ -70,7 +70,10 @@
         </div>
       </div>
         <button class="remodal-confirm col-sm-4" id="submitOrder" type="submit">@lang('keywords.save')</button>
+       
+        
       <div class="clearfix"></div>
+
 
     </div>
   </div>
@@ -138,6 +141,45 @@ $('#multiselect_to option').each(function(){
 }   
 
 function saveSort(e) { 
+
+  
+    if ( !($('#multiselect_to').has('option').length > 0)) {
+           var title = "{{ \App::isLocale('en') ? 'Are you sure you?' : 'هل أنت متأكد؟' }}";
+    //  var text  = "{{ \App::isLocale('en') ? 'You wont be able to fetch this information later!' : 'لن تستطيع إسترجاع هذه المعلومة لاحقا' }}";
+  var text  = "You won't Save any Big Event!";
+      swal({
+      title: title,
+      text: text,
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#281160',
+      confirmButtonText: "{{ \App::isLocale('en') ? 'Yes!' : 'نعم ' }}",
+      cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
+      closeOnConfirm: true
+      },
+      function(isConfirm){
+          if (isConfirm){
+
+           var _token = '{{csrf_token()}}';
+    $.ajax({
+      type: 'POST',
+      url: '{{url('bigevents_remove')}}',
+      data: { _token: _token},
+      success: function (data) {
+        $( "#form_message" ).remove();
+        $(".form-message").append(data);
+        $( "#form_message" ).delay(1000).fadeToggle( "slow", "linear" );
+        $('#multiselect_to option').remove();
+        //values_post = new Array();
+        
+      }
+    });
+          } else {
+              swal("تم الإلغاء", "المعلومات مازالت موجودة :)", "error");
+          }
+      });
+    
+    } else{
   if (typeof values_post !== 'undefined' && values_post.length > 0) {
 
   
@@ -159,6 +201,8 @@ var _token = '{{csrf_token()}}';
  alert("@lang('keywords.sortThenSave')");
   //validate();
      }
+
+   } //end else multiselect_to not empty
 }
 
 $('#multiselect_rightSelected').click(validate);
@@ -174,5 +218,30 @@ document.getElementById('multiselect_to').ondblclick = function(){
 
 };
 $('#submitOrder').click(saveSort);
+
+
+function bigEventsRemove(e) { 
+
+
+  
+var _token = '{{csrf_token()}}';
+    $.ajax({
+      type: 'POST',
+      url: '{{url('bigevents_remove')}}',
+      data: { _token: _token},
+      success: function (data) {
+        $( "#form_message" ).remove();
+        $(".form-message").append(data);
+        $( "#form_message" ).delay(1000).fadeToggle( "slow", "linear" );
+        $('#multiselect_to option').remove();
+        //values_post = new Array();
+        
+      }
+    });
+  }
+
+
+
+$('#bigEventsRemove').click(bigEventsRemove);
    </script>
 @endsection @endsection
