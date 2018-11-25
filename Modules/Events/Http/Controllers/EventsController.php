@@ -657,6 +657,13 @@ class EventsController extends Controller
         // ->with('categories', EventCategory::all());
     }
 
+     public function bigevents_remove(Request $request)
+    {
+     
+        BigEvent::truncate();
+        return response()->json(trans('keywords.orderRemoved'));
+    }
+
     public function bigevents_post_old(Request $request)
     {
         $ids = $request['big_events'];

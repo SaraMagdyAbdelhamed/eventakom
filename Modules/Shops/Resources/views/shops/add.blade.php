@@ -55,13 +55,13 @@
                           <div class="col-xs-6">
                             <div class="master_field ">
                               <label class="master_label mandatory" for="Place_name">@lang('keywords.shop_name')</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" require id="Place_name" name="place_name"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars" require id="Place_name" name="place_name">
                             </div>
                           </div>
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label mandatory" for="Place_name">@lang('keywords.shop_name_arabic')</label>
-                              <input class="master_input" require type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" require type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar">
                             </div>
                           </div>
                            <div class="col-xs-5">
@@ -86,7 +86,7 @@
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Website">@lang('keywords.website')</label>
-                              <input class="master_input" type="url" placeholder="www.domain.com"  id="Website" name="website"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="url" placeholder="www.domain.com"  id="Website" name="website">
                             </div>
                           </div>
                           <div class="col-xs-4">
@@ -204,7 +204,7 @@
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label mandatory" for="Place_name">Place name</label>
-                              <input class="master_input" type="text" placeholder="ex:city stars" require id="Place_name"><span class="master_message color--fadegreen">validation message will be here</span>
+                              <input class="master_input" type="text" placeholder="ex:city stars" require id="Place_name">
                             </div>
                           </div>
                           <div class="col-xs-6">
@@ -217,7 +217,7 @@
                             <div class="col-sm-6 col-xs-12">
                               <div class="master_field">
                                 <label class="master_label" for="branches_1">branch 1 name</label>
-                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1"><span class="master_message color--fadegreen">validation message will be here</span>
+                                <input class="master_input" type="text" placeholder="branch 1 name" Required id="branches_1">
                               </div>
                             </div>
                           </div>

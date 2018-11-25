@@ -230,6 +230,10 @@
          'orderSaved'    => ' <div class="alert text-center" id="form_message" style="background-color: #2ecc71; color: white; padding: 10px; margin-top: 40px;">
                     <b>تم حفظ الترتيب بنجاح</b>
                   </div>',
+		'orderRemoved'    => ' <div class="alert text-center" id="form_message" style="background-color: #2ecc71; color: white; padding: 10px; margin-top: 40px;">
+                    <b>تم مسح كل الأحداث الهامة بنجاح</b>
+                  </div>',	
+         'confirmRemove'    => '!لن تقوم بحفظ أي حدث هام',				  
 		'bigevents_description'    => 'يتم من خلال هذه الشاشة تحديد الاحداث الهامة و التي ستعرض على تطبيق الهاتف كما يتم ترتيبها ، يتم اختيار بحد أقصى 5 أحداث هامة ',
     
 	     'All Events'    => 'كل الاحداث',

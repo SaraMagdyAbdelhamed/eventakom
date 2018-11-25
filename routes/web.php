@@ -155,6 +155,7 @@ Route::group(['middleware' => ['auth', 'locale']], function ($lang = null) {
     Route::middleware(['auth', 'Rule:Super Admin'])->group(function ($lang = null) {
         Route::get('/events/big_events', '\Modules\Events\Http\Controllers\EventsController@big_events')->name('big_events');
         Route::post('/bigevents_post', '\Modules\Events\Http\Controllers\EventsController@bigevents_post')->name('bigevents_post');
+        Route::post('/bigevents_remove', '\Modules\Events\Http\Controllers\EventsController@bigevents_remove')->name('bigevents_remove');
         Route::post('/bigevents_select/{value}', '\Modules\Events\Http\Controllers\EventsController@bigevents_select')->name('bigevents_select');
 
     //Statistics
