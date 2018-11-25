@@ -8,6 +8,10 @@
 
 namespace Modules\Events\Http\Controllers;
 
+use Session;
+use Helper;
+use Carbon\Carbon;
+
 use App\Age_Ranges;
 use App\BigEvent;
 use App\Currency;
@@ -18,7 +22,6 @@ use App\EventMedia;
 use App\EventTicket;
 use App\Genders;
 use App\Library\Services\NotificationsService;
-use Helper;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -26,7 +29,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Session;
+
 
 class EventsController extends Controller
 {
@@ -73,51 +76,8 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        // return response()->json(['data' => $request->all()]);
-        // dd($request->all());
-        // dd($_FILES);
-
-        // Validate incoming request inputs with the following validation rules.
-        // $this->validate($request, [
-        //     'english_event_name' => 'required|min:2|max:100',
-        //     'english_description' => 'required|min:2|max:250',
-        //     'lat' => 'required',
-        //     'lng' => 'required',
-        //     'english_venu' => 'required|min:2|max:50',
-        //     'english_hashtags' => 'required',
-        //     'gender' => 'required',
-        //     'age_range' => 'required',
-        //     'start_date' => 'required',
-        //     'start_time' => 'required',
-        //     'end_date' => 'required',
-        //     'end_time' => 'required',
-        //     'categories' => 'required',
-
-        //     'arabic_event_name' => ($request->arabic_event_name ? 'min:2|max:100' : ''),
-        //     'arabic_description' => ($request->arabic_description ? 'sometimes|min:2|max:250' : ''),
-        //     // 'arabic_venu' => 'required|',
-        //     // 'arabic_hashtags' => 'required|',
-
-        //     'is_paid' => 'required',
-        //     'price' => ($request->price ? 'sometimes|numeric' : ''),
-        //     'currency' => ($request->currency ? 'sometimes|numeric' : ''),
-        //     'number_of_tickets' => ($request->number_of_tickets ? 'numeric' : ''),
-
-        //     'website' => 'required',
-        //     'email' => 'required',
-        //     'code_number' => 'required',
-        //     'mobile_number' => 'required',
-
-        //     // 'youtube_ar_1' => 'required|',
-        //     // 'youtube_en_1' => 'required|',
-        //     // 'youtube_ar_2' => 'required|',
-        //     // 'youtube_en_2' => 'required|',
-        //     // 'arabic_images'         => 'max:5',
-        //     // 'arabic_images.*'       => 'max:5',
-        //     // 'english_images'        => 'max:5',
-        //     // 'english_images.*'      => 'max:5'
-        // ]);
-
+        $start_date = str_replace('/', '-', $request->start_date);
+        $end_date   = str_replace('/', '-', $request->end_date);
 
         // Insert Event in events table
         try {
@@ -134,10 +94,10 @@ class EventsController extends Controller
             $event->gender_id = $request->gender;
 
             // concatinate start_date + start_time to make them start_datetime
-            $event->start_datetime = date('Y-m-d', strtotime($request->start_date)) . ' ' . date('h:i:s', strtotime($request->start_time));
+            $event->start_datetime = Carbon::parse( $start_date .' '. $request->start_time);
 
             // concatinate end_date + end_time to make them end_datetime
-            $event->end_datetime = date('Y-m-d', strtotime($request->end_date)) . ' ' . date('h:i:s', strtotime($request->end_time));
+            $event->end_datetime = Carbon::parse($end_date . ' ' . $request->end_time);
 
             $event->suggest_big_event = $request->is_big_event ?: 0; // check if value is missing then replace it with zero
             $event->is_active = $request->is_active ?: 0; // check if value is missing then replace it with zero
@@ -349,50 +309,8 @@ class EventsController extends Controller
      */
     public function update(Request $request)
     {
-        // return response()->json(['data' => $request->all()]);
-        // dd($request->all());
-        // dd($_FILES);
-
-        // Validate incoming request inputs with the following validation rules.
-        // $this->validate($request, [
-        //     'english_event_name' => 'required|min:2|max:100',
-        //     'english_description' => 'required|min:2|max:250',
-        //     'lat' => 'required',
-        //     'lng' => 'required',
-        //     'english_venu' => 'required|min:2|max:50',
-        //     'english_hashtags' => 'required',
-        //     'gender' => 'required',
-        //     'age_range' => 'required',
-        //     'start_date' => 'required',
-        //     'start_time' => 'required',
-        //     'end_date' => 'required',
-        //     'end_time' => 'required',
-        //     'categories' => 'required',
-
-        //     'arabic_event_name' => ($request->arabic_event_name ? 'min:2|max:100' : ''),
-        //     'arabic_description' => ($request->arabic_description ? 'sometimes|min:2|max:250' : ''),
-        //     // 'arabic_venu' => 'required|',
-        //     // 'arabic_hashtags' => 'required|',
-
-        //     'is_paid' => 'required',
-        //     'price' => ($request->price ? 'sometimes|numeric' : ''),
-        //     'currency' => ($request->currency ? 'sometimes|numeric' : ''),
-        //     'number_of_tickets' => ($request->number_of_tickets ? 'numeric' : ''),
-
-        //     'website' => 'required',
-        //     'email' => 'required',
-        //     'code_number' => 'required',
-        //     'mobile_number' => 'required',
-
-        //     // 'youtube_ar_1' => 'required|',
-        //     // 'youtube_en_1' => 'required|',
-        //     // 'youtube_ar_2' => 'required|',
-        //     // 'youtube_en_2' => 'required|',
-        //     // 'arabic_images'         => 'max:5',
-        //     // 'arabic_images.*'       => 'max:5',
-        //     // 'english_images'        => 'max:5',
-        //     // 'english_images.*'      => 'max:5'
-        // ]);
+        $start_date = str_replace('/', '-', $request->start_date);
+        $end_date   = str_replace('/', '-', $request->end_date);
 
         // Insert Event in events table
         try {
@@ -409,10 +327,10 @@ class EventsController extends Controller
             $event->gender_id = $request->gender;
 
             // concatinate start_date + start_time to make them start_datetime
-            $event->start_datetime = date('Y-m-d', strtotime($request->start_date)) . ' ' . date('h:i:s', strtotime($request->start_time));
+            $event->start_datetime = Carbon::parse($start_date .' '. $request->start_time);
 
             // concatinate end_date + end_time to make them end_datetime
-            $event->end_datetime = date('Y-m-d', strtotime($request->end_date)) . ' ' . date('h:i:s', strtotime($request->end_time));
+            $event->end_datetime = Carbon::parse($end_date .' '. $end_time);
 
             $event->suggest_big_event = $request->is_big_event ?: 0; // check if value is missing then replace it with zero
             $event->is_active = $request->is_active ?: 0; // check if value is missing then replace it with zero

@@ -8,8 +8,8 @@ use App\Users;
 class NotificationsService
 {
 
-	
-    
+
+
     public function save_notification($message,$type,$entity_id, $item_id,$user_id){
         $notification = new Notification();
         $notification->msg = $message['en'];
@@ -24,12 +24,12 @@ class NotificationsService
     }
 
     /**
-    * General function to push to Andriod Devices 
+    * General function to push to Andriod Devices
     *
     *
     */
     public  function PushAndroid($message,$device_token){
-        
+
         $registrationIds = array( $device_token );
         // prep the bundle
         $msg = array
@@ -48,15 +48,15 @@ class NotificationsService
             'registration_ids'  => $registrationIds,
             'data'          => $msg
         );
-         
+
         $headers = array
         (
             'Authorization: key=' . env('API_ACCESS_KEY'),
             'Content-Type: application/json'
         );
-         
+
         $ch = curl_init();
-        curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );      
+        curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
         curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
         curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
         curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
@@ -68,10 +68,10 @@ class NotificationsService
     }
 
     /**
-    * General function to push to IOS Devices 
+    * General function to push to IOS Devices
     *
     *
-    */    
+    */
 
     public   function PushIos($message, $token, $production = false, $item_id)
     {
@@ -81,7 +81,7 @@ class NotificationsService
         $passphrase = 'Dawa2y';
 
         // Put your alert message here:
-        $message = $message; 
+        $message = $message;
         $url = "penta-test.com";
 
         if (!$message || !$url)
@@ -140,7 +140,7 @@ class NotificationsService
 
         // Close the connection to the server
         fclose($fp);
-    } 
+    }
 
 
     public function EventInterestsPush($event){
@@ -164,15 +164,14 @@ class NotificationsService
                         $queue->mobile_os       = $user->mobile_os;
                         $queue->lang_id         = $user->lang_id;
                         $queue->user_id         = $user->id;
-                        $queue->save();                        
+                        $queue->save();
                     }
 
                 }
-	    	}    		
+	    	}
     	}
     }
 
 
 
 }
-

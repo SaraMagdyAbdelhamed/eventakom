@@ -50,7 +50,7 @@ class FamousController extends Controller
         // dd($request->all());
         $images_ar = explode('-', $request->images_ar);
         $images_en = explode('-', $request->images_en);
-        dd([$images_ar, $images_en]);
+        // dd([$images_ar, $images_en]);
 
         $this->validate($request, [
             'place_name' => 'required|max:100',
