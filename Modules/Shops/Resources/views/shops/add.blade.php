@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-            
+
               <!-- =============== Custom Content ===========-==========-->
               <div class="row">
                 <div class="col-xs-12">
@@ -34,7 +34,7 @@
                     <div class="add-mode">@lang('keywords.adding_mode')</div>
                     <div class="row">
                       <div class="col-xs-12">
-                        <div class="text-xs-center">         
+                        <div class="text-xs-center">
                           <div class="text-wraper">
                             <h3 class="cover-inside-title  ">@lang('keywords.shop_and_dine')</h3>
                           </div>
@@ -70,13 +70,13 @@
                               <input class="master_input" type="text" placeholder="ex:city stars" Required id="shop_address" name="place_address"><span class="master_message color--fadegreen"></span>
                             </div>
                           </div>
-                          <div class="col-md-2 col-xs-1"> 
+                          <div class="col-md-2 col-xs-1">
                           <br>
                           <br>
                           <a class="bradius--no border-btn master-btn" type="button" href="#mapModal">Map</a>
                           </div>
-                       
-                          
+
+
                           <div class="col-xs-4">
                             <div class="master_field">
                               <label class="master_label" for="Phone_number">@lang('keywords.shop_phone')</label>
@@ -185,7 +185,7 @@
                             </div> --}}
                           </div>
                           <div id="mbranch">
-                            
+
                           </div>
                           <div class="col-sm-12 col-xs-12">
                             <button class="add-more-branch btn-block master-btn bgcolor--gray_mm"><i class="fa fa-plus color--main"></i><span class="color--main">@lang('keywords.add_branch')</span></button>
@@ -238,13 +238,13 @@
                           <div class="col-sm-6 col-xs-12">
                           <div class="master_field">
                               <label class="master_label" for="YouTube_video_en">@lang('keywords.you_tube') (1) @lang('keywords.in_en')</label>
-                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
+                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1"
                               name="youtube_en_1" value="{{ isset($youtube_links[1]) ? $youtube_links[1]->link : '' }}">
                             <span class="master_message inherit" id="yl_2"></span>
                           </div>
                           </div>
 
-                          <!-- <div class="col-sm-6 col-xs-12"> 
+                          <!-- <div class="col-sm-6 col-xs-12">
                             <div class="master_field">
                               <label class="master_label" for="YouTube_video_1_ar">@lang('keywords.you_tube') (1) @lang('keywords.in_ar')</label>
                               <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_1_ar" name="video_ar[1]"><span class="master_message inherit"></span>
@@ -255,7 +255,7 @@
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="YouTube_video_ar1">@lang('keywords.you_tube') (1) @lang('keywords.in_ar')</label>
-                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
+                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1"
                                   name="youtube_ar_1" value="{{ isset($youtube_links[0]) ? $youtube_links[0]->link : '' }}">
                                 <span class="master_message inherit" id="yl_1"></span>
                             </div>
@@ -270,29 +270,29 @@
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="YouTube_video_en2">@lang('keywords.you_tube') (2) @lang('keywords.in_en')</label>
-                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2" 
+                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2"
                                   name="youtube_en_2" value="{{ isset($youtube_links[3]) ? $youtube_links[3]->link : '' }}">
                                 <span class="master_message inherit" id="yl_4"></span>
                             </div>
                           </div>
 
-                          <!-- <div class="col-sm-6 col-xs-12"> 
+                          <!-- <div class="col-sm-6 col-xs-12">
                             <div class="master_field">
                               <label class="master_label" for="video_2_ar">@lang('keywords.you_tube') (2) @lang('keywords.in_ar')</label>
                               <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" id="video_2_ar" name="video_ar[2]"><span class="master_message inherit"></span>
                             </div>
                           </div> -->
-                         
+
                           <div class="col-xs-6">
                             <div class="master_field">
                               <label class="master_label" for="YouTube_video_ar2">@lang('keywords.YouTube-ar-2')</label>
-                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2" 
+                              <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2"
                                   name="youtube_ar_2" value="{{ isset($youtube_links[2]) ? $youtube_links[2]->link : '' }}">
                                 <span class="master_message inherit" id="yl_3"></span>
                             </div>
                           </div>
 
-                          <div class="col-sm-6 col-xs-12 text-center"> 
+                          <div class="col-sm-6 col-xs-12 text-center">
                             <h4>@lang('keywords.upload_image') (@lang('keywords.max_img')) @lang('keywords.in_en')</h4>
                              <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="main-section">
@@ -306,7 +306,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-sm-6 col-xs-12 text-center"> 
+                          <div class="col-sm-6 col-xs-12 text-center">
                             <h4>@lang('keywords.upload_image') (@lang('keywords.max_img')) @lang('keywords.in_ar')</h4>
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="main-section">
@@ -332,7 +332,7 @@
 @section('js')
 <!--***************************UI*************************-->
 <script type="text/javascript">
-       
+
     var listAr = [];
     var listEn = [];
     var check = false;
@@ -344,7 +344,7 @@
 
     }
     function closebtn(index,value){
-     
+
       if(value==1){
         listAr.splice(index,1);
         $.each(listAr,function(id,value,){
@@ -376,17 +376,17 @@
           });
           if(error>0){
             let test_ = document.getElementById("file-1").files;
-            
+
             alert_msg('Error','Some inputs are invalid, please make sure to use valid input data!');
-          } 
+          }
           else{
-            
+
             $("#horizontal-pill-steps").submit();
           }
     }
 
     function updateList (inputID,outputID,listName) {
-   
+
         let input = document.getElementById(inputID);
         let output = document.getElementById(outputID);
         let files1 = input.files;
@@ -539,9 +539,9 @@
         }
       }
     }
-    
 
-    //add index 
+
+    //add index
     function add_index(list){
         $.each(list,function(id,value){
           value.index = id;
@@ -576,7 +576,7 @@
                             output.innerHTML += '</ul>';
     }
 
-  
+
 
 </script><!--End UI-->
 
@@ -603,7 +603,7 @@
                     form.validate().settings.ignore = ":disabled,:hidden";
                     return form.valid();
       },
-      
+
        onFinishing:function test3(e){
         var englishList = '';
         var arabicList  = '';
@@ -619,16 +619,16 @@
         // append image list to hidden inputs
         $("#hidden_images_en").val(englishList);
         $("#hidden_images_ar").val(arabicList);
-        
+
         // Check all images size
         checkImageSize(listAr,listEn);
 
        },
-      
+
     }).validate({
         errorPlacement: function errorPlacement(error, element) { element.after(error); },
     });
- 
+
 </script><!--End UI-->
 
 <script type="text/javascript">
@@ -636,10 +636,10 @@
     $('input, select').on('change', function(event) {
       var $element = $(event.target),
         $container = $element.closest('.example');
-  
+
       if (!$element.data('tagsinput'))
         return;
-  
+
       var val = $element.val();
       if (val === null)
         val = "null";
@@ -647,10 +647,10 @@
       $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
     }).trigger('change');
   });
-  
-  
-  
-  
+
+
+
+
 </script>
 
 <script type="text/javascript">
@@ -664,13 +664,13 @@
     var options = {};
     $('.js-uploader__box').uploader(options);
   }());
-  
+
 </script>
-    
+
     <script type="text/javascript">
       // var currentCount =0;
       //  var nextCount = 0 ;
-      
+
       $('.add-more-branch').on('click' , function(){
        var currentCount =$('.branch-container').length;
        // for (var i = 1 ; i<= currentCount ; i++) {
@@ -678,31 +678,31 @@
        // }
       var nextCount = currentCount +1;
        $('#mbranch').append("<div class='branch-container'>  <div class='col-sm-2 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" name' Required id='branch_"+nextCount+"' name='branch_name["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_name')"+nextCount+"@lang('keywords.in_ar')</label><input class='master_input' type='text' placeholder='branch "+nextCount+" name'  id='branch_"+nextCount+"' name='branch_name_ar["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>@lang('keywords.branch_address')"+nextCount+" </label><input class='master_input' type='text' placeholder='branch "+nextCount+" address' Required id='branch_address_"+nextCount+"' name='branch_address["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='start_time_"+nextCount+"'>@lang('keywords.branch_start') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='start time for "+nextCount+"' Required id='start_time_"+nextCount+"' name='branch_start["+nextCount+"]'></div><span class='master_message inherit'></span></div></div><div class='col-sm-2 col-xs-6'><div class='master_field'><label class='master_label' for='end_time_"+nextCount+"'>@lang('keywords.branch_end') "+nextCount+"</label><div class='bootstrap-timepicker'><input class='timepicker master_input' type='text' placeholder='end time for "+nextCount+"' Required id='end_time_"+nextCount+"' name='branch_end["+nextCount+"]'></div><span class='master_message inherit'></span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" long</label><input class='master_input' type='text' placeholder='branch "+nextCount+" long'  id='branch_long_"+nextCount+"' name='branch_long["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div><div class='col-sm-3 col-xs-4' hidden><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch"+nextCount+" lat</label><input class='master_input' type='text' placeholder='branch "+nextCount+" lat'  id='branch_lat_"+nextCount+"' name='branch_lat["+nextCount+"]'><span class='master_message color--fadegreen'> message</span></div></div></div> ");
-      
+
 
       assignAutoCompl("branch_address_"+nextCount,"#branch_long_"+nextCount,"#branch_lat_"+nextCount);
        // var currentCountAr =$('.branch-container-ar').length;
        // var nextCount = currentCountAr + 1 ;
        // $('.branch-container-ar:last').after(" <div class='branch-container-ar'> <div class='col-sm-6 col-xs-12'><div class='master_field'><label class='master_label' for='branch_"+nextCount+"'>branch "+nextCount+" name</label><input class='master_input' type='text' placeholder='branch " + nextCount + " name' Required id='branches_"+nextCount+"'><span class='master_message color--fadegreen'></span></div></div></div> ");
-      
-      
-      
+
+
+
        $(function () {
          $('.datepicker').datepicker({autoclose: true});
          $(".timepicker").timepicker({showInputs: false});
        });
             });
-      
-      
-      
-      
+
+
+
+
     </script>
     <script type="text/javascript">
       $(function () {
         $('.datepicker-popup').pickadate();
         $('.timepicker-popup').pickatime();
       });
-      
+
       $(function () {
         $('.datepicker').datepicker({autoclose: true});
         $(".timepicker").timepicker({showInputs: false});
@@ -715,13 +715,13 @@
 var shop_lat;
 var shop_long;
       function initMap() {
-        
+
         var input = document.getElementById('shop_address');
-       
+
         var autocomplete = new google.maps.places.Autocomplete(input);
 
         autocomplete.addListener('place_changed', function() {
- 
+
           var place = autocomplete.getPlace();
           if (!place.geometry) {
             // User entered the name of a Place that was not suggested and
@@ -746,7 +746,7 @@ var shop_long;
         });
 
 
-         
+
       }
         function assignAutoCompl(_id , long , lat)
       {

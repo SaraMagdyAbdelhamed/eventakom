@@ -1,10 +1,12 @@
 /node_modules
 /public/hot
 /public/storage
+/public/backend_users
+/public/events
+/public/famous_images
+/public/logo
 /public/mobile_users
 /public/img
-/public/backend_users
-/public/famous_images
 /public/offer_images
 /public/shops_images
 /storage/*.key

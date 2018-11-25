@@ -80,7 +80,7 @@ class ShopsController extends Controller
     }
 
     public function add_shop(Request $request)
-    {
+    { //dd($request->all());
         $images_en = explode('-', $request->images);
         $images_ar = explode('-', $request->images_ar);
 
@@ -190,14 +190,10 @@ class ShopsController extends Controller
             }
 
             // update main shop image
-            if (count($images_en) > 0 && count($images_ar) > 0) { 
+            if (count($images_en) > 1) {
                 // add first English image
                 $mainImage = ShopMedia::where('shop_id', $shop->id)->first()->link;
-            } else if (count($images_en) > 0) { 
-
-                // add first English image
-                $mainImage = ShopMedia::where('shop_id', $shop->id)->first()->photo;
-            } else if (count($images_ar) > 0) { 
+            } else if (count($images_ar) > 1) {
                 // add first Arabic image
                 $mainImage = Helper::localization('shop_media', 'link', $shop->id, 2);
             }
@@ -214,11 +210,13 @@ class ShopsController extends Controller
         } else {
             Helper::add_localization(10, 'name', $shop->id, $request['place_name'], 2);
         }
+
         if (isset($request['info_ar'])) {
             Helper::add_localization(10, 'info', $shop->id, $request['info_ar'], 2);
         } else {
             Helper::add_localization(10, 'info', $shop->id, $request['info'], 2);
         }
+
         if (isset($request['days'])) {
             foreach ($request['days'] as $key => $value) {
                 ShopDay::create([
@@ -227,42 +225,53 @@ class ShopsController extends Controller
                 ]);
             }
         }
-        if (isset($request['video'])) {
-            foreach ($request['video'] as $key => $value) {
-                $value = str_replace('watch?v=', 'embed/', $value);
-                if ($value != null) {
-                    $shop_media = ShopMedia::create([
-                        "shop_id" => $shop->id,
-                        "link" => $value,
-                        "type" => 2,
-                    ]);
-                    if ($request['video_ar'][$key] != null) {
-                        //    dd( $request['video_ar'][$key]);
-                        // $value_ar= $request['video_ar'][$key];
-                        $value_ar = str_replace('watch?v=', 'embed/', $request['video_ar'][$key]);
-                        Helper::add_localization(21, 'link', $shop->id, $value_ar, 2);
-                    } else {
-                        Helper::add_localization(21, 'link', $shop->id, $value, 2);
-                    }
-                }
 
+        // 1st English Youtube link
+        if (isset($request['youtube_en_1'])) {
+            $value = str_replace('watch?v=', 'embed/', $request['youtube_en_1']);
+            if ($value == null || $value == '') {
+                $value = '';
             }
+
+            $shop_media = ShopMedia::create([
+                "shop_id" => $shop->id,
+                "link" => $value,
+                "type" => 2,
+            ]);
         }
 
-        if (isset($request['video_ar'])) {
-            foreach ($request['video_ar'] as $key => $value) {
-                $value = str_replace('watch?v=', 'embed/', $value);
-                if ($value != null && isset($request['video'][$key]) == null) {
-                    $shop_media = ShopMedia::create([
-                        "shop_id" => $shop->id,
-                        "link" => $value,
-                        "type" => 2,
-                    ]);
-
-                    Helper::add_localization(21, 'link', $shop->id, $value, 2);
-                }
-
+        // 2nd English Youtube link
+        if (isset($request['youtube_en_2'])) {
+            $value = str_replace('watch?v=', 'embed/', $request['youtube_en_2']);
+            if ($value == null || $value == '') {
+                $value = '';
             }
+
+            $shop_media = ShopMedia::create([
+                "shop_id" => $shop->id,
+                "link" => $value,
+                "type" => 2,
+            ]);
+        }
+
+        // 1st Arabic youtube link
+        if (isset($request['youtube_ar_1'])) {
+            $value = str_replace('watch?v=', 'embed/', $request['youtube_ar_1']);
+            if ($value == null || $value == '') {
+                $value = '';
+            }
+
+            Helper::add_localization(21, 'link', $shop->id, $value, 2);
+        }
+
+        // 2nd Arabic youtube link
+        if (isset($request['youtube_ar_2'])) {
+            $value = str_replace('watch?v=', 'embed/', $request['youtube_ar_2']);
+            if ($value == null || $value == '') {
+                $value = '';
+            }
+
+            Helper::add_localization(21, 'link', $shop->id, $value, 2);
         }
 
         if (isset($request['branch_name'])) {
@@ -274,13 +283,16 @@ class ShopsController extends Controller
                     "longtuide" => $request['branch_long'][$key],
                     "latitude" => $request['branch_lat'][$key],
                 ]);
-                foreach ($request['days'] as $key1 => $value1) {
-                    ShopBranchTime::create([
-                        'branch_id' => $branch->id,
-                        'day_id' => $key1,
-                        'from' => date("H:i:s a", strtotime($request['branch_start'][$key])),
-                        'to' => date("H:i:s a", strtotime($request['branch_end'][$key])),
-                    ]);
+
+                if ( isset($request->days) && count($request->days) > 0 ) {
+                    foreach ($request['days'] as $key1 => $value1) {
+                        ShopBranchTime::create([
+                            'branch_id' => $branch->id,
+                            'day_id' => $key1,
+                            'from' => date("H:i:s a", strtotime($request['branch_start'][$key])),
+                            'to' => date("H:i:s a", strtotime($request['branch_end'][$key])),
+                        ]);
+                    }
                 }
 
                 Helper::add_localization(20, 'branch', $branch->id, $request['branch_name_ar'][$key], 2);
@@ -424,27 +436,62 @@ class ShopsController extends Controller
             }
         }
 
-        if (isset($request['video'])) {
-            ShopMedia::where('shop_id', $id)->where('type', 2)->delete();
-            foreach ($request['video'] as $key => $value) {
-                $value = str_replace('watch?v=', 'embed/', $value);
+        // delete old English youtube links
+        ShopMedia::where('shop_id', $id)->where('type', 2)->delete();
 
-                if ($value != null) {
-                    $shop_media = ShopMedia::create([
-                        "shop_id" => $shop->id,
-                        "link" => $value,
-                        "type" => 2,
-                    ]);
-                    if ($request['video_ar'][$key] != null) {
-                        $value_ar = str_replace('watch?v=', 'embed/', $request['video_ar'][$key]);
-                        Helper::add_localization(21, 'link', $shop->id, $value_ar, 2);
-                    } else {
-                        Helper::add_localization(21, 'link', $shop->id, $value, 2);
-                    }
-                }
-
+        // 1st English Youtube link
+        if (isset($request['youtube_en_1'])) {
+            $value = str_replace('watch?v=', 'embed/', $request['youtube_en_1']);
+            if ($value == null || $value == '') {
+                $value = '';
             }
+
+            $shop_media = ShopMedia::create([
+                "shop_id" => $shop->id,
+                "link" => $value,
+                "type" => 2,
+            ]);
         }
+
+        // 2nd English Youtube link
+        if (isset($request['youtube_en_2'])) {
+            $value = str_replace('watch?v=', 'embed/', $request['youtube_en_2']);
+            if ($value == null || $value == '') {
+                $value = '';
+            }
+
+            $shop_media = ShopMedia::create([
+                "shop_id" => $shop->id,
+                "link" => $value,
+                "type" => 2,
+            ]);
+        }
+
+
+        // delete old Arabic youtube links
+        Helper::remove_youtube_links(21, 'link', $shop->id, 2);
+
+        // 1st Arabic youtube link
+        if (isset($request['youtube_ar_1'])) {
+            $value = str_replace('watch?v=', 'embed/', $request['youtube_ar_1']);
+            if ($value == null || $value == '') {
+                $value = '';
+            }
+
+            Helper::add_localization(21, 'link', $shop->id, $value, 2);
+        }
+
+        // 2nd Arabic youtube link
+        if (isset($request['youtube_ar_2'])) {
+            $value = str_replace('watch?v=', 'embed/', $request['youtube_ar_2']);
+            if ($value == null || $value == '') {
+                $value = '';
+            }
+
+            Helper::add_localization(21, 'link', $shop->id, $value, 2);
+        }
+
+
         ShopBranch::where('shop_id', $shop->id)->delete();
         if (isset($request['branch_name'])) {
             // dd($request['branch_name']);
@@ -456,13 +503,16 @@ class ShopsController extends Controller
                     "longtuide" => $request['branch_long'][$key],
                     "latitude" => $request['branch_lat'][$key],
                 ]);
-                foreach ($request['days'] as $key1 => $value1) {
-                    ShopBranchTime::create([
-                        'branch_id' => $branch->id,
-                        'day_id' => $key1,
-                        'from' => date("H:i:s a", strtotime($request['branch_start'][$key])),
-                        'to' => date("H:i:s a", strtotime($request['branch_end'][$key])),
-                    ]);
+
+                if ( isset($request->days) && count($request->days) > 0 ) {
+                    foreach ($request['days'] as $key1 => $value1) {
+                        ShopBranchTime::create([
+                            'branch_id' => $branch->id,
+                            'day_id' => $key1,
+                            'from' => date("H:i:s a", strtotime($request['branch_start'][$key])),
+                            'to' => date("H:i:s a", strtotime($request['branch_end'][$key])),
+                        ]);
+                    }
                 }
 
                 // Helper::remove_localization(20, $field, $item_id, $lang_id);

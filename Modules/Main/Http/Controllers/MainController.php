@@ -9,17 +9,17 @@
 namespace Modules\Main\Http\Controllers;
 
 use Helper;
-use Session; 
-       
+use Session;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;    
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests; 
- 
-use App\Fixed;  
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+use App\Fixed;
 use App\Entity;
 use App\EntityLocalization;
 use App\SystemSetting;
@@ -70,8 +70,8 @@ class MainController extends Controller
      *  @param  Request $request    incoming data from POST request.
      *  @return redirect back to its edit page
      *  Usage:
-     *  in edit form do the following:  <form action="{{ route('submit_form_route', ['page_number' => 1]) }}"...        for editing about us page for example.  
-     *  
+     *  in edit form do the following:  <form action="{{ route('submit_form_route', ['page_number' => 1]) }}"...        for editing about us page for example.
+     *
      *  1   => edit about us.
      *  2   => edit terms.
      *  3   => edit privacy.
@@ -85,7 +85,7 @@ class MainController extends Controller
             'englishContent.required'   => 'English content is empty, please edit it and try again!'
         ]);
 
-        // update arabic 
+        // update arabic
        try {
             Helper::edit_entity_localization('fixed_pages', 'body', $id , 2, $request->arabicContent);
        } catch(\Exception $ex) {
@@ -427,7 +427,7 @@ class MainController extends Controller
             $imgAr->move('logo/ar', $newAr);               // move to public/logo/ar
             $imgEn->move('logo/en', $newEn);               // move to public/logo/en
 
-            $imgPathAr = 'logo/ar/'.$newAr;       // new path: public/useres_images/new.jgp 
+            $imgPathAr = 'logo/ar/'.$newAr;       // new path: public/useres_images/new.jgp
             $imgPathEn = 'logo/en/'.$newEn;
         }
 
@@ -474,11 +474,11 @@ class MainController extends Controller
                 $imgAr = $request->logoAr;
                 $newAr = $now.'_'.$imgAr->getClientOriginalName(); // current time + original image name
                 $imgAr->move('logo/ar', $newAr);               // move to public/logo/ar
-                $imgPathAr = 'logo/ar/'.$newAr;       // new path: public/useres_images/new.jgp 
+                $imgPathAr = 'logo/ar/'.$newAr;       // new path: public/useres_images/new.jgp
             }
 
             if($request->logoEn) {
-                $imgEn = $request->logoEn;  
+                $imgEn = $request->logoEn;
                 $newEn = $now.'_'.$imgEn->getClientOriginalName(); // current time + original image name
                 $imgEn->move('logo/en', $newEn);               // move to public/logo/en
                 $imgPathEn = 'logo/en/'.$newEn;
@@ -489,7 +489,7 @@ class MainController extends Controller
         try {
             $sponsor = Sponsor::find($request->hiddenID);
             $sponsor->name = $request->english;
-            
+
             if($request->logoAr) {
                 $sponsor->logo_ar   = $imgPathAr;
             }
@@ -498,7 +498,7 @@ class MainController extends Controller
             }
             $sponsor->updated_by = Auth::id();
             $sponsor->save();
-            
+
         } catch (\Exception $ex) {
             dd($ex);
             Session::flash('warning', 'Can not edit in English');
@@ -521,7 +521,7 @@ class MainController extends Controller
 
     public function sponsor_delete(Request $request) {
         try {
-            
+            Sponsor::find($request->id)->delete();
         } catch(\Exception $ex) {
             Session::flash('warning', 'can not delete this record.');
             return response()->json(['error', 'can not delete this record.']);
@@ -689,7 +689,7 @@ class MainController extends Controller
             } else {
                 $notification = new SystemSetting;
             }
-            
+
             $notification->name = 'notification_distance';
             $notification->value = $request->notification .','. $request->measurement;
             $notification->save();
@@ -704,15 +704,15 @@ class MainController extends Controller
     }
 
     public function notifications_update(Request $request) {
-        
+
     }
 
     public function notifications_delete(Request $request) {
-        
+
     }
 
     public function notifications_deleteSelected(Request $request) {
-        
+
     }
 
 
