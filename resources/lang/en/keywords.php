@@ -231,7 +231,8 @@
                   </div>',
 		'orderRemoved'    => ' <div class="alert text-center" id="form_message" style="background-color: #2ecc71; color: white; padding: 10px; margin-top: 40px;">
                     <b>ِBig Events Removed Successfully</b>
-                  </div>',			  
+                  </div>',		
+       'confirmRemove'    => 'You wont Save any Big Event!',					  
 		'bigevents_description'    => 'Through this screen backend user determine big events appears on mobile application. Backend user select maximum 5 big events and he can arrange their ranks.
 ',
         'All Events'    => 'All Events',

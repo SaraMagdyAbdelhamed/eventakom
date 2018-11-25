@@ -146,7 +146,7 @@ function saveSort(e) {
     if ( !($('#multiselect_to').has('option').length > 0)) {
            var title = "{{ \App::isLocale('en') ? 'Are you sure you?' : 'هل أنت متأكد؟' }}";
     //  var text  = "{{ \App::isLocale('en') ? 'You wont be able to fetch this information later!' : 'لن تستطيع إسترجاع هذه المعلومة لاحقا' }}";
-  var text  = "You won't Save any Big Event!";
+  var text  = "@lang('keywords.confirmRemove')";
       swal({
       title: title,
       text: text,
