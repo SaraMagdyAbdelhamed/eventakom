@@ -45,7 +45,7 @@
                 {{-- Place Name --}}
                 <div class="col-xs-6">
                 <div class="master_field">
-                    <label class="master_label mandatory" for="Place_name">@lang('keywords.placeName')</label>
+                    <label class="master_label required" for="Place_name">@lang('keywords.placeName')</label>
                     <input class="master_input " maxlength="100" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name" value="{{ old('place_name') }}" required>
                     @if ($errors->has('place_name'))
                         <span class="master_message color--fadegreen">{{ $errors->first('place_name') }}</span>
@@ -56,7 +56,7 @@
                 {{-- Place Category --}}
                 <div class="col-xs-6">
                 <div class="master_field">
-                    <label class="master_label mandatory" for="Place_Category">@lang('keywords.placeCategories')</label>
+                    <label class="master_label required" for="Place_Category">@lang('keywords.placeCategories')</label>
                     <select class="master_input select2" name="place_categories[]" required
                             id="Place_Category" multiple="multiple" data-placeholder="choose an option.." style="width:100%;" >
                         @if ( isset($categories) && !empty($categories) )
@@ -88,7 +88,7 @@
                 {{-- Phone Number --}}
                 <div class="col-xs-6">
                 <div class="master_field">
-                    <label class="master_label mandatory" for="Phone_number">@lang('keywords.Phone')</label>
+                    <label class="master_label required" for="Phone_number">@lang('keywords.Phone')</label>
                     <input class="master_input " type="number" placeholder="0020123456789"  id="Phone_number" name="phone_number" value="{{ old('phone_number') }}" required>
                     @if ($errors->has('phone_number'))
                         <span class="master_message color--fadegreen">{{ $errors->first('phone_number') }}</span>
@@ -339,7 +339,7 @@
             <div class="row">
                 <div class="col-xs-6">
                 <div class="master_field ">
-                    <label class="master_label mandatory" for="Place_name">@lang('keywords.placeName')</label>
+                    <label class="master_label required" for="Place_name">@lang('keywords.placeName')</label>
                     <input class="master_input" type="text" maxlength="100" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" require />
                     @if ($errors->has('place_name_ar'))
                         <span class="master_message color--fadegreen">{{ $errors->first('place_name_ar') }}</span>
