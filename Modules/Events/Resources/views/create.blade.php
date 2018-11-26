@@ -31,7 +31,7 @@
       <div class="add-mode">Adding mode</div>
       <div class="row">
         <div class="col-xs-12">
-          <div class="text-xs-center">         
+          <div class="text-xs-center">
             <div class="text-wraper">
               <h4 class="cover-inside-title">@lang('keywords.events')</h4><i class="fa fa-chevron-circle-right"></i>
               <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.addfrombackend')</h4>
@@ -48,7 +48,7 @@
 
       <form id="horizontal-pill-steps" action="{{ route('event_backend.store') }}" method="POST" role="form" enctype="multipart/form-data" >
         {{ csrf_field() }}
-        
+
         <h3>@lang('keywords.infoEn')</h3>
         <fieldset>
           <div class="row">
@@ -155,7 +155,7 @@
             </div>
 
 
-            
+
 
             {{-- Start time --}}
             <div class="col-xs-6">
@@ -185,7 +185,7 @@
 
 
 
-            
+
 
             {{-- End time --}}
             <div class="col-xs-6">
@@ -424,14 +424,14 @@
 
         <h3>@lang('keywords.media')</h3>
         <fieldset>
-          
+
           <div class="row">
 
             {{-- 1st Youtube vedio in Arabic --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar1">@lang('keywords.YouTube-ar-1')</label>
-                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1"
                     name="youtube_ar_1" value="{{ isset($youtube_links[0]) ? $youtube_links[0]->link : '' }}">
                   <span class="master_message inherit" id="yl_1"></span>
               </div>
@@ -441,7 +441,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en1">@lang('keywords.YouTube-en-1')</label>
-                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1"
                     name="youtube_en_1" value="{{ isset($youtube_links[1]) ? $youtube_links[1]->link : '' }}">
                   <span class="master_message inherit" id="yl_2"></span>
               </div>
@@ -452,7 +452,7 @@
              <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar2">@lang('keywords.YouTube-ar-2')</label>
-                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2" 
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2"
                     name="youtube_ar_2" value="{{ isset($youtube_links[2]) ? $youtube_links[2]->link : '' }}">
                   <span class="master_message inherit" id="yl_3"></span>
               </div>
@@ -462,7 +462,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en2">@lang('keywords.YouTube-en-2')</label>
-                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2" 
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2"
                     name="youtube_en_2" value="{{ isset($youtube_links[3]) ? $youtube_links[3]->link : '' }}">
                   <span class="master_message inherit" id="yl_4"></span>
               </div>
@@ -470,7 +470,7 @@
             <div class="col-xs-12">
               <hr>
             </div>
-              
+
           {{-- Arabic images --}}
           <div class="col-sm-6 col-xs-12 text-center">
             <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
@@ -526,11 +526,11 @@
       console.log("closebtn")
       if(value==1){
         console.log("value1")
-        
+
         let test= document.getElementById('file-1');
         listAr.splice(index,1);
         console.log(listAr);
-        
+
         $.each(listAr,function(id,value,){
           value.index = id;
         });
@@ -561,7 +561,7 @@
            });
            if(error>0){
              return true;
-           
+
            }
            else{
              return false;
@@ -573,7 +573,7 @@
             let input = document.getElementById(inputID);
             let output = document.getElementById(outputID);
             let files1 = input.files;
-           
+
             console.log(input.value)
             console.log(files1.length)
 
@@ -730,8 +730,8 @@
             }
           }
         }
-  
-    
+
+
 </script><!--End Script (UI)-->
 
 <!--********UI****************-->
@@ -743,10 +743,10 @@
       bodyTag: "fieldset",
       transitionEffect: "slideLeft",
       onStepChanging:function test(event, currentIndex, newIndex){
-        
+
         console.log("test")
         console.log(newIndex)
-        
+
          if (currentIndex > newIndex)
                     {
                         return true;
@@ -759,7 +759,7 @@
                     form.validate().settings.ignore = ":disabled,:hidden";
                     return form.valid();
       },
-      
+
        onFinishing:function test3(e){
          if((! checkImageSize_(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
            $("#horizontal-pill-steps").submit();
@@ -768,13 +768,13 @@
           alert_msg("ERROR","Check Uploaded Images or Youtube Links")
          }
        },
-       
+
     }).validate({
                 errorPlacement: function errorPlacement(error, element) { element.after(error); },
             });
     dateRange('start_date','end_date','2018','7','30','2018','8','30','22/11/2018')
   })
- 
+
 </script> <!--End Script (UI)-->
 
 <!--**********************UI********************-->
@@ -782,7 +782,7 @@
    var errors = [0, 0, 0, 0];
     $(function(){
        /** check youtube links **/
-   
+
       $("#YouTube_video_en1").focusout(function() {
         console.log("yyyy")
         var value = $(this).val();
@@ -794,7 +794,7 @@
           $("#yl_2").empty()
 
         }
-      }); 
+      });
 
       $("#YouTube_video_en2").focusout(function() {
         var value = $(this).val();
@@ -806,7 +806,7 @@
           $("#yl_4").empty()
 
         }
-      }); 
+      });
 
       $("#YouTube_video_ar1").focusout(function() {
         var value = $(this).val();
@@ -814,11 +814,11 @@
           checkYoutubeLink(this, value, "#yl_1") ? errors[2] = 0 : errors[2] = 1;
         }
         else{
-          
+
           errors[2] = 0;
           $("#yl_1").empty()
         }
-      }); 
+      });
 
       $("#YouTube_video_ar2").focusout(function() {
         var value = $(this).val();
@@ -830,7 +830,7 @@
           $("#yl_3").empty()
 
         }
-      }); 
+      });
 
       function checkAllYoutubeLinks() {
         return errors.includes(1);
@@ -882,16 +882,16 @@
       $(".select2").select2();
     });
 
-    
+
 
     $(function() {
       $('input, select').on('change', function(event) {
         var $element = $(event.target),
           $container = $element.closest('.example');
-    
+
         if (!$element.data('tagsinput'))
           return;
-    
+
         var val = $element.val();
         if (val === null)
           val = "null";
@@ -900,7 +900,7 @@
       }).trigger('change');
     });
 
-  
+
   $(function () {
     $(".timepicker").timepicker({showInputs: false});
   });
@@ -914,21 +914,21 @@
     $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
   });
 
-  
+
 </script>
 
 <script>
   $( document ).ready(function() {
       $('.paid-details').fadeOut();
-      
+
       $('label[for="radbtn_3_paid"]').on('click' , function(){
         $('.paid-details').fadeIn(100);
       });
-      
+
       $('label[for="radbtn_2_free"]').on('click' , function(){
         $('.paid-details').fadeOut();
       });
-    
+
     });
 </script>
 
@@ -947,7 +947,7 @@
 
 {{-- Click on finish button triggers a hidden submit button --}}
 <script>
-  
+
   // $(document).ready(function() {
   //   $("#finish1").click(function(){
   //     $("#submitButton").trigger('click');
@@ -974,7 +974,7 @@
     } else {
       $(submitBtnId).prop('disabled', true);
       $(error_msg_id).text("Image max size is 5MB (5120KB).").css('color', 'red');
-    }      
+    }
   }
 </script>
 

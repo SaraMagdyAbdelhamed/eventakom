@@ -105,7 +105,7 @@ class ShopsController extends Controller
         // Images
         if (count($images_ar) > 0 || count($images_en) > 0) {
 
-            $mainImage = '';
+            $mainImage = 'default_images/shop.jpg';
 
             // update English images.
             if (count($images_en) > 0) {

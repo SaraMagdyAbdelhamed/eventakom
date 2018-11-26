@@ -76,8 +76,12 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+
         $start_date = str_replace('/', '-', $request->start_date);
         $end_date   = str_replace('/', '-', $request->end_date);
+        // dd([$start_date, $end_date]);
+        // dd([Carbon::parse($start_date . ' ' . $request->start_time), Carbon::parse($end_date . ' ' . $request->end_time)]);
 
         // Insert Event in events table
         try {
@@ -659,7 +663,7 @@ class EventsController extends Controller
 
      public function bigevents_remove(Request $request)
     {
-     
+
         BigEvent::truncate();
         return response()->json(trans('keywords.orderRemoved'));
     }

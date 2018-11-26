@@ -65,7 +65,7 @@
         'EditContact'   => 'Edit Contact Us',
         'EditEvent'     => 'Edit an Event',
         'EditUser' => 'Edit User',
-        
+
 
         //Users
         'Users' => 'Users',
@@ -86,7 +86,7 @@
         'Birthdate'=>'Birthdate',
         'RegisterationDate'=>'RegisterationDate',
         'Status'=>'Status',
-        
+
         'UserType'  =>'UserType',
         'SelectGender'  =>'SelectGender',
         'Male'      =>'Male',
@@ -106,13 +106,13 @@
         'Active'    =>'Active',
         'Inactive'  =>'Inactive',
         'pleaseSetTheUserStatus'=>'Please Set The User Status',
-		
+
 
 
 
         // Events
         'events'    => 'Events',
-        'addfrombackend' => 'Added From Backend',
+        'addfrombackend' => 'Backend Events',
         'addNewBackend'  => 'Add new Backend event',
         'editfrombackend'=> 'Edit From Backend',
         'info'      => 'Info',
@@ -131,9 +131,9 @@
         'media'     => 'Media',
         'foundTickets'  => 'Current available tickets: ',
         'noTickets' => 'No tickets available',
-		
+
         // Events Mobile
-        'addfromMobile' => 'Added from mobile application',
+        'addfromMobile' => 'Mobile App Events',
         'Current' => 'Current',
         'Pendding' => 'Pendding',
         'Pend' => 'Pend',
@@ -200,7 +200,7 @@
         'endDateTo'     => 'End date to',
         'free'  => 'Free',
 
-        
+
         // Offers & Deals AND Famous Attractions
         'offers'    => 'Offers and Deals',
         'placeName' => 'Place Name',
@@ -215,7 +215,7 @@
         'openday'   => 'Opening Days',
         'otherInfo' => 'Other Info',
         'famousHint'=> 'Please check the day that you want to edit its time.',
-		
+
         //Statistics
         'statistics'=>'Statistics',
         'Number of all users'=>'Number of all users',
@@ -231,8 +231,8 @@
                   </div>',
 		'orderRemoved'    => ' <div class="alert text-center" id="form_message" style="background-color: #2ecc71; color: white; padding: 10px; margin-top: 40px;">
                     <b>ِBig Events Removed Successfully</b>
-                  </div>',		
-       'confirmRemove'    => 'You wont Save any Big Event!',					  
+                  </div>',
+       'confirmRemove'    => 'You wont Save any Big Event!',
 		'bigevents_description'    => 'Through this screen backend user determine big events appears on mobile application. Backend user select maximum 5 big events and he can arrange their ranks.
 ',
         'All Events'    => 'All Events',
@@ -285,7 +285,7 @@
         'noti_ar'=>'Notification Content In Arabic',
         'age'=>'Age ',
         'gender'=>'Gender ',
-        
+
         'male'=>'Male ',
         'female'=>'Female',
         'images'=>'Images',
@@ -304,7 +304,7 @@
         'branch_start'=>'Start Time',
         'branch_end'=>'End Time',
         'addcat'    => 'Add New Category',
-		
+
     ];
 
 ?>
