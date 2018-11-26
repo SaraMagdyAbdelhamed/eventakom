@@ -147,10 +147,6 @@
       values_post = values;
     }
 
-   }
-});
- values_post = values;
-}
 
 function saveSort(e) {
 
