@@ -217,7 +217,7 @@ class ShopsController extends Controller
             Helper::add_localization(10, 'info', $shop->id, $request['info'], 2);
         }
 
-        if (isset($request['days'])) {
+        if (isset($request->days) && count($request->days) > 0) {
             foreach ($request['days'] as $key => $value) {
                 ShopDay::create([
                     'shop_id' => $shop->id,
@@ -284,6 +284,7 @@ class ShopsController extends Controller
                     "latitude" => $request['branch_lat'][$key],
                 ]);
 
+                // This line supposed to exist and work
                 if ( isset($request->days) && count($request->days) > 0 ) {
                     foreach ($request['days'] as $key1 => $value1) {
                         ShopBranchTime::create([
