@@ -175,7 +175,7 @@
             prevButton: '.swiper-button-prev',
             autoplay: 2500,
             keyboardControl: true,
-            loop: true,
+            loop: false,
             autoplayDisableOnInteraction: false,
             mousewheelControl: false,
         });
