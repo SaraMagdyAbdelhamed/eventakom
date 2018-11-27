@@ -116,38 +116,39 @@
                             </div>
                           </div>
                           <div class="col-sm-12 col-xs-12">
-                            <div class="master_field">
+                            <div class="master_field" Required>
                               <label class="master_label mandatory">@lang('keywords.opening_days')</label>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days[1]" id="Opening_days_1">
+                                <input type="checkbox" name="days[1]" id="Opening_days_1" onchange="check_days('Opening_days_1')">
                                 <label for="Opening_days_1">@lang('keywords.saturday')</label>
                               </div>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days[2]" id="Opening_days_2">
+                                <input type="checkbox" name="days[2]" id="Opening_days_2" onchange="check_days('Opening_days_2')">
                                 <label for="Opening_days_2">@lang('keywords.sunday')</label>
                               </div>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days[3]" id="Opening_days_3">
+                                <input type="checkbox" name="days[3]" id="Opening_days_3" onchange="check_days('Opening_days_3')">
                                 <label for="Opening_days_3">@lang('keywords.monday')</label>
                               </div>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days[4]" id="Opening_days_4">
+                                <input type="checkbox" name="days[4]" id="Opening_days_4" onchange="check_days('Opening_days_4')">
                                 <label for="Opening_days_4">@lang('keywords.tuesday')</label>
                               </div>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days[5]" id="Opening_days_5">
+                                <input type="checkbox" name="days[5]" id="Opening_days_5" onchange="check_days('Opening_days_5')">
                                 <label for="Opening_days_5">@lang('keywords.wednesday')</label>
                               </div>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days[6]" id="Opening_days_6">
+                                <input type="checkbox" name="days[6]" id="Opening_days_6" onchange="check_days('Opening_days_6')">
                                 <label for="Opening_days_6">@lang('keywords.thursday')</label>
                               </div>
                               <div class="funkyradio">
-                                <input type="checkbox" name="days[7]" id="Opening_days_7">
+                                <input type="checkbox" name="days[7]" id="Opening_days_7" onchange="check_days('Opening_days_7')">
                                 <label for="Opening_days_7">@lang('keywords.friday')</label>
                               </div>
                             </div>
                           </div>
+                          
                           <div class="branch-container">
                             {{-- <div class="col-sm-2 col-xs-4">
                               <div class="master_field">
@@ -582,17 +583,36 @@
 
 <!--*******************************UI************************-->
 <script type="text/javascript">
+    var count_checked_element = 0;
+        function check_days(id){
+          var checkboxID=document.getElementById(id)
+          if(checkboxID.checked == true){
+            count_checked_element+=1
+          }
+          else{
+            
+            count_checked_element-=1
+            if(count_checked_element<0){
+              count_checked_element=0;
+            }
+          }
+        }
+
     var form = $("#horizontal-pill-steps").show();
     form.steps({
       headerTag: "h3",
       bodyTag: "fieldset",
       transitionEffect: "slideLeft",
       onStepChanging:function test(event, currentIndex, newIndex){
+        if(count_checked_element==0){
+          alert_msg("خطأ","من فضلك اختر الايام المتاح فيها المحل")
+                      return false;
+                    }
+
         console.log(newIndex)
-        if(newIndex == 2){
-        }
          if (currentIndex > newIndex)
                     {
+                        
                         return true;
                     }
                     if (currentIndex < newIndex)
@@ -600,7 +620,9 @@
                         form.find(".body:eq(" + newIndex + ") span.error").remove();
                         form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
                     }
+                   
                     form.validate().settings.ignore = ":disabled,:hidden";
+                   
                     return form.valid();
       },
 
@@ -779,5 +801,8 @@ var shop_long;
          $(long).val(branch_long);
           });
       }
+    </script>
+    <script type="text/javascript">
+      
     </script>
 @endsection
