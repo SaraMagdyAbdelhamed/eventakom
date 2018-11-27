@@ -48,7 +48,7 @@
     </script>
     @endif
 
-    @if (count($errors->all())) 
+    @if (count($errors->all()))
 
     <script>
         $(document).ready(function(){
@@ -71,7 +71,7 @@
     </script>
 
     @endif
-    
+
 
 
   </div>

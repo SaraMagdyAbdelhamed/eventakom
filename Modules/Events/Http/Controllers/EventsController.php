@@ -78,10 +78,21 @@ class EventsController extends Controller
     {
         // dd($request->all());
 
+        /*
+         * Start & End dates, we will replace "/" with "-" to not make a conflict with American standard format
+         * Ex:
+         * 01/11/2018   => accepted 11th of January 2018
+         * 13/01/2018   => rejected becuase first left-hand token is supposed to be the month not the day as follows mm/dd/YYY
+         */
         $start_date = str_replace('/', '-', $request->start_date);
-        $end_date   = str_replace('/', '-', $request->end_date);
+        $end_date = str_replace('/', '-', $request->end_date);
         // dd([$start_date, $end_date]);
         // dd([Carbon::parse($start_date . ' ' . $request->start_time), Carbon::parse($end_date . ' ' . $request->end_time)]);
+
+        // Get all Arabic & English Images as concatinated base64 string.
+        $images_en = explode('-', $request->images_en);
+        $images_ar = explode('-', $request->images_ar);
+        // dd([$images_en, $images_ar]);
 
         // Insert Event in events table
         try {
@@ -98,13 +109,13 @@ class EventsController extends Controller
             $event->gender_id = $request->gender;
 
             // concatinate start_date + start_time to make them start_datetime
-            $event->start_datetime = Carbon::parse( $start_date .' '. $request->start_time);
+            $event->start_datetime = Carbon::parse($start_date . ' ' . $request->start_time);
 
             // concatinate end_date + end_time to make them end_datetime
             $event->end_datetime = Carbon::parse($end_date . ' ' . $request->end_time);
 
-            $event->suggest_big_event = $request->is_big_event ?: 0; // check if value is missing then replace it with zero
-            $event->is_active = $request->is_active ?: 0; // check if value is missing then replace it with zero
+            $event->suggest_big_event = $request->is_big_event ? : 0; // check if value is missing then replace it with zero
+            $event->is_active = $request->is_active ? : 0; // check if value is missing then replace it with zero
 
             $event->is_paid = $request->is_paid;
 
@@ -142,66 +153,119 @@ class EventsController extends Controller
 
             /**  Youtube links  **/
             $event->media()->createMany([
-                ['link' => ($request->youtube_en_1 ?: ''), 'type' => 2],
-                ['link' => ($request->youtube_en_2 ?: ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_1 ?: ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_2 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_en_1 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_en_2 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_1 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_2 ? : ''), 'type' => 2],
             ]);
 
-            // Check if there is any images or files and move them to public/events
-            // Arabic Event Images
-            if ($request->hasfile('arabic_images')) {
+            // Images
+            if (count($images_ar) > 0 || count($images_en) > 0) {
 
-                // Setup every image
-                foreach ($request->file('arabic_images') as $image) {
-                    $name = time() . '_' . $image->getClientOriginalName();
-                    $image->move('events/arabic', $name);
-                    $data_arabic[] = 'events/arabic/' . $name;
+                $mainImage = 'default_images/events.jpg';
+
+                // update English images.
+                if (count($images_en) > 0) {
+
+                    // add new images
+                    foreach ($images_en as $image) {
+
+                        // check if image exist
+                        if (strpos($image, 'events/english') !== false) {
+                        // search for its name
+                            preg_match('/events\/english\/(.*)/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $name = $match[0];
+
+                                $media = new EventMedia;
+
+                                $media->event_id = $event->id;
+                                $media->link = $name;
+                                $media->type = 1;
+                                $media->save();
+                            }
+
+                        }
+                        // check if image is new
+                        if (strpos($image, 'base64') !== false) {
+                            // get image extension
+                            preg_match('/image\/(.*)\;/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $ext = $match[1];
+                                $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
+                                $image = str_replace(' ', '+', $image);
+                                $imageName = 'events/english/' . time() . rand(111, 999) . '.' . $ext;
+                                \File::put(public_path() . '/' . $imageName, base64_decode($image));
+
+                                $media = new EventMedia;
+
+                                $media->event_id = $event->id;
+                                $media->link = $imageName;
+                                $media->type = 1;
+                                $media->save();
+
+                            }
+                        }
+                    }
+
                 }
 
-                /** Arabic Images **/
-                if (isset($data_arabic) && !empty($data_arabic)) {
-                    foreach ($data_arabic as $img_ar) {
-                        $media = new EventMedia;
+                // update Arabic images.
+                if (count($images_ar) > 0) {
 
-                        $media->event_id = $event->id;
-                        $media->link = $img_ar;
-                        $media->type = 1;
-                        $media->save();
+                    // add new images
+                    foreach ($images_ar as $image) {
+
+                    // check if image exist
+                        if (strpos($image, 'events/arabic') !== false) {
+                        // search for its name
+                            preg_match('/events\/arabic\/(.*)/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $name = $match[0];
+
+                                $media = new EventMedia;
+
+                                $media->event_id = $event->id;
+                                $media->link = $name;
+                                $media->type = 1;
+                                $media->save();
+                            }
+
+                        }
+                    // check if image is new
+                        if (strpos($image, 'base64') !== false) {
+                        // get image extension
+                            preg_match('/image\/(.*)\;/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $ext = $match[1];
+                                $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
+                                $image = str_replace(' ', '+', $image);
+                                $imageName = 'events/arabic/' . time() . rand(111, 999) . '.' . $ext;
+                                \File::put(public_path() . '/' . $imageName, base64_decode($image));
+
+                                $media = new EventMedia;
+
+                                $media->event_id = $event->id;
+                                $media->link = $imageName;
+                                $media->type = 1;
+                                $media->save();
+                            }
+                        }
                     }
                 }
-            }
 
-            // English Event Images
-            if ($request->hasfile('english_images')) {
-
-                // Setup every image
-                foreach ($request->file('english_images') as $image) {
-                    $name = time() . '_' . $image->getClientOriginalName();
-                    $image->move('events/english', $name);
-                    $data_english[] = 'events/english/' . $name;
+                // update main shop image
+                if (count($images_en) <= 1 && count($images_ar) <= 1) {
+                    $default = new EventMedia;
+                    $default->event_id = $event->id;
+                    $default->link = 'default_images/events.png';
+                    $default->type = 1;
+                    $default->save();
                 }
-
-                /** English Images **/
-                if (isset($data_english) && !empty($data_english)) {
-                    foreach ($data_english as $img_en) {
-                        $media = new EventMedia;
-
-                        $media->event_id = $event->id;
-                        $media->link = $img_en;
-                        $media->type = 1;
-                        $media->save();
-                    }
-                }
-
-            }
-
-            if (!$request->hasfile('arabic_images') || !$request->hasfile('english_images')) {
-                $default = new EventMedia;
-                $default->event_id = $event->id;
-                $default->link = 'events/default/events.png';
-                $default->type = 1;
-                $default->save();
             }
 
             /** Ticket price **/
@@ -229,9 +293,9 @@ class EventsController extends Controller
 
         // Insert Arabic localizations
         try {
-            Helper::add_localization(4, 'name', $event->id, ($request->arabic_event_name ?: 'بدون اسم'), 2); // arabic_event_name
-            Helper::add_localization(4, 'description', $event->id, ($request->arabic_description ?: 'بدون وصف'), 2); // arabic_description
-            Helper::add_localization(4, 'venue', $event->id, ($request->arabic_venu ?: 'بدون عنوان'), 2); // arabic_venu
+            Helper::add_localization(4, 'name', $event->id, ($request->arabic_event_name ? : 'بدون اسم'), 2); // arabic_event_name
+            Helper::add_localization(4, 'description', $event->id, ($request->arabic_description ? : 'بدون وصف'), 2); // arabic_description
+            Helper::add_localization(4, 'venue', $event->id, ($request->arabic_venu ? : 'بدون عنوان'), 2); // arabic_venu
 
             // Explode hashtags into an array
             if (isset($request->arabic_hashtags) && !empty($request->arabic_hashtags)) {
@@ -299,8 +363,8 @@ class EventsController extends Controller
         $data['ticket'] = EventTicket::where('event_id', $id)->first();
 
         $data['youtube_links'] = isset($data['event']->media) ? $data['event']->media()->where('type', 2)->get() : '';
-        $data['arabic_images'] = isset($data['event']->media) ? $data['event']->media()->where('type', 1)->where('link', 'like', '%arabic%')->get() : '';
-        $data['english_images'] = isset($data['event']->media) ? $data['event']->media()->where('type', 1)->where('link', 'like', '%english%')->get() : '';
+        $data['images_ar'] = isset($data['event']->media) ? $data['event']->media()->where('type', 1)->where('link', 'like', '%arabic%')->get() : '';
+        $data['images_en'] = isset($data['event']->media) ? $data['event']->media()->where('type', 1)->where('link', 'like', '%english%')->get() : '';
         $data['default_image'] = 'events/default/events.png';
 
         return view('events::backend_event_edit', $data);
@@ -313,8 +377,24 @@ class EventsController extends Controller
      */
     public function update(Request $request)
     {
+        // dd($request->all());
+
+        /*
+         * Start & End dates, we will replace "/" with "-" to not make a conflict with American standard format
+         * Ex:
+         * 01/11/2018   => accepted 11th of January 2018
+         * 13/01/2018   => rejected becuase first left-hand token is supposed to be the month not the day as follows mm/dd/YYY
+         */
         $start_date = str_replace('/', '-', $request->start_date);
-        $end_date   = str_replace('/', '-', $request->end_date);
+        $end_date = str_replace('/', '-', $request->end_date);
+        // dd([$start_date, $end_date]);
+        // dd([Carbon::parse($start_date . ' ' . $request->start_time), Carbon::parse($end_date . ' ' . $request->end_time)]);
+
+        // Get all Arabic & English Images as concatinated base64 string.
+        $images_en = explode('-', $request->images_en);
+        $images_ar = explode('-', $request->images_ar);
+        // dd([$images_en, $images_ar]);
+
 
         // Insert Event in events table
         try {
@@ -331,13 +411,13 @@ class EventsController extends Controller
             $event->gender_id = $request->gender;
 
             // concatinate start_date + start_time to make them start_datetime
-            $event->start_datetime = Carbon::parse($start_date .' '. $request->start_time);
+            $event->start_datetime = Carbon::parse($start_date . ' ' . $request->start_time);
 
             // concatinate end_date + end_time to make them end_datetime
-            $event->end_datetime = Carbon::parse($end_date .' '. $end_time);
+            $event->end_datetime = Carbon::parse($end_date . ' ' . $end_time);
 
-            $event->suggest_big_event = $request->is_big_event ?: 0; // check if value is missing then replace it with zero
-            $event->is_active = $request->is_active ?: 0; // check if value is missing then replace it with zero
+            $event->suggest_big_event = $request->is_big_event ? : 0; // check if value is missing then replace it with zero
+            $event->is_active = $request->is_active ? : 0; // check if value is missing then replace it with zero
 
             $event->is_paid = $request->is_paid;
 
@@ -383,59 +463,119 @@ class EventsController extends Controller
             /**  Youtube links  **/
             $event->media()->where('type', 2)->delete();
             $event->media()->createMany([
-                ['link' => ($request->youtube_en_1 ?: ''), 'type' => 2],
-                ['link' => ($request->youtube_en_2 ?: ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_1 ?: ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_2 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_en_1 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_en_2 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_1 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_2 ? : ''), 'type' => 2],
             ]);
 
-            // Check if there is any images or files and move them to public/events
-            // Arabic Event Images
-            if ($request->hasfile('arabic_images')) {
+            // Images
+            $event->media()->where('type', 1)->delete();
+            if (count($images_ar) > 0 || count($images_en) > 0) {
 
-                // Delete old arabic images
-                $event->media()->where('type', 1)->where('link', 'like', '%arabic%')->delete();
+                $mainImage = 'default_images/events.jpg';
 
-                foreach ($request->file('arabic_images') as $image) {
-                    $name = time() . '_' . $image->getClientOriginalName();
-                    $image->move('events/arabic', $name);
-                    $data_arabic[] = 'events/arabic/' . $name;
+                // update English images.
+                if (count($images_en) > 0) {
+
+                    // add new images
+                    foreach ($images_en as $image) {
+
+                        // check if image exist
+                        if (strpos($image, 'events/english') !== false) {
+                        // search for its name
+                            preg_match('/events\/english\/(.*)/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $name = $match[0];
+
+                                $media = new EventMedia;
+
+                                $media->event_id = $event->id;
+                                $media->link = $name;
+                                $media->type = 1;
+                                $media->save();
+                            }
+
+                        }
+                        // check if image is new
+                        if (strpos($image, 'base64') !== false) {
+                            // get image extension
+                            preg_match('/image\/(.*)\;/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $ext = $match[1];
+                                $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
+                                $image = str_replace(' ', '+', $image);
+                                $imageName = 'events/english/' . time() . rand(111, 999) . '.' . $ext;
+                                \File::put(public_path() . '/' . $imageName, base64_decode($image));
+
+                                $media = new EventMedia;
+
+                                $media->event_id = $event->id;
+                                $media->link = $imageName;
+                                $media->type = 1;
+                                $media->save();
+
+                            }
+                        }
+                    }
+
                 }
 
-                /** Arabic Images **/
-                if (isset($data_arabic) && !empty($data_arabic)) {
-                    foreach ($data_arabic as $img_ar) {
-                        $media = new EventMedia;
+                // update Arabic images.
+                if (count($images_ar) > 0) {
 
-                        $media->event_id = $event->id;
-                        $media->link = $img_ar;
-                        $media->type = 1;
-                        $media->save();
+                    // add new images
+                    foreach ($images_ar as $image) {
+
+                    // check if image exist
+                        if (strpos($image, 'events/arabic') !== false) {
+                        // search for its name
+                            preg_match('/events\/arabic\/(.*)/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $name = $match[0];
+
+                                $media = new EventMedia;
+
+                                $media->event_id = $event->id;
+                                $media->link = $name;
+                                $media->type = 1;
+                                $media->save();
+                            }
+
+                        }
+                    // check if image is new
+                        if (strpos($image, 'base64') !== false) {
+                        // get image extension
+                            preg_match('/image\/(.*)\;/', $image, $match);
+
+                            if (count($match) > 0) {
+                                $ext = $match[1];
+                                $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
+                                $image = str_replace(' ', '+', $image);
+                                $imageName = 'events/arabic/' . time() . rand(111, 999) . '.' . $ext;
+                                \File::put(public_path() . '/' . $imageName, base64_decode($image));
+
+                                $media = new EventMedia;
+
+                                $media->event_id = $event->id;
+                                $media->link = $imageName;
+                                $media->type = 1;
+                                $media->save();
+                            }
+                        }
                     }
                 }
-            }
 
-            // English Event Images
-            if ($request->hasfile('english_images')) {
-
-                // Delete old english images
-                $event->media()->where('type', 1)->where('link', 'like', '%english%')->delete();
-
-                foreach ($request->file('english_images') as $image) {
-                    $name = time() . '_' . $image->getClientOriginalName();
-                    $image->move('events/english', $name);
-                    $data_english[] = 'events/english/' . $name;
-                }
-                /** English Images **/
-                if (isset($data_english) && !empty($data_english)) {
-                    foreach ($data_english as $img_en) {
-                        $media = new EventMedia;
-
-                        $media->event_id = $event->id;
-                        $media->link = $img_en;
-                        $media->type = 1;
-                        $media->save();
-                    }
+                // update main shop image
+                if (count($images_en) <= 1 && count($images_ar) <= 1) {
+                    $default = new EventMedia;
+                    $default->event_id = $event->id;
+                    $default->link = 'default_images/events.png';
+                    $default->type = 1;
+                    $default->save();
                 }
             }
 
@@ -458,7 +598,7 @@ class EventsController extends Controller
             }
 
         } catch (\Exception $ex) {
-            Session::flash('warning', 'Error 1');
+            Session::flash('warning', $ex);
             return redirect()->back();
         }
 
@@ -570,7 +710,7 @@ class EventsController extends Controller
             $flag = 1;
             $events = $events->where('is_active', 1);
         } else
-        if ($request->active == null && $request->inactive == 1) {
+            if ($request->active == null && $request->inactive == 1) {
             $flag = 1;
             $events = $events->where('is_active', 0);
         }
@@ -661,7 +801,7 @@ class EventsController extends Controller
         // ->with('categories', EventCategory::all());
     }
 
-     public function bigevents_remove(Request $request)
+    public function bigevents_remove(Request $request)
     {
 
         BigEvent::truncate();

@@ -9,7 +9,7 @@
         <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
         <div class="row">
             <div class="col-xs-12">
-            <div class="text-xs-center">         
+            <div class="text-xs-center">
                 <div class="text-wraper">
                 <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.offers')</h4>
                 </div>
@@ -101,7 +101,7 @@
                             <li class="tab__content_item active" id="arabic-content">
                                 <div class="col-xs-12">
                                 </div>
-                                <div class="col-sm-4 col-xs-12">                              
+                                <div class="col-sm-4 col-xs-12">
                                     <div class="master_field">
                                         <label class="master_label" for="upload img">اضف صورة العرض</label>
                                         <div class="file-upload">
@@ -109,7 +109,7 @@
                                             {{-- Input: Arabic Image --}}
                                             <div class="file-select-name" id="noFile">من فضلك اضف صورة</div>
                                             <input class="chooseFile" type="file" name="image_ar" id="image_ar" Required>
-                                            
+
                                         </div>
                                         </div>
                                         <span class="master_message inherit" id="image_ar_error"></span>
@@ -145,10 +145,10 @@
                                         {{-- Input: English Image --}}
                                         <div class="file-select-name" id="noFile">please Offer image</div>
                                         <input class="chooseFile" type="file" name="image_en" id="image_en" Required>
-                                        
+
                                     </div>
                                     </div>
-                                    <span class="master_message inherit" id="image_en_error"></span>    
+                                    <span class="master_message inherit" id="image_en_error"></span>
                                 </div>
                                 </div>
                                 <div class="col-sm-4 col-xs-12">
@@ -351,7 +351,7 @@
             data.append('image_en_desc', $("textarea[name=image_en_description]").val());
             if ( $("input[name=offer_status]").is(':checked') ) {
                 data.append('offer_status' , $("input[name=offer_status]").val());
-            } 
+            }
 
             // view loading
             $("#uploading").text('Uploading...').css('color', 'blue');
@@ -375,7 +375,6 @@
 
                 success: function (data)
                 {
-                    {{ \Session::flash('success', 'Uploaded successfully!') }}
                     window.location.replace('{{ route('offers.list') }}');
                 },
                     error: function(response) {
@@ -415,7 +414,7 @@
             },
             function(isConfirm){
                 if (isConfirm){
-                    
+
                 $.ajax(
                 {
                     url: "{{ route('offers.deleteSelected') }}",
@@ -448,7 +447,7 @@
 
         // delete a row
         $('.deleteRecord').click(function(){
-            
+
             var id = $(this).data("id");
             var token = '{{ csrf_token() }}';
 
@@ -462,12 +461,12 @@
             showCancelButton: true,
             confirmButtonColor: '#281160',
             confirmButtonText: "{{ \App::isLocale('en') ? 'Yes, delete it!' : 'نعم احذفه' }}",
-            cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",                
+            cancelButtonText: "{{ \App::isLocale('en') ? 'Cancel' : 'إالغاء' }}",
             closeOnConfirm: false
             },
             function(isConfirm){
                 if (isConfirm){
-                        
+
                 $.ajax(
                 {
                     url: "{{ route('offers.delete') }}",
@@ -479,7 +478,7 @@
                         "_token": token,
                     },
                     success: function ()
-                    {   
+                    {
                         swal("تم الحذف!", "تم الحذف بنجاح", "success");
                         $('tr[data-id='+id+']').fadeOut();
                     },
@@ -487,7 +486,7 @@
                         console.log(response);
                     }
                 });
-                    
+
                 } else {
                     swal("تم الإلغاء", "المعلومات مازالت موجودة :)", "error");
                 }
@@ -497,7 +496,7 @@
         // AJAX: get record info & set it to the fields
         $('.editRow').click(function(){
             // Get ID of that record
-            var id = $(this).data("id");    
+            var id = $(this).data("id");
 
             // AJAX call to get record data
             $.ajax({
@@ -509,7 +508,7 @@
                 success: function (data)
                 {
                     $("input[name=id]").val(id);
-                    $("input[name=image_ar_name1]").val(data.name_ar);  
+                    $("input[name=image_ar_name1]").val(data.name_ar);
                     $("textarea[name=image_ar_description1]").val(data.desc_ar);
                     $("input[name=image_en_name1]").val(data.name_en);
                     $("textarea[name=image_en_description1]").val(data.desc_en);
@@ -576,9 +575,8 @@
                 contentType: false,
                 processData: false,
 
-                success: function (data)
+                success: function (response)
                 {
-                    {{ \Session::flash('success', 'Successful Edit!') }}
                     window.location.replace('{{ route('offers.list') }}');
                 },
                     error: function(response) {
@@ -614,7 +612,7 @@ function checkImageSize(input, maxSize, submitBtnId, error_msg_id) {
         $(submitBtnId).prop('disabled', false);
     } else {
         $(submitBtnId).prop('disabled', true);
-    }      
+    }
 
     if (imageSizeInMB <= maxSize) {
         $(error_msg_id).text("Image size is perfect!").css('color', 'blue');

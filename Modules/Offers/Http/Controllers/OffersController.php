@@ -4,6 +4,7 @@ namespace Modules\Offers\Http\Controllers;
 
 use Auth;
 use File;
+use Session;
 use App\Helpers\Helper;
 
 use Illuminate\Http\Request;
@@ -64,7 +65,7 @@ class OffersController extends Controller
         // Store English in `offers` table
         try {
             $offer = new Offer;
-            
+
             $offer->name        = $request->image_en_name;
             $offer->description = $request->image_en_desc;
 
@@ -93,7 +94,8 @@ class OffersController extends Controller
         }
 
 
-        return response()->json(['success' => 'Offer added successfully!']);
+        Session::flash('success', 'Offer added successfully!');
+        return response()->json(['success']);
     }
 
     /**
@@ -165,7 +167,7 @@ class OffersController extends Controller
         // Store English in `offers` table
         try {
             $offer = Offer::find($request->id);
-            
+
             $offer->name        = $request->image_en_name;
             $offer->description = $request->image_en_desc;
 
@@ -200,7 +202,8 @@ class OffersController extends Controller
         }
 
 
-        return response()->json(['success' => 'Offer added successfully!']);
+        Session::flash('success', 'Offer Edited Successfully!');
+        return response()->json(['success']);
     }
 
     /**
@@ -223,7 +226,7 @@ class OffersController extends Controller
             File::delete($path_en);
         }
 
-        // delete localization if there 
+        // delete localization if there
         if ( EntityLocalization::where('item_id', $offer->id)->get() != NULL ) {
             EntityLocalization::where('item_id', $offer->id)->delete();
         }
@@ -251,7 +254,7 @@ class OffersController extends Controller
                 File::delete($path_en);
             }
 
-            // delete localization if there 
+            // delete localization if there
             if ( EntityLocalization::where('item_id', $offer->id)->get() != NULL ) {
                 EntityLocalization::where('item_id', $offer->id)->delete();
             }

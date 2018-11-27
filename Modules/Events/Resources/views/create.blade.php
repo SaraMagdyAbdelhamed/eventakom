@@ -485,6 +485,9 @@
             </div>
           </div>
 
+          {{-- base64 Arabic images --}}
+          <input type="hidden" name="images_ar" id="images_ar">
+
           {{-- English images --}}
           <div class="col-sm-6 col-xs-12 text-center">
             <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
@@ -498,6 +501,9 @@
               </div>
             </div>
           </div>
+
+          {{-- base64 English images --}}
+          <input type="hidden" name="images_en" id="images_en">
 
           </div>
 
@@ -761,6 +767,26 @@
       },
 
        onFinishing:function test3(e){
+
+        // base64 string concatinated with "-"
+        var englishList = '';
+        var arabicList  = '';
+
+        // get English images
+        for(i=0; i<listEn.length; i++) {
+          englishList += '-' + listEn[i].image;
+        }
+
+        // get Arabic images
+        for(i=0; i<listAr.length; i++) {
+          arabicList += '-' + listAr[i].image;
+        }
+
+        // assign concatinated base64 images to a hidden field
+        // append image list to hidden inputs
+        $("#images_en").val(englishList);
+        $("#images_ar").val(arabicList);
+
          if((! checkImageSize_(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
            $("#horizontal-pill-steps").submit();
          }

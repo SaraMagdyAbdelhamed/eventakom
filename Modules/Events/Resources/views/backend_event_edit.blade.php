@@ -29,7 +29,7 @@
     <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
       <div class="row">
         <div class="col-xs-12">
-          <div class="text-xs-center">         
+          <div class="text-xs-center">
             <div class="text-wraper">
               <h4 class="cover-inside-title">@lang('keywords.events')</h4><i class="fa fa-chevron-circle-right"></i>
               <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.EditEvent')</h4>
@@ -56,7 +56,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Event_name">@lang('keywords.eventName')</label>
-                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required 
+                <input class="master_input" type="text" placeholder="ex:Redbull fl shar3" Required
                   maxlength="100"  id="Event_name" name="english_event_name" value="{{ $event->name ? : '' }}">
                 @if ($errors->has('event_name'))
                   <span class="master_message color--fadegreen">{{ $errors->first('event_name') }}</span>
@@ -69,7 +69,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="description">@lang('keywords.description')</label>
-                <textarea class="master_input" id="description" placeholder="Description" Required 
+                <textarea class="master_input" id="description" placeholder="Description" Required
                   maxlength="250"  name="english_description">{{ $event->description ? : '' }}</textarea>
                 @if ($errors->has('english_description'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_description') }}</span>
@@ -91,7 +91,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">@lang('keywords.address')</label>
-                <input class="master_input" id="searchInput" type="text" placeholder="ex:CFC" maxlength="50" Required 
+                <input class="master_input" id="searchInput" type="text" placeholder="ex:CFC" maxlength="150" Required
                   id="location" name="address" value="{{ $event->address }}">
                 @if ($errors->has('address'))
                   <span class="master_message color--fadegreen">{{ $errors->first('address') }}</span>
@@ -104,8 +104,8 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">@lang('keywords.venue')</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required 
-                  maxlength="50"  id="venue" name="english_venu" value="{{ $event->venue ? : '' }}">
+                <input class="master_input" type="text" placeholder="ex:CFC" Required
+                  maxlength="100"  id="venue" name="english_venu" value="{{ $event->venue ? : '' }}">
                 @if ($errors->has('english_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('english_venu') }}</span>
                 @endif
@@ -164,7 +164,7 @@
             </div>
 
 
-         
+
 
 
             {{-- Start time --}}
@@ -185,7 +185,7 @@
               <div class="master_field">
                 <label class="master_label" for="start_date">@lang('keywords.start date')</label>
                 <div class="bootstrap-timepicker">
-                  <input class=" master_input" type="text" placeholder="start date" Required 
+                  <input class=" master_input" type="text" placeholder="start date" Required
                     id="start_date" name="start_date" value="{{ $event->start_datetime ? $event->start_datetime->format('d/m/Y') : '' }}">
                 </div>
                 @if ($errors->has('start_date'))
@@ -194,7 +194,7 @@
               </div>
             </div>
 
-           
+
 
 
             {{-- End time --}}
@@ -234,7 +234,7 @@
                           <option value="{{ $category->id }}" {{ isset( $event->categories[$loop->index] )  ? 'selected' : ''  }} >{{ \App::isLocale('en') ? $category->name : \Helper::localization('interests', 'name', $category->id, 2, $category->name) }}</option>
                       @endforeach
                   @endif
-                  
+
                 </select>
                 @if ($errors->has('categories'))
                   <span class="master_message color--fadegreen">{{ $errors->first('categories') }}</span>
@@ -249,8 +249,8 @@
                 <span class="checkmark"></span>
               </label>
             </div>
-  
-  
+
+
             {{-- Is Event Active or Not --}}
             <div class="col-sm-3 col-xs-6">
               <label class="container">Is your event active
@@ -296,7 +296,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="venue">مكان الحدث</label>
-                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="arabic_venu" maxlength="50"
+                <input class="master_input" type="text" placeholder="ex:CFC" Required id="venue" name="arabic_venu" maxlength="100"
                   value="{{ \Helper::localization('events', 'venue', $event->id, 2) }}">
                 @if ($errors->has('arabic_venu'))
                   <span class="master_message color--fadegreen">{{ $errors->first('arabic_venu') }}</span>
@@ -315,7 +315,7 @@
                         <?php $hashtagsAr .= $hash->value.','; ?>
                     @endforeach
                 @endif
-                
+
                 <input type="text" data-role="tagsinput" name="arabic_hashtags" value="{{ \Helper::get_hashtags($event->id, 2) ? (isset($hashtagsAr) ? $hashtagsAr : '') : '' }}">
               </div>
               @if ($errors->has('arabic_hashtags'))
@@ -379,9 +379,9 @@
               <div class="col-xs-12">
                 <div class="master_field">
                   <label class="master_label" for="Available_tickets">Available tickets</label>
-                  <input class="master_input" type="number" placeholder="5" min="0"  
+                  <input class="master_input" type="number" placeholder="5" min="0"
                     id="Available_tickets" name="number_of_tickets" value="{{ isset($ticket->available_tickets) ? $ticket->available_tickets : 0 }}">
-                  @if ($errors->has('number_of_tickets')) 
+                  @if ($errors->has('number_of_tickets'))
                   <span class="master_message color--fadegreen">{{ $errors->first('number_of_tickets') }}</span>
                 @endif
                 </div>
@@ -398,7 +398,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Website">Website</label>
-                <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website" 
+                <input class="master_input" type="url" placeholder="ex:www.domain.com" id="Website"
                     name="website" value="{{ $event->website ? : '' }}">
                 @if ($errors->has('website'))
                   <span class="master_message color--fadegreen">{{ $errors->first('website') }}</span>
@@ -411,7 +411,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="e_email">email</label>
-                <input class="master_input" type="email" placeholder="email" Required id="e_email" 
+                <input class="master_input" type="email" placeholder="email" Required id="e_email"
                     name="email" value="{{ $event->email ? : '' }}">
                 @if ($errors->has('email'))
                   <span class="master_message color--fadegreen">{{ $errors->first('email') }}</span>
@@ -424,7 +424,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Code_numbe">Code number</label>
-                <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe" 
+                <input class="master_input" type="number" placeholder="ex: 2012545" Required id="Code_numbe"
                     name="code_number" value="{{ $event->code ? : '' }}">
                 @if ($errors->has('code_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('code_number') }}</span>
@@ -437,7 +437,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="Mobile_number">mobile number</label>
-                <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number" 
+                <input class="master_input" type="number" placeholder="0123456789" Required id="Mobile_number"
                     name="mobile_number" value="{{ $event->mobile ? : '' }}">
                 @if ($errors->has('mobile_number'))
                   <span class="master_message color--fadegreen">{{ $errors->first('mobile_number') }}</span>
@@ -449,14 +449,14 @@
 
         <h3>@lang('keywords.media')</h3>
         <fieldset>
-          
+
           <div class="row">
 
             {{-- 1st Youtube vedio in Arabic --}}
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar1">Edit YouTube video (1) Link in Arabic</label>
-                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1"
                     name="youtube_ar_1" value="{{ isset($youtube_links[0]) ? $youtube_links[0]->link : '' }}">
                   <span class="master_message inherit" id="yl_1"></span>
               </div>
@@ -466,7 +466,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en1">Add YouTube video (1) Link in English</label>
-                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1"
                     name="youtube_en_1" value="{{ isset($youtube_links[1]) ? $youtube_links[1]->link : '' }}">
                   <span class="master_message inherit" id="yl_2"></span>
               </div>
@@ -476,7 +476,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar2">Add YouTube video (2) Link in Arabic</label>
-                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2" 
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2"
                     name="youtube_ar_2" value="{{ isset($youtube_links[2]) ? $youtube_links[2]->link : '' }}">
                   <span class="master_message inherit" id="yl_3"></span>
               </div>
@@ -486,7 +486,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en2">Add YouTube video (2) Link in English</label>
-                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2" 
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2"
                     name="youtube_en_2" value="{{ isset($youtube_links[3]) ? $youtube_links[3]->link : '' }}">
                   <span class="master_message inherit" id="yl_4"></span>
               </div>
@@ -494,48 +494,26 @@
             <div class="col-xs-12">
               <hr>
             </div>
-              
+
             {{-- Arabic images --}}
           <div class="col-sm-6 col-xs-12 text-center">
-
-            <!-- {{-- Arabic Images --}}
-            @if ( isset($arabic_images) && !empty($arabic_images) && count($arabic_images) > 0 )
-                @foreach ($arabic_images as $img)
-                    <img src="{{ asset($img->link) }}" alt="image" width="75" height="75">
-                @endforeach
-            @else 
-              <figure>
-                <img src="{{ asset($default_image) }}" alt="image" width="75" height="75">
-                <figcaption>default image</figcaption>
-              </figure>
-            @endif -->
 
             <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
               <div class="main-section">
                 <div id="fileList"></div>
                 <div class="form-group">
-                  <input class="inputfile inputfile-1" id="file-1" type="file" name="arabic_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-1','fileList','Ar')" accept=".jpg,.png,.jpeg"> 
+                  <input class="inputfile inputfile-1" id="file-1" type="file" name="arabic_images[]" data-multiple-caption="{count} files selected" multiple="" onchange="updateList('file-1','fileList','Ar')" accept=".jpg,.png,.jpeg">
                   <label for="file-1"><span>Choose a file</span></label>
                 </div>
               </div>
             </div>
           </div>
 
+          <input type="hidden" name="images_ar" id="images_ar">
+
           {{-- English images --}}
           <div class="col-sm-6 col-xs-12 text-center">
-
-            <!-- {{-- Arabic Images --}}
-            @if ( isset($english_images) && !empty($english_images) && count($english_images) > 0 )
-                @foreach ($english_images as $img)
-                    <img src="{{ asset($img->link) }}" alt="image" width="75" height="75">
-                @endforeach
-            @else 
-              <figure>
-                <img src="{{ asset($default_image) }}" alt="image" width="75" height="75">
-                <figcaption>default image</figcaption>
-              </figure>
-            @endif -->
 
             <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
@@ -548,6 +526,8 @@
               </div>
             </div>
           </div>
+
+          <input type="hidden" name="images_en" id="images_en">
 
           </div>
 
@@ -562,7 +542,7 @@
 
 <!--***************************UI*******************************-->
 <script type="text/javascript">
-         
+
     var listAr = [];
     var listEn = [];
     var check = false;
@@ -574,7 +554,7 @@
 
     }
     function closebtn(index,value){
-     
+
       if(value==1){
         listAr.splice(index,1);
         $.each(listAr,function(id,value,){
@@ -613,7 +593,7 @@
     }
 
     function updateList (inputID,outputID,listName) {
-   
+
         let input = document.getElementById(inputID);
         let output = document.getElementById(outputID);
         let files1 = input.files;
@@ -768,39 +748,36 @@
         }
       }
     }
-    
+
    //get  images from database
     function get_images(){
-      listAr.push({
-                                'name': 'test1',
-                                'size': '25',
-                                'image': '../../../img/avaters/male.jpg',
-                                'id':'55'
-      },
-      {
-                                'name': 'test1',
-                                'size': '25',
-                                'image': '../../../img/avaters/female.jpg',
-                                'id':'25',
-      }
-      )
-       listEn.push({
-                                'name': 'test1',
-                                'size': '25',
-                                'image': '../../../img/avaters/male.jpg',
-                                'id':'11'
-      },
-      {
-                                'name': 'test1',
-                                'size': '25',
-                                'image': '../../../img/avaters/female.jpg',
-                                'id':'111'
-      }
-      );
+      @if( count($images_ar) > 0 )
+        @foreach($images_ar as $image)
+          listAr.push({
+            'name': '{{ "Arabic image #" . ++$loop->index }}',
+            'size': '',
+            'image': '{{ asset($image->link) }}',
+            'id': '{{ $image->id }}'
+          });
+        @endforeach
+      @endif
+
+
+      @if( count($images_en) > 0 )
+        @foreach($images_en as $image)
+          listEn.push({
+            'name': '{{ "English image #" . ++$loop->index }}',
+            'size': '',
+            'image': '{{ asset($image->link) }}',
+            'id': '{{ $image->id }}'
+          });
+        @endforeach
+      @endif
+
       add_index(listAr);
       add_index(listEn);
     }
-    //add index 
+    //add index
     function add_index(list){
         $.each(list,function(id,value){
           value.index = id;
@@ -860,8 +837,27 @@
                     form.validate().settings.ignore = ":disabled,:hidden";
                     return form.valid();
       },
-      
+
        onFinishing:function test3(e){
+         // base64 string concatinated with "-"
+        var englishList = '';
+        var arabicList  = '';
+
+        // get English images
+        for(i=0; i<listEn.length; i++) {
+          englishList += '-' + listEn[i].image;
+        }
+
+        // get Arabic images
+        for(i=0; i<listAr.length; i++) {
+          arabicList += '-' + listAr[i].image;
+        }
+
+        // assign concatinated base64 images to a hidden field
+        // append image list to hidden inputs
+        $("#images_en").val(englishList);
+        $("#images_ar").val(arabicList);
+
         if((! checkImageSize(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
            $("#horizontal-pill-steps").submit();
          }
@@ -869,7 +865,7 @@
           alert_msg("ERROR","Check Uploaded Images or Youtube Links")
          }
        },
-      
+
     }).validate({
                 errorPlacement: function errorPlacement(error, element) { element.after(error); },
             });
@@ -882,7 +878,7 @@
    var errors = [0, 0, 0, 0];
     $(function(){
        /** check youtube links **/
-   
+
       $("#YouTube_video_en1").focusout(function() {
         var value = $(this).val();
         if(value){
@@ -893,7 +889,7 @@
           $("#yl_2").empty()
 
         }
-      }); 
+      });
 
       $("#YouTube_video_en2").focusout(function() {
         var value = $(this).val();
@@ -905,7 +901,7 @@
           $("#yl_4").empty()
 
         }
-      }); 
+      });
 
       $("#YouTube_video_ar1").focusout(function() {
         var value = $(this).val();
@@ -913,11 +909,11 @@
           checkYoutubeLink(this, value, "#yl_1") ? errors[2] = 0 : errors[2] = 1;
         }
         else{
-          
+
           errors[2] = 0;
           $("#yl_1").empty()
         }
-      }); 
+      });
 
       $("#YouTube_video_ar2").focusout(function() {
         var value = $(this).val();
@@ -929,7 +925,7 @@
           $("#yl_3").empty()
 
         }
-      }); 
+      });
 
       function checkAllYoutubeLinks() {
         return errors.includes(1);
@@ -991,7 +987,7 @@
     //   headerTag: "h3",
     //   bodyTag: "fieldset",
     //   transitionEffect: "slideLeft",
-    //   onStepChanging:function test(event, currentIndex, newIndex){    
+    //   onStepChanging:function test(event, currentIndex, newIndex){
     //     if (currentIndex > newIndex) {
     //         return true;
     //     }
@@ -1002,10 +998,10 @@
     //     form.validate().settings.ignore = ":disabled,:hidden";
     //     return form.valid();
     //   },
-      
+
     //   onFinishing:function test3(e){
 
-    //     // TODO: check youtube links & image size 
+    //     // TODO: check youtube links & image size
     //     if( test_test == 0 && !checkAllYoutubeLinks() && !checkTotalImageSize() ){
     //       console.log("finish")
     //       var form = $(this);
@@ -1013,13 +1009,13 @@
     //     }
     //     else{
     //       e.preventDefault();
-          
+
     //       $("#finish1").attr("disabled", "disabled")
     //       // alert_fun();
     //       alert("Attention, some fields are not valid, please check them.");
-    //     }   
+    //     }
     //   },
-        
+
     //   }).validate({
     //     errorPlacement: function errorPlacement(error, element) { element.after(error); },
     //   });
@@ -1033,31 +1029,31 @@
 
     // $("#YouTube_video_en1").focusout(function() {
     //   var value = $(this).val();
-      
+
     //   checkYoutubeLink(this, value, "#yl_2") ? errors[0] = 0 : errors[0] = 1;
-    // }); 
+    // });
 
     // $("#YouTube_video_en2").focusout(function() {
     //   var value = $(this).val();
-      
+
     //   checkYoutubeLink(this, value, "#yl_4") ? errors[1] = 0 : errors[1] = 1;
-    // }); 
+    // });
 
     // $("#YouTube_video_ar1").focusout(function() {
     //   var value = $(this).val();
-      
+
     //   checkYoutubeLink(this, value, "#yl_1") ? errors[2] = 0 : errors[2] = 1;
-    // }); 
+    // });
 
     // $("#YouTube_video_ar2").focusout(function() {
     //   var value = $(this).val();
-      
+
     //   checkYoutubeLink(this, value, "#yl_3") ? errors[3] = 0 : errors[3] = 1;
-    // }); 
+    // });
 
     // function checkAllYoutubeLinks() {
     //   return errors.includes(1);
-    
+
     // }
 
     // function checkYoutubeLink(id, value, error_msg) {
@@ -1081,7 +1077,7 @@
     // let checkPoint = [0, 0];
 
     // function checkTotalImageSize() {
-      
+
     //   let imgMaxSize = 1024;
     //   let imagesAr = document.getElementById('file-1').files;   // arabic images
     //   let imagesEn = document.getElementById('file-2').files;   // english images
@@ -1111,26 +1107,26 @@
     $(".select2").select2();
   });
 
- 
-
-  
 
 
-  
 
-  
-  
 
-  
+
+
+
+
+
+
+
 
   $(function() {
     $('input, select').on('change', function(event) {
       var $element = $(event.target),
         $container = $element.closest('.example');
-  
+
       if (!$element.data('tagsinput'))
         return;
-  
+
       var val = $element.val();
       if (val === null)
         val = "null";
@@ -1139,7 +1135,7 @@
     }).trigger('change');
   });
 
-  
+
   $(function () {
     $(".timepicker").timepicker({showInputs: false});
   });
@@ -1153,23 +1149,23 @@
     $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
   });
 
-  
+
 </script>
 
 <script>
   $( document ).ready(function() {
-      
-      
+
+
       $('.paid-details').fadeOut();
-      
+
       $('label[for="radbtn_3_paid"]').on('click' , function(){
         $('.paid-details').fadeIn(100);
       });
-      
+
       $('label[for="radbtn_2_free"]').on('click' , function(){
         $('.paid-details').fadeOut();
       });
-    
+
     });
 </script>
 
@@ -1188,7 +1184,7 @@
 
 {{-- Click on finish button triggers a hidden submit button --}}
 <script>
-  
+
   // $(document).ready(function() {
   //   $("#finish1").click(function(){
   //     $("#submitButton").trigger('click');
@@ -1216,7 +1212,7 @@
   //   } else {
   //     $(submitBtnId).prop('disabled', true);
   //     $(error_msg_id).text("Image max size is 5MB (5120KB).").css('color', 'red');
-  //   }      
+  //   }
   // }
 </script>
 
