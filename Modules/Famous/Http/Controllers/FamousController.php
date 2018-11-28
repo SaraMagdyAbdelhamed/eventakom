@@ -129,8 +129,8 @@ class FamousController extends Controller
 
             // Attach media
             $famous->media()->createMany([
-                ['media' => ($request->youtube_en_1 ? : ''), 'type' => 2],
-                ['media' => ($request->youtube_en_2 ? : ''), 'type' => 2],
+                ['media' => ($request->youtube_en_1 ?: ''), 'type' => 2],
+                ['media' => ($request->youtube_en_2 ?: ''), 'type' => 2],
             ]);
 
             /**
@@ -239,8 +239,8 @@ class FamousController extends Controller
                                 $imageName = 'famous_images/arabic/' . time() . '.' . $ext;
                                 \File::put(public_path() . '/' . $imageName, base64_decode($image));
 
-                               // store link in db
-                               Helper::add_localization(19, 'link', $famous->id, ($imageName ? : ''), 2);
+                                // store link in db
+                                Helper::add_localization(19, 'link', $famous->id, ($imageName ?: ''), 2);
                             }
                         }
                     }
@@ -248,27 +248,40 @@ class FamousController extends Controller
             }
 
         } catch (\Exception $ex) {
-            dd($ex);
-            Session::flash('warning', 'English error!');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('warning', 'Error storing famous attractions');
+            } else {
+                Session::flash('warning', 'خطأ');
+            }
+
             return redirect()->back();
         }
 
         // Insert Arabic values
         try {
-            Helper::add_localization(19, 'name', $famous->id, ($request->place_name_ar ? : 'بدون اسم'), 2);
-            Helper::add_localization(19, 'address', $famous->id, ($request->place_address_ar ? : 'بدون عنوان'), 2);
-            Helper::add_localization(19, 'other_info', $famous->id, ($request->other_info_ar ? : 'بدون معلومات اضافية'), 2);
+            Helper::add_localization(19, 'name', $famous->id, ($request->place_name_ar ?: 'بدون اسم'), 2);
+            Helper::add_localization(19, 'address', $famous->id, ($request->place_address_ar ?: 'بدون عنوان'), 2);
+            Helper::add_localization(19, 'other_info', $famous->id, ($request->other_info_ar ?: 'بدون معلومات اضافية'), 2);
 
-            Helper::add_localization(19, 'link', $famous->id, ($request->youtube_ar_1 ? : ''), 2);
-            Helper::add_localization(19, 'link', $famous->id, ($request->youtube_ar_2 ? : ''), 2);
+            Helper::add_localization(19, 'link', $famous->id, ($request->youtube_ar_1 ?: ''), 2);
+            Helper::add_localization(19, 'link', $famous->id, ($request->youtube_ar_2 ?: ''), 2);
 
         } catch (\Exception $ex) {
-            Session::flash('warning', 'Arabic Error!');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('warning', 'Error storing famous attractions, Arabic Data!');
+            } else {
+                Session::flash('warning', 'حدث خطأ ما عند اضافة القيم باللغة العربية');
+            }
+
             return redirect()->back();
         }
 
         // flash success & redirect ot list page
-        Session::flash('success', 'Attraction added successfully! تم اضافة المزار بنجاح');
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('warning', 'Famous attraction added successfully!');
+        } else {
+            Session::flash('warning', 'تم إضافة مزار بنجاح');
+        }
         return redirect('/attractions');
     }
 
@@ -312,38 +325,37 @@ class FamousController extends Controller
         $youtube_ar_array = Helper::getYoutubeLinks($famous->id, 2);
         $youtube_en_array = $famous->media()->where('type', 2)->first() ? $famous->media()->where('type', 2)->get() : [];
 
-        if( count($youtube_ar_array) > 0 ) {
-            foreach($youtube_ar_array as $video) {
+        if (count($youtube_ar_array) > 0) {
+            foreach ($youtube_ar_array as $video) {
                 $youtube_ar[] = $video;
             }
         } else {
             $youtube_ar = ['', ''];
         }
 
-        if(count($youtube_en_array) > 0) {
-            foreach($youtube_en_array as $video) {
+        if (count($youtube_en_array) > 0) {
+            foreach ($youtube_en_array as $video) {
                 $youtube_en[] = $video->media;
             }
         } else {
             $youtube_en = ['', ''];
         }
 
-        if(count($images_ar_array) > 0) {
-            foreach($images_ar_array as $image) {
+        if (count($images_ar_array) > 0) {
+            foreach ($images_ar_array as $image) {
                 $images_ar[] = asset($image->value);
             }
         } else {
             $images_ar = ['', ''];
         }
-        
-        if(count($images_en_array) > 0 ) {
-            foreach($images_en_array as $image) {
+
+        if (count($images_en_array) > 0) {
+            foreach ($images_en_array as $image) {
                 $images_en[] = asset($image->media);
             }
         } else {
             $images_en = ['', ''];
         }
-
 
         $row = [
             'id' => $famous->id,
@@ -359,8 +371,8 @@ class FamousController extends Controller
             'info' => $request->lang == 'en' ? $famous->info : \Helper::localization('famous_attractions', 'other_info', $famous->id, 2, $famous->info),
             'is_active' => $famous->is_active,
             'categories' => $categories,
-            'images_ar'  => $images_ar,
-            'images_en'  => $images_en,
+            'images_ar' => $images_ar,
+            'images_en' => $images_en,
             'youtube_ar' => $youtube_ar,
             'youtube_en' => $youtube_en,
         ];
@@ -378,7 +390,12 @@ class FamousController extends Controller
 
         // redirect back if not found!
         if ($data['famous'] == null) {
-            Session::flash('warning', 'Not found! غير موجود');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('warning', 'Famous attraction not found!');
+            } else {
+                Session::flash('warning', 'لم يتم العثور علي المزار');
+            }
+
             return redirect('/attractions');
         }
 
@@ -482,8 +499,8 @@ class FamousController extends Controller
             // Attach media
             $famous->media()->where('type', 2)->delete();
             $famous->media()->createMany([
-                ['media' => ($request->youtube_en_1 ? : ''), 'type' => 2],
-                ['media' => ($request->youtube_en_2 ? : ''), 'type' => 2],
+                ['media' => ($request->youtube_en_1 ?: ''), 'type' => 2],
+                ['media' => ($request->youtube_en_2 ?: ''), 'type' => 2],
             ]);
 
             /**
@@ -576,7 +593,7 @@ class FamousController extends Controller
                             }
 
                         }
-                    
+
                         // check if image is new
                         if (strpos($image, 'base64') !== false) {
                             // get image extension
@@ -608,7 +625,7 @@ class FamousController extends Controller
                     Helper::remove_localization(19, 'link', $famous->id, 2);
 
                     // add new images
-                    foreach ($images_ar as $image) {                            
+                    foreach ($images_ar as $image) {
                         // check if image exist
                         if (strpos($image, 'famous_images') !== false) {
                             // search for its name
@@ -618,7 +635,7 @@ class FamousController extends Controller
                                 $name = $match[0];
 
                                 // store link in db
-                               Helper::add_localization(19, 'link', $famous->id, ($name ? : ''), 2);
+                                Helper::add_localization(19, 'link', $famous->id, ($name ?: ''), 2);
                             }
 
                         }
@@ -635,8 +652,8 @@ class FamousController extends Controller
                                 $imageName = 'famous_images/arabic/' . time() . '.' . $ext;
                                 \File::put(public_path() . '/' . $imageName, base64_decode($image));
 
-                               // store link in db
-                               Helper::add_localization(19, 'link', $famous->id, ($imageName ? : ''), 2);
+                                // store link in db
+                                Helper::add_localization(19, 'link', $famous->id, ($imageName ?: ''), 2);
                             }
                         }
                     }
@@ -644,19 +661,24 @@ class FamousController extends Controller
             }
 
         } catch (\Exception $ex) {
-            dd($ex);
             Session::flash('warning', 'English error!');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('warning', 'Error updating Famous attraction, English values!');
+            } else {
+                Session::flash('warning', 'خطأ في تعديل قيم المزار باللغة الانجليزية');
+            }
+
             return redirect()->back();
         }
 
         // Update Arabic values
         try {
-            Helper::edit_entity_localization('famous_attractions', 'name', $famous->id, 2, ($request->place_name_ar ? : 'بدون اسم'));
-            Helper::edit_entity_localization('famous_attractions', 'address', $famous->id, 2, ($request->place_address_ar ? : 'بدون عنوان'));
-            Helper::edit_entity_localization('famous_attractions', 'other_info', $famous->id, 2, ($request->other_info_ar ? : 'بدون معلومات اضافية'));
+            Helper::edit_entity_localization('famous_attractions', 'name', $famous->id, 2, ($request->place_name_ar ?: 'بدون اسم'));
+            Helper::edit_entity_localization('famous_attractions', 'address', $famous->id, 2, ($request->place_address_ar ?: 'بدون عنوان'));
+            Helper::edit_entity_localization('famous_attractions', 'other_info', $famous->id, 2, ($request->other_info_ar ?: 'بدون معلومات اضافية'));
 
-            Helper::add_localization(19, 'link', $famous->id, ($request->youtube_ar_1 ? : ''), 2);
-            Helper::add_localization(19, 'link', $famous->id, ($request->youtube_ar_2 ? : ''), 2);
+            Helper::add_localization(19, 'link', $famous->id, ($request->youtube_ar_1 ?: ''), 2);
+            Helper::add_localization(19, 'link', $famous->id, ($request->youtube_ar_2 ?: ''), 2);
 
         } catch (\Exception $ex) {
             Session::flash('warning', 'Arabic Error!');
@@ -664,7 +686,12 @@ class FamousController extends Controller
         }
 
         // flash success & redirect ot list page
-        Session::flash('success', 'Attraction updated successfully! تم تعديل المزار بنجاح');
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('warning', 'Famous attraction updated successfully!');
+        } else {
+            Session::flash('warning', 'تم تعديل المزار بنجاح');
+        }
+
         return redirect('/attractions');
     }
 

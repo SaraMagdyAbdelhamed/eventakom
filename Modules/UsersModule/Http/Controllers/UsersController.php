@@ -179,7 +179,11 @@ class UsersController extends Controller
         $user->save();
         $user->rules()->attach([$request->rule, 1]);
 
-        Session::flash('success', 'User added successfully!');
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('success', 'User added successfully!');
+        } else {
+            Session::flash('success', 'تم إضافة المستخدم بنجاح');
+        }
         return redirect()->back();
     }
 

@@ -2,31 +2,29 @@
 
 namespace Modules\Events\Http\Controllers;
 
+use App\Age_Ranges;
+use App\Currency;
+use App\EntityLocalization;
+use App\EventBookingTicket;
+use App\EventCategory;
+use App\EventHashtags;
+use App\EventMedia;
+use App\EventMobile;
+use App\EventPost;
+use App\EventTicket;
+use App\Genders;
+use App\Helpers\Helper;
+use App\Library\Services\NotificationsService;
 use Carbon\Carbon;
-use Session;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use App\EventMobile;
-use App\EventCategory;
-use App\EventTicket;
-use App\EventBookingTicket;
-use App\EventPost;
-use App\EntityLocalization;
-use App\Genders;
-use App\Age_Ranges;
-use App\Currency;
-use App\EventHashtags;
-use App\Helpers\Helper;
-use App\EventMedia;
-use App\Users;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use App\Library\Services\NotificationsService;
 use Illuminate\Support\Facades\Validator;
+use Session;
 
 class EventsMobileController extends Controller
 {
@@ -60,8 +58,8 @@ class EventsMobileController extends Controller
         }
         $categories = EventCategory::all();
         return view('events::eventsMobile.list')
-                    // ->with('events', EventMobile::MobileApproved()->get());
-            ->with(compact('current_events', 'pending_events', 'categories', 'rejected_events'));
+        // ->with('events', EventMobile::MobileApproved()->get());
+        ->with(compact('current_events', 'pending_events', 'categories', 'rejected_events'));
     }
 
     public function event_filter(Request $request)
@@ -100,7 +98,6 @@ class EventsMobileController extends Controller
                     $q->whereBetween('start_datetime', array($from_date, $to_date));
 
                 }
-
 
                 if (!isset($request->enddate_from) && isset($request->endtdate_to)) {
                     $from_date = Carbon::now()->format('Y-m-d');
@@ -148,7 +145,6 @@ class EventsMobileController extends Controller
 
                 }
 
-
                 if (!isset($request->enddate_from) && isset($request->endtdate_to)) {
                     $from_date = Carbon::now()->format('Y-m-d');
                     $to_date = date('Y-m-d', strtotime($request->endtdate_to));
@@ -167,7 +163,7 @@ class EventsMobileController extends Controller
                 }
             })->get();
         }
-      // dd($data['current_events']);
+        // dd($data['current_events']);
         $data['categories'] = EventCategory::all();
         //$data['current_events'] = EventMobile::CurrentEvents()->get();
         $data['pending_events'] = EventMobile::PendingEvents()->get();
@@ -196,8 +192,8 @@ class EventsMobileController extends Controller
             $q->where('event_id', $id);
             $q->select('interest_id');
         })->get();
- 
-       //POSTS
+
+        //POSTS
         $data['event_posts'] = EventPost::where('event_id', '=', $id)->get();
 
         //TICKETS
@@ -235,11 +231,10 @@ class EventsMobileController extends Controller
             ->where('field', '=', 'hashtag')
             ->where('item_id', '=', $id)
             ->where('lang_id', '=', 2)
-            ->get(); 
+            ->get();
         //dd($data['arabic_hashtags']);
         return view('events::eventsMobile.edit', $data);
     }
-
 
     public function update(Request $request)
     {
@@ -292,13 +287,18 @@ class EventsMobileController extends Controller
         $imageRules = array(
             'image' => 'image|mimes:png,jpg|max:1024',
         );
- 
+
         // Check if there is any images or files and move them to public/events
         // Arabic Event Images
         if ($request->hasfile('arabic_images')) {
             $imgs_count = count($_FILES['arabic_images']['name']);
             if ($imgs_count > 5) {
-                Session::flash('error', 'لم يتم التحديث الحد الاأقصى للصور هو 5 صور');
+
+                if (\Lang::getLocale() == 'en') {
+                    Session::flash('warning', 'Max number of images is 5, limit exceded!');
+                } else {
+                    Session::flash('warning', 'لم يتم التحديث الحد الاأقصى للصور هو 5 صور');
+                }
                 return redirect('/events/mobile');
             } else {
                 foreach ($request->file('arabic_images') as $image) {
@@ -325,7 +325,13 @@ class EventsMobileController extends Controller
         if ($request->hasfile('english_images')) {
             $imgs_count = count($_FILES['english_images']['name']);
             if ($imgs_count > 5) {
-                Session::flash('error', 'لم يتم التحديث الحد الاأقصى للصور هو 5 صور');
+
+                if (\Lang::getLocale() == 'en') {
+                    Session::flash('warning', 'Max number of images is 5, limit exceded!');
+                } else {
+                    Session::flash('warning', 'لم يتم التحديث الحد الاأقصى للصور هو 5 صور');
+                }
+
                 return redirect('/events/mobile');
             } else {
                 foreach ($request->file('english_images') as $image) {
@@ -356,7 +362,7 @@ class EventsMobileController extends Controller
         try {
             //$event = new EventBackend;
             $event = EventMobile::find($request['event_id']);
-           // dd($request['event_id']);
+            // dd($request['event_id']);
             $event->name = $request->english_event_name;
             $event->description = $request->english_description;
             if (isset($request->lng) && isset($request->lat)) {
@@ -373,13 +379,13 @@ class EventsMobileController extends Controller
             $event->gender_id = $request->gender;
 
             // concatinate start_date + start_time to make them start_datetime
-            $event->start_datetime = date('Y-m-d', strtotime($request->start_date)) . ' ' . date('h:i:s', strtotime($request->start_time));  
-            
+            $event->start_datetime = date('Y-m-d', strtotime($request->start_date)) . ' ' . date('h:i:s', strtotime($request->start_time));
+
             // concatinate end_date + end_time to make them end_datetime
             $event->end_datetime = date('Y-m-d', strtotime($request->end_date)) . ' ' . date('h:i:s', strtotime($request->end_time));
 
-            $event->suggest_big_event = $request->is_big_event ? : 0;   // check if value is missing then replace it with zero
-            $event->is_active = $request->is_active ? : 0;            // check if value is missing then replace it with zero
+            $event->suggest_big_event = $request->is_big_event ?: 0; // check if value is missing then replace it with zero
+            $event->is_active = $request->is_active ?: 0; // check if value is missing then replace it with zero
 
             $event->is_paid = $request->is_paid;
 
@@ -403,7 +409,7 @@ class EventsMobileController extends Controller
                     $hash->save();
                 }
 
-                $id = EventHashtags::where('name', '=', $hashtags[$i])->first()->id;    // get hashtage id from `hash_tag` table
+                $id = EventHashtags::where('name', '=', $hashtags[$i])->first()->id; // get hashtage id from `hash_tag` table
 
                 // attach event's hashtags with
                 $event->hashtags()->attach($id);
@@ -417,7 +423,7 @@ class EventsMobileController extends Controller
             }
 
             /**  Youtube links  **/
-           // $event->media()->update(['category_id' => $newCatId]);
+            // $event->media()->update(['category_id' => $newCatId]);
             if (!isset($request->youtube_ar_1) && isset($request->youtube_ar_2)) {
                 $request->youtube_ar_1 = $request->youtube_en_1;
             } elseif (!isset($request->youtube_ar_2) && isset($request->youtube_ar_1)) {
@@ -435,8 +441,13 @@ class EventsMobileController extends Controller
             ]);
 
         } catch (\Exception $ex) {
-            dd($ex);
-            Session::flash('warning', 'Error 1');
+            Session::flash('warning', '');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('warning', 'Error while updating event');
+            } else {
+                Session::flash('warning', 'خطأ عند تعديل الحدث');
+            }
+
             return redirect()->back();
         }
 
@@ -447,19 +458,22 @@ class EventsMobileController extends Controller
         Helper::remove_localization(4, 'venue', $event->id, 2);
         Helper::remove_localization(4, 'hashtag', $event->id, 2);
         try {
-            Helper::add_localization(4, 'name', $event->id, $request->arabic_event_name, 2);             // arabic_event_name
-            Helper::add_localization(4, 'description', $event->id, $request->arabic_description, 2);             // arabic_description
-            Helper::add_localization(4, 'venue', $event->id, $request->arabic_venu, 2);             // arabic_venu
+            Helper::add_localization(4, 'name', $event->id, $request->arabic_event_name, 2); // arabic_event_name
+            Helper::add_localization(4, 'description', $event->id, $request->arabic_description, 2); // arabic_description
+            Helper::add_localization(4, 'venue', $event->id, $request->arabic_venu, 2); // arabic_venu
 
             // Explode hashtags into an array
             $arabic_hashtags = explode(',', $request->arabic_hashtags);
             for ($i = 0; $i < count($arabic_hashtags); $i++) {
                 // Add arabic hashtags in entity_localization table
-                Helper::add_localization(4, 'hashtag', $event->id, $arabic_hashtags[$i], 2);                        // arabic_hashtags
+                Helper::add_localization(4, 'hashtag', $event->id, $arabic_hashtags[$i], 2); // arabic_hashtags
             }
         } catch (\Exception $ex) {
-            dd($ex);
-            Session::flash('warning', 'Error 2');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('warning', 'Error while storing event');
+            } else {
+                Session::flash('warning', 'خطأ عند تسجيل الحدث');
+            }
             return redirect()->back();
         }
 
@@ -482,10 +496,15 @@ class EventsMobileController extends Controller
         }
 
         // flash success message & redirect to list backend events
-        Session::flash('success', 'Event updated Successfully! تم تحديث الحدث بنجاح');
+        Session::flash('success', ' ');
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('warning', 'Event updated Successfully!');
+        } else {
+            Session::flash('warning', 'تم تحديث الحدث بنجاح');
+        }
+
         return redirect('/events/mobile');
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -514,9 +533,6 @@ class EventsMobileController extends Controller
         return view('events::show');
     }
 
-
-
-
     /**
      * Update the specified resource in storage.
      * @param  Request $request
@@ -536,8 +552,8 @@ class EventsMobileController extends Controller
         $accepted = EventMobile::find($id);
         $accepted->update(['event_status_id' => 2, 'is_active' => 1]);
         $accepted->save();
-      //Notify Event Owner about Acceptance
-         //get Event Owner
+        //Notify Event Owner about Acceptance
+        //get Event Owner
         $event_owner = $accepted->user;
         if ($event_owner) {
             $notification_message['en'] = 'YOUR EVENT IS APPROVED';
@@ -545,7 +561,7 @@ class EventsMobileController extends Controller
             $notifcation = $this->NotifcationService->save_notification($notification_message, 3, 4, $accepted->id, $event_owner->id);
             $this->NotifcationService->PushToSingleUser($event_owner, $notifcation);
         }
-      //get users have this event in their interests
+        //get users have this event in their interests
         $this->NotifcationService->EventInterestsPush($accepted);
 
     }
@@ -562,7 +578,7 @@ class EventsMobileController extends Controller
             $accepted = EventMobile::find($id);
             $accepted->update(['event_status_id' => 2]);
             $accepted->save();
-          //Notify Each event owner
+            //Notify Each event owner
             $event_owner = $accepted->user;
             if ($event_owner) {
                 $notification_message['en'] = 'YOUR EVENT IS APPROVED';
@@ -570,7 +586,7 @@ class EventsMobileController extends Controller
                 $notification = $this->NotifcationService->save_notification($notification_message, 3, 4, $accepted->id, $event_owner->id);
                 $this->NotifcationService->PushToSingleUser($event_owner, $notification);
             }
-          //get users have this event in their interests
+            //get users have this event in their interests
             $this->NotifcationService->EventInterestsPush($accepted);
         }
 
@@ -581,11 +597,11 @@ class EventsMobileController extends Controller
         $id = $request['event_id'];
         $rejected = EventMobile::find($id);
         $rejected->update([
-            'event_status_id' => 3, 
-            'rejection_reason' => $request['reason']
+            'event_status_id' => 3,
+            'rejection_reason' => $request['reason'],
         ]);
 
-      // arabic rejection reson "instead of these 5 lines later we can create function in EntityLocalization model takes these 4 parameters and return 1"
+        // arabic rejection reson "instead of these 5 lines later we can create function in EntityLocalization model takes these 4 parameters and return 1"
         $reason_ar = new EntityLocalization;
         $reason_ar->entity_id = 4;
         $reason_ar->field = 'rejection_reason';
@@ -607,8 +623,8 @@ class EventsMobileController extends Controller
                 $notifcation = $this->NotifcationService->save_notification($notification_message, 4, 4, $rejected->id, $event_owner->id);
             }
 
-      //  return Response::json($response);
-            return response()->json($response);  // <<<<<<<<< see this line
+            //  return Response::json($response);
+            return response()->json($response); // <<<<<<<<< see this line
         } else {
             $response = array(
                 'status' => 'error',
@@ -616,7 +632,6 @@ class EventsMobileController extends Controller
             );
             return response()->json($response);
         }
-
 
     }
 

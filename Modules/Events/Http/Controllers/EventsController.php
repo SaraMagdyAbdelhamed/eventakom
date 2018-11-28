@@ -31,6 +31,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
 
+
 class EventsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -280,14 +281,23 @@ class EventsController extends Controller
                     $ticket->currency_id = $request->currency;
                     $ticket->save();
                 } catch (\Exception $ex) {
-                    Session::flash('warning', 'price error!');
+                    if (\Lang::getLocale() == 'en') {
+                        Session::flash('warning', 'price error!');
+                    } else {
+                        Session::flash('warning', 'هناك خطأ ما في السعر');
+                    }
+                    
                     return redirect()->back();
                 }
             }
 
         } catch (\Exception $ex) {
-            dd($ex);
-            Session::flash('warning', 'Error 1');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('warning', 'Error 1');
+            } else {
+                Session::flash('warning', 'خطأ رقم 1');
+            }
+            
             return redirect()->back();
         }
 
@@ -307,8 +317,11 @@ class EventsController extends Controller
             }
 
         } catch (\Exception $ex) {
-            dd($ex);
-            Session::flash('warning', 'Error 2');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('warning', 'Error 2');
+            } else {
+                Session::flash('warning', 'خطأ رقم 2');
+            }
             return redirect()->back();
         }
 
@@ -316,7 +329,11 @@ class EventsController extends Controller
         $this->NotifcationService->EventInterestsPush($event);
 
         // flash success message & redirect to list backend events
-        Session::flash('success', 'Event Added Successfully! تم إضافة الحدث بنجاح');
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('success', 'Event Added Successfully!');
+        } else {
+            Session::flash('success', 'م إضافة الحدث بنجاح');
+        }
         return redirect('/events/backend');
     }
 
@@ -330,12 +347,21 @@ class EventsController extends Controller
 
         // redirect back if not found!
         if ($data['event'] == null) {
-            Session::flash('warning', 'Not found! غير موجود');
+
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('success', 'Not found!');
+            } else {
+                Session::flash('success', ' غير موجود');
+            }
             return redirect('/events/backend');
         }
 
         if ($data['event']->is_backend != 1) {
-            Session::flash('warning', 'Not found! غير موجود');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('success', 'Not found!');
+            } else {
+                Session::flash('success', ' غير موجود');
+            }
             return redirect('/events/backend');
         }
 
@@ -352,7 +378,11 @@ class EventsController extends Controller
 
         // redirect back if not found!
         if ($data['event'] == null) {
-            Session::flash('warning', 'Not found! غير موجود');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('success', 'Not found!');
+            } else {
+                Session::flash('success', ' غير موجود');
+            }
             return redirect('/events/backend');
         }
 
@@ -598,7 +628,11 @@ class EventsController extends Controller
             }
 
         } catch (\Exception $ex) {
-            Session::flash('warning', $ex);
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('success', 'Unkown error while storing event!');
+            } else {
+                Session::flash('success', 'حدث خطأ ما عند تسجيل الحدث');
+            }
             return redirect()->back();
         }
 
@@ -618,8 +652,11 @@ class EventsController extends Controller
                 Helper::add_localization(17, 'hash_tags', $event->id, $arabic_hashtags[$i], 2); // arabic_hashtags
             }
         } catch (\Exception $ex) {
-            dd($ex);
-            Session::flash('warning', 'Error 2');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('success', 'Error 4');
+            } else {
+                Session::flash('success', 'خطأ رقم 4');
+            }
             return redirect()->back();
         }
 
@@ -652,7 +689,11 @@ class EventsController extends Controller
 
         $event->delete(); // delete events
 
-        Session::flash('success', 'Event deleted successfully! تم مسح الحدث بنجاح');
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('success', 'Event deleted successfully!');
+        } else {
+            Session::flash('success', ' تم مسح الحدث بنجاح');
+        }
         return response()->json(['success', 'event deleted!']);
     }
 
@@ -686,7 +727,12 @@ class EventsController extends Controller
             $event->delete(); // delete events
         }
 
-        Session::flash('success', 'Event deleted successfully! تم مسح الحدث بنجاح');
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('success', 'Event deleted successfully!');
+        } else {
+            Session::flash('success', ' تم مسح الحدث بنجاح');
+        }
+
         return response()->json(['success', 'event deleted!']);
     }
 
