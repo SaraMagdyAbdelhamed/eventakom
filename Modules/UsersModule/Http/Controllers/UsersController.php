@@ -2,25 +2,22 @@
 
 namespace Modules\UsersModule\Http\Controllers;
 
-use App\Helpers\Helper;
+use App\Age_Ranges;
+use App\Cities;
+use App\Countries;
+use App\Rules;
+use App\Users;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
-use Validator;
-use Session;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
-
-use App\Countries;
-use App\Cities;
-use App\Users;
-use App\Rules;
-use App\Age_Ranges;
+use Illuminate\Support\Facades\Input;
+use Session;
+use Validator;
 
 class UsersController extends Controller
 {
@@ -42,13 +39,13 @@ class UsersController extends Controller
 
     public function index_backend()
     {
-        // check current usere rule that based on it, filter backend-users will work as follows: 
+        // check current usere rule that based on it, filter backend-users will work as follows:
         if (Auth::user()->isSuperAdmin()) {
-            $rule_names = ['Super Admin', 'Admin', 'Data Entry'];   // Current user is Super Admin, it will list Super Admins, Admins and data entry
-        } else if (Auth::user()->isAdmin()) {                     // Current user is Admin it will list Admins & Data entry only
+            $rule_names = ['Super Admin', 'Admin', 'Data Entry']; // Current user is Super Admin, it will list Super Admins, Admins and data entry
+        } else if (Auth::user()->isAdmin()) { // Current user is Admin it will list Admins & Data entry only
             $rule_names = ['Admin', 'Data Entry'];
         } else {
-            $rule_names = ['Data Entry'];                           // else it will list data entry only
+            $rule_names = ['Data Entry']; // else it will list data entry only
         }
 
         $data['users'] = Users::whereHas('rules', function ($q) use ($rule_names) {
@@ -71,7 +68,7 @@ class UsersController extends Controller
     public function mobile_status(Request $request, $id)
     {
         $user = Users::find($id);
-        
+
         if (isset($request->is_active) && $request->is_active == 1) {
             $user->is_active = 1;
             $user->is_mobile_verified = 1;
@@ -81,7 +78,14 @@ class UsersController extends Controller
         }
 
         $user->save();
-        return redirect()->back()->with('success', 'Successfull edit تم تغيير الحاله بنجاح');
+
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('success', 'Successfull edit');
+        } else {
+            Session::flash('success', 'تم تغيير الحاله بنجاح');
+        }
+
+        return redirect()->back();
     }
 
     public function mobile_filter(Request $request)
@@ -121,9 +125,8 @@ class UsersController extends Controller
         //             ->with('mobiles', $data['mobiles'])
         //             ->with('countries', $data['countries'])
         //             ->with('cities', $data['cities'])
-        //             ->with('age_ranges', $data['age_ranges']);   
+        //             ->with('age_ranges', $data['age_ranges']);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -144,13 +147,13 @@ class UsersController extends Controller
         $validator = Validator::make($request->all(), [
             'firstName' => 'required|min:3|max:100',
             // 'lastName'  => 'required|min:3|max:100',
-            'username'  => 'required|min:3|max:100|unique:users,deleted_at',
-            'rule'      => 'required',
+            'username' => 'required|min:3|max:100|unique:users,deleted_at',
+            'rule' => 'required',
             // 'password'  => 'required|min:6|confirmed',
             // 'password_confirmation' => 'required|min:6',
-            'email'     => 'required|email|max:40',
-            'phone'     => 'required|digits_between:1,14',
-            'image'     => 'required|image|mimes:jpg,jpeg,png|max:5120',
+            'email' => 'required|email|max:40',
+            'phone' => 'required|digits_between:1,14',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         if ($validator->fails()) {
@@ -169,13 +172,13 @@ class UsersController extends Controller
             $user->photo = $fileNameToStore;
         }
 
-        $user->first_name   = $request->firstName;
-        $user->last_name    = $request->lastName; 
-        $user->username     = $request->username;
-        $user->email        = $request->email;
-        $user->password     = bcrypt($request->password);
-        $user->mobile       = $request->phone;
-        $user->is_active    = $request->status;
+        $user->first_name = $request->firstName;
+        $user->last_name = $request->lastName;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->mobile = $request->phone;
+        $user->is_active = $request->status;
         $user->save();
         $user->rules()->attach([$request->rule, 1]);
 
@@ -205,7 +208,7 @@ class UsersController extends Controller
         $validator = Validator::make($request->all(), [
             'firstName' => 'required|min:3|max:100',
             // 'lastName'  => 'required|min:3|max:100',
-            'username'  => 'required|min:3|max:100|unique:users,deleted_at',
+            'username' => 'required|min:3|max:100|unique:users,deleted_at',
             'rule' => 'required',
             // 'password'  => 'required|min:6|confirmed',
             // 'password_confirmation' => 'required|min:6',
@@ -219,7 +222,7 @@ class UsersController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        
+
         $user = Users::find($id);
         if ($request->hasFile('image')) {
             $destinationPath = 'backend_users';
@@ -229,18 +232,18 @@ class UsersController extends Controller
             $user->photo = $fileNameToStore;
         }
 
-        $user->first_name   = $request->firstName;
-        $user->last_name    = $request->lastName; 
-        $user->username     = $request->username;
-        $user->email        = $request->email;
+        $user->first_name = $request->firstName;
+        $user->last_name = $request->lastName;
+        $user->username = $request->username;
+        $user->email = $request->email;
         // $user->password     = bcrypt($request->password);
-        $user->mobile       = $request->phone;
-        $user->is_active    = $request->status;
+        $user->mobile = $request->phone;
+        $user->is_active = $request->status;
         $user->save();
         $user->rules()->detach();
         $user->rules()->attach([$request->rule, 1]);
 
-        if($user->id == Auth::id()) {
+        if ($user->id == Auth::id()) {
             Auth::logout();
             return redirect('/login');
         }
