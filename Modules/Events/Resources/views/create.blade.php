@@ -798,6 +798,7 @@
     }).validate({
                 errorPlacement: function errorPlacement(error, element) { element.after(error); },
             });
+            
     dateRange('start_date','end_date')
   })
 
