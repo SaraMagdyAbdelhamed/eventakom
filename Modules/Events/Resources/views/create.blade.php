@@ -798,7 +798,8 @@
     }).validate({
                 errorPlacement: function errorPlacement(error, element) { element.after(error); },
             });
-    dateRange('start_date','end_date','2018','7','30','2018','8','30','22/11/2018')
+            
+    dateRange('start_date','end_date')
   })
 
 </script> <!--End Script (UI)-->
