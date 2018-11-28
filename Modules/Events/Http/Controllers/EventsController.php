@@ -8,10 +8,6 @@
 
 namespace Modules\Events\Http\Controllers;
 
-use Session;
-use Helper;
-use Carbon\Carbon;
-
 use App\Age_Ranges;
 use App\BigEvent;
 use App\Currency;
@@ -22,6 +18,8 @@ use App\EventMedia;
 use App\EventTicket;
 use App\Genders;
 use App\Library\Services\NotificationsService;
+use Carbon\Carbon;
+use Helper;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -29,8 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-
-
+use Session;
 
 class EventsController extends Controller
 {
@@ -115,13 +112,13 @@ class EventsController extends Controller
             // concatinate end_date + end_time to make them end_datetime
             $event->end_datetime = Carbon::parse($end_date . ' ' . $request->end_time);
 
-            $event->suggest_big_event = $request->is_big_event ? : 0; // check if value is missing then replace it with zero
-            $event->is_active = $request->is_active ? : 0; // check if value is missing then replace it with zero
+            $event->suggest_big_event = $request->is_big_event ?: 0; // check if value is missing then replace it with zero
+            $event->is_active = $request->is_active ?: 0; // check if value is missing then replace it with zero
 
             $event->is_paid = $request->is_paid;
 
-            $event->website = $request->website ? : '';
-            $event->email = $request->email ? : '';
+            $event->website = $request->website ?: '';
+            $event->email = $request->email ?: '';
             $event->code = $request->code_number;
             $event->mobile = $request->mobile_number;
             $event->created_by = Auth::id();
@@ -154,10 +151,10 @@ class EventsController extends Controller
 
             /**  Youtube links  **/
             $event->media()->createMany([
-                ['link' => ($request->youtube_en_1 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_en_2 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_1 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_2 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_en_1 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_en_2 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_1 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_2 ?: ''), 'type' => 2],
             ]);
 
             // Images
@@ -173,7 +170,7 @@ class EventsController extends Controller
 
                         // check if image exist
                         if (strpos($image, 'events/english') !== false) {
-                        // search for its name
+                            // search for its name
                             preg_match('/events\/english\/(.*)/', $image, $match);
 
                             if (count($match) > 0) {
@@ -219,9 +216,9 @@ class EventsController extends Controller
                     // add new images
                     foreach ($images_ar as $image) {
 
-                    // check if image exist
+                        // check if image exist
                         if (strpos($image, 'events/arabic') !== false) {
-                        // search for its name
+                            // search for its name
                             preg_match('/events\/arabic\/(.*)/', $image, $match);
 
                             if (count($match) > 0) {
@@ -236,9 +233,9 @@ class EventsController extends Controller
                             }
 
                         }
-                    // check if image is new
+                        // check if image is new
                         if (strpos($image, 'base64') !== false) {
-                        // get image extension
+                            // get image extension
                             preg_match('/image\/(.*)\;/', $image, $match);
 
                             if (count($match) > 0) {
@@ -286,7 +283,7 @@ class EventsController extends Controller
                     } else {
                         Session::flash('warning', 'هناك خطأ ما في السعر');
                     }
-                    
+
                     return redirect()->back();
                 }
             }
@@ -297,15 +294,15 @@ class EventsController extends Controller
             } else {
                 Session::flash('warning', 'خطأ رقم 1');
             }
-            
+
             return redirect()->back();
         }
 
         // Insert Arabic localizations
         try {
-            Helper::add_localization(4, 'name', $event->id, ($request->arabic_event_name ? : 'بدون اسم'), 2); // arabic_event_name
-            Helper::add_localization(4, 'description', $event->id, ($request->arabic_description ? : 'بدون وصف'), 2); // arabic_description
-            Helper::add_localization(4, 'venue', $event->id, ($request->arabic_venu ? : 'بدون عنوان'), 2); // arabic_venu
+            Helper::add_localization(4, 'name', $event->id, ($request->arabic_event_name ?: 'بدون اسم'), 2); // arabic_event_name
+            Helper::add_localization(4, 'description', $event->id, ($request->arabic_description ?: 'بدون وصف'), 2); // arabic_description
+            Helper::add_localization(4, 'venue', $event->id, ($request->arabic_venu ?: 'بدون عنوان'), 2); // arabic_venu
 
             // Explode hashtags into an array
             if (isset($request->arabic_hashtags) && !empty($request->arabic_hashtags)) {
@@ -425,7 +422,6 @@ class EventsController extends Controller
         $images_ar = explode('-', $request->images_ar);
         // dd([$images_en, $images_ar]);
 
-
         // Insert Event in events table
         try {
             $event = EventBackend::find($request->id);
@@ -444,15 +440,15 @@ class EventsController extends Controller
             $event->start_datetime = Carbon::parse($start_date . ' ' . $request->start_time);
 
             // concatinate end_date + end_time to make them end_datetime
-            $event->end_datetime = Carbon::parse($end_date . ' ' . $end_time);
+            $event->end_datetime = Carbon::parse($end_date . ' ' . $request->end_time);
 
-            $event->suggest_big_event = $request->is_big_event ? : 0; // check if value is missing then replace it with zero
-            $event->is_active = $request->is_active ? : 0; // check if value is missing then replace it with zero
+            $event->suggest_big_event = $request->is_big_event ?: 0; // check if value is missing then replace it with zero
+            $event->is_active = $request->is_active ?: 0; // check if value is missing then replace it with zero
 
             $event->is_paid = $request->is_paid;
 
-            $event->website = $request->website ? : '';
-            $event->email = $request->email ? : '';
+            $event->website = $request->website ?: '';
+            $event->email = $request->email ?: '';
             $event->code = $request->code_number;
             $event->mobile = $request->mobile_number;
             $event->updated_by = Auth::id();
@@ -493,10 +489,10 @@ class EventsController extends Controller
             /**  Youtube links  **/
             $event->media()->where('type', 2)->delete();
             $event->media()->createMany([
-                ['link' => ($request->youtube_en_1 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_en_2 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_1 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_2 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_en_1 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_en_2 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_1 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_2 ?: ''), 'type' => 2],
             ]);
 
             // Images
@@ -513,7 +509,7 @@ class EventsController extends Controller
 
                         // check if image exist
                         if (strpos($image, 'events/english') !== false) {
-                        // search for its name
+                            // search for its name
                             preg_match('/events\/english\/(.*)/', $image, $match);
 
                             if (count($match) > 0) {
@@ -559,9 +555,9 @@ class EventsController extends Controller
                     // add new images
                     foreach ($images_ar as $image) {
 
-                    // check if image exist
+                        // check if image exist
                         if (strpos($image, 'events/arabic') !== false) {
-                        // search for its name
+                            // search for its name
                             preg_match('/events\/arabic\/(.*)/', $image, $match);
 
                             if (count($match) > 0) {
@@ -576,9 +572,9 @@ class EventsController extends Controller
                             }
 
                         }
-                    // check if image is new
+                        // check if image is new
                         if (strpos($image, 'base64') !== false) {
-                        // get image extension
+                            // get image extension
                             preg_match('/image\/(.*)\;/', $image, $match);
 
                             if (count($match) > 0) {
@@ -629,9 +625,9 @@ class EventsController extends Controller
 
         } catch (\Exception $ex) {
             if (\Lang::getLocale() == 'en') {
-                Session::flash('success', 'Unkown error while storing event!');
+                Session::flash('error', 'Unkown error while storing event!');
             } else {
-                Session::flash('success', 'حدث خطأ ما عند تسجيل الحدث');
+                Session::flash('error', 'حدث خطأ ما عند تسجيل الحدث');
             }
             return redirect()->back();
         }
@@ -661,7 +657,12 @@ class EventsController extends Controller
         }
 
         // flash success message & redirect to list backend events
-        Session::flash('success', 'Event Added Successfully! تم إضافة الحدث بنجاح');
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('success', 'Event Added Successfully!');
+        } else {
+            Session::flash('success', 'تم إضافة الحدث بنجاح');
+        }
+
         return redirect('/events/backend');
     }
 
@@ -756,7 +757,7 @@ class EventsController extends Controller
             $flag = 1;
             $events = $events->where('is_active', 1);
         } else
-            if ($request->active == null && $request->inactive == 1) {
+        if ($request->active == null && $request->inactive == 1) {
             $flag = 1;
             $events = $events->where('is_active', 0);
         }

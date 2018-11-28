@@ -153,7 +153,7 @@
   $(document).ready(function(){
     $('#menu_3').addClass('openedmenu');
     $('#sub_3_1').addClass('pure-active');
-    
+
     dateRange('start_from', 'start_to');
     dateRange('end_from', 'end_to');
   });
@@ -204,7 +204,12 @@
             },
             success: function ()
             {
+              @if(\App::isLocale('en'))
+                swal("Deleted", "deleted successfully!", "success");
+              @else
                 swal("تم الحذف!", "تم الحذف بنجاح", "success");
+              @endif
+
 
                 // fade out selected checkboxes after deletion
                 $.each(allVals, function( index, value ) {
@@ -269,7 +274,7 @@
           }
       });
 
-      
+
   });
 </script>
 
@@ -290,7 +295,7 @@
       autoplayDisableOnInteraction: false,
       mousewheelControl: false,
     });
-    
+
   });
 </script>
 

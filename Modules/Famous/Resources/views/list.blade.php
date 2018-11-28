@@ -7,7 +7,7 @@
       <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
         <div class="row">
           <div class="col-xs-12">
-            <div class="text-xs-center">         
+            <div class="text-xs-center">
               <div class="text-wraper">
                 <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.famousAtt')</h4>
               </div>
@@ -127,170 +127,14 @@
                               </a>
                             </span>
                           </td>
-                        </tr>               
+                        </tr>
                       @endforeach
                   @endif
-                  
+
               </tbody>
             </table>
           </form>
-          <div class="remodal log-custom" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-            <button class="remodal-close" data-remodal-action="close" aria-label="Close"></button>
-            <div>
-              <h2 class="title">title of the changing log in</h2>
-              <div class="log-content">
-                <div class="log-container">
-                  <table class="log-table">
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <th>log title</th>
-                      <th>user</th>
-                      <th>time</th>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>January</td>
-                      <td>$100</td>
-                      <td>$100</td>
-                    </tr>
-                    <tr class="log-row" data-link="https://www.google.com.eg/">
-                      <td>February</td>
-                      <td>$80</td>
-                      <td>$80</td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
     </div><br>
@@ -359,7 +203,7 @@
                         <td><span class="cellcontent" id="other_info"></span></td>
                       </tr>
                     </table>
-                   
+
                   </div>
                   <div class="clearfix"></div>
                 </div>
@@ -463,7 +307,7 @@
           }
       });
 
-      
+
     });
 
     $('#deleteSelected').click(function(){
@@ -531,7 +375,7 @@
     // AJAX: get record info
     $('.showRow').click(function(){
         // Get ID of that record
-        var id = $(this).data("id");    
+        var id = $(this).data("id");
 
         // AJAX call to get record data
         $.ajax({
@@ -541,11 +385,11 @@
 
             // On success, set retrieved data to edit input fields
             success: function (data)
-            { 
+            {
 
                 // Get data from JSON object & assign it to the HTML elements.
                 $("#place_title").text(data.name);
-                $("#place_name").text(data.name);  
+                $("#place_name").text(data.name);
                 $("#place_categories").text(data.categories);
                 $("#place_address").text(data.address);
                 $("#phone").text(data.phone);
@@ -577,16 +421,16 @@
                 var youtube_en = data.youtube_en;
 
                 // change youtube URL that it was copied & pasted from browser URL to the embeded format.
-                // the difference between the regular youtube URL and youtube embedded URL in just in `watch?v=` 
+                // the difference between the regular youtube URL and youtube embedded URL in just in `watch?v=`
                 // so we will replace it with the `embed/` keyword to be embedded in the HTML elements.
 
                 // set formated youtube URLs to the HTML elements.
                 @if( App::isLocale('en') )
                   $("#youtube_1").attr("src", youtube_en[0].replace('watch?v=', 'embed/'));
                   $("#youtube_2").attr("src", youtube_en[1].replace('watch?v=', 'embed/'));
-                @else 
+                @else
                   $("#youtube_1").attr("src", youtube_ar[0].replace('watch?v=', 'embed/'));
-                  $("#youtube_2").attr("src", youtube_ar[1].replace('watch?v=', 'embed/'));  
+                  $("#youtube_2").attr("src", youtube_ar[1].replace('watch?v=', 'embed/'));
                 @endif
 
             },

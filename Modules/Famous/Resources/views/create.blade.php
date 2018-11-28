@@ -6,7 +6,7 @@
     /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
     #map {
-        height: 100% !important;
+        height: 250px !important;
     }
     /* Optional: Makes the sample page fill the window. */
     html, body {
@@ -21,7 +21,7 @@
         <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
         <div class="row">
             <div class="col-xs-12">
-            <div class="text-xs-center">         
+            <div class="text-xs-center">
                 <div class="text-wraper">
                     <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.famousAtt')</h4>
                 </div>
@@ -71,7 +71,7 @@
                 {{-- Google Maps API --}}
                 <div class="col-xs-12">
                     <div class="mapouter">
-                        <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
+                        <div id="map" style=" background: none!important;height: 250px;width: 100%;"></div>
                         <input type="hidden" name="lat" id="lat" value="1.234">
                         <input type="hidden" name="lng" id="lng" value="2.345">
                     </div>
@@ -371,17 +371,17 @@
                 <div class="col-sm-6 col-xs-12">
                 <div class="master_field">
                     <label class="master_label" for="YouTube_video_en">add youtube video link in English</label>
-                    <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
+                    <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1"
                     name="youtube_en_1" value="{{ isset($youtube_links[1]) ? $youtube_links[1]->link : '' }}">
                   <span class="master_message inherit" id="yl_2"></span>
                 </div>
                 </div>
 
-               
+
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_en2">@lang('keywords.YouTube-en-2')</label>
-                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2" 
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en2"
                     name="youtube_en_2" value="{{ isset($youtube_links[3]) ? $youtube_links[3]->link : '' }}">
                   <span class="master_message inherit" id="yl_4"></span>
               </div>
@@ -390,7 +390,7 @@
             <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar1">@lang('keywords.YouTube-ar-1')</label>
-                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1"
                     name="youtube_ar_1" value="{{ isset($youtube_links[0]) ? $youtube_links[0]->link : '' }}">
                   <span class="master_message inherit" id="yl_1"></span>
               </div>
@@ -399,7 +399,7 @@
                   <div class="col-xs-6">
               <div class="master_field">
                 <label class="master_label" for="YouTube_video_ar2">@lang('keywords.YouTube-ar-2')</label>
-                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2" 
+                <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar2"
                     name="youtube_ar_2" value="{{ isset($youtube_links[2]) ? $youtube_links[2]->link : '' }}">
                   <span class="master_message inherit" id="yl_3"></span>
               </div>
@@ -419,7 +419,7 @@
                   </div>
                 </div>
             </div>
-    
+
               {{-- English images --}}
             <div class="col-sm-6 col-xs-12 text-center">
                 <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
@@ -439,8 +439,8 @@
             <button type="submit" id="submitButton" hidden>submit</button>
             </fieldset>
 
-            
-            
+
+
         </form>
         </div>
     </div><br>
@@ -458,7 +458,7 @@
 
     }
     function closebtn(index,value){
-     
+
       if(value==1){
         listAr.splice(index,1);
         $.each(listAr,function(id,value,){
@@ -490,7 +490,7 @@
            });
            if(error>0){
              return true;
-           
+
            }
            else{
              return false;
@@ -498,7 +498,7 @@
     }
 
     function updateList (inputID,outputID,listName) {
-   
+
         let input = document.getElementById(inputID);
         let output = document.getElementById(outputID);
         let files1 = input.files;
@@ -677,7 +677,7 @@
                     form.validate().settings.ignore = ":disabled,:hidden";
                     return form.valid();
       },
-      
+
        onFinishing:function test3(e){
         if((! checkImageSize(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
             var images_ar = '';
@@ -696,14 +696,14 @@
             // append image list to hidden inputs
             $("#images_ar").val(images_ar);
             $("#images_en").val(images_en);
-        
+
            $("#horizontal-pill-steps").submit();
          }
          else{
           alert_msg("ERROR","Check Uploaded Images or Youtube Links")
          }
        },
-      
+
     }).validate({
                 errorPlacement: function errorPlacement(error, element) { element.after(error); },
             });
@@ -714,7 +714,7 @@
    var errors = [0, 0, 0, 0];
     $(function(){
        /** check youtube links **/
-   
+
       $("#YouTube_video_en1").focusout(function() {
         var value = $(this).val();
         if(value){
@@ -725,7 +725,7 @@
           $("#yl_2").empty()
 
         }
-      }); 
+      });
 
       $("#YouTube_video_en2").focusout(function() {
         var value = $(this).val();
@@ -737,7 +737,7 @@
           $("#yl_4").empty()
 
         }
-      }); 
+      });
 
       $("#YouTube_video_ar1").focusout(function() {
         var value = $(this).val();
@@ -745,11 +745,11 @@
           checkYoutubeLink(this, value, "#yl_1") ? errors[2] = 0 : errors[2] = 1;
         }
         else{
-          
+
           errors[2] = 0;
           $("#yl_1").empty()
         }
-      }); 
+      });
 
       $("#YouTube_video_ar2").focusout(function() {
         var value = $(this).val();
@@ -761,7 +761,7 @@
           $("#yl_3").empty()
 
         }
-      }); 
+      });
 
       function checkAllYoutubeLinks() {
         return errors.includes(1);
@@ -814,7 +814,7 @@
             $(".select2").select2();
         });
 
-       
+
 
         $(function () {
             $('.datepicker').datepicker({autoclose: true});
@@ -828,11 +828,11 @@
     }());
 
      $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
-    
+
 </script>
 
 <script type="text/javascript">
-    
+
 </script>
 
 {{-- Submit form onClick on finish --}}
@@ -875,7 +875,7 @@
         toggleDisable('thu', 'thu_start', 'thu_end');
         toggleDisable('fri', 'fri_start', 'fri_end');
 
-        
+
     });
 </script>
 @endsection

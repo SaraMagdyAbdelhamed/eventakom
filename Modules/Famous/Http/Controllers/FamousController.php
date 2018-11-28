@@ -205,7 +205,7 @@ class FamousController extends Controller
                                 $ext = $match[1];
                                 $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
                                 $image = str_replace(' ', '+', $image);
-                                $imageName = 'famous_images/english/' . time() . '.' . $ext;
+                                $imageName = 'famous_images/english/' . time() . rand(111, 999) . '.' . $ext;
                                 \File::put(public_path() . '/' . $imageName, base64_decode($image));
 
                                 // store link in db
@@ -236,7 +236,7 @@ class FamousController extends Controller
                                 $ext = $match[1];
                                 $image = str_replace('data:image/' . $ext . ';base64,', '', $image);
                                 $image = str_replace(' ', '+', $image);
-                                $imageName = 'famous_images/arabic/' . time() . '.' . $ext;
+                                $imageName = 'famous_images/arabic/' . time() . rand(111, 999) . '.' . $ext;
                                 \File::put(public_path() . '/' . $imageName, base64_decode($image));
 
                                 // store link in db
@@ -278,9 +278,9 @@ class FamousController extends Controller
 
         // flash success & redirect ot list page
         if (\Lang::getLocale() == 'en') {
-            Session::flash('warning', 'Famous attraction added successfully!');
+            Session::flash('success', 'Famous attraction added successfully!');
         } else {
-            Session::flash('warning', 'تم إضافة مزار بنجاح');
+            Session::flash('success', 'تم إضافة مزار بنجاح');
         }
         return redirect('/attractions');
     }
@@ -298,7 +298,9 @@ class FamousController extends Controller
         $end = '';
         $keyword = '';
         $images_ar = [];
+        $images_ar_length = 0;
         $images_en = [];
+        $images_en_length = 0;
         $youtube_ar = [];
         $youtube_en = [];
 
@@ -317,8 +319,6 @@ class FamousController extends Controller
         }
 
         // get media
-        $keyword = $request->lang == 'en' ? '%english%' : '%arabic%';
-
         $images_ar_array = Helper::getLinks($famous->id, 2);
         $images_en_array = $famous->media()->where('type', 1)->first() ? $famous->media()->where('type', 1)->get() : [];
 
@@ -343,18 +343,22 @@ class FamousController extends Controller
 
         if (count($images_ar_array) > 0) {
             foreach ($images_ar_array as $image) {
-                $images_ar[] = asset($image->value);
+                if ($image->value != '' && $image->value != null) {
+                    $images_ar[] = asset($image->value);
+                }
             }
         } else {
-            $images_ar = ['', ''];
+            $images_ar = [];
         }
 
         if (count($images_en_array) > 0) {
             foreach ($images_en_array as $image) {
-                $images_en[] = asset($image->media);
+                if ($image->media != '' && $image->media != null) {
+                    $images_en[] = asset($image->media);
+                }
             }
         } else {
-            $images_en = ['', ''];
+            $images_en = [];
         }
 
         $row = [
@@ -661,7 +665,6 @@ class FamousController extends Controller
             }
 
         } catch (\Exception $ex) {
-            Session::flash('warning', 'English error!');
             if (\Lang::getLocale() == 'en') {
                 Session::flash('warning', 'Error updating Famous attraction, English values!');
             } else {
@@ -687,9 +690,9 @@ class FamousController extends Controller
 
         // flash success & redirect ot list page
         if (\Lang::getLocale() == 'en') {
-            Session::flash('warning', 'Famous attraction updated successfully!');
+            Session::flash('success', 'Famous attraction updated successfully!');
         } else {
-            Session::flash('warning', 'تم تعديل المزار بنجاح');
+            Session::flash('success', 'تم تعديل المزار بنجاح');
         }
 
         return redirect('/attractions');
