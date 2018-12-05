@@ -232,17 +232,10 @@ class UsersController extends Controller
             $user->photo = $fileNameToStore;
         }
 
-<<<<<<< HEAD
-        $user->first_name   = $request->firstName;
-        $user->last_name    = $request->lastName;
-        $user->username     = $request->username;
-        $user->email        = $request->email;
-=======
         $user->first_name = $request->firstName;
         $user->last_name = $request->lastName;
         $user->username = $request->username;
         $user->email = $request->email;
->>>>>>> 31546861444fd4a763ab7c2b2236e17076456b1c
         // $user->password     = bcrypt($request->password);
         $user->mobile = $request->phone;
         $user->is_active = $request->status;
