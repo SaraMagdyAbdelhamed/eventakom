@@ -406,6 +406,9 @@
                     $("#is_active").addClass('fa icon-in-table-false fa-times');
                 }
 
+                // remove old images
+                $("img.full-size").remove();
+
                 @if( App::isLocale('en') )
                   for(i=0; i<data.images_en.length; i++) {
                     $(".swiper-wrapper").append('<img class="full-size img_slider" src="' + data.images_en[i] + '">');

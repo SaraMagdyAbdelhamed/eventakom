@@ -30,7 +30,7 @@
       <div class="add-mode">Editing mode</div>
       <div class="row">
         <div class="col-xs-12">
-          <div class="text-xs-center">         
+          <div class="text-xs-center">
             <div class="text-wraper">
               <h4 class="cover-inside-title">@lang('keywords.events')</h4><i class="fa fa-chevron-circle-right"></i>
               <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.addfromMobile')</h4>
@@ -47,7 +47,7 @@
 
       <form id="horizontal-pill-steps" action="{{ route('event_mobile.update') }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
-        
+
         <h3>@lang('keywords.Info in En')</h3>
         <fieldset>
           <div class="row">
@@ -209,7 +209,7 @@
                 @endif
               </div>
             </div>
-         
+
 
             {{-- Categories --}}
             <div class="col-sm-6 col-xs-12">
@@ -218,7 +218,7 @@
                 <select class="master_input select2" id="category" multiple="multiple" data-placeholder="placeholder" style="width:100%;" value="hala" name="categories[]">
                   @if ( isset($categories) && !empty($categories) )
                       @foreach ($categories as $category)
-                          <option value="{{ $category->id }}" @foreach($event_categories as $ec) 
+                          <option value="{{ $category->id }}" @foreach($event_categories as $ec)
                            <?php $selected = ($category->id == $ec->interest_id)? 'selected' : ''; echo $selected;?> @endforeach>{{ $category->nameMultilang }}</option>
                       @endforeach
                   @endif
@@ -228,7 +228,7 @@
                 @endif
               </div>
             </div>
-           @if(\App::isLocale('en')) 
+           @if(\App::isLocale('en'))
             {{-- Suggest as big Event --}}
             <div class="col-sm-3 col-xs-6">
               <div class="master_field">
@@ -330,9 +330,9 @@
                 <input class="icon" type="radio" name="is_paid" @if($event->is_paid==1) checked="true" @endif  id="radbtn_3_paid" value="1">
                 <label for="radbtn_3_paid">@lang('keywords.paid')</label>
               </div>
-            </div> 
-          </div> 
-        
+            </div>
+          </div>
+
         <!--   <div class="row">
                           <div class="col-xs-12">
                             <div class="master_field">
@@ -450,7 +450,7 @@
 
         <h3>@lang('keywords.Media')</h3>
         <fieldset>
-          
+
           <div class="row">
 
             {{-- 1st Youtube vedio in Arabic --}}
@@ -499,7 +499,7 @@
             <div class="col-xs-12">
               <hr>
             </div>
-              
+
             {{-- Arabic images --}}
             <!--  <input type="file" name="test[]" accept="image/*" multiple> -->
             <!-- omar -->
@@ -508,19 +508,19 @@
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="row">
                                 <section class="l-main" role="main">
-                                 
+
                      <input type="file" name="arabic_images[]" accept="image/*" multiple id="gallery-photo-add-ar">
                      <div class="gallery-ar"></div>
                      <div id="old_imgs-ar">
                      @foreach($images as $image)
                      @if (strpos($image->link, 'arabic') !== false)
                       <img src="{{url('/')}}{{$image->link}}" width="75" height="75">
-                     
+
                       @endif
                       @endforeach
                     </div>
-                    <!-- omar 
-                               
+                    <!-- omar
+
                                   <div class="uploader__box js-uploader__box l-center-box">
                                     <div action="your/nonjs/fallback/" method="POST">
                                       <div class="uploader__contents">
@@ -532,12 +532,13 @@
                                       <input class="button button--big-bottom" type="submit" value="Upload Selected Files">
                                     </div>
                                   </div>
-                                </section> 
+                                </section>
                               </div>
                             </div>
                           </div> -->
                            <div class="col-sm-6 col-xs-12 text-center">
-                            <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
+                            <h4 class="text-center">upload Arabic images (max no. 5 images)</h4>
+                            <h5 class="text-center">Each image should be 1MB maximum in size.</h5>
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="main-section">
                                 <div id="fileList"></div>
@@ -568,19 +569,19 @@
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="row">
                                 <section class="l-main" role="main">
-                                 
+
                                    <input type="file" name="english_images[]" accept="image/*" multiple id="gallery-photo-add-en">
                                      <div class="gallery-en"></div>
                                        <div id="old_imgs-en">
                      @foreach($images as $image)
                      @if (strpos($image->link, 'english') !== false)
                       <img src="{{url('/')}}{{$image->link}}" width="75" height="75">
-                     
+
                       @endif
                       @endforeach
                     </div>
-                    <!-- omar 
-                                 
+                    <!-- omar
+
                                <div class="uploader__box js-uploader__box l-center-box">
                                     <div action="your/nonjs/fallback/" method="POST">
                                       <div class="uploader__contents">
@@ -591,13 +592,14 @@
                                       </div>
                                       <input class="button button--big-bottom" type="submit" value="Upload Selected Files">
                                     </div>
-                                  </div> 
+                                  </div>
                                 </section>
                               </div>
                             </div>
                           </div>-->
                     <div class="col-sm-6 col-xs-12 text-center">
-                            <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
+                            <h4 class="text-center">upload English images (max no. 5 images)</h4>
+                            <h5 class="text-center">Each image should be 1MB maximum in size.</h5>
                             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
                               <div class="main-section">
                                 <div id="fileList2"></div>
@@ -619,7 +621,7 @@
                       <img src="{{url('/')}}{{'/events/default/events.png'}}" width="75" height="75">
                       @endif
                     </div>
-                          </div>       
+                          </div>
 
           </div>
 
@@ -652,7 +654,7 @@ $(document).ready(function(){
     bodyTag: "fieldset",
     transitionEffect: "slideLeft",
   });
-  
+
 
   $('input, select').on('change', function(event) {
     var $element = $(event.target),
@@ -667,7 +669,7 @@ $(document).ready(function(){
     $('code', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
     $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
   }).trigger('change');
-  
+
 
   $('.datepicker').datepicker({autoclose: true});
   $(".timepicker").timepicker({showInputs: false});
@@ -680,11 +682,11 @@ $(document).ready(function(){
 
 
   //$('.paid-details').fadeOut();
-  
+
   $('label[for="radbtn_3_paid"]').on('click' , function(){
     $('.paid-details').fadeIn(100);
   });
-  
+
   $('label[for="radbtn_2_free"]').on('click' , function(){
     $('.paid-details').fadeOut();
   });
@@ -727,7 +729,7 @@ $(document).ready(function(){
       $('#old_imgs-en').fadeOut();
         imagesPreview(this, 'div.gallery-en');
     });
-}); 
+});
 </script>
 <!-- <script>
   $(function(){
@@ -736,7 +738,7 @@ $(document).ready(function(){
         if (parseInt($fileUpload.get(0).files.length)>2){
          alert("You can only upload a maximum of 2 files");
         }
-    });    
+    });
 });
 </script>  -->
 <script>
@@ -752,7 +754,7 @@ $(document).ready(function(){
 </script>
 
 <script>
-  
+
   $(document).ready(function() {
     // Click on finish button triggers a hidden submit button
     $("#finish1").click(function(){
@@ -768,7 +770,7 @@ $(document).ready(function(){
       var img;
       var reader=new FileReader();
       function updateIndexList(){
-      
+
       }
       function closebtn(index,value){
         if(value==1){
@@ -789,14 +791,14 @@ $(document).ready(function(){
           $("#file-2").prop('disabled', false);
           updateList2();
         }
-          
+
         }
        updateList = function() {
         let input = document.getElementById('file-1');
         let output = document.getElementById('fileList');
-        let files1 = input.files; 
+        let files1 = input.files;
         if(check==true){
-          
+
           output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
           for (var i = 0; i < listAr.length; i++) {
           output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
@@ -807,8 +809,8 @@ $(document).ready(function(){
                               '<span class="uploader__file-list__button">'+'</span>'+
                               '<span class="uploader__file-list__button" id="delete" >'+''+'<button id="close" onclick="closebtn('+listAr[i].index+','+1+')" class="uploader__icon-button fa fa-times" >'+
                               '</button>'+'</span>'+'</li>';
-                        
-                        
+
+
         }
         output.innerHTML += '</ul>';
         check = false;
@@ -820,11 +822,11 @@ $(document).ready(function(){
          }
         for (var i = 0; i < files1.length; i++) {
           var file = files1[i];
-           
+
               listAr.push({'name':file.name,'size':file.size,'index':listAr.length});
-      
+
           }
-      
+
         output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
         for (var i = 0; i < listAr.length; i++) {
           output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
@@ -838,17 +840,17 @@ $(document).ready(function(){
         }
         output.innerHTML += '</ul>';
         }
-      
+
         if(listAr.length == 5){
             $("#file-1").prop('disabled', true);
           }
-         
+
         }
-      
+
         updateList2 = function(){
         let input = document.getElementById('file-2');
         let output = document.getElementById('fileList2');
-        let files2 = input.files; 
+        let files2 = input.files;
         if(check==true){
            output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
         for (var i = 0; i < listEn.length; i++) {
@@ -863,7 +865,7 @@ $(document).ready(function(){
         }
         output.innerHTML += '</ul>';
         check=false;
-      
+
         }
         else{
           if(files2.length > 5){
@@ -876,7 +878,7 @@ $(document).ready(function(){
           if(listEn.length == 5){
             $("#file-2").prop("disabled",true);
           }
-          }  
+          }
         output.innerHTML = '<ul class="js-uploader__file-list uploader__file-list">';
         for (var i = 0; i < listEn.length; i++) {
           output.innerHTML += '<li class="js-uploader__file-list uploader__file-list">'+
@@ -893,9 +895,9 @@ $(document).ready(function(){
         if(listEn.length == 5){
             $("#file-2").prop("disabled",true);
           }
-          
+
         }
-      
-      
+
+
     </script>
 @endsection

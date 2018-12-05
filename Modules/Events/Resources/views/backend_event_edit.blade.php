@@ -499,6 +499,7 @@
           <div class="col-sm-6 col-xs-12 text-center">
 
             <h4 class="text-center">upload event images (in Arabic ) (max no. 5 images)</h4>
+            <h5 class="text-center">Each image should be 1MB maximum in size.</h5>
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
               <div class="main-section">
                 <div id="fileList"></div>
@@ -516,6 +517,7 @@
           <div class="col-sm-6 col-xs-12 text-center">
 
             <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
+            <h5 class="text-center">Each image should be 1MB maximum in size.</h5>
             <div class="cardwrap inherit bradius--noborder bshadow--0 padding--small margin--small-top-bottom">
               <div class="main-section">
                 <div id="fileList2"></div>
