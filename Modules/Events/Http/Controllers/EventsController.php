@@ -8,10 +8,6 @@
 
 namespace Modules\Events\Http\Controllers;
 
-use Session;
-use Helper;
-use Carbon\Carbon;
-
 use App\Age_Ranges;
 use App\BigEvent;
 use App\Currency;
@@ -22,6 +18,8 @@ use App\EventMedia;
 use App\EventTicket;
 use App\Genders;
 use App\Library\Services\NotificationsService;
+use Carbon\Carbon;
+use Helper;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -29,7 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-
+use Session;
 
 class EventsController extends Controller
 {
@@ -114,13 +112,13 @@ class EventsController extends Controller
             // concatinate end_date + end_time to make them end_datetime
             $event->end_datetime = Carbon::parse($end_date . ' ' . $request->end_time);
 
-            $event->suggest_big_event = $request->is_big_event ? : 0; // check if value is missing then replace it with zero
-            $event->is_active = $request->is_active ? : 0; // check if value is missing then replace it with zero
+            $event->suggest_big_event = $request->is_big_event ?: 0; // check if value is missing then replace it with zero
+            $event->is_active = $request->is_active ?: 0; // check if value is missing then replace it with zero
 
             $event->is_paid = $request->is_paid;
 
-            $event->website = $request->website ? : '';
-            $event->email = $request->email ? : '';
+            $event->website = $request->website ?: '';
+            $event->email = $request->email ?: '';
             $event->code = $request->code_number;
             $event->mobile = $request->mobile_number;
             $event->created_by = Auth::id();
@@ -153,10 +151,10 @@ class EventsController extends Controller
 
             /**  Youtube links  **/
             $event->media()->createMany([
-                ['link' => ($request->youtube_en_1 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_en_2 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_1 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_2 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_en_1 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_en_2 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_1 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_2 ?: ''), 'type' => 2],
             ]);
 
             // Images
@@ -172,7 +170,7 @@ class EventsController extends Controller
 
                         // check if image exist
                         if (strpos($image, 'events/english') !== false) {
-                        // search for its name
+                            // search for its name
                             preg_match('/events\/english\/(.*)/', $image, $match);
 
                             if (count($match) > 0) {
@@ -218,9 +216,9 @@ class EventsController extends Controller
                     // add new images
                     foreach ($images_ar as $image) {
 
-                    // check if image exist
+                        // check if image exist
                         if (strpos($image, 'events/arabic') !== false) {
-                        // search for its name
+                            // search for its name
                             preg_match('/events\/arabic\/(.*)/', $image, $match);
 
                             if (count($match) > 0) {
@@ -235,9 +233,9 @@ class EventsController extends Controller
                             }
 
                         }
-                    // check if image is new
+                        // check if image is new
                         if (strpos($image, 'base64') !== false) {
-                        // get image extension
+                            // get image extension
                             preg_match('/image\/(.*)\;/', $image, $match);
 
                             if (count($match) > 0) {
@@ -280,22 +278,31 @@ class EventsController extends Controller
                     $ticket->currency_id = $request->currency;
                     $ticket->save();
                 } catch (\Exception $ex) {
-                    Session::flash('warning', 'price error!');
+                    if (\Lang::getLocale() == 'en') {
+                        Session::flash('warning', 'price error!');
+                    } else {
+                        Session::flash('warning', 'هناك خطأ ما في السعر');
+                    }
+
                     return redirect()->back();
                 }
             }
 
         } catch (\Exception $ex) {
-            dd($ex);
-            Session::flash('warning', 'Error 1');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('warning', 'Error 1');
+            } else {
+                Session::flash('warning', 'خطأ رقم 1');
+            }
+
             return redirect()->back();
         }
 
         // Insert Arabic localizations
         try {
-            Helper::add_localization(4, 'name', $event->id, ($request->arabic_event_name ? : 'بدون اسم'), 2); // arabic_event_name
-            Helper::add_localization(4, 'description', $event->id, ($request->arabic_description ? : 'بدون وصف'), 2); // arabic_description
-            Helper::add_localization(4, 'venue', $event->id, ($request->arabic_venu ? : 'بدون عنوان'), 2); // arabic_venu
+            Helper::add_localization(4, 'name', $event->id, ($request->arabic_event_name ?: 'بدون اسم'), 2); // arabic_event_name
+            Helper::add_localization(4, 'description', $event->id, ($request->arabic_description ?: 'بدون وصف'), 2); // arabic_description
+            Helper::add_localization(4, 'venue', $event->id, ($request->arabic_venu ?: 'بدون عنوان'), 2); // arabic_venu
 
             // Explode hashtags into an array
             if (isset($request->arabic_hashtags) && !empty($request->arabic_hashtags)) {
@@ -307,8 +314,11 @@ class EventsController extends Controller
             }
 
         } catch (\Exception $ex) {
-            dd($ex);
-            Session::flash('warning', 'Error 2');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('warning', 'Error 2');
+            } else {
+                Session::flash('warning', 'خطأ رقم 2');
+            }
             return redirect()->back();
         }
 
@@ -316,7 +326,11 @@ class EventsController extends Controller
         $this->NotifcationService->EventInterestsPush($event);
 
         // flash success message & redirect to list backend events
-        Session::flash('success', 'Event Added Successfully! تم إضافة الحدث بنجاح');
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('success', 'Event Added Successfully!');
+        } else {
+            Session::flash('success', 'م إضافة الحدث بنجاح');
+        }
         return redirect('/events/backend');
     }
 
@@ -330,12 +344,21 @@ class EventsController extends Controller
 
         // redirect back if not found!
         if ($data['event'] == null) {
-            Session::flash('warning', 'Not found! غير موجود');
+
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('success', 'Not found!');
+            } else {
+                Session::flash('success', ' غير موجود');
+            }
             return redirect('/events/backend');
         }
 
         if ($data['event']->is_backend != 1) {
-            Session::flash('warning', 'Not found! غير موجود');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('success', 'Not found!');
+            } else {
+                Session::flash('success', ' غير موجود');
+            }
             return redirect('/events/backend');
         }
 
@@ -352,7 +375,11 @@ class EventsController extends Controller
 
         // redirect back if not found!
         if ($data['event'] == null) {
-            Session::flash('warning', 'Not found! غير موجود');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('success', 'Not found!');
+            } else {
+                Session::flash('success', ' غير موجود');
+            }
             return redirect('/events/backend');
         }
 
@@ -395,7 +422,6 @@ class EventsController extends Controller
         $images_ar = explode('-', $request->images_ar);
         // dd([$images_en, $images_ar]);
 
-
         // Insert Event in events table
         try {
             $event = EventBackend::find($request->id);
@@ -414,15 +440,15 @@ class EventsController extends Controller
             $event->start_datetime = Carbon::parse($start_date . ' ' . $request->start_time);
 
             // concatinate end_date + end_time to make them end_datetime
-            $event->end_datetime = Carbon::parse($end_date . ' ' . $end_time);
+            $event->end_datetime = Carbon::parse($end_date . ' ' . $request->end_time);
 
-            $event->suggest_big_event = $request->is_big_event ? : 0; // check if value is missing then replace it with zero
-            $event->is_active = $request->is_active ? : 0; // check if value is missing then replace it with zero
+            $event->suggest_big_event = $request->is_big_event ?: 0; // check if value is missing then replace it with zero
+            $event->is_active = $request->is_active ?: 0; // check if value is missing then replace it with zero
 
             $event->is_paid = $request->is_paid;
 
-            $event->website = $request->website ? : '';
-            $event->email = $request->email ? : '';
+            $event->website = $request->website ?: '';
+            $event->email = $request->email ?: '';
             $event->code = $request->code_number;
             $event->mobile = $request->mobile_number;
             $event->updated_by = Auth::id();
@@ -463,10 +489,10 @@ class EventsController extends Controller
             /**  Youtube links  **/
             $event->media()->where('type', 2)->delete();
             $event->media()->createMany([
-                ['link' => ($request->youtube_en_1 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_en_2 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_1 ? : ''), 'type' => 2],
-                ['link' => ($request->youtube_ar_2 ? : ''), 'type' => 2],
+                ['link' => ($request->youtube_en_1 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_en_2 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_1 ?: ''), 'type' => 2],
+                ['link' => ($request->youtube_ar_2 ?: ''), 'type' => 2],
             ]);
 
             // Images
@@ -483,7 +509,7 @@ class EventsController extends Controller
 
                         // check if image exist
                         if (strpos($image, 'events/english') !== false) {
-                        // search for its name
+                            // search for its name
                             preg_match('/events\/english\/(.*)/', $image, $match);
 
                             if (count($match) > 0) {
@@ -529,9 +555,9 @@ class EventsController extends Controller
                     // add new images
                     foreach ($images_ar as $image) {
 
-                    // check if image exist
+                        // check if image exist
                         if (strpos($image, 'events/arabic') !== false) {
-                        // search for its name
+                            // search for its name
                             preg_match('/events\/arabic\/(.*)/', $image, $match);
 
                             if (count($match) > 0) {
@@ -546,9 +572,9 @@ class EventsController extends Controller
                             }
 
                         }
-                    // check if image is new
+                        // check if image is new
                         if (strpos($image, 'base64') !== false) {
-                        // get image extension
+                            // get image extension
                             preg_match('/image\/(.*)\;/', $image, $match);
 
                             if (count($match) > 0) {
@@ -598,7 +624,11 @@ class EventsController extends Controller
             }
 
         } catch (\Exception $ex) {
-            Session::flash('warning', $ex);
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('error', 'Unkown error while storing event!');
+            } else {
+                Session::flash('error', 'حدث خطأ ما عند تسجيل الحدث');
+            }
             return redirect()->back();
         }
 
@@ -618,13 +648,21 @@ class EventsController extends Controller
                 Helper::add_localization(17, 'hash_tags', $event->id, $arabic_hashtags[$i], 2); // arabic_hashtags
             }
         } catch (\Exception $ex) {
-            dd($ex);
-            Session::flash('warning', 'Error 2');
+            if (\Lang::getLocale() == 'en') {
+                Session::flash('success', 'Error 4');
+            } else {
+                Session::flash('success', 'خطأ رقم 4');
+            }
             return redirect()->back();
         }
 
         // flash success message & redirect to list backend events
-        Session::flash('success', 'Event Added Successfully! تم إضافة الحدث بنجاح');
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('success', 'Event Added Successfully!');
+        } else {
+            Session::flash('success', 'تم إضافة الحدث بنجاح');
+        }
+
         return redirect('/events/backend');
     }
 
@@ -652,7 +690,11 @@ class EventsController extends Controller
 
         $event->delete(); // delete events
 
-        Session::flash('success', 'Event deleted successfully! تم مسح الحدث بنجاح');
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('success', 'Event deleted successfully!');
+        } else {
+            Session::flash('success', ' تم مسح الحدث بنجاح');
+        }
         return response()->json(['success', 'event deleted!']);
     }
 
@@ -686,7 +728,12 @@ class EventsController extends Controller
             $event->delete(); // delete events
         }
 
-        Session::flash('success', 'Event deleted successfully! تم مسح الحدث بنجاح');
+        if (\Lang::getLocale() == 'en') {
+            Session::flash('success', 'Event deleted successfully!');
+        } else {
+            Session::flash('success', ' تم مسح الحدث بنجاح');
+        }
+
         return response()->json(['success', 'event deleted!']);
     }
 
@@ -710,7 +757,7 @@ class EventsController extends Controller
             $flag = 1;
             $events = $events->where('is_active', 1);
         } else
-            if ($request->active == null && $request->inactive == 1) {
+        if ($request->active == null && $request->inactive == 1) {
             $flag = 1;
             $events = $events->where('is_active', 0);
         }

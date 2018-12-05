@@ -6,7 +6,7 @@
     /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
     #map {
-        height: 100% !important;
+        height: 250px !important;
     }
     /* Optional: Makes the sample page fill the window. */
     html, body {
@@ -21,7 +21,7 @@
         <div class="cover-inside-container margin--small-top-bottom bradius--no bshadow--0" style="background-image:  url( {{ asset('img/covers/dummy2.jpg ') }} )  ; background-position: center center; background-repeat: no-repeat; background-size:cover;">
         <div class="row">
             <div class="col-xs-12">
-            <div class="text-xs-center">         
+            <div class="text-xs-center">
                 <div class="text-wraper">
                     <h4 class="cover-inside-title sub-lvl-2">@lang('keywords.famousAtt')</h4>
                 </div>
@@ -59,7 +59,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label mandatory" for="Place_Category">@lang('keywords.placeCategories')</label>
-                    <select class="master_input select2" name="place_categories[]"  
+                    <select class="master_input select2" name="place_categories[]"
                             id="Place_Category" multiple="multiple" data-placeholder="choose an option.." style="width:100%;" >
                         @if ( isset($categories) && !empty($categories) )
                             @foreach ($categories as $category)
@@ -74,7 +74,7 @@
                 {{-- Google Maps API --}}
                 <div class="col-xs-12">
                     <div class="mapouter">
-                        <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
+                        <div id="map" style=" background: none!important;height: 250px;width: 100%;"></div>
                         <input type="hidden" name="lat" id="lat" value="{{ $famous->latitude ? : '' }}">
                         <input type="hidden" name="lng" id="lng" value="{{ $famous->longtuide ? : '' }}">
                     </div>
@@ -343,7 +343,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label" for="Place_name">@lang('keywords.placeName')</label>
-                    <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar" 
+                    <input class="master_input" type="text" placeholder="ex:city stars"  id="Place_name" name="place_name_ar"
                         value="{{ \Helper::localization('famous_attractions', 'name', $famous->id, 2, $famous->name) }}" />
 
                     @if ($errors->has('place_name_ar'))
@@ -354,7 +354,7 @@
                 <div class="col-xs-6">
                 <div class="master_field">
                     <label class="master_label" for="Address_name">@lang('keywords.placeAddress')</label>
-                    <input class="master_input" type="text" placeholder="ex:52 Ahmed Salh st .city stars"  id="Address_name" name="place_address_ar" 
+                    <input class="master_input" type="text" placeholder="ex:52 Ahmed Salh st .city stars"  id="Address_name" name="place_address_ar"
                         value="{{ \Helper::localization('famous_attractions', 'address', $famous->id, 2, $famous->address) }}" />
 
                     @if ($errors->has('place_address_ar'))
@@ -378,27 +378,27 @@
                 <div class="col-sm-6 col-xs-12">
                     <div class="master_field">
                         <label class="master_label" for="YouTube_video_en">add youtube video link in English (1)</label>
-                        <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en_1" id="YouTube_video_en" 
+                        <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_en_1" id="YouTube_video_en"
                             value="{{ isset($youtube_en[0]) ? $youtube_en[0]->media : '' }}" />
                         @if ($errors->has('youtube_en'))
                             <span class="master_message color--fadegreen">{{ $errors->first('youtube_en') }}</span>
                         @endif
                     </div>
-                </div> 
+                </div>
 
                 <div class="col-sm-6 col-xs-12">
                     <div class="master_field">
                         <label class="master_label" for="YouTube_video_en">Add youtube video link in English (2)</label>
-                        <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1" 
+                        <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_en1"
                             name="youtube_en_2" value="{{ isset($youtube_en[1]) ? $youtube_en[1]->media : '' }}">
                     <span class="master_message inherit" id="yl_2"></span>
                     </div>
                 </div>
-                
+
                 <div class="col-sm-6 col-xs-12">
                     <div class="master_field">
                         <label class="master_label" for="YouTube_video_ar">add youtube video link in Arabic (1)</label>
-                        <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar_1" id="YouTube_video_ar" 
+                        <input class="master_input" type="url" placeholder="ex:www.youtube.com/video_iD" name="youtube_ar_1" id="YouTube_video_ar"
                             value="{{ !empty($youtube_ar[0]) ? $youtube_ar[0] : '' }}">
                         @if ($errors->has('youtube_ar'))
                             <span class="master_message color--fadegreen">{{ $errors->first('youtube_ar') }}</span>
@@ -409,14 +409,14 @@
                 <div class="col-xs-6">
                     <div class="master_field">
                         <label class="master_label" for="YouTube_video_ar1">Add youtube video link in Arabic (2)</label>
-                        <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1" 
+                        <input class="master_input" type="text" placeholder="ex:www.youtube.com/video_iD" id="YouTube_video_ar1"
                             name="youtube_ar_2" value="{{ !empty($youtube_ar[1]) ? $youtube_ar[1] : '' }}">
                         <span class="master_message inherit" id="yl_1"></span>
                     </div>
                 </div>
 
-           
-    
+
+
               {{-- English images --}}
             <div class="col-sm-6 col-xs-12 text-center">
                 <h4 class="text-center">upload event images (in English ) (max no. 5 images)</h4>
@@ -451,8 +451,8 @@
             <button type="submit" id="submitButton" hidden>submit</button>
             </fieldset>
 
-            
-            
+
+
         </form>
         </div>
     </div><br>
@@ -460,7 +460,7 @@
 
 <!--***************************UI*******************************-->
 <script type="text/javascript">
-         
+
     var listAr = [];
     var listEn = [];
     var check = false;
@@ -472,7 +472,7 @@
 
     }
     function closebtn(index,value){
-     
+
       if(value==1){
         listAr.splice(index,1);
         $.each(listAr,function(id,value,){
@@ -511,7 +511,7 @@
     }
 
     function updateList (inputID,outputID,listName) {
-   
+
         let input = document.getElementById(inputID);
         let output = document.getElementById(outputID);
         let files1 = input.files;
@@ -665,10 +665,10 @@
         }
       }
     }
-    
+
    //get  images from database
     function get_images(){
-      
+
       @if( count($images_en) > 0 )
         @foreach($images_en as $image)
             listEn.push({
@@ -690,11 +690,11 @@
             });
         @endforeach
       @endif
-      
+
       add_index(listAr);
       add_index(listEn);
     }
-    //add index 
+    //add index
     function add_index(list){
         $.each(list,function(id,value){
           value.index = id;
@@ -754,7 +754,7 @@
                     form.validate().settings.ignore = ":disabled,:hidden";
                     return form.valid();
       },
-      
+
        onFinishing:function test3(e){
         if((! checkImageSize(listAr,listEn)) && (!checkAllYoutubeLinks()) ){
 
@@ -781,7 +781,7 @@
           alert_msg("ERROR","Check Uploaded Images or Youtube Links")
          }
        },
-      
+
     }).validate({
                 errorPlacement: function errorPlacement(error, element) { element.after(error); },
             });
@@ -791,7 +791,7 @@
    var errors = [0, 0, 0, 0];
     $(function(){
        /** check youtube links **/
-   
+
       $("#YouTube_video_en1").focusout(function() {
         var value = $(this).val();
         if(value){
@@ -802,7 +802,7 @@
           $("#yl_2").empty()
 
         }
-      }); 
+      });
 
       $("#YouTube_video_en2").focusout(function() {
         var value = $(this).val();
@@ -814,7 +814,7 @@
           $("#yl_4").empty()
 
         }
-      }); 
+      });
 
       $("#YouTube_video_ar1").focusout(function() {
         var value = $(this).val();
@@ -822,11 +822,11 @@
           checkYoutubeLink(this, value, "#yl_1") ? errors[2] = 0 : errors[2] = 1;
         }
         else{
-          
+
           errors[2] = 0;
           $("#yl_1").empty()
         }
-      }); 
+      });
 
       $("#YouTube_video_ar2").focusout(function() {
         var value = $(this).val();
@@ -838,7 +838,7 @@
           $("#yl_3").empty()
 
         }
-      }); 
+      });
 
       function checkAllYoutubeLinks() {
         return errors.includes(1);
@@ -899,7 +899,7 @@
             $(".select2").select2();
         });
 
-        
+
 
         $(function () {
             $('.datepicker').datepicker({autoclose: true});
@@ -913,7 +913,7 @@
     }());
 
      $().bootstrapSwitch && $(".make-switch").bootstrapSwitch();
-    
+
 </script>
 
 
@@ -957,7 +957,7 @@
         toggleDisable('thu', 'thu_start', 'thu_end');
         toggleDisable('fri', 'fri_start', 'fri_end');
 
-        
+
     });
 </script>
 @endsection
