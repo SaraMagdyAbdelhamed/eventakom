@@ -42,7 +42,7 @@ class UsersController extends Controller
 
     public function index_backend()
     {
-        // check current usere rule that based on it, filter backend-users will work as follows: 
+        // check current usere rule that based on it, filter backend-users will work as follows:
         if (Auth::user()->isSuperAdmin()) {
             $rule_names = ['Super Admin', 'Admin', 'Data Entry'];   // Current user is Super Admin, it will list Super Admins, Admins and data entry
         } else if (Auth::user()->isAdmin()) {                     // Current user is Admin it will list Admins & Data entry only
@@ -71,7 +71,7 @@ class UsersController extends Controller
     public function mobile_status(Request $request, $id)
     {
         $user = Users::find($id);
-        
+
         if (isset($request->is_active) && $request->is_active == 1) {
             $user->is_active = 1;
             $user->is_mobile_verified = 1;
@@ -121,7 +121,7 @@ class UsersController extends Controller
         //             ->with('mobiles', $data['mobiles'])
         //             ->with('countries', $data['countries'])
         //             ->with('cities', $data['cities'])
-        //             ->with('age_ranges', $data['age_ranges']);   
+        //             ->with('age_ranges', $data['age_ranges']);
     }
 
 
@@ -170,7 +170,7 @@ class UsersController extends Controller
         }
 
         $user->first_name   = $request->firstName;
-        $user->last_name    = $request->lastName; 
+        $user->last_name    = $request->lastName;
         $user->username     = $request->username;
         $user->email        = $request->email;
         $user->password     = bcrypt($request->password);
@@ -215,7 +215,7 @@ class UsersController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        
+
         $user = Users::find($id);
         if ($request->hasFile('image')) {
             $destinationPath = 'backend_users';
@@ -226,7 +226,7 @@ class UsersController extends Controller
         }
 
         $user->first_name   = $request->firstName;
-        $user->last_name    = $request->lastName; 
+        $user->last_name    = $request->lastName;
         $user->username     = $request->username;
         $user->email        = $request->email;
         // $user->password     = bcrypt($request->password);
