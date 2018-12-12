@@ -122,7 +122,12 @@ class EventsController extends Controller
             $event->code = $request->code_number;
             $event->mobile = $request->mobile_number;
             $event->created_by = Auth::id();
-
+            
+             
+            $event->save();
+            // updating event with subscription link after getting it's id
+            $subscription_link = route('event_subscribers',$event->id);
+            $event->subscription_link=$subscription_link;
             $event->save();
 
             /**  INSERT English Hashtags **/

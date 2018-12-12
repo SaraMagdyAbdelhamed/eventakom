@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- =====================================================-->
+    <!-- ==================HEAD=============================-->
+    <!-- =====================================================-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Vapulus">
+    <meta name="keywords" content="Vapulus">
+    <!-- =============== APP FAVICON ===============-->
+    <link rel="apple-touch-icon" sizes="180x180" href="../img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../img/favicon/manifest.json">
+    <link rel="mask-icon" href="../img/favicon/safari-pinned-tab.svg" color="#22b681">
+    <meta name="msapplication-TileColor" content="#22b681">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <meta name="theme-color" content="#1c5ba8">
+    <!-- =============== APP TITLE ===============-->
+    <title>login</title>
+    <!-- =============== APP STYLES ===============-->
+    <link rel="stylesheet" href="../css/style__ltr.css">
+    <!-- =============== APP SCRIPT ===============-->
+    <script src="../js/modernizr.js"></script>
+  </head>
+  <body>
+    <div class="toggled" id="wrapper">
+      <div class="layout_sidebar">
+        <div class="wrapper">
+          <!-- top navbar-->
+          <header class="topnavbar-wrapper">
+            <div class="thetop"></div>
+            <button class="scrolltop shadow" id="topBtn" title="Go to top"><i class="fa fa-caret-up scroll"></i></button>
+            <div class="fixed-logo">
+              <div class="container no-padding"><a class="navbar-brand shadow" href=""><img class="logo" src="../img/logo/logo__dark.svg" alt=""></a>
+                <div class="buttons"><a class="pull-right btn bordered-btn" href="" targer="_blank"><i class="fa fa-external-link"></i>Website</a><a class="pull-right btn bordered-btn" href="index_ar.html">ar</a><a class="pull-right btn bordered-btn" id="subscribe_btn" href="#subscribe"><i class="fa fa-edit"></i>Subscribe</a></div>
+              </div>
+            </div>
+          </header>
+          <div class="full-body">
+            <!-- search-->
+            <!-- =============== OVERLAY ===============-->
+            <!-- Page content-->
+            <div>
+              <!-- =============== Custom Content ===============-->
+              <div class="login-page">
+                <div class="content text-center">
+                  <div class="container">
+                    <div class="row" style="padding-top: 8%;">
+                      <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-12 col-xs-offset-0 img-responsive" style="padding-bottom: 2%;"><img src="../img/login/thumb2.png"></div>
+                      <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 wow fadeInLeftBig">
+                        <div class="input-group" style="padding-bottom:12px"><span class="login-input-icon input-group-addon" id="basic-addon1"><img class="icon-img" src="../img/login/user1.png"></span>
+                          <input class="login-input form-control" type="text" placeholder="Account Number....">
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 wow fadeInRightBig">
+                        <div class="input-group"><span class="login-input-icon input-group-addon" id="basic-addon1"><img class="icon-img" src="../img/login/lock.png"></span>
+                          <input class="login-input form-control" type="text" placeholder="Password....">
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 p-m-log-btn">
+                        <button class="btn gold-btn">LOGIN</button>
+                      </div>
+                      <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 text-left">
+                        <div class="check-trans">
+                          <div class="pull-left">
+                            <input type="checkbox" value="None" id="check-trans" name="check">
+                            <label for="check-trans">
+                              <h5 class="weight-font label-check">Remember Password</h5>
+                            </label>
+                          </div>
+                          <div class="pull-right">
+                            <h5 class="weight-font forget"><a class="color--white" href="forget.html"> Forget Password</a></h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 end">
+                        <h5 class="normal-font-w" style="font-weight:500">New User...
+                          <button class="color--beige-color border-reg" onclick="showDiv()">Register Now</button><span>!</span>
+                        </h5>
+                        <div id="regDiv"><a class="btn-as" href="registration-user.html">As A User</a><a class="btn-as" href="registration-lawyer.html">As A Lawyer</a><a class="btn-as" href="registration-office.html">As An Office</a></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Page footer-->
+          <footer>
+            <!-- =====================================================-->
+            <!-- ==================FOOTER=============================-->
+            <!-- ========================footer=============================-->
+            <div class="copyrights">
+              <div class="container"><br>
+                <div class="text-center">Developed by<a class="gold" href="http://pentavalue.com/en">Pentavalue</a><span>- All rights reserved ©</span><a class="brandName" href="home.html">Eventakom</a><span>2018</span></div><br>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <!-- =============== APP MAIN SCRIPTS ===============-->
+    <script type="text/javascript" src="../js/scripts.js"></script>
+    <!-- =============== PAGE VENDOR SCRIPTS ===============-->
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $("#bsnav").removeClass('white');
+        $("#bsnav").addClass('transparent')
+        $(".navbar-actions-area").addClass('login-nav')
+        $(".top-actions").css("background-color","#0f0c0391")
+      })
+      function showDiv() {
+         document.getElementById('regDiv').style.display = "block";
+      }
+    </script>
+  </body>
+</html>
