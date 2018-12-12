@@ -50,7 +50,7 @@
             <button class="scrolltop shadow" id="topBtn" title="Go to top"><i class="fa fa-caret-up scroll"></i></button>
             <div class="fixed-logo">
               <div class="container no-padding"><a class="navbar-brand shadow" href=""><img class="logo" src="{{Module::asset('home:img/logo/logo__dark.svg')}}" alt=""></a>
-                <div class="buttons"><a class="pull-right btn bordered-btn" href="" target="_blank"><i class="fa fa-external-link"></i>Website</a><a class="pull-right btn bordered-btn" href="index_ar.html">ar</a>@if(!isset($subscribers))<a class="pull-right btn bordered-btn" id="subscribe_btn" href="#subscribe"><i class="fa fa-edit"></i>Subscribe</a>@endif</div>
+                <div class="buttons"><a class="pull-right btn bordered-btn" href="" target="_blank"><i class="fa fa-external-link"></i>Website</a><a class="pull-right btn bordered-btn" href="{{ route('event_view_ar',['id' => $event->id]) }}">ar</a>@if(!isset($subscribers))<a class="pull-right btn bordered-btn" id="subscribe_btn" href="#subscribe"><i class="fa fa-edit"></i>Subscribe</a>@endif</div>
               </div>
             </div>
           </header>
