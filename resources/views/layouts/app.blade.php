@@ -80,7 +80,7 @@
                       {{ csrf_field() }}
                       <input type="hidden" name="url" value="{{ Request::url() }}">
                       <input type="hidden" name="locale" value="{{ \Helper::getUserLocale() }}">
-                        <button type="submit" class="nav-link English" style="background-color: inherit; border: 0px; color: white; ">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</button>
+                      <button type="submit" class="nav-link English" style="background-color: inherit; border: 0px; color: white; ">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</button>
                     </form>
                     
                   </li>

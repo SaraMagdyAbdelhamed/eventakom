@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{--  <!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- =====================================================-->
@@ -54,7 +54,10 @@
               </div>
             </div>
           </header>
-          <div class="full-body">
+          <div class="full-body">  --}}
+              @extends('home::layouts.master')
+
+              @section('content')
             <!-- search-->
             <!-- =============== OVERLAY ===============-->
             <!-- Page content-->
@@ -66,8 +69,8 @@
                   -->
                   <div class="col-sm-6 col-xs-12 no-padding">
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                      <h3> {{$event->name}}</h3>
-                      <p>{{$event->description}}</p>
+                      <h3>{{ Session::get('lang_var') == 'en' ? ($event->name != $event->name : 'not found') : \Helper::localization('events', 'name', $event->id, 2, '') }}</h3>
+                      <p>{{ Session::get('lang_var') == 'en' ? $event->description : \Helper::localization('events', 'description', $event->id, 2, '') }}</p>
                       <div class="map" id="map" style="width:100% ;height:200px !important" >
                         {{--  <iframe class="img-responsive" id="map" height="300" src="https://maps.googleapis.com/maps/embed/v1/view?key=AIzaSyD8aQknkKjiVzor_CteINbAwM1gvNESPLA&center={{$event->latitude}},{{$event->longtuide}}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://www.embedgooglemap.net"></a>  --}}
                         {{--  <iframe  height="300" style="border:0" src="https://maps.googleapis.com/maps/embed/v1/search?key=AIzaSyD8aQknkKjiVzor_CteINbAwM1gvNESPLA&center={{$event->latitude}},{{$event->longtuide}}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>  --}}
@@ -79,8 +82,14 @@
                       @endif  
                     </div>
                   </div>
-                  <div class="col-sm-6 col-xs-12 no-padding"><img class="img-responsive" src="{{asset($event_media) or Module::asset('home:img/event-img.jpg')}}"></div>
-                  {{--  <div class="col-sm-6 col-xs-12 no-padding"><img class="img-responsive" src="{{asset($event_media)}}"></div>  --}}
+                   
+                  {{--  {{dd(asset($event_media))}}  --}}
+                 @if($event_media != "")
+                  <div class="col-sm-6 col-xs-12 no-padding"><img class="img-responsive" src="{{asset($event_media)}}"></div>
+                 @else
+                  {{--  <div class="col-sm-6 col-xs-12 no-padding"><img class="img-responsive" src="{{Module::asset('home:img/event-img.jpg')}}"></div>  --}}
+                  <div class="col-sm-6 col-xs-12 no-padding"><img class="img-responsive" src="{{asset('img/event-img.jpg')}}"></div>
+                  @endif
                 </div>
               </div>
               <div class="clearfix"> </div>
@@ -178,8 +187,8 @@
         var marker = new google.maps.Marker({position: uluru, map: map});
       }
     </script>
-    {{--  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&amp;callback=myMap"></script>  --}}
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8aQknkKjiVzor_CteINbAwM1gvNESPLA&libraries=places&callback=initMap" async defer></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&libraries=places&callback=initMap" async defer></script>
     <script type="text/javascript">
       $("#subscribe_btn").on('click',function(){
         $("#subscribe").toggle();
@@ -210,3 +219,4 @@
     </script>
   </body>
 </html>
+@endsection

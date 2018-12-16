@@ -305,6 +305,9 @@
         'branch_end'=>'End Time',
         'addcat'    => 'Add New Category',
 
+        //Event Subscription
+        'subscribe'=>'Subscribe',
+
     ];
 
 ?>

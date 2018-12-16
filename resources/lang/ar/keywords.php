@@ -305,7 +305,9 @@
         'branch_start'=>'بدأ عمل الفرع ',
         'branch_end'=>'معاد اغلاق الفرع ',
         'addcat'    => 'اضف تصنيف جديد',
-
+          
+        //Event Subscription
+        'subscribe' => 'اشترك',
 	
 	];
 

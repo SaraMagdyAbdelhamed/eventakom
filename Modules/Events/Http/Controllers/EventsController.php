@@ -28,7 +28,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Session;
-
+use App\Library\Services\TwilioSmsService;
 class EventsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -128,7 +128,28 @@ class EventsController extends Controller
             // updating event with subscription link after getting it's id
             $subscription_link = route('event_subscribers',$event->id);
             $event->subscription_link=$subscription_link;
-            $event->save();
+         // dd($event->save());
+               if( $event->save()){
+
+                $twilio_config = [
+                    'app_id' => 'AC2305889581179ad67b9d34540be8ecc1',
+                    'token' => '2021c86af33bd8f3b69394a5059c34f0',
+                    'from' => '+13238701693'
+                ];
+        
+                $twilio = new TwilioSmsService($twilio_config);
+            //   dd($event->tele_code.$event->mobile);
+             //dd($twilio->send('+201120094455',$subscription_link));
+             dd($twilio->send('+'.$event->code.substr($event->mobile,1), 'Event '.$event->name.' subscribers link '.$subscription_link));
+           }
+
+          //  $events = EventBackend::get();
+            // foreach ($events as $event){
+            //     if($event->subscription_link == null){
+            //         $event->subscription_link=route('event_view',$event->id);
+            //         $event->save();
+            //     }
+            // }
 
             /**  INSERT English Hashtags **/
             // Explode english hashtags

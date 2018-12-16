@@ -45,7 +45,11 @@
               <div class="banner_area share-page">  </div>
               <div class="container animated fadeInRightBig share_area no-padding">
                 <div class="col-xs-12 text-center" data-wow-duration="1000ms" data-wow-delay="400ms"><br><br>
-                  <h2> The Event Has Expired</h2>
+                  @if(!isset($event_not_found))
+                  <h2> This Event Has Expired</h2>
+                 @else
+                  <h2> Event not Found </h2>
+                  @endif
                 </div>
               </div>
               {{--  <div class="clearfix"> </div>

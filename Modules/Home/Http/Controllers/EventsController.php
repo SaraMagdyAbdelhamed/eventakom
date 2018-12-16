@@ -24,14 +24,18 @@ class EventsController extends Controller
             date_default_timezone_set('asia/Riyadh');
             $datetimenow = Carbon::now();
             $event=EventBackend::find($id);
+            if($event==null){
+               $event_not_found=true; 
+               return view ('home::404',array('event_not_found'=>$event_not_found));
+            }
 // compare datetime to check if an event has expired
             if($event->end_datetime <= $datetimenow){
         
                 return view('home::404');
             }
             //get event first image
-            $event_media =EventMedia::where('event_id',$id)->pluck('link')->first();
-            //$_SESSION['event_id']=$id;
+            $event_media =EventMedia::where('event_id',$id)->where('type', 1)->pluck('link')->first();
+            //dd($event_media);
             return view('home::index',array('event'=>$event,'event_media'=>$event_media));
     }
 
@@ -41,6 +45,10 @@ class EventsController extends Controller
         date_default_timezone_set('asia/Riyadh');
         $datetimenow = Carbon::now();
         $event=EventBackend::find($id);
+        if($event==null){
+            $event_not_found=true; 
+            return view ('home::404',array('event_not_found'=>$event_not_found));
+         }
    // compare datetime to check if an event has expired
         if($event->end_datetime <= $datetimenow){
                                                                                 
@@ -50,7 +58,7 @@ class EventsController extends Controller
         $event_name=Helper::localization('events','name',$id,2); 
         $event_description=Helper::localization('events','description',$id,2);
         //get event first image
-        $event_media =EventMedia::where('event_id',$id)->pluck('link')->first();
+        $event_media =EventMedia::where('event_id',$id)->where('type',1)->pluck('link')->first();
        
       return view('home::index_ar',array('event'=>$event,'event_description'=>$event_description,'event_name'=>$event_name,'event_media'=>$event_media));
     }
