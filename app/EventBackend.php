@@ -5,6 +5,8 @@ namespace App;
 use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Lang;
+use Session;
 
 class EventBackend extends Model
 {
@@ -91,6 +93,33 @@ class EventBackend extends Model
     public function booking() {
         return $this->hasMany('App\EventBooking', 'event_id');
     }
+  public function getNameAttribute($value) {
 
+    $locale = Session::get('lang_var');
+   
+    $arabicname = \Helper::localization('events', 'name', $this->id, 2, '');
+    
+    if($locale !='en') {
+     
+        if(!empty($arabicname)) {
+            $value = $arabicname;
+        }
+    }
+
+    return $value; 
+  }
+
+  public function getDescriptionAttribute($value){
+    $locale = Session::get('lang_var');
+    $arabicdesc =  \Helper::localization('events', 'description', $this->id, 2, '');
+
+    if($locale != 'en'){
+       
+        if(!empty($arabicdesc)) {
+            $value = $arabicdesc;
+        }
+    }
+    return $value;
+  }
 
 }

@@ -51,7 +51,7 @@
             <div class="fixed-logo">
               <div class="container no-padding"><a class="navbar-brand shadow" href=""><img class="logo" src="{{Module::asset('home:img/logo/logo__dark.svg')}}" alt=""></a>
         
-                <div class="buttons"><a class="pull-right btn bordered-btn" href="" target="_blank"><i class="fa fa-external-link"></i>@lang('keywords.website')</a>
+                <div class="buttons">
                   <form action="{{ route('changeLang') }}" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" name="url" value="{{ Request::url() }}">
