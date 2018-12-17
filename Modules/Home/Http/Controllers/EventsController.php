@@ -182,7 +182,7 @@ class EventsController extends Controller
         $events = EventBackend::get();
            foreach ($events as $event){
                if($event->subscription_link == null){
-                   $event->subscription_link=route('event_view',$event->id);
+                   $event->subscription_link = 'subscribe/'.$event->id;
                    $event->save();
                }
            }
