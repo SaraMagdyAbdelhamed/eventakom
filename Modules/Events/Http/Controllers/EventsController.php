@@ -894,15 +894,4 @@ class EventsController extends Controller
         return response()->json($ids);
     }
 
-    public function fillEvents (){
-         $events = EventBackend::get();
-            foreach ($events as $event){
-                if($event->subscription_link == null){
-                    $event->subscription_link=route('event_view',$event->id);
-                    $event->save();
-                }
-            }
-
-    }
-
 }

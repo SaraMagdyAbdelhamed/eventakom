@@ -177,4 +177,19 @@ class EventsController extends Controller
     public function destroy()
     {
     }
+
+    public function fillEvents (){
+        $events = EventBackend::get();
+           foreach ($events as $event){
+               if($event->subscription_link == null){
+                   $event->subscription_link=route('event_view',$event->id);
+                   $event->save();
+               }
+           }
+           return redirect()->back();
+
+   }  
+
+
+
 }
