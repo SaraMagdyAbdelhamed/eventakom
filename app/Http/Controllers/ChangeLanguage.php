@@ -21,13 +21,17 @@ class ChangeLanguage extends Controller
             $user->lang_id = $locale == 'ar' ? 1 : 2;
             $user->save();
             \App::setLocale(\Helper::getUserLocale());
+
+      
         } else {
-            // dd($locale);
+
             if ( $locale == 'ar' ) 
-                $lang_var = 'en';
+               // $lang_var = 'en';
+                $lang_var = 'ar';
             
             if( $locale == 'en' )
-                $lang_var = 'ar';
+                //$lang_var = 'ar';
+                $lang_var = 'en';
            
             Session::put('lang_var', $lang_var);
         }

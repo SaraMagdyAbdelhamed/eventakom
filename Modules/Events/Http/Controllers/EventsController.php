@@ -17,6 +17,7 @@ use App\EventHashtags;
 use App\EventMedia;
 use App\EventTicket;
 use App\Genders;
+use App\Users;
 use App\Library\Services\NotificationsService;
 use Carbon\Carbon;
 use Helper;
@@ -126,30 +127,29 @@ class EventsController extends Controller
              
             $event->save();
             // updating event with subscription link after getting it's id
-            $subscription_link = route('event_subscribers',$event->id);
+            $subscription_link = route('event_view',$event->id);
             $event->subscription_link=$subscription_link;
          // dd($event->save());
                if( $event->save()){
-
-                $twilio_config = [
+        //   dd($event);
+             $user=Users::where('id',$event->created_by)->first();
+             $subscribers_link = route('event_subscribers',$event->id);
+        $twilio_config = [
                     'app_id' => 'AC2305889581179ad67b9d34540be8ecc1',
                     'token' => '2021c86af33bd8f3b69394a5059c34f0',
                     'from' => '+13238701693'
                 ];
         
-                $twilio = new TwilioSmsService($twilio_config);
-            //   dd($event->tele_code.$event->mobile);
-             //dd($twilio->send('+201120094455',$subscription_link));
-             dd($twilio->send('+'.$event->code.substr($event->mobile,1), 'Event '.$event->name.' subscribers link '.$subscription_link));
-           }
+            $twilio = new TwilioSmsService($twilio_config);
+             if($event->telecode != null && $event->mobile != null){    
+             $twilio->send('+'.$event->tele_code.substr($event->mobile,1), 'Event '.$event->name.' subscribers link '.$subscribers_link);
+             }
+            
+            if($user->tel_code != null  && $user->mobile != null ){            
+             $twilio->send('+'.$user->tel_code.substr($user->mobile,1),'Event '.$event->name.' subscribers link '.$subscription_link);
+            }
 
-          //  $events = EventBackend::get();
-            // foreach ($events as $event){
-            //     if($event->subscription_link == null){
-            //         $event->subscription_link=route('event_view',$event->id);
-            //         $event->save();
-            //     }
-            // }
+            }
 
             /**  INSERT English Hashtags **/
             // Explode english hashtags
@@ -892,6 +892,17 @@ class EventsController extends Controller
             $bigevent->save();
         }
         return response()->json($ids);
+    }
+
+    public function fillEvents (){
+         $events = EventBackend::get();
+            foreach ($events as $event){
+                if($event->subscription_link == null){
+                    $event->subscription_link=route('event_view',$event->id);
+                    $event->save();
+                }
+            }
+
     }
 
 }
