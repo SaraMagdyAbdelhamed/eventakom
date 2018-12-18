@@ -78,10 +78,19 @@
                         {{--  <iframe  height="300" style="border:0" src="https://maps.googleapis.com/maps/embed/v1/search?key=AIzaSyD8aQknkKjiVzor_CteINbAwM1gvNESPLA&center={{$event->latitude}},{{$event->longtuide}}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>  --}}
                         
                       </div>
+                      {{--  <div>@if({{Session::has('email_exists')}})
+                        <script>
+                          alert_msg('error','{{Session::get('email_exists')}}');
+                        </script>
+                        @endif
+                      </div>  --}}
+
                       @if(isset($subscribers))
-                      <a class="pull-right link" id="subscriped_users_btn" href="#subscribed_users"><i class="fa fa-link"></i>&nbsp;
-                        Subscribed users</a>
-                      @endif  
+                      {{--  <a class="pull-right link" id="subscriped_users_btn" href="#subscribed_users"><i class="fa fa-link"></i>&nbsp;
+                         Subscribed users</a>  --}}
+                        </div><button class="pull-right link" id="subscriped_users_btn" href="#subscriped_users"><i class="fa fa-link"></i>&nbsp;
+                          Subscribed users</button>
+                          @endif  
                     </div>
                   </div>
                    
@@ -130,6 +139,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <h3> Subscribed users</h3>
                 </div>
+                @if(isset($subscribers))
                 <div class="col-xs-12">
                   <table class="table">
                     <thead>
@@ -141,7 +151,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @if(isset($subscribers))
+                     
                       @foreach ($subscribers as $subscriber)
                       <tr>
                         <td> {{$loop->iteration}}</td>
@@ -175,6 +185,7 @@
     </div>
     <!-- =============== APP MAIN SCRIPTS ===============-->
     <script type="text/javascript" src="{{Module::asset('home:js/scripts.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/scripts.js')}}"></script>
     <!-- =============== PAGE VENDOR SCRIPTS ===============-->
     <script type="text/javascript">
        var map;
@@ -191,6 +202,7 @@
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknR0jhKTIB33f2CLFhBzgp0mj2Tn2q5k&libraries=places&callback=initMap" async defer></script>
+  
     <script type="text/javascript">
       $("#subscribe_btn").on('click',function(){
         $("#subscribe").toggle();
@@ -218,6 +230,17 @@
            }
          });
        });
+       console.log('reer2');
+       @if (Session::has('email_exists'))
+         console.log('error');
+         alert_msg('error','{{Session::get('email_exists')}}')
+     //   alert('{{Session::get('email_exists')}}');
+       @endif
+     
+    </script>
+    <script type="text/javascript" src="{{asset('js/scripts.js')}}">
+        console.log('test1');
+     
     </script>
   </body>
 </html>

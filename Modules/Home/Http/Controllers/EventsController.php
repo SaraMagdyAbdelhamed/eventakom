@@ -74,7 +74,9 @@ class EventsController extends Controller
 
            if($event_subscription_email_check){            
             //return
+           
             Session::flash('email_exists', 'This email has already been used for this event');
+           // dd(Session::get('email_exists'));
             // return redirect()->route(
             //     'event_view', ['id' => $id]
             // );

@@ -21,6 +21,7 @@
     <title>Eventakom</title>
     <!-- =============== APP STYLES ===============-->
     <link rel="stylesheet" href="{{Module::asset('home:css/style__ltr.css')}}">
+    <link rel="stylesheet" href="{{asset('css/style__ltr.css')}}">
     <!-- =============== APP SCRIPT ===============-->
     <script src="{{Module::asset('home:js/modernizr.js')}}"></script>
 
@@ -49,20 +50,22 @@
             <div class="thetop"></div>
             <button class="scrolltop shadow" id="topBtn" title="Go to top"><i class="fa fa-caret-up scroll"></i></button>
             <div class="fixed-logo">
-              <div class="container no-padding"><a class="navbar-brand shadow" href=""><img class="logo" src="{{Module::asset('home:img/logo/logo__dark.svg')}}" alt=""></a>
+              <div class="container no-padding">
+                <a class="navbar-brand shadow" href=""><img class="logo" src="{{Module::asset('home:img/logo/logo__dark.svg')}}" alt=""></a>
         
                 <div class="buttons">
                   <form action="{{ route('changeLang') }}" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" name="url" value="{{ Request::url() }}">
                     <input type="hidden" name="locale" value="{{ Session::get('lang_var') != 'en' ? 'en' : 'ar' }}">
-                    <button type="submit" class="nav-link English" style="background-color: inherit; border: 0px; color: white; ">{{ Session::get('lang_var') == 'en' ? 'العربية' : 'English' }}</button>
-                    
+                    {{--  <button type="submit" class="nav-link English" style="background-color: inherit; border: 0px; color: white; ">{{ Session::get('lang_var') == 'en' ? 'العربية' : 'English' }}</button>  --}}
+                    <button type="submit"  class="pull-right btn bordered-btn" >{{ Session::get('lang_var') == 'en' ? 'العربية' : 'English' }}</button>
                     {{--  <a class="pull-right btn bordered-btn" href="{{ route('event_view',['id' => $event->id]) }}">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</a>  --}}
                   </form>
                   @if(!isset($subscribers))
-                    <a class="pull-right btn bordered-btn" id="subscribe_btn" href="#subscribe"><i class="fa fa-edit"></i>@lang('keywords.subscribe')</a>
-                  @endif</div>
+                    {{--  <a class="pull-right btn bordered-btn" id="subscribe_btn" href="#subscribe"><i class="fa fa-edit"></i>@lang('keywords.subscribe')</a>  --}}
+                    <button type="submit" class="pull-right btn bordered-btn" id="subscribe_btn" onclick="goTo('#subscribe')"><i class="fa fa-edit"></i>@lang('keywords.subscribe')</button>
+                    @endif</div>
                               {{--  <button type="submit" class="nav-link English" style="background-color: inherit; border: 0px; color: white; ">{{ App::isLocale('ar') ? 'English' : 'العربية' }}</button>  --}}
                               {{--  <a class="pull-right btn bordered-btn" href="{{ route('event_view_ar',['id' => $event->id]) }}">ar</a>  --}}
               </div>

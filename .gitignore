@@ -20,3 +20,5 @@ yarn-error.log
 .env
 /nbproject/private/
 composer.lock
+Modules/Home/Resources/views/index.blade.rar
+Modules/Home/Resources/views/index_ar.blade.rar
