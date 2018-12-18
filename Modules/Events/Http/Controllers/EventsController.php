@@ -142,11 +142,11 @@ class EventsController extends Controller
         
             $twilio = new TwilioSmsService($twilio_config);
              if($event->telecode != null && $event->mobile != null){    
-             $twilio->send('+'.$event->tele_code.substr($event->mobile,1), ''.$event->name.' subscribers link '.$subscribers_link);
+             $twilio->send('+'.$event->tele_code.substr($event->mobile,1), ' '.$event->name.' subscribers link  '.$subscribers_link);
              }
             
             if($user->tel_code != null  && $user->mobile != null ){            
-             $twilio->send('+'.$user->tel_code.substr($user->mobile,1),''.$event->name.' subscribers link '.$subscription_link);
+             $twilio->send('+'.$user->tel_code.substr($user->mobile,1),' '.$event->name.' subscribers link  '.$subscription_link);
             }
 
             }
