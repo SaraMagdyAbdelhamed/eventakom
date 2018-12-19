@@ -20,7 +20,7 @@
     <!-- =============== APP TITLE ===============-->
     <title>Eventakom</title>
     <!-- =============== APP STYLES ===============-->
-    <link rel="stylesheet" href="{{Module::asset('home:css/style__ltr.css')}}">
+    <link rel="stylesheet" href="{{Module::asset('home:css/style__ltr_.css')}}">
     <!-- =============== APP SCRIPT ===============-->
     <script src="{{Module::asset('home:js/modernizr.js')}}"></script>
 
@@ -184,8 +184,8 @@
       </div>
     </div>
     <!-- =============== APP MAIN SCRIPTS ===============-->
-    <script type="text/javascript" src="{{Module::asset('home:js/scripts.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/scripts.js')}}"></script>
+        <script type="text/javascript" src="{{Module::asset('home:js/scripts_.js')}}"></script>
+    <!-- <script type="text/javascript" src="{{asset('js/scripts.js')}}"></script> -->
     <!-- =============== PAGE VENDOR SCRIPTS ===============-->
     <script type="text/javascript">
        var map;
@@ -233,7 +233,7 @@
        console.log('reer2');
        @if (Session::has('email_exists'))
          console.log('error');
-         alert_msg('error','{{Session::get('email_exists')}}')
+         alertError('error','{{Session::get('email_exists')}}')
      //   alert('{{Session::get('email_exists')}}');
        @endif
      
