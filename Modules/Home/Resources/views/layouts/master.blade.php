@@ -53,7 +53,7 @@
               <div class="container no-padding">
                 <a class="navbar-brand shadow" href=""><img class="logo" src="{{Module::asset('home:img/logo/logo__dark.svg')}}" alt=""></a>
         
-                <div class="buttons">
+                <div class="buttons" style="display:flex">
                   <form action="{{ route('changeLang') }}" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" name="url" value="{{ Request::url() }}">
